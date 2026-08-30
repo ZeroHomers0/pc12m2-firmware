@@ -1,0 +1,9 @@
+# FUN_00000238 entry=0x00000238 body=12
+00000238  movs  r0, #0xaa
+0000023a  lsls  r1, r0, #0x1d
+0000023c  strb  r0, [r1,#0x8]
+      ; ref 0x40000008 (no mem)
+0000023e  movs  r0, #0x55
+00000240  strb  r0, [r1,#0x8]
+      ; ref 0x40000008 (no mem)
+00000242  bx  lr

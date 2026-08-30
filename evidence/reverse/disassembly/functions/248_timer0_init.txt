@@ -1,0 +1,38 @@
+# timer0_init range=0x248..0x298
+00000248  ldr  r0, [0x000002d4]
+      ; ref 0x000002d4 -> 0x400fc0c4
+0000024a  ldr  r0, [r0,#0x0]
+      ; ref 0x400fc0c4 (no mem)
+0000024c  orr  r0, r0, #0x2
+00000250  ldr  r1, [0x000002d8]
+      ; ref 0x000002d8 -> 0x400fc000
+00000252  str.w  r0, [r1,#0xc4]
+      ; ref 0x400fc0c4 (no mem)
+00000256  mov.w  r0, #0x2
+0000025a  mov.w  r1, #0x40004000
+0000025e  str  r0, [r1,#0x4]
+      ; ref 0x40004004 (no mem)
+00000260  mov.w  r0, #0x18
+00000264  str  r0, [r1,#0xc]
+      ; ref 0x4000400c (no mem)
+00000266  movw  r0, #0x7cf
+0000026a  str  r0, [r1,#0x18]
+      ; ref 0x40004018 (no mem)
+0000026c  mov.w  r0, #0xff
+00000270  str  r0, [r1,#0x0]
+      ; ref 0x40004000 (no mem)
+00000272  mov.w  r0, #0x3
+00000276  str  r0, [r1,#0x14]
+      ; ref 0x40004014 (no mem)
+00000278  mov.w  r0, #0x1
+0000027c  str  r0, [r1,#0x4]
+      ; ref 0x40004004 (no mem)
+0000027e  nop
+00000280  mov  r1, r0
+00000282  lsl.w  r1, r1, r0
+00000286  lsr.w  r2, r0, #0x5
+0000028a  mov.w  r3, #0xe000e000
+0000028e  add.w  r2, r3, r2, lsl #0x2
+00000292  str.w  r1, [r2,#0x100]
+00000296  nop
+00000298  bx  lr

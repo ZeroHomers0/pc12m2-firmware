@@ -1,0 +1,27 @@
+# FUN_00010fd4 entry=0x00010fd4 body=74
+00010fd4  mov  r5, lr
+00010fd6  bl  0x00011020
+      ; call -> 0x00011020
+00010fda  mov  lr, r5
+00010fdc  movs  r5, r0
+00010fde  mov  r1, sp
+00010fe0  mov  r3, r10
+00010fe2  bic  r0, r0, #0x7
+00010fe6  mov  sp, r0
+00010fe8  add  sp, #0x60
+00010fea  push  {r5,lr}
+00010fec  bl  0x000001c4
+      ; call -> 0x000001c4
+00010ff0  pop.w  {r5,lr}
+00010ff4  mov.w  r6, #0x0
+00010ff8  mov.w  r7, #0x0
+00010ffc  mov.w  r8, #0x0
+00011000  mov.w  r11, #0x0
+00011004  bic  r1, r1, #0x7
+00011008  mov  r12, r5
+0001100a  stm.w  r12, {r6,r7,r8,r11}
+0001100e  stm.w  r12, {r6,r7,r8,r11}
+00011012  stm.w  r12, {r6,r7,r8,r11}
+00011016  stm.w  r12, {r6,r7,r8,r11}
+0001101a  mov  sp, r1
+0001101c  bx  lr

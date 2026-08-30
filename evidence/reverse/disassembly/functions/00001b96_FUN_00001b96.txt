@@ -1,0 +1,69 @@
+# FUN_00001b96 entry=0x00001b96 body=88
+00001b96  ldr  r0, [0x00001c0c]
+      ; ref 0x00001c0c -> 0x2009c000
+00001b98  ldr  r0, [r0,#0x14]
+      ; ref 0x2009c014 (no mem)
+00001b9a  tst  r0, #0x40
+00001b9e  beq  0x00001bba
+      ; jump -> 0x00001bba
+00001ba0  ldr  r0, [0x00001c38]
+      ; ref 0x00001c38 -> 0x10001580
+00001ba2  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001580 (no mem)
+00001ba4  adds  r0, r0, #0x1
+00001ba6  ldr  r1, [0x00001c38]
+      ; ref 0x00001c38 -> 0x10001580
+00001ba8  strb  r0, [r1,#0x0]
+      ; ref 0x10001580 (no mem)
+00001baa  mov  r0, r1
+00001bac  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001580 (no mem)
+00001bae  cmp  r0, #0x32
+00001bb0  ble  0x00001bc0
+      ; jump -> 0x00001bc0
+00001bb2  movs  r0, #0x32
+00001bb4  strb  r0, [r1,#0x0]
+      ; ref 0x10001580 (no mem)
+00001bb6  movs  r0, #0x1
+00001bb8  bx  lr
+00001bba  movs  r0, #0x0
+00001bbc  ldr  r1, [0x00001c38]
+      ; ref 0x00001c38 -> 0x10001580
+00001bbe  strb  r0, [r1,#0x0]
+      ; ref 0x10001580 (no mem)
+00001bc0  ldr  r0, [0x00001c0c]
+      ; ref 0x00001c0c -> 0x2009c000
+00001bc2  ldr  r0, [r0,#0x14]
+      ; ref 0x2009c014 (no mem)
+00001bc4  tst  r0, #0x40
+00001bc8  bne  0x00001be4
+      ; jump -> 0x00001be4
+00001bca  ldr  r0, [0x00001c3c]
+      ; ref 0x00001c3c -> 0x10001581
+00001bcc  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001581 (no mem)
+00001bce  adds  r0, r0, #0x1
+00001bd0  ldr  r1, [0x00001c3c]
+      ; ref 0x00001c3c -> 0x10001581
+00001bd2  strb  r0, [r1,#0x0]
+      ; ref 0x10001581 (no mem)
+00001bd4  mov  r0, r1
+00001bd6  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001581 (no mem)
+00001bd8  cmp  r0, #0x32
+00001bda  ble  0x00001bea
+      ; jump -> 0x00001bea
+00001bdc  movs  r0, #0x32
+00001bde  strb  r0, [r1,#0x0]
+      ; ref 0x10001581 (no mem)
+00001be0  movs  r0, #0x2
+00001be2  b  0x00001bb8
+      ; jump -> 0x00001bb8
+00001be4  movs  r0, #0x0
+00001be6  ldr  r1, [0x00001c3c]
+      ; ref 0x00001c3c -> 0x10001581
+00001be8  strb  r0, [r1,#0x0]
+      ; ref 0x10001581 (no mem)
+00001bea  movs  r0, #0x0
+00001bec  b  0x00001bb8
+      ; jump -> 0x00001bb8

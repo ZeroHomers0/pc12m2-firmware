@@ -1,0 +1,5 @@
+si SWD
+speed 100
+device LPC1765
+connect
+exit

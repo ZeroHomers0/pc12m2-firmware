@@ -1,0 +1,34 @@
+==== case5 pools ====
+pool 8b10 -> 0x00004814
+pool 8b14 -> 0x00006a18
+pool 8b2c -> 0x54532031
+pool 8b34 -> 0x00006038
+pool 8b28 -> 0x100017bc
+  adr 0x8b2c as string: 'b\'1 ST0P\\x00\\x008`\\x00\\x00\\xf8\\xf7\\x00\\xf9\\x12\\xe0\\xfaH\\x00x(\\xb9\\x00#\\x0b"\\x03!\\xf8H\\xf8\\xf7\\xf6\\xf8\\xf5H\\x00x\''
+==== case5 strings at pool targets ====
+pool 8b10 target 4814: '1.基本参数设置'
+pool 8b14 target 6a18: '1.通讯地址:     '
+pool 8b34 target 6038: ' 关闭'
+==== case14 pools ====
+pool a154 -> 0x10001778
+pool a158 -> 0xcfd5cab9
+pool a58c -> 0x10001624
+pool a680 -> 0x10001764
+pool a684 -> 0x10001744
+==== case14 adr strings ====
+adr a158: '故障状态'
+adr a164: '      无        '
+adr a178: "b'    \\xc8\\xb1\\xcf\\xe0\\xb1\\xa3\\xbb\\xa4    \\x00\\x00\\x00\\x00\\xfa\\xa0\\xf6\\xf7\\xd5\\xfd\\xfeH\\x00x\\x10\\xf0\\x10\\x0f\\x05\\xd0\\x00#\\x1aF'"
+adr a578: '  IF过载保护    '
+adr a590: '    过压保护    '
+adr a5a4: '    欠压保护    '
+adr a5b8: '  CT过载保护    '
+adr a5cc: '    相序错误    '
+adr a5e0: '三相电流不平衡  '
+adr a5f4: '  IF过流保护    '
+adr a608: '  CT过流保护    '
+adr a61c: '    反馈故障    '
+adr a630: '    电池反接    '
+adr a644: '    过热保护    '
+adr a658: '    通讯错误    '
+adr a66c: '    频率错误    '

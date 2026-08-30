@@ -1,0 +1,38 @@
+# FUN_00010f0a entry=0x00010f0a body=52
+00010f0a  push  {r4,r5,r6,r7,lr}
+00010f0c  mov  r4, r0
+00010f0e  mov  r5, r1
+00010f10  mov  r6, r2
+00010f12  mov  r7, r3
+00010f14  ldr  r0, [0x00010f84]
+      ; ref 0x00010f84 -> 0x100020f4
+00010f16  ldr  r0, [r0,#0x0]
+      ; ref 0x100020f4 (no mem)
+00010f18  adds  r0, r0, #0x1
+00010f1a  ldr  r1, [0x00010f84]
+      ; ref 0x00010f84 -> 0x100020f4
+00010f1c  str  r0, [r1,#0x0]
+      ; ref 0x100020f4 (no mem)
+00010f1e  mov  r0, r1
+00010f20  ldr  r0, [r0,#0x0]
+      ; ref 0x100020f4 (no mem)
+00010f22  cbz  r0, 0x00010f38
+      ; jump -> 0x00010f38
+00010f24  movs  r0, #0x0
+00010f26  str  r0, [r1,#0x0]
+      ; ref 0x100020f4 (no mem)
+00010f28  mov  r3, r7
+00010f2a  mov  r2, r6
+00010f2c  mov  r1, r5
+00010f2e  mov  r0, r4
+00010f30  bl  0x000108b0
+      ; call -> 0x000108b0
+00010f34  ldr  r1, [0x00010f88]
+      ; ref 0x00010f88 -> 0x1000212c
+00010f36  str  r0, [r1,#0x0]
+      ; ref 0x1000212c (no mem)
+00010f38  ldr  r0, [0x00010f88]
+      ; ref 0x00010f88 -> 0x1000212c
+00010f3a  ldr  r0, [r0,#0x0]
+      ; ref 0x1000212c (no mem)
+00010f3c  pop  {r4,r5,r6,r7,pc}

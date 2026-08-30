@@ -1,0 +1,8 @@
+--device=LPC1765
+--crystalfreq=12
+--serialport=COM7
+--baudrate=9600
+--readsignature
+--read=0x3C000,0x3FE00,D:/code/PC12M-2/backup/part15a.hex
+--read=0x00000,0x04000,D:/code/PC12M-2/backup/verify_part00.hex
+--read=0x3FE00,0x40000,D:/code/PC12M-2/backup/last512.hex

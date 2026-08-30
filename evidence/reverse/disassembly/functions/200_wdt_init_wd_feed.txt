@@ -1,0 +1,41 @@
+# wdt_init_wd_feed range=0x200..0x248
+00000200  push  {r4,lr}
+00000202  mov  r1, r0
+00000204  movs  r0, #0x0
+00000206  ldr  r2, [0x00000244]
+      ; ref 0x00000244 -> 0x10002134
+00000208  str  r0, [r2,#0x0]
+      ; ref 0x10002134 (no mem)
+0000020a  nop
+0000020c  movs  r2, #0x1
+0000020e  lsls  r2, r0
+00000210  lsrs  r3, r0, #0x5
+00000212  mov.w  r4, #0xe000e000
+00000216  add.w  r3, r4, r3, lsl #0x2
+0000021a  str.w  r2, [r3,#0x100]
+0000021e  nop
+00000220  lsls  r0, r1, #0xf
+00000222  lsrs  r0, r0, #0x2
+00000224  mov.w  r2, #0x40000000
+00000228  str  r0, [r2,#0x4]
+      ; ref 0x40000004 (no mem)
+0000022a  movs  r0, #0x3
+0000022c  strb  r0, [r2,#0x0]
+      ; ref 0x40000000 (no mem)
+0000022e  movs  r0, #0xaa
+00000230  strb  r0, [r2,#0x8]
+      ; ref 0x40000008 (no mem)
+00000232  movs  r0, #0x55
+00000234  strb  r0, [r2,#0x8]
+      ; ref 0x40000008 (no mem)
+00000236  pop  {r4,pc}
+00000238  movs  r0, #0xaa
+0000023a  lsls  r1, r0, #0x1d
+0000023c  strb  r0, [r1,#0x8]
+      ; ref 0x40000008 (no mem)
+0000023e  movs  r0, #0x55
+00000240  strb  r0, [r1,#0x8]
+      ; ref 0x40000008 (no mem)
+00000242  bx  lr
+00000248  ldr  r0, [0x000002d4]
+      ; ref 0x000002d4 -> 0x400fc0c4

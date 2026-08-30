@@ -1,0 +1,14 @@
+si SWD
+speed 100
+device LPC1765
+SetRESET
+sleep 200
+connect
+halt
+regs
+mem32 0x400FC040, 1
+ClrRESET
+sleep 200
+go
+sleep 300
+exit

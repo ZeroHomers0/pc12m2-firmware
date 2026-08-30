@@ -1,0 +1,209 @@
+# FUN_000106a0 entry=0x000106a0 body=384
+000106a0  push  {r4,r5,r6,r7,lr}
+000106a2  movs  r4, #0x0
+000106a4  movs  r5, #0x0
+000106a6  movs  r6, #0x0
+000106a8  movs  r0, #0x0
+000106aa  movs  r3, #0x0
+000106ac  ldr  r7, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+000106ae  ldr  r7, [r7,#0x5c]
+      ; ref 0x2009c05c (no mem)
+000106b0  orr  r7, r7, #0x10
+000106b4  ldr.w  r12, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+000106b8  str.w  r7, [r12,#0x5c]
+      ; ref 0x2009c05c (no mem)
+000106bc  movs  r1, #0x0
+000106be  b  0x000107c2
+      ; jump -> 0x000107c2
+000106c0  cbnz  r1, 0x000106fa
+      ; jump -> 0x000106fa
+000106c2  ldr  r7, [0x00010884]
+      ; ref 0x00010884 -> 0x10001638
+000106c4  ldr  r7, [r7,#0x0]
+      ; ref 0x10001638 (no mem)
+000106c6  ldr.w  r12, [0x00010888]
+      ; ref 0x00010888 -> 0x1000164c
+000106ca  ldrb.w  r12, [r12,#0x0]
+      ; ref 0x1000164c (no mem)
+000106ce  add  r7, r12
+000106d0  ldr.w  r12, [0x0001088c]
+      ; ref 0x0001088c -> 0x1000164d
+000106d4  ldrb.w  r12, [r12,#0x0]
+      ; ref 0x1000164d (no mem)
+000106d8  add  r7, r12
+000106da  ldr.w  r12, [0x00010890]
+      ; ref 0x00010890 -> 0x10001654
+000106de  ldrb.w  r12, [r12,#0x0]
+      ; ref 0x10001654 (no mem)
+000106e2  add  r7, r12
+000106e4  add.w  r0, r7, #0x31
+000106e8  eor  r7, r0, #0xc2
+000106ec  orr  r12, r0, #0x1b
+000106f0  add  r7, r12
+000106f2  and  r12, r0, #0xb2
+000106f6  add  r7, r12
+000106f8  uxtb  r5, r7
+000106fa  cmp  r1, #0x8
+000106fc  bne  0x0001072c
+      ; jump -> 0x0001072c
+000106fe  ldr  r7, [0x00010894]
+      ; ref 0x00010894 -> 0x10001644
+00010700  ldrb  r7, [r7,#0x0]
+      ; ref 0x10001644 (no mem)
+00010702  ldr.w  r12, [0x00010890]
+      ; ref 0x00010890 -> 0x10001654
+00010706  ldrb.w  r12, [r12,#0x0]
+      ; ref 0x10001654 (no mem)
+0001070a  add  r7, r12
+0001070c  ldr.w  r12, [0x00010898]
+      ; ref 0x00010898 -> 0x10001650
+00010710  ldr.w  r12, [r12,#0x0]
+      ; ref 0x10001650 (no mem)
+00010714  add  r7, r12
+00010716  add.w  r0, r7, #0xc
+0001071a  eor  r7, r0, #0x3f
+0001071e  orr  r12, r0, #0xa9
+00010722  add  r7, r12
+00010724  and  r12, r0, #0xbc
+00010728  add  r7, r12
+0001072a  uxtb  r6, r7
+0001072c  cmp  r1, #0x10
+0001072e  bne  0x00010732
+      ; jump -> 0x00010732
+00010730  movs  r0, #0x55
+00010732  ldr  r7, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+00010734  ldr  r7, [r7,#0x5c]
+      ; ref 0x2009c05c (no mem)
+00010736  orr  r7, r7, #0x2
+0001073a  ldr.w  r12, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+0001073e  str.w  r7, [r12,#0x5c]
+      ; ref 0x2009c05c (no mem)
+00010742  tst  r0, #0x80
+00010746  beq  0x00010754
+      ; jump -> 0x00010754
+00010748  mov  r7, r12
+0001074a  ldr  r7, [r7,#0x58]
+      ; ref 0x2009c058 (no mem)
+0001074c  orr  r7, r7, #0x2
+00010750  str.w  r7, [r12,#0x58]
+      ; ref 0x2009c058 (no mem)
+00010754  lsls  r0, r0, #0x1
+00010756  movs  r2, #0x0
+00010758  b  0x0001075c
+      ; jump -> 0x0001075c
+0001075a  adds  r2, r2, #0x1
+0001075c  cmp.w  r2, #0x7d0
+00010760  bcc  0x0001075a
+      ; jump -> 0x0001075a
+00010762  ldr  r7, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+00010764  ldr  r7, [r7,#0x5c]
+      ; ref 0x2009c05c (no mem)
+00010766  orr  r7, r7, #0x8
+0001076a  ldr.w  r12, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+0001076e  str.w  r7, [r12,#0x5c]
+      ; ref 0x2009c05c (no mem)
+00010772  movs  r2, #0x0
+00010774  b  0x00010778
+      ; jump -> 0x00010778
+00010776  adds  r2, r2, #0x1
+00010778  cmp.w  r2, #0x3e8
+0001077c  bcc  0x00010776
+      ; jump -> 0x00010776
+0001077e  cmp  r1, #0x8
+00010780  bcs  0x00010796
+      ; jump -> 0x00010796
+00010782  lsls  r7, r4, #0x19
+00010784  lsrs  r4, r7, #0x18
+00010786  ldr  r7, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+00010788  ldr  r7, [r7,#0x54]
+      ; ref 0x2009c054 (no mem)
+0001078a  tst  r7, #0x4
+0001078e  beq  0x000107a4
+      ; jump -> 0x000107a4
+00010790  adds  r7, r4, #0x1
+00010792  uxtb  r4, r7
+00010794  b  0x000107a4
+      ; jump -> 0x000107a4
+00010796  lsls  r3, r3, #0x1
+00010798  ldr  r7, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+0001079a  ldr  r7, [r7,#0x54]
+      ; ref 0x2009c054 (no mem)
+0001079c  tst  r7, #0x4
+000107a0  beq  0x000107a4
+      ; jump -> 0x000107a4
+000107a2  adds  r3, r3, #0x1
+000107a4  movs  r2, #0x0
+000107a6  b  0x000107aa
+      ; jump -> 0x000107aa
+000107a8  adds  r2, r2, #0x1
+000107aa  cmp.w  r2, #0x3e8
+000107ae  bcc  0x000107a8
+      ; jump -> 0x000107a8
+000107b0  ldr  r7, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+000107b2  ldr  r7, [r7,#0x58]
+      ; ref 0x2009c058 (no mem)
+000107b4  orr  r7, r7, #0x8
+000107b8  ldr.w  r12, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+000107bc  str.w  r7, [r12,#0x58]
+      ; ref 0x2009c058 (no mem)
+000107c0  adds  r1, r1, #0x1
+000107c2  cmp  r1, #0x18
+000107c4  bcc.w  0x000106c0
+      ; jump -> 0x000106c0
+000107c8  ldr  r7, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+000107ca  ldr  r7, [r7,#0x58]
+      ; ref 0x2009c058 (no mem)
+000107cc  orr  r7, r7, #0x10
+000107d0  ldr.w  r12, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+000107d4  str.w  r7, [r12,#0x58]
+      ; ref 0x2009c058 (no mem)
+000107d8  cmp.w  r5, r3, lsr #0x8
+000107dc  bne  0x000107e4
+      ; jump -> 0x000107e4
+000107de  uxtb  r7, r3
+000107e0  cmp  r7, r6
+000107e2  beq  0x00010802
+      ; jump -> 0x00010802
+000107e4  movs  r7, #0x1
+000107e6  ldr.w  r12, [0x0001089c]
+      ; ref 0x0001089c -> 0x100020e8
+000107ea  strb.w  r7, [r12,#0x0]
+      ; ref 0x100020e8 (no mem)
+000107ee  ldr.w  r12, [0x000108a0]
+      ; ref 0x000108a0 -> 0x100020e9
+000107f2  strb.w  r7, [r12,#0x0]
+      ; ref 0x100020e9 (no mem)
+000107f6  movs  r7, #0x0
+000107f8  ldr.w  r12, [0x000108a4]
+      ; ref 0x000108a4 -> 0x1000172c
+000107fc  str.w  r7, [r12,#0x0]
+      ; ref 0x1000172c (no mem)
+00010800  b  0x0001081e
+      ; jump -> 0x0001081e
+00010802  movs  r7, #0x0
+00010804  ldr.w  r12, [0x000108a0]
+      ; ref 0x000108a0 -> 0x100020e9
+00010808  strb.w  r7, [r12,#0x0]
+      ; ref 0x100020e9 (no mem)
+0001080c  ldr.w  r12, [0x0001089c]
+      ; ref 0x0001089c -> 0x100020e8
+00010810  strb.w  r7, [r12,#0x0]
+      ; ref 0x100020e8 (no mem)
+00010814  movs  r7, #0x1
+00010816  ldr.w  r12, [0x000108a4]
+      ; ref 0x000108a4 -> 0x1000172c
+0001081a  str.w  r7, [r12,#0x0]
+      ; ref 0x1000172c (no mem)
+0001081e  pop  {r4,r5,r6,r7,pc}

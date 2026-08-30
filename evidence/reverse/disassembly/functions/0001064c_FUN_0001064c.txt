@@ -1,0 +1,47 @@
+# FUN_0001064c entry=0x0001064c body=74
+0001064c  ldr  r0, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+0001064e  ldr  r0, [r0,#0x40]
+      ; ref 0x2009c040 (no mem)
+00010650  orr  r0, r0, #0x10
+00010654  ldr  r1, [0x0001087c]
+      ; ref 0x0001087c -> 0x2009c000
+00010656  str  r0, [r1,#0x40]
+      ; ref 0x2009c040 (no mem)
+00010658  mov  r0, r1
+0001065a  ldr  r0, [r0,#0x40]
+      ; ref 0x2009c040 (no mem)
+0001065c  orr  r0, r0, #0x8
+00010660  str  r0, [r1,#0x40]
+      ; ref 0x2009c040 (no mem)
+00010662  mov  r0, r1
+00010664  ldr  r0, [r0,#0x40]
+      ; ref 0x2009c040 (no mem)
+00010666  orr  r0, r0, #0x2
+0001066a  str  r0, [r1,#0x40]
+      ; ref 0x2009c040 (no mem)
+0001066c  mov  r0, r1
+0001066e  ldr  r0, [r0,#0x40]
+      ; ref 0x2009c040 (no mem)
+00010670  bic  r0, r0, #0x4
+00010674  str  r0, [r1,#0x40]
+      ; ref 0x2009c040 (no mem)
+00010676  mov  r0, r1
+00010678  ldr  r0, [r0,#0x58]
+      ; ref 0x2009c058 (no mem)
+0001067a  orr  r0, r0, #0x10
+0001067e  str  r0, [r1,#0x58]
+      ; ref 0x2009c058 (no mem)
+00010680  mov  r0, r1
+00010682  ldr  r0, [r0,#0x58]
+      ; ref 0x2009c058 (no mem)
+00010684  orr  r0, r0, #0x8
+00010688  str  r0, [r1,#0x58]
+      ; ref 0x2009c058 (no mem)
+0001068a  mov  r0, r1
+0001068c  ldr  r0, [r0,#0x58]
+      ; ref 0x2009c058 (no mem)
+0001068e  orr  r0, r0, #0x2
+00010692  str  r0, [r1,#0x58]
+      ; ref 0x2009c058 (no mem)
+00010694  bx  lr

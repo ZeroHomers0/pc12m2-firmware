@@ -1,0 +1,23 @@
+# FUN_00010f8c entry=0x00010f8c body=34
+00010f8c  ldr  r0, [0x00010fcc]
+      ; ref 0x00010fcc -> 0x2009c000
+00010f8e  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+00010f90  bic  r0, r0, #0x4
+00010f94  ldr  r1, [0x00010fcc]
+      ; ref 0x00010fcc -> 0x2009c000
+00010f96  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00010f98  mov  r0, r1
+00010f9a  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+00010f9c  bic  r0, r0, #0x10000000
+00010fa0  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00010fa2  mov  r0, r1
+00010fa4  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+00010fa6  bic  r0, r0, #0x8000000
+00010faa  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00010fac  bx  lr

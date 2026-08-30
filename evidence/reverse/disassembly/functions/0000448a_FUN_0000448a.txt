@@ -1,0 +1,33 @@
+# FUN_0000448a entry=0x0000448a body=56
+0000448a  push  {r4,lr}
+0000448c  bl  0x00000992
+      ; call -> 0x00000992
+00004490  movs  r3, #0x1
+00004492  movs  r2, #0x0
+00004494  mov  r1, r2
+00004496  adr  r0, [0x4814]
+      ; ref 0x00004814 -> 0xf9bb2e31
+00004498  bl  0x00000d3c
+      ; call -> 0x00000d3c
+0000449c  movs  r3, #0x0
+0000449e  mov  r2, r3
+000044a0  movs  r1, #0x1
+000044a2  adr  r0, [0x4824]
+      ; ref 0x00004824 -> 0xa3b12e32
+000044a4  bl  0x00000d3c
+      ; call -> 0x00000d3c
+000044a8  movs  r3, #0x0
+000044aa  mov  r2, r3
+000044ac  movs  r1, #0x2
+000044ae  adr  r0, [0x4834]
+      ; ref 0x00004834 -> 0xa8cd2e33
+000044b0  bl  0x00000d3c
+      ; call -> 0x00000d3c
+000044b4  movs  r3, #0x0
+000044b6  mov  r2, r3
+000044b8  movs  r1, #0x3
+000044ba  adr  r0, [0x4844]
+      ; ref 0x00004844 -> 0xd6bb2e34
+000044bc  bl  0x00000d3c
+      ; call -> 0x00000d3c
+000044c0  pop  {r4,pc}

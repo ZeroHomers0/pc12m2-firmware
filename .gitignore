@@ -1,0 +1,29 @@
+# 固件备份与日志（含原始固件，绝不入库）
+backup/*.bin
+backup/*.hex
+backup/*.log
+backup/read_full_9600.cmd
+backup/crp_check.hex
+
+# 构建产物（firmware/build.sh 生成，可重建）
+firmware/*.o
+firmware/src/*.o
+firmware/*.elf
+firmware/*.hex
+firmware/*.bin
+firmware/*.map
+
+# 可重建的提取镜像（由固件 + 生成脚本重建；要留档请注释）
+docs/_data_image.bin
+firmware/data_image.bin
+
+# Ghidra 临时分析工程（勿入库，可随时重开）
+tools/_ghidra_proj/
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统
+Thumbs.db
+.DS_Store

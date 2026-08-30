@@ -1,0 +1,34 @@
+# FUN_00001c82 entry=0x00001c82 body=44
+00001c82  push  {r2,r3,lr}
+00001c84  movs  r1, #0x0
+00001c86  str  r1, [sp,#0x4]
+      ; ref 0xfffffffffffffff8 (no mem)
+00001c88  b  0x00001ca6
+      ; jump -> 0x00001ca6
+00001c8a  movs  r1, #0x0
+00001c8c  str  r1, [sp,#0x0]
+      ; ref 0xfffffffffffffff4 (no mem)
+00001c8e  b  0x00001c96
+      ; jump -> 0x00001c96
+00001c90  ldr  r1, [sp,#0x0]
+      ; ref 0xfffffffffffffff4 (no mem)
+00001c92  adds  r1, r1, #0x1
+00001c94  str  r1, [sp,#0x0]
+      ; ref 0xfffffffffffffff4 (no mem)
+00001c96  movw  r2, #0x2710
+00001c9a  ldr  r1, [sp,#0x0]
+      ; ref 0xfffffffffffffff4 (no mem)
+00001c9c  cmp  r1, r2
+00001c9e  bcc  0x00001c90
+      ; jump -> 0x00001c90
+00001ca0  ldr  r1, [sp,#0x4]
+      ; ref 0xfffffffffffffff8 (no mem)
+00001ca2  adds  r1, r1, #0x1
+00001ca4  str  r1, [sp,#0x4]
+      ; ref 0xfffffffffffffff8 (no mem)
+00001ca6  ldr  r1, [sp,#0x4]
+      ; ref 0xfffffffffffffff8 (no mem)
+00001ca8  cmp  r1, r0
+00001caa  bcc  0x00001c8a
+      ; jump -> 0x00001c8a
+00001cac  pop  {r2,r3,pc}

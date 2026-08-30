@@ -1,0 +1,33 @@
+# =============================================================================
+# .gitattributes — 统一行尾与二进制标记，避免跨 Windows / Unix 出行尾问题
+# 背景：build.sh / .s 汇编 / .c / .py 在 Windows(Git Bash)+arm-none-eabi 下用，
+#       若被 git 自动转成 CRLF，可能让 bash/汇编器因 '\r' 出错。故强制 LF。
+# =============================================================================
+* text=auto
+
+# 文本类 —— 强制 LF（Unix 行尾），避免 CRLF 污染
+*.c   text eol=lf
+*.h   text eol=lf
+*.s   text eol=lf
+*.ld  text eol=lf
+*.sh  text eol=lf
+*.py  text eol=lf
+*.md  text eol=lf
+*.txt text eol=lf
+*.ps1 text eol=lf
+*.java text eol=lf
+*.json text eol=lf
+
+# Windows 批处理 —— 保留 CRLF（cmd 下更稳）
+*.bat text eol=crlf
+
+# 二进制 —— 禁止 git 尝试做行尾/文本处理
+LPC1765.bin binary
+*.bin binary
+*.gbf binary
+*.elf binary
+*.hex binary
+*.png binary
+*.xlsx binary
+*.pdf binary
+*.jpg binary

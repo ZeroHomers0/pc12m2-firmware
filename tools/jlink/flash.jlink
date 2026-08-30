@@ -1,0 +1,18 @@
+si SWD
+speed 100
+device LPC1765
+connect
+; 烧前自动备份 256KiB 原 Flash（铁律：不备份不擦除）
+savebin backup\pre_flash.bin, 0x0, 0x40000
+; 确认板上 CRP 字（0x2FC 应为 0xFFFFFFFF 无保护）
+mem32 0x000002FC, 1
+erase
+loadbin firmware\firmware.bin, 0x0
+verifybin firmware\firmware.bin, 0x0
+SetRESET
+sleep 200
+ClrRESET
+sleep 200
+go
+sleep 500
+exit

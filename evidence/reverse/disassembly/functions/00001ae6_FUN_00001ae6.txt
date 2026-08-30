@@ -1,0 +1,69 @@
+# FUN_00001ae6 entry=0x00001ae6 body=88
+00001ae6  ldr  r0, [0x00001c0c]
+      ; ref 0x00001c0c -> 0x2009c000
+00001ae8  ldr  r0, [r0,#0x34]
+      ; ref 0x2009c034 (no mem)
+00001aea  tst  r0, #0x10000
+00001aee  beq  0x00001b0a
+      ; jump -> 0x00001b0a
+00001af0  ldr  r0, [0x00001c28]
+      ; ref 0x00001c28 -> 0x1000157c
+00001af2  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000157c (no mem)
+00001af4  adds  r0, r0, #0x1
+00001af6  ldr  r1, [0x00001c28]
+      ; ref 0x00001c28 -> 0x1000157c
+00001af8  strb  r0, [r1,#0x0]
+      ; ref 0x1000157c (no mem)
+00001afa  mov  r0, r1
+00001afc  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000157c (no mem)
+00001afe  cmp  r0, #0xfa
+00001b00  ble  0x00001b10
+      ; jump -> 0x00001b10
+00001b02  movs  r0, #0xfa
+00001b04  strb  r0, [r1,#0x0]
+      ; ref 0x1000157c (no mem)
+00001b06  movs  r0, #0x1
+00001b08  bx  lr
+00001b0a  movs  r0, #0x0
+00001b0c  ldr  r1, [0x00001c28]
+      ; ref 0x00001c28 -> 0x1000157c
+00001b0e  strb  r0, [r1,#0x0]
+      ; ref 0x1000157c (no mem)
+00001b10  ldr  r0, [0x00001c0c]
+      ; ref 0x00001c0c -> 0x2009c000
+00001b12  ldr  r0, [r0,#0x34]
+      ; ref 0x2009c034 (no mem)
+00001b14  tst  r0, #0x10000
+00001b18  bne  0x00001b34
+      ; jump -> 0x00001b34
+00001b1a  ldr  r0, [0x00001c2c]
+      ; ref 0x00001c2c -> 0x1000157d
+00001b1c  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000157d (no mem)
+00001b1e  adds  r0, r0, #0x1
+00001b20  ldr  r1, [0x00001c2c]
+      ; ref 0x00001c2c -> 0x1000157d
+00001b22  strb  r0, [r1,#0x0]
+      ; ref 0x1000157d (no mem)
+00001b24  mov  r0, r1
+00001b26  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000157d (no mem)
+00001b28  cmp  r0, #0xfa
+00001b2a  ble  0x00001b3a
+      ; jump -> 0x00001b3a
+00001b2c  movs  r0, #0xfa
+00001b2e  strb  r0, [r1,#0x0]
+      ; ref 0x1000157d (no mem)
+00001b30  movs  r0, #0x2
+00001b32  b  0x00001b08
+      ; jump -> 0x00001b08
+00001b34  movs  r0, #0x0
+00001b36  ldr  r1, [0x00001c2c]
+      ; ref 0x00001c2c -> 0x1000157d
+00001b38  strb  r0, [r1,#0x0]
+      ; ref 0x1000157d (no mem)
+00001b3a  movs  r0, #0x0
+00001b3c  b  0x00001b08
+      ; jump -> 0x00001b08

@@ -1,0 +1,61 @@
+# uart3_isr range=0xaf08..0xaf64
+0000af08  push  {lr}
+0000af0a  movs  r3, #0x0
+0000af0c  ldr  r0, [0x0000b020]
+      ; ref 0x0000b020 -> 0x4009c000
+0000af0e  ldr  r0, [r0,#0x8]
+0000af10  and  r3, r0, #0xe
+0000af14  cmp  r3, #0x4
+0000af16  bne  0x0000af1c
+      ; jump -> 0x0000af1c
+0000af18  bl  0x0000aed0
+      ; call -> 0x0000aed0
+0000af1c  cmp  r3, #0x2
+0000af1e  bne  0x0000af62
+      ; jump -> 0x0000af62
+0000af20  ldr  r0, [0x0000b034]
+      ; ref 0x0000b034 -> 0x10001794
+0000af22  ldrb  r0, [r0,#0x0]
+0000af24  adds  r0, r0, #0x1
+0000af26  ldr  r1, [0x0000b034]
+      ; ref 0x0000b034 -> 0x10001794
+0000af28  strb  r0, [r1,#0x0]
+0000af2a  mov  r0, r1
+0000af2c  ldrb  r0, [r0,#0x0]
+0000af2e  ldr  r1, [0x0000b038]
+      ; ref 0x0000b038 -> 0x10001793
+0000af30  ldrb  r1, [r1,#0x0]
+0000af32  cmp  r0, r1
+0000af34  bge  0x0000af44
+      ; jump -> 0x0000af44
+0000af36  ldr  r0, [0x0000b03c]
+      ; ref 0x0000b03c -> 0x1000236c
+0000af38  ldr  r1, [0x0000b034]
+      ; ref 0x0000b034 -> 0x10001794
+0000af3a  ldrb  r1, [r1,#0x0]
+0000af3c  ldrb  r0, [r0,r1]
+0000af3e  ldr  r1, [0x0000b020]
+      ; ref 0x0000b020 -> 0x4009c000
+0000af40  strb  r0, [r1,#0x0]
+0000af42  b  0x0000af62
+      ; jump -> 0x0000af62
+0000af44  ldr  r0, [0x0000b00c]
+      ; ref 0x0000b00c -> 0x2009c000
+0000af46  ldr  r0, [r0,#0x3c]
+0000af48  orr  r0, r0, #0x20000000
+0000af4c  ldr  r1, [0x0000b00c]
+      ; ref 0x0000b00c -> 0x2009c000
+0000af4e  str  r0, [r1,#0x3c]
+0000af50  movs  r0, #0x0
+0000af52  ldr  r1, [0x0000b030]
+      ; ref 0x0000b030 -> 0x10001790
+0000af54  strb  r0, [r1,#0x0]
+0000af56  ldr  r0, [0x0000b020]
+      ; ref 0x0000b020 -> 0x4009c000
+0000af58  ldr  r0, [r0,#0x4]
+0000af5a  orr  r0, r0, #0x1
+0000af5e  ldr  r1, [0x0000b020]
+      ; ref 0x0000b020 -> 0x4009c000
+0000af60  str  r0, [r1,#0x4]
+0000af62  pop  {pc}
+0000af64  push  {r4,r5,r6,lr}

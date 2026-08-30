@@ -1,0 +1,24 @@
+# eint1_isr range=0xf9e8..0xfa0a
+0000f9e8  ldr  r0, [0x0000fbd0]
+      ; ref 0x0000fbd0 -> 0x400fc140
+0000f9ea  ldr  r0, [r0,#0x0]
+0000f9ec  orr  r0, r0, #0x2
+0000f9f0  ldr  r1, [0x0000fbd4]
+      ; ref 0x0000fbd4 -> 0x400fc000
+0000f9f2  str.w  r0, [r1,#0x140]
+0000f9f6  ldr  r0, [0x0000fbd8]
+      ; ref 0x0000fbd8 -> 0x10002076
+0000f9f8  ldrb  r0, [r0,#0x0]
+0000f9fa  cbnz  r0, 0x0000fa02
+      ; jump -> 0x0000fa02
+0000f9fc  movs  r0, #0x2
+0000f9fe  ldr  r1, [0x0000fbd8]
+      ; ref 0x0000fbd8 -> 0x10002076
+0000fa00  strb  r0, [r1,#0x0]
+0000fa02  movs  r0, #0x1
+0000fa04  ldr  r1, [0x0000fbdc]
+      ; ref 0x0000fbdc -> 0x100020c0
+0000fa06  strb  r0, [r1,#0x0]
+0000fa08  bx  lr
+0000fa0a  ldr  r0, [0x0000fbd0]
+      ; ref 0x0000fbd0 -> 0x400fc140

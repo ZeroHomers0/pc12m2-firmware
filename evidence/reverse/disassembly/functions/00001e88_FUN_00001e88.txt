@@ -1,0 +1,36 @@
+# FUN_00001e88 entry=0x00001e88 body=52
+00001e88  push  {r4,r5,lr}
+00001e8a  mov  r5, r0
+00001e8c  mov  r4, r1
+00001e8e  bl  0x00001cae
+      ; call -> 0x00001cae
+00001e92  movs  r0, #0xa6
+00001e94  bl  0x00001d3c
+      ; call -> 0x00001d3c
+00001e98  ldr  r1, [0x00001f00]
+      ; ref 0x00001f00 -> 0x1000158c
+      ; ref 0x1000158c (no mem)
+00001e9a  strb  r0, [r1,#0x0]
+      ; ref 0x1000158c (no mem)
+00001e9c  mov  r0, r4
+00001e9e  bl  0x00001d3c
+      ; call -> 0x00001d3c
+00001ea2  ldr  r1, [0x00001f00]
+      ; ref 0x00001f00 -> 0x1000158c
+      ; ref 0x1000158c (no mem)
+00001ea4  strb  r0, [r1,#0x0]
+      ; ref 0x1000158c (no mem)
+00001ea6  mov  r0, r5
+00001ea8  bl  0x00001d3c
+      ; call -> 0x00001d3c
+00001eac  ldr  r1, [0x00001f00]
+      ; ref 0x00001f00 -> 0x1000158c
+      ; ref 0x1000158c (no mem)
+00001eae  strb  r0, [r1,#0x0]
+      ; ref 0x1000158c (no mem)
+00001eb0  bl  0x00001cfe
+      ; call -> 0x00001cfe
+00001eb4  movs  r0, #0x5
+00001eb6  bl  0x00001c82
+      ; call -> 0x00001c82
+00001eba  pop  {r4,r5,pc}

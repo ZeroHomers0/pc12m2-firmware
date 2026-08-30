@@ -1,0 +1,20 @@
+# FUN_00001bee entry=0x00001bee body=28
+00001bee  ldr  r0, [0x00001c0c]
+      ; ref 0x00001c0c -> 0x2009c000
+00001bf0  ldr  r0, [r0,#0x14]
+      ; ref 0x2009c014 (no mem)
+00001bf2  tst  r0, #0x4
+00001bf6  bne  0x00001c06
+      ; jump -> 0x00001c06
+00001bf8  ldr  r0, [0x00001c0c]
+      ; ref 0x00001c0c -> 0x2009c000
+00001bfa  ldr  r0, [r0,#0x14]
+      ; ref 0x2009c014 (no mem)
+00001bfc  tst  r0, #0x8
+00001c00  bne  0x00001c06
+      ; jump -> 0x00001c06
+00001c02  movs  r0, #0x1
+00001c04  bx  lr
+00001c06  movs  r0, #0x0
+00001c08  b  0x00001c04
+      ; jump -> 0x00001c04

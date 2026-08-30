@@ -1,0 +1,137 @@
+# FUN_000000cc entry=0x000000cc body=192
+000000cc  adr  r0, [0xf8]
+000000ce  ldm.w  r0, {r10,r11}
+      ; ref 0x000000f8 -> 0x0001113c
+      ; ref 0x000000fc -> 0x0001115c
+000000d2  add  r10, r0
+000000d4  add  r11, r0
+000000d6  sub.w  r7, r10, #0x1
+000000da  cmp  r10, r11
+000000dc  bne  0x000000e2
+      ; jump -> 0x000000e2
+000000de  bl  0x00000188
+      ; call -> 0x00000188
+000000e2  adr.w  lr, 0xdb
+000000e6  ldm.w  r10, {r0,r1,r2,r3}
+      ; ref 0x00011234 -> 0x00011254
+      ; ref 0x00011238 -> 0x10000000
+      ; ref 0x0001123c -> 0x0000213c
+      ; ref 0x00011240 -> 0x00000100
+      ; ref 0x00011244 -> 0x00012ac8
+      ; ref 0x00011248 -> 0x1000213c
+      ; ref 0x0001124c -> 0x0000088c
+      ; ref 0x00011250 -> 0x00000164
+000000ea  tst  r3, #0x1
+000000ee  it  ne
+000000f0  sub.ne  r3, r7, r3
+000000f2  orr  r3, r3, #0x1
+000000f6  bx  r3
+      ; jump -> 0x00000100
+      ; jump -> 0x00011132
+      ; jump -> 0x000110ce
+00000100  ldrb.w  r3, [r0],#0x1
+      ; ref 0x00011254 -> 0xe1000620
+00000104  add  r2, r1
+      ; ref 0x1000213c (no mem)
+00000106  ands  r4, r3, #0x3
+0000010a  it  eq
+0000010c  ldrb.eq.w  r4, [r0],#0x1
+      ; ref 0x00011255 -> 0xf5e10006
+      ; ref 0x0001125a -> 0x04320100
+00000110  asrs  r5, r3, #0x4
+00000112  it  eq
+00000114  ldrb.eq.w  r5, [r0],#0x1
+      ; ref 0x0001125a -> 0x04320100
+      ; ref 0x0001125b -> 0x01043201
+      ; ref 0x00011256 -> 0x05f5e100
+00000118  subs  r4, r4, #0x1
+0000011a  beq  0x00000128
+      ; jump -> 0x00000128
+0000011c  ldrb.w  r6, [r0],#0x1
+      ; ref 0x00011256 -> 0x05f5e100
+      ; ref 0x00011257 -> 0x0005f5e1
+      ; ref 0x0001125b -> 0x01043201
+      ; ref 0x0001125c -> 0x22010432
+00000120  subs  r4, r4, #0x1
+00000122  strb.w  r6, [r1],#0x1
+      ; ref 0x10000000 (no mem)
+      ; ref 0x10000001 (no mem)
+      ; ref 0x10000004 (no mem)
+00000126  bne  0x0000011c
+      ; jump -> 0x0000011c
+00000128  cmp  r5, #0x0
+0000012a  beq  0x00000158
+      ; jump -> 0x00000158
+0000012c  ldrb.w  r4, [r0],#0x1
+      ; ref 0x00011258 -> 0x010005f5
+      ; ref 0x0001125b -> 0x01043201
+      ; ref 0x0001125d -> 0xfc220104
+00000130  and  r3, r3, #0xc
+00000134  cmp  r3, #0xc
+00000136  sub.w  r4, r1, r4
+0000013a  itet  eq
+0000013c  ldrb.eq.w  r3, [r0],#0x1
+      ; ref 0x0001125c -> 0x22010432
+00000140  sub.ne.w  r4, r4, r3, lsl #0x6
+00000144  sub.eq.w  r4, r4, r3, lsl #0x8
+00000148  add.w  r3, r5, #0x1
+0000014c  ldrb.w  r6, [r4],#0x1
+      ; ref 0x0fffc183 (no mem)
+00000150  subs  r3, r3, #0x1
+00000152  strb.w  r6, [r1],#0x1
+      ; ref 0x10000002 (no mem)
+      ; ref 0x10000003 (no mem)
+      ; ref 0x10000004 (no mem)
+00000156  bpl  0x0000014c
+      ; jump -> 0x0000014c
+00000158  cmp  r1, r2
+0000015a  it  cc
+0000015c  ldrb.cc.w  r3, [r0],#0x1
+      ; ref 0x00011259 -> 0x32010005
+      ; ref 0x0001125b -> 0x01043201
+      ; ref 0x0001125c -> 0x22010432
+00000160  bcc  0x00000106
+      ; jump -> 0x00000106
+00000162  bx  lr
+      ; jump -> 0x000000da
+00011132  lsls  r1, r0
+00011134  stmia  r0!, {}
+00011136  lsls  r1, r0, #0x7
+00011138  lsls  r3, r0, #0xf
+0001113a  stmia  r2!, {r1}
+      ; ref 0x0000213c -> 0xd201280a
+0001113c  lsls  r6, r0, #0x1b
+0001113e  stmia  r7!, {r0,r1,r2}
+      ; ref 0x00011233 -> 0x01125440
+      ; ref 0x00011254 -> 0xe1000620
+      ; ref 0x00011237 -> 0x00000000
+      ; ref 0x0001123b -> 0x00213c10
+      ; ref 0x00002140 -> 0x60082000
+00011140  stmia  r5!, {r0,r2}
+      ; ref 0x00011254 -> 0xe1000620
+      ; ref 0x00002140 -> 0x60082000
+00011142  lsls  r4, r0, #0x13
+00011144  lsrs  r4, r1, #0x13
+00011146  ldmia  r5!, {r0,r2,r3}
+00011148  ldmia  r7!, {r0,r1,r2,r3}
+      ; ref 0x0001123f -> 0x00010000
+      ; ref 0x00011243 -> 0x012ac800
+      ; ref 0x00011247 -> 0x00213c00
+      ; ref 0x0001124b -> 0x00088c10
+0001114a  lsrs  r6, r1, #0x1b
+0001114c  ldmia  r2!, {r1,r3}
+      ; ref 0x00213c00 (no mem)
+      ; ref 0x00213c04 (no mem)
+0001114e  lsrs  r3, r1, #0xf
+00011150  lsrs  r1, r1, #0x7
+00011152  ldmia  r0!, {r3}
+      ; ref 0x00010000 -> 0x10002000
+00011154  adds  r0, r3, r3
+00011156  bls  0x0001118c
+      ; jump -> 0x0001118c
+00011158  blt  0x00011192
+      ; jump -> 0x00011192
+0001115a  subs  r2, r3, r3
+0001115c  udf  0x1e
+0001118c  subs  r2, #0xfa
+00011192  subs  r0, #0xf8
