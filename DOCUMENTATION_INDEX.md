@@ -17,7 +17,9 @@
 
 | 主题 | 文档 |
 |---|---|
-| P5 A/B 验证进度 | `docs/analysis/P5_VERIFICATION_PROGRESS.md` |
+| P5 A/B 验证 + 测试覆盖/认证放行进度 | `docs/analysis/P5_VERIFICATION_PROGRESS.md` |
+| 测试覆盖查漏（任务 #4，113/113） | `test/emulation/test_extra_coverage_12.py` + 6p 侧 `PC6M-10/docs/analysis/PC12M2_TEST_COVERAGE_REVIEW.md` |
+| 6p W8 问题复查（任务 #5） | 6p 侧 `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md` |
 | 硬件/引脚证据状态 | `docs/analysis/HARDWARE_VERIFICATION_2026-08-31.md` |
 | 参数与 EEPROM | `docs/analysis/I2C_PARAM_SYNC.md` |
 | Modbus | `docs/analysis/UART3_PROTOCOL.md` |

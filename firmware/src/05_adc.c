@@ -229,10 +229,10 @@ void adc0_scan_channels(void)
       *DAT_00002538 = (*DAT_00002538 - 800) * 5 >> 2;
     }
     if (*gain_sel == '\0') {
-      *adc_conv_aux2 = (*gain_a * *DAT_00002538) / 0xf78;    /* /3960 */
+      *adc_conv_aux2 = (*gain_b * *DAT_00002538) / 0xf78;    /* /3960  OLD 0x23B2 用 0x10001634 */
     }
     if (*gain_sel == '\x01') {
-      *adc_conv_aux2 = (*gain_b * *DAT_00002538) / 0xf78;
+      *adc_conv_aux2 = (*gain_a * *DAT_00002538) / 0xf78;    /* OLD 0x23D0 用 0x10001630 */
     }
   }
   /* —— ch3 平均（→ reg44 IF；仅当 0x1000259C==4）—— */
@@ -250,7 +250,7 @@ void adc0_scan_channels(void)
     *DAT_00002538 = *(volatile uint *)(sample + (uint)*adc_avg_idx_3 * 4);
     *DAT_0000255c = (*val_ptr * 0x65) / 400;
     val_ptr = DAT_00002538;
-    *DAT_00002538 = (*gain_b * *DAT_00002538) / *DAT_00002560;   /* gain_b/reg54 */
+    *DAT_00002538 = (*gain_a * *DAT_00002538) / *DAT_00002560;   /* OLD 0x2450 用 0x10001630 */
     *adc_conv_ch4 = *val_ptr;
     *adc_conv_aux1 = *DAT_00002538;
     if ((*cfg_word == '\0') && (*adc_conv_ch4 < 10)) {
@@ -272,7 +272,7 @@ void adc0_scan_channels(void)
     *DAT_00002538 = *(volatile uint *)(sample + (uint)*adc_avg_idx_4 * 4);
     *DAT_0000257c = (*val_ptr * 0x65) / 400;
     val_ptr = DAT_00002538;
-    *DAT_00002538 = (*gain_a * *DAT_00002538) / *DAT_00002580;   /* gain_a/reg55 */
+    *DAT_00002538 = (*gain_b * *DAT_00002538) / *DAT_00002580;   /* OLD 0x24F6 用 0x10001634 */
     *adc_conv_ch5 = *val_ptr;
     *adc_conv_fb = *DAT_00002538;
     if ((*cfg_word == '\0') && (*adc_conv_ch5 < 10)) {

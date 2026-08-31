@@ -149,3 +149,49 @@ MISC: PASS funcs=6
 `c38=0x1580`、`c3c=0x1581`（5 个计数器，12p 为 7 个从 0x157B 起）。
 12p 布局比 6p 少一个、多两个——移植时计数器符号需逐一按 OLD 反汇编核对，
 勿直接沿用 6p 的 DAT 符号（`c2c`↔`bd8` 等地址不同）。
+
+## 2026-08-31 后续：额外覆盖测试（任务 #4）+ 认证放行（任务 #6）
+
+### 1. 任务 #4：9 个未覆盖测试组 113/113 PASS（脚本保留）
+参考 6p `test/emulation` 全部测试，为 12p 补 9 组未覆盖 A/B 差分测试
+（`test/emulation/test_extra_coverage_12.py`，644 行）：
+
+```
+adc_wait_done            4 PASS  0 FAIL    ← AD0GDR/AD0DR0 播不同结果，抓错读 +16
+adc_scan_channels       13 PASS  0 FAIL    ← 连续多拍 + cfg_word/gain_sel/标定除数边界
+input_scan_state         6 PASS  0 FAIL    ← 全 6 位引脚组合 × 计数初值差分(512 例)
+uart_rx_sequence         5 PASS  0 FAIL    ← 多字节组帧状态转移 / 索引回绕 255→0
+modbus_dispatch         20 PASS  0 FAIL    ← 读/写/异常/CRC/站址 + 13 帧异常矩阵
+eeprom_sync_matrix       1 PASS  0 FAIL    ← param_sync 逐字节(0x110)/批量(8)扰动
+interrupt_sequence       5 PASS  0 FAIL    ← EINT1/2/3+TIMER0/1/2+UART3 顺序执行
+control_multitick        3 PASS  0 FAIL    ← 状态机+输出级持久 RAM 连续多拍
+case3_edit              56 PASS  0 FAIL    ← menu=3 case3 编辑键矩阵(menu2=2..15)
+─────────────────────────────────────
+TOTAL 113 PASS / 0 FAIL
+```
+
+差分暴露并修复 **2 个真实移植 bug**（详见 6p 侧
+`PC6M-10/docs/analysis/PC12M2_TEST_COVERAGE_REVIEW.md`）：
+- **adc0_scan_channels 增益全局对调**（`05_adc.c`）：`gain_a`(0x10001630)/`gain_b`(0x10001634)
+  四个使用点全部对调（OLD 反汇编 `00001f6c` 铁证），零值样本掩盖、非零样本暴露。
+  修复后 adc_scan_channels 13/13 PASS。
+- **modbus_dispatch 0x10 异常路径漏写 menu_param_4**（`08_modbus_dispatch.c`）：
+  OLD 0xDFB4 先写 `menu_param_4 = frame[6]` 再比较 `frame[6] != Q*2`；源码先比较、
+  异常 return 时漏写。修复后 modbus_dispatch 20/20 PASS。
+
+测试脚本调试要点（供复现）：hook 注册地址 bug（12p OLD/NEW 布局不同，只注册本侧地址）；
+`UC_HOOK_MEM_WRITE` 未导入；`_isr_seq_run` 对虚拟名 `"RX"` KeyError 需先映射为
+`"UART3_IRQHandler"`。
+
+### 2. 任务 #6：认证永久放行（`01_startup.c` main()，A/B 仍全 PASS）
+2026-08-31 决定（抄板，同 6p）：防抄板认证永久放行，不再启用。
+- 12p 反逻辑：`auth_pass_flag`@0x100020C0 **0=通过、非 0=未通过**（与 6p 0x10000750 相反）。
+- `main()` 认证段 `auth_verify_loop()` 之后强制 `*lock = 0`（`lock = auth_pass_flag`），
+  锁机分支（"报警忙碌"/"CPU 忙碌" 死循环）正常不可达；`auth_verify_loop()` 调用保留
+  （保持原厂语义与 A/B 等价）。
+- 验证脚本不覆盖 main()/启动序列（`verify_auth` 直接以三个认证函数为入口、`verify_startup`
+  只验 data_image 嵌入与 SRAM0 初值），故改 main() 不破坏 A/B 等价：
+  重建固件（text 63768/data 6312/bss 2192）后 `verify_firmware_equivalence_12.py` 全 PASS
+  （含 `AUTH: PASS funcs=3`、`STATE_MACHINE_MATRIX: PASS cases=130`），
+  `test_extra_coverage_12.py` 113/113 PASS 无回归。
+- 认证放行前，上板运行会在无认证链路（ADuM1201 隔离 1-Wire 总线）时锁机，已永久消除。

@@ -268,6 +268,11 @@ void main(void)
   auth_verify_loop();           /* bl 0x10A38 */
   wdt_init(200);                /* movs r0,#0xc8; bl 0x200 */
 
+  /* —— 2026-08-31 决定（抄板，同 6p）：防抄板认证永久放行，不再启用。
+   *    保留 auth_verify_loop() 调用（保持原厂语义、A/B 等价性），
+   *    结果被强制覆盖为通过（auth_pass_flag==0 即 12p 放行，0=通过）。
+   *    0x100020C0 与 OLD 0x100020C0 同址，锁机分支正常不可达。 */
+  *lock = 0;                    /* 强制放行（0=认证通过） */
   if (*lock != 0) {             /* 0x622：认证未通过 → 报警锁机 */
     disp_clear();               /* bl 0x942 */
     disp_string(0x704,0,4,0);   /* "报警忙碌"（第 0 行 col4） */

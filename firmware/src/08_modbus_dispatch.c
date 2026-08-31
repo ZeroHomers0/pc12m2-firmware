@@ -694,11 +694,11 @@ void modbus_dispatch(void)
       modbus_send_exception(0x90, 0x03);
       return;
     }
+    *MENU_P4 = (uint32_t)frame[6];                 /* menu_param_4 = byte_count（OLD 0xDFB4 先写后比） */
     if (frame[6] != (uint8_t)(cnt << 1)) {         /* 0xDFAE-0xDFC0：byte_count != Q*2 */
       modbus_send_exception(0x90, 0x03);
       return;
     }
-    *MENU_P4 = (uint32_t)frame[6];                 /* menu_param_4 = byte_count */
     *MENU_IDX = 0;                                 /* menu_index = 0（循环计数） */
     while (*MENU_IDX < *FRAME_CNT) {               /* 0xE044-0xE04E */
       i = *MENU_IDX;

@@ -26,7 +26,22 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
   去抖、认证、MISC 全过。本次修复：debounce 计数器槽错位、三个认证函数 R0 残留、
   strpool/显示串地址、void 屏渲染函数改行为校验。详见
   `docs/analysis/P5_VERIFICATION_PROGRESS.md`。
-- 尚未形成可烧写放行基线，十二相 W8 实机验证尚未开始。
+- **任务 #4（测试覆盖查漏）已完成**：参考 6p `test/` 全部测试，为 12p 补 9 个未覆盖
+  测试组共 **113 例全部 A/B 等价 PASS**，脚本保留于 `test/emulation/test_extra_coverage_12.py`。
+  差分暴露并修复 2 个真实移植 bug：adc0_scan_channels 增益全局对调（OLD 0x1F6C 铁证）、
+  modbus_dispatch 0x10 异常路径漏写 menu_param_4（OLD 0xDFB4 先写后比）。
+  详见 6p 侧 `PC6M-10/docs/analysis/PC12M2_TEST_COVERAGE_REVIEW.md`。
+- **任务 #6（认证放行）已完成**：2026-08-31 决定（抄板，同 6p）——防抄板认证永久放行。
+  `01_startup.c` `main()` 认证段后强制 `*lock = 0`（`auth_pass_flag`@0x100020C0，**0=通过**，
+  与 6p 的 1=放行相反）；`auth_verify_loop()` 调用保留（保持原厂语义与 A/B 等价），
+  锁机分支（"报警忙碌/CPU 忙碌"）正常不可达。重建固件后 `verify_firmware_equivalence_12.py`
+  全 PASS（含 `AUTH: PASS funcs=3`）、113/113 PASS 无回归。
+- **任务 #5（W8 问题复查）已完成**：逐项复查 6p 实机（`PC6M-10/docs/w8/`）暴露的 19 项问题
+  + 6 项流程/清单，**12p 无任何一项需要代码级修复**——6 项移植期已修（ADC 指针、FIO 读址、
+  case3 钳位/闪烁、Modbus 大端、恢复出厂串地址、复位坐标）、3 项原厂设计、12p 独有的
+  认证放行/case1/case1E 三分支门控/主屏 LED 错译均已完成。详见 6p 侧
+  `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`。
+- 认证已永久放行，12p 源码可稳定运行；尚未冻结烧写基线哈希，W8 分级实测尚未开始。
 
 ## 必须遵守
 
@@ -81,6 +96,8 @@ python tools/verification/verify_firmware_equivalence_12.py
 
 ## 下一步
 
-1. 制作原固件 `pc12m2_orig.bin` 的第二物理副本（根目录副本已提交入库）。
-2. 冻结待上板固件哈希（`firmware/firmware.bin` SHA-256 与长度记录到文档）。
-3. 冻结后进入 `docs/w8/W8_TEST_MASTER.md` 的分级实测（只接控制电，断开市电/门极/功率负载）。
+1. 冻结待上板固件哈希（`firmware/firmware.bin` SHA-256 与长度记录到文档）。
+2. 冻结后进入 `docs/w8/W8_TEST_MASTER.md` 的分级实测（只接控制电，断开市电/门极/功率负载）。
+3. 上板前先按 `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`「三、实机核对项」核对：
+   SWD 介入路径（P1.30/P1.29 复用，须 connect-under-reset 或 ISP）、板内 `0x2FC` CRP 实读
+   （文件值≠板内值）、12p 触发波形 2-3 判据等。

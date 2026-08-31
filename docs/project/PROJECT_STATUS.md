@@ -11,19 +11,31 @@
 | P2 | 数据镜像、全局变量与字符串池 | 已完成 |
 | P3 | 六相同构源码向十二相地址/行为迁移 | 已完成 |
 | P4 | 十二相模块人工复核与可编译工程 | 已完成 |
-| P5 | 原 BIN 与新 ELF 的 Unicorn A/B 验证 | 进行中 |
-| W8 | 十二相实机验证 | 未开始 |
+| P5 | 原 BIN 与新 ELF 的 Unicorn A/B 验证 | 已完成 |
+| P6 | 测试覆盖查漏（任务 #4，113/113 PASS） | 已完成 |
+| P7 | 6p W8 问题复查（任务 #5） | 已完成 |
+| P8 | 认证永久放行（任务 #6） | 已完成 |
+| W8 | 十二相实机验证 | 未开始（固件哈希待冻结） |
 
-## P5 当前结论
+## P5 及之后当前结论
 
-已通过向量、引脚、十二路安全态输出、继电器、主要中断、TIMER1 972 例、CRC、
-Modbus 65 读/320 写、闭环、输出级和运行预置等矩阵。
+P5 全量 PASS（向量、引脚、安全态输出、继电器、TIMER1 972 例、CRC、Modbus 65 读/320 写、
+闭环、输出级、状态机 130 例、显示、去抖、认证、MISC）。
 
-当前阻塞：`03_input_debounce.c` 中 `debounce_p116`、`debounce_p117`、`debounce_p06`
-使用的计数器槽错位。精确替换关系见 `../analysis/P5_VERIFICATION_PROGRESS.md`。
+任务 #4：额外补 9 个未覆盖测试组 **113/113 PASS**（`test/emulation/test_extra_coverage_12.py`），
+差分暴露并修复 2 个真实移植 bug（adc0_scan_channels 增益对调、modbus_dispatch 0x10 异常路径
+漏写 menu_param_4），详见 6p 侧 `PC6M-10/docs/analysis/PC12M2_TEST_COVERAGE_REVIEW.md`。
+
+任务 #5：逐项复查 6p W8 实机暴露问题（19 项 + 6 项流程/清单），12p 无代码级修复需求，
+详见 6p 侧 `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`。
+
+任务 #6：认证永久放行（`01_startup.c` `main()` 强制 `*lock=0`，`auth_pass_flag==0`=通过），
+重建固件后 A/B 全 PASS、113/113 无回归。
 
 ## 当前停止线
 
-- 原 BIN 已恢复并核验 SHA-256，第二物理副本已制作（2026-08-31）；P5 复跑依赖已具备。
-- P5 未全部 PASS，不能冻结烧写基线。
-- 十二相硬件资料不完整，W8 尚未开始。
+- 原 BIN 已恢复并核验 SHA-256，第二物理副本已制作（2026-08-31）。
+- P5/P6/P7/P8 均已完成；**认证已放行**，源码可稳定运行。
+- 尚未冻结待上板固件哈希；冻结后进入 `docs/w8/W8_TEST_MASTER.md` 分级实测
+  （只接控制电，断开市电/门极/功率负载）。
+- 十二相硬件资料不完整，W8 未开始。

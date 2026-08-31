@@ -24,6 +24,9 @@ tools/_ghidra_proj/
 __pycache__/
 *.pyc
 
+# 测试运行日志（test_extra_coverage_12.py 每次运行产物，勿入库）
+test/emulation/*.log
+
 # 系统
 Thumbs.db
 .DS_Store
