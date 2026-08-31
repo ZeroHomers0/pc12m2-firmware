@@ -43,25 +43,48 @@ def symbols(text):
         out[m.group(1)] = m.group(2).lower()
     return out
 
+def _case_targets(body, out_side):
+    """逐行解析 switch 块：返回 {reg:int -> 目标符号/地址}。
+    out_side='r'：`case 0xNN: *out_val = <RHS>;`（取 RHS 最后一个标识符）
+    out_side='w'：`case 0xNN: <LHS> = [..]*src_val;`（取 LHS 最后一个标识符）"""
+    out = {}
+    for line in body.splitlines():
+        m = re.match(r'\s*case\s+(0x[0-9a-fA-F]+)\s*:\s*(.*)$', line)
+        if not m:
+            continue
+        reg = int(m.group(1), 16)
+        stmt = re.sub(r'/\*.*?\*/', '', m.group(2))   # 去掉行尾注释 /* ... */
+        stmt = stmt.split(';')[0]                      # 去掉 break
+        if out_side == 'r':
+            if '*out_val' not in stmt:
+                continue
+            rhs = stmt.split('=', 1)[1] if '=' in stmt else ''
+            tgt = re.findall(r'[A-Za-z0-9_]+', rhs)
+            if tgt:
+                out[reg] = tgt[-1]
+        else:
+            lhs = stmt.split('=', 1)[0] if '=' in stmt else ''
+            if '*src_val' not in stmt:
+                continue
+            tgt = re.findall(r'[A-Za-z0-9_]+', lhs)
+            if tgt:
+                out[reg] = tgt[-1]
+    return out
+
 def read_map(text):
-    """解析 read_reg：`case 'X': *out_val = [..]*SYM;`（SYM 为 out_val 的来源）"""
-    start = text.index('modbus_read_reg(uint *out_val')
-    tail  = text.index('\n}', start)
-    body  = text[start:tail]
-    rm = {}
-    for m in re.finditer(r"case\s+'((?:\\.|\\x[0-9a-fA-F]+|[^'\\]))'\s*:\s*\*out_val\s*=\s*(?:\([^)]*\))?\*([A-Za-z0-9_]+)\b", body):
-        rm[parse_case(m.group(1))] = m.group(2)
-    return rm
+    """解析 read_reg（12p 十六进制 case）：`case 0xNN: *out_val = [..]*SYM;`"""
+    start = text.index('modbus_read_reg(uint32_t *out_val')
+    sw = text.index('switch', start)
+    tail  = text.index('\n}', sw)
+    return _case_targets(text[sw:tail], 'r')
 
 def write_map(text):
-    """解析 write_multi：`case 'X': *SYM = [..]*src_val;`"""
-    start = text.index('modbus_write_multi(undefined4 *src_val')
-    tail  = text.index('\n}', start)
-    body  = text[start:tail]
-    wm = {}
-    for m in re.finditer(r"case\s+'((?:\\.|\\x[0-9a-fA-F]+|[^'\\]))'\s*:\s*(\*([A-Za-z0-9_]+))\s*=\s*(?:\([^)]*\))?\*src_val\b", body):
-        wm[parse_case(m.group(1))] = m.group(3)
-    return wm
+    """解析 write_multi（12p 十六进制 case）：`case 0xNN: *(..)*SYM = [..]*src_val;`"""
+    start = text.index('modbus_write_multi(uint32_t *src_val')
+    # switch 前的 if 守卫含嵌套 '}'，从 switch 起取到 switch 块结束的 '\n}'
+    sw = text.index('switch', start)
+    tail  = text.index('\n}', sw)
+    return _case_targets(text[sw:tail], 'w')
 
 def main():
     mod  = open(MOD, encoding='utf-8', errors='ignore').read()
@@ -81,10 +104,18 @@ def main():
     common = sorted(set(rm) & set(wm))
     print(f"  读/写共有 reg: {len(common)}")
 
-    # INV1 读写同地址
+    # INV1 读写同地址：同名符号或相同裸地址字面量视为一致。
+    # 已知设计例外（12p OLD 反汇编 0xAD04/0xB050 铁证）：reg 0x17/0x18 写银行4
+    # KP/KI（0x1000170F/0x10001710），读活动槽 pid_kp2/ki2（0x10001706/07，
+    # PID 前导把所选银行复制到活动槽后生效）——原固件即不对称，豁免。
+    INV1_KNOWN_ASYMMETRIC = {0x17, 0x18}
     asym=[]
     for r in common:
+        if r in INV1_KNOWN_ASYMMETRIC:
+            continue
         rs, ws = rm[r], wm[r]
+        if rs == ws:
+            continue
         if rs in sym and ws in sym and sym[rs][0] != sym[ws][0]:
             asym.append((r, rs, sym[rs][0], ws, sym[ws][0]))
         elif rs not in sym or ws not in sym:

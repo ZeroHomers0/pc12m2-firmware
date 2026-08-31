@@ -6,7 +6,7 @@
 #
 # 本测试验证的结论（2026-08-23 A/B 差分 + 机器码回放实证）：
 #   1) 固件两张 CRC 表（crc16_hi_tbl/lo_tbl）与原始 LPC1765.bin 的
-#      flash 表（0x11034 / 0x11134）**逐字节一致** → S9 悬空表修复正确。
+#      flash 表（0x111D8 / 0x112D8，12p 池槽 0xADCC/0xADD0）**逐字节一致** → S9 悬空表修复正确。
 #   2) 固件 crc16 算法循环 = `while(len != 0)`：处理**全部 len 字节**（标准
 #      Modbus CRC）。原码 0xAF84 `movs r0,r4`(用于 bne 置 Z) → `sub.w r6,r4,#1`
 #      (**无 S 后缀，不置位**) → `uxtb r4,r6`(后减)。bne 的 Z 来自 movs 测试
@@ -21,7 +21,7 @@
 import sys, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-BIN  = os.path.join(ROOT, 'LPC1765.bin')
+BIN  = os.path.join(ROOT, 'backup', 'pc12m2_orig.bin')
 try:
     sys.stdout.reconfigure(encoding='utf-8')
 except Exception:
@@ -30,7 +30,7 @@ except Exception:
 def load_tables():
     """从原始 bin 读 flash 表（与 src/crc16_table.c 内嵌表应一致）"""
     b = open(BIN, 'rb').read()
-    return b[0x11034:0x11034+256], b[0x11134:0x11134+256]
+    return b[0x111D8:0x111D8+256], b[0x112D8:0x112D8+256]
 
 def crc16_fw(data, length, hi, lo):
     """按 08_uart3_modbus.c crc16 逐字节复现（处理全部 length 字节，标准）"""

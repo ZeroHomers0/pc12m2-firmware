@@ -83,6 +83,42 @@ globals.c 地址本身无需改（DAT_00001bd8..bec 映射正确，见 globals.c
 并继续 `verify_display_matrix / verify_display_full_exec / verify_debounce /
 verify_auth / verify_misc` 至「==== 12p A/B 等价性验证：全部 PASS ====」。
 
+## 2026-08-31 清理 6p 遗留 + 静态测试修复（期间新发现）
+
+### 1. 删除 6p 时代工具（用户批准「删 A + B 类」，用户持两份独立工程）
+- A 类 6 个（`tools/generation/_scan_funcs6.py` + `tools/archive/` 5 个）
+- B 类 tools 6p 脚本 16 个（6p 版 `verify_firmware_equivalence.py`、`scan_state_machine_audit.py`、
+  `verify_sm_addresses.py`、`verify_periph_xref.py`、`verify_readwidth_all.py`、`verify_modbus_c.py`、
+  `extract_ram_data_image.py`/`generate_globals.py`/`generate_string_pool.py`（6p 版）、
+  `codex_audit_*`×4、`apply_consts_08/09.py`、`w8_relay_ab.py`）
+- P3 一次性辅助 6 个（`_scan_src_headers6.py`、`_tmp_loc13.py`、`_audit*_sym_coverage.py`、
+  `_check_funcmap_dir.py`、`extract_data_segments.py`）
+- **test/emulation 整体 22 个**（6p 基座：引用 6p 地址 0x458C/0x25DC/0x35F2/0x108B0…，
+  7 个依赖 6p 版 `verify_firmware_equivalence.py`，全部读不存在的根 `LPC1765.bin`）
+- **保留**：`test/support/unicorn_harness.py`（12p `w8_stack_watermark.py` 依赖）、
+  `test/static/*`（12p 源码静态检查，已修复）、`run_tests.py`/README、`apply_consts_12.py`、
+  `verify_startup.py`/`verify_strpool.py`/`verify_mem_xref.py`/`check_readwidth.py`、`w8_combine_hex.py` 等。
+- `tools/README.md` 重写为 12p 现状。
+
+### 2. 修复 test/static 三个静态检查（12p 可用，6p 标注残留）
+- `test_crc16_tables_and_semantics.py`：BIN 路径 `LPC1765.bin`→`backup/pc12m2_orig.bin`，
+  表地址 0x11034/0x11134 → **0x111D8/0x112D8** → **8/8 PASS**。
+- `test_modbus_register_map.py`：函数签名/正则按 12p 十六进制 case + cast 形式重写，
+  INV1 豁免 reg 0x17/0x18 → **5/5 PASS**。
+- `test_parameter_sync_structure.py`：已 6/6 PASS（无需改）。
+
+### 3. 【新发现】12p CRC16 表真实地址 = 0x111D8/0x112D8（≠6p 的 0x11034/0x11134）
+- 证据：OLD crc16 反汇编 `0000acd4` 池槽 `0xADCC→0x000111D8`、`0xADD0→0x000112D8`；
+  BIN @0x111D8 表用验证帧 `[01 03 00 00 00 0A]` 算出 CRC=0xCDC5（= crc16_table.c 标注）。
+- 修正：`crc16_table.c`/`08_uart3_modbus.c` 注释 0x11034/0x11134 → 0x111D8/0x112D8（表内容本身正确）。
+- 注意：BIN @0x11034/0x11134 是代码非表；0x508D 处另有一份有效 CRC 表（布局不同，非 modbus 用）。
+
+### 4. 【新发现】modbus reg 0x17/0x18 读写不对称（原固件设计，非移植 bug）
+- read_reg(0xAD04) TBB idx0x17/0x18 读活动槽 **0x10001706/07**（pid_kp2/ki2）；
+  write_multi(0xB050) 写银行4 **0x1000170F/10**。
+- 源码与 OLD 反汇编一致：PID 前导把所选银行 KP/KI（0x1709-0x1710）复制到活动槽（0x1706/07），
+  read 读生效值、write 写源参数。测试豁免记录为 `INV1_KNOWN_ASYMMETRIC={0x17,0x18}`。
+
 ## 6p 参考对照（地址差异提醒）
 6p 参考 globals：`DAT_00001c2c=0x157D`、`c30=0x157E`、`c34=0x157F`、
 `c38=0x1580`、`c3c=0x1581`（5 个计数器，12p 为 7 个从 0x157B 起）。

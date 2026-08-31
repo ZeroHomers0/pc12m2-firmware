@@ -50,7 +50,7 @@
 #include "inc/consts.h"
 #include <stdbool.h>
 
-/* CRC16 查表（内嵌 const 数组，原 flash 0x11034/0x11134 —— 见 crc16_table.c） */
+/* CRC16 查表（内嵌 const 数组，原 flash 0x111D8/0x112D8 —— 见 crc16_table.c） */
 extern const uint8_t crc16_hi_tbl[256];
 extern const uint8_t crc16_lo_tbl[256];
 
@@ -271,7 +271,7 @@ void UART3_IRQHandler(void)
 /* =============================================================================
  * 0x0000ACD4 —— Modbus CRC16（查表，初值 0xFFFF，低位在前）
  *   状态：crc_hi=高字节、crc_lo=低字节，tbl_idx = 数据字节 ^ crc_lo；
- *   查表内嵌 crc16_hi_tbl/crc16_lo_tbl（原 flash 0x11034/0x11134）。
+ *   查表内嵌 crc16_hi_tbl/crc16_lo_tbl（原 flash 0x111D8/0x112D8，12p 池槽 0xADCC/0xADD0）。
  *
  *   ※ 循环语义（A/B 差分 2026-08-23 实证，非 len-1！）：原码 0xAF84
  *     `movs r0,r4`(查 Z) → `sub.w r6,r4,#1`(**无 S 后缀，不置位**) → `uxtb r4,r6`(后减)。
