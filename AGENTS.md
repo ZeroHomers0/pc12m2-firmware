@@ -16,8 +16,10 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
 - 原固件曾通过 ISP 完整读取，记录 SHA-256 为
   `2BC608683992AD6DB2D3CB75129BF57EA37D6D681D7C2C0A132E064EBD271BD1`，
   长度 262144 B，CRP=`0xFFFFFFFF`，详见 `backup/BACKUP_RECORD.md`。
-- 当前工作区暂缺被 `.gitignore` 排除的 `backup/pc12m2_orig.bin`；找回并核验哈希前，
-  不得擦写板上 Flash，依赖原 BIN 的测试会明确失败。
+- 原固件 `backup/pc12m2_orig.bin` 已就位并核验 SHA-256
+  （`2BC608683992AD6DB2D3CB75129BF57EA37D6D681D7C2C0A132E064EBD271BD1`）；
+  2026-08-31 按用户决定另存根目录副本 `pc12m2_orig.bin` 并提交入库（覆盖原「绝不入库」铁律，
+  详见 `backup/BACKUP_RECORD.md`）。擦写板上 Flash 前仍需制作第二物理副本。
 - P0-P4 已完成：十二相函数清单、反汇编、数据镜像、全局映射和可编译 C 工程已建立。
 - P5 Unicorn A/B 等价验证进行中。向量、GPIO、TIMER1 972 例、Modbus 65 读/320 写、
   闭环与输出级等已通过；当前已知阻塞为 3 个输入消抖函数的计数器槽错位，见
@@ -77,7 +79,7 @@ python tools/verification/verify_firmware_equivalence_12.py
 
 ## 下一步
 
-1. 找回 `backup/pc12m2_orig.bin`，核验长度和 SHA-256，并制作第二物理副本。
+1. 制作原固件 `pc12m2_orig.bin` 的第二物理副本（根目录副本已提交入库）。
 2. 修复 P5 已定位的消抖计数器槽错位。
 3. 构建并跑完十二相 A/B 验证，直到全部 PASS。
 4. 冻结待上板固件哈希后，才进入 `docs/w8/W8_TEST_MASTER.md` 的分级实测。

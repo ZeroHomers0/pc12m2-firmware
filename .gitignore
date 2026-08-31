@@ -1,4 +1,4 @@
-# 固件备份与日志（含原始固件，绝不入库）
+# 固件备份与日志（backup/ 目录不入库；根目录 pc12m2_orig.bin 副本已按 2026-08-31 用户决定入库）
 backup/*.bin
 backup/*.hex
 backup/*.log
