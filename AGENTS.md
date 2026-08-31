@@ -56,6 +56,12 @@ tools/                      十二相生成、验证、实机与 J-Link 工具
 
 ## 常用入口
 
+操作入口（详见 `操作文档.md`；根目录三个 `.bat` 已删除，跨机不通用）：
+- 构建 —— `cd firmware && bash build.sh`（产物 `firmware.bin/hex/elf/map`，SHA/尺寸见 操作文档.md §2）
+- SWD 烧写（日常主通道，首选）—— 打包版 `tools/jlink/JLink.exe` + `-CommanderScript`，命令见 操作文档.md §3
+- ISP 烧写（SWD 连不上时的解困通道）—— Flash Magic + USB-TTL，接线与用法见 操作文档.md §4
+- 重启固件一律**物理断电再上电**（J-Link 驱动 nRESET 复位会悬挂 SWD，干扰复用调试脚的固件运行）。
+
 ```powershell
 # 构建（Git Bash）
 cd firmware
