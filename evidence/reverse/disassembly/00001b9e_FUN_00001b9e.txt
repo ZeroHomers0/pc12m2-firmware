@@ -1,0 +1,18 @@
+# FUN_00001b9e entry=0x00001b9e body=28
+00001b9e  ldr      r0, [pc, #0x1c]
+ ; ref 0x00001bbc -> 0x2009c000
+00001ba0  ldr      r0, [r0, #0x14]
+00001ba2  tst.w    r0, #4
+00001ba6  bne      #0x1bb6
+ ; jump -> 0x00001bb6 (FUN_00001b9e)
+00001ba8  ldr      r0, [pc, #0x10]
+ ; ref 0x00001bbc -> 0x2009c000
+00001baa  ldr      r0, [r0, #0x14]
+00001bac  tst.w    r0, #8
+00001bb0  bne      #0x1bb6
+ ; jump -> 0x00001bb6 (FUN_00001b9e)
+00001bb2  movs     r0, #1
+00001bb4  bx       lr
+00001bb6  movs     r0, #0
+00001bb8  b        #0x1bb4
+ ; jump -> 0x00001bb4 (FUN_00001b9e)

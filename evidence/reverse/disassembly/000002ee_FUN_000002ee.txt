@@ -1,0 +1,7 @@
+# FUN_000002ee entry=0x000002ee body=14
+000002ee  mov      r4, r0
+000002f0  nop.w    
+000002f4  mov      r0, r4
+000002f6  bl       #0x19a
+ ; call -> 0x0000019a (FUN_0000019a)
+000002fa  bx       lr

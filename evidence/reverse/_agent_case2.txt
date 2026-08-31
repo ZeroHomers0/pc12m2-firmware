@@ -1,0 +1,175 @@
+Confirmed: 0x6840 begins case3 (`cmp r0,#0x3`), so case2 ends at 0x6840. The 6p source confirms `disp_number` and `disp_signed_angle` function names for the two unmapped calls (0x1042, 0x116c). I now have everything needed. Here is the deliverable.
+
+## case2 解码结果（task #23 子任务）
+
+解码区间 `0x5e18-0x6840`（dump 行 4436-5656），C 片段如下：
+
+```c
+  if (*(volatile uint8_t*)0x10001724 == 2) {
+    /* ---------- case2 主菜单页1 (0x5e18-0x6840)，MENU2=选项0..8 ---------- */
+    volatile uint8_t  *menu = (volatile uint8_t*)0x10001724; /* MENU 状态机 */
+    volatile uint8_t  *m2   = (volatile uint8_t*)0x10001725; /* MENU2 光标/选项，clamp 0..8 */
+    volatile uint32_t *to   = (volatile uint32_t*)0x10001744; /* TIMEOUT 菜单超时 */
+
+    /* key==4 SET 返回主屏 @0x5e20 */
+    if (key == 4) { *to = 0; *menu = 1; disp_splash_screen(); return; }
+
+    /* key==2(DOWN)/3(UP) 光标导航 @0x5e38，clamp 0..8（12p 有 9 项，故上限 8 非 6p 的 7） */
+    if (key == 2 || key == 3) {
+      *to = 0;
+      if (key == 3) { (*m2)++; if (*m2 &gt; 8) *m2 = 8; }   /* UP @0x5e4a */
+      if (key == 2) { if (*m2 &gt; 0) (*m2)--; }             /* DOWN @0x5e64 */
+      if (*m2 &lt; 4) { /* 页1 选项0-3 @0x5e76 */
+        disp_string((int)0x5fac, 0, 0, 0); disp_string((int)0x5fc0, 1, 0, 0);
+        disp_string((int)0x5fd4, 2, 0, 0); disp_string((int)0x5fe8, 3, 0, 0);
+      }
+      if (*m2 &gt;= 4 &amp;&amp; *m2 &lt; 8) { /* 页2 选项4-7 @0x5eae */
+        disp_string((int)0x5ffc, 0, 0, 0); disp_string((int)0x6010, 1, 0, 0);
+        disp_string((int)0x6024, 2, 0, 0); disp_string((int)0x6038, 3, 0, 0);
+      }
+      if (*m2 &gt;= 8 &amp;&amp; *m2 &lt; 0xc) { /* 页3 仅选项8，行1-3擦除 @0x5eee */
+        disp_string((int)0x604c, 0, 0, 0);
+        disp_string((int)0x56d8, 1, 0, 0); disp_string((int)0x56d8, 2, 0, 0);
+        disp_string((int)0x56d8, 3, 0, 0);
+      }
+      /* 高亮当前项 @0x6060 */
+      if (*m2 == 0) disp_string((int)0x5fac, 0, 0, 1);
+      if (*m2 == 1) disp_string((int)0x5fc0, 1, 0, 1);
+      if (*m2 == 2) disp_string((int)0x5fd4, 2, 0, 1);
+      if (*m2 == 3) disp_string((int)0x5fe8, 3, 0, 1);
+      if (*m2 == 4) disp_string((int)0x5ffc, 0, 0, 1);
+      if (*m2 == 5) disp_string((int)0x6010, 1, 0, 1);
+      if (*m2 == 6) disp_string((int)0x6024, 2, 0, 1);
+      if (*m2 == 7) disp_string((int)0x6038, 3, 0, 1);
+      if (*m2 == 8) disp_string((int)0x604c, 0, 0, 1);
+    }
+
+    /* key==1 确认：TIMEOUT 清零、0x10001726(=6p MENU3 编辑态/锁标志)清零后分发 @0x6120 */
+    if (key == 1) {
+      *to = 0;
+      *(volatile uint8_t*)0x10001726 = 0;
+      if (*m2 == 0) { /* 选项0 → case3 基本参数 @0x6134 */
+        *menu = 3; *m2 = 0;
+        disp_string((int)0x647c, 0, 0, 0); disp_string((int)0x6490, 1, 0, 0);
+        disp_string((int)0x64a4, 2, 0, 0); disp_string((int)0x64b8, 3, 0, 0);
+        if (*(volatile uint8_t*)0x1000162c == 0) { /* CTRL_MODE==0 @0x6176 */
+          disp_string((int)0x64d0, 0, 0xb, 1); fio1_pin20_ctrl(1); fio1_pin21_ctrl(0);
+        }
+        if (*(volatile uint8_t*)0x1000162c == 1) {
+          disp_string((int)0x64d8, 0, 0xb, 1); fio1_pin20_ctrl(0); fio1_pin21_ctrl(1);
+        }
+        if (*(volatile uint8_t*)0x1000162c == 2) {
+          disp_string((int)0x64e0, 0, 0xb, 1); fio1_pin20_ctrl(0); fio1_pin21_ctrl(0);
+        }
+        disp_uint4(*(volatile uint32_t*)0x10001634, 1, 0xb, 0);
+        disp_uint4(*(volatile uint32_t*)0x10001630, 2, 0xb, 0);
+        disp_uint4(*(volatile uint32_t*)0x10001638, 3, 0xb, 0);
+        *((volatile uint32_t*)0x10001758) = 0xfa; /* TIMEOUT3 */
+      }
+      if (*m2 == 1) { /* 选项1 → case4 @0x620a */
+        *menu = 4; *m2 = 0;
+        disp_string((int)0x64f8, 0, 0, 0); disp_string((int)0x650c, 1, 0, 0);
+        disp_string((int)0x6520, 2, 0, 0); disp_string((int)0x6534, 3, 0, 0);
+        disp_uint4(*(volatile uint32_t*)0x100016b8, 0, 0xb, 1);
+        disp_uint4(*(volatile uint8_t*)0x100016bc, 1, 0xb, 0);
+        disp_uint4(*(volatile uint32_t*)0x100016c0, 2, 0xb, 0);
+        disp_uint4(*(volatile uint8_t*)0x100016c4, 3, 0xb, 0);
+        *((volatile uint32_t*)0x10001758) = 0xfa;
+      }
+      if (*m2 == 2) { /* 选项2 → case5 通讯设置 @0x6290 */
+        *menu = 5; *m2 = 0;
+        disp_string((int)0x6558, 0, 0, 0); disp_string((int)0x656c, 1, 0, 0);
+        disp_string((int)0x6580, 2, 0, 0); disp_string((int)0x6594, 3, 0, 0);
+        disp_uint5(*(volatile uint8_t*)0x100016f7, 0, 0xb, 1); /* 通讯地址 */
+        /* @0x62da：BAUD_TBL[BAUD_IDX] = SRAM 表 0x1000179c + 4*0x100016f8；0x1042 行为同 6p disp_number */
+        disp_number(*(volatile uint32_t*)(0x1000179c + 4 * (*(volatile uint32_t*)0x100016f8)), 1, 0xa, 0);
+        if (*(volatile uint8_t*)0x100016fc == 0) disp_string((int)0x65b8, 2, 0xa, 0); /* 校验 */
+        if (*(volatile uint8_t*)0x100016fc == 1) disp_string((int)0x65c0, 2, 0xa, 0);
+        if (*(volatile uint8_t*)0x100016fc == 2) disp_string((int)0x65c8, 2, 0xa, 0);
+        if (*(volatile uint8_t*)0x100016fd == 0) disp_string((int)0x5f54, 3, 0xb, 0); /* 通讯检查 */
+        else disp_string((int)0x65d4, 3, 0xb, 0);
+        *((volatile uint32_t*)0x10001758) = 0xfa;
+      }
+      if (*m2 == 3) { /* 选项3 → case6 密码 @0x635e */
+        *menu = 6; *m2 = 0;
+        *((volatile uint32_t*)0x10001614) = 0;
+        disp_clear();
+        disp_string((int)0x4cf4, 1, 0, 0); /* "  密码:------" */
+      }
+      if (*m2 == 4) { /* 选项4 → case7 @0x6386 */
+        *menu = 7; *m2 = 0;
+        disp_string((int)0x65e4, 0, 0, 0); disp_string((int)0x65f8, 1, 0, 0);
+        disp_string((int)0x660c, 2, 0, 0); disp_string((int)0x6620, 3, 0, 0);
+        if (*(volatile uint8_t*)0x10001708 == 1) { /* 记录类型1 */
+          disp_string((int)0x6638, 0, 0xb, 1);
+          disp_uint4(*(volatile uint8_t*)0x10001709, 1, 0xb, 0);
+          disp_uint4(*(volatile uint8_t*)0x1000170a, 2, 0xb, 0);
+        }
+        if (*(volatile uint8_t*)0x10001708 == 2) {
+          disp_string((int)0x6648, 0, 0xb, 1);
+          disp_uint4(*(volatile uint8_t*)0x1000170b, 1, 0xb, 0);
+          disp_uint4(*(volatile uint8_t*)0x1000170a, 2, 0xb, 0);
+        }
+        if (*(volatile uint8_t*)0x10001708 == 3) {
+          disp_string((int)0x6654, 0, 0xb, 1);
+          disp_uint4(*(volatile uint8_t*)0x1000170d, 1, 0xb, 0);
+          disp_uint4(*(volatile uint8_t*)0x1000170e, 2, 0xb, 0);
+        }
+        if (*(volatile uint8_t*)0x10001708 == 4) { /* 类型4 另显 0x1000170f/0x10001710 @0x666c */
+          disp_string((int)0x6664, 0, 0xb, 1);
+          disp_uint4(*(volatile uint8_t*)0x1000170f, 1, 0xb, 0);
+          disp_uint4(*(volatile uint8_t*)0x10001710, 2, 0xb, 0);
+        }
+        *((volatile uint32_t*)0x10001758) = 0xfa;
+      }
+      if (*m2 == 5) { /* 选项5 → case8 @0x6696 */
+        *menu = 8; *m2 = 0; disp_clear();
+        disp_string((int)0x6a80, 0, 4, 0); disp_string((int)0x6a8c, 1, 2, 0);
+        disp_string((int)0x6a98, 2, 2, 0);
+        disp_offset(*(volatile uint32_t*)0x10001624, 2, 7, 1); /* 起始相位 */
+        disp_string((int)0x6aa4, 3, 0, 0);
+      }
+      if (*m2 == 6) { /* 选项6 → caseB 时钟 @0x66ec */
+        *menu = 0xb; *m2 = 0;
+        *((volatile uint32_t*)0x10001614) = 0; disp_clear();
+        disp_string((int)0x4ca0, 0, 0, 0); disp_string((int)0x4cb4, 1, 0, 0);
+        disp_string((int)0x4cc8, 2, 0, 0); disp_string((int)0x4cb4, 3, 0, 0);
+        disp_uint5(*(volatile uint32_t*)0x100015f8, 1, 3, 0); /* HOUR_NOW */
+        disp_uint2(*(volatile uint32_t*)0x100015fc, 1, 0xa, 0); /* MIN_NOW */
+        disp_uint5(*(volatile uint32_t*)0x10001604, 3, 3, 0); /* HOUR_TOTAL */
+        disp_uint2(*(volatile uint32_t*)0x10001608, 3, 0xa, 0); /* MIN_TOTAL */
+      }
+      if (*m2 == 7) { /* 选项7 → case9 版本 @0x677a */
+        *menu = 9; *m2 = 0; disp_clear();
+        disp_string((int)0x6acc, 0, 0, 0); disp_string((int)0x6ad8, 1, 0, 0);
+        disp_string((int)0x6ae8, 2, 0, 0); disp_string((int)0x6af8, 3, 0, 0);
+      }
+      if (*m2 == 8) { /* 选项8 → case5A 平衡角 @0x67c2 */
+        *menu = 0x5a; *m2 = 0; disp_clear();
+        disp_string((int)0x6b0c, 0, 4, 0); disp_string((int)0x6a8c, 1, 2, 0);
+        disp_string((int)0x6a98, 2, 2, 0);
+        disp_signed_angle(*(volatile uint8_t*)0x1000168c, 2, 7, 1); /* BAL_ANG；0x116c 同 6p */
+        disp_string((int)0x6aa4, 3, 0, 0);
+      }
+    }
+
+    /* 超时尾 @0x6810：TIMEOUT 每帧累加，≥0x1388 回主屏 */
+    (*to)++;
+    if (*to &gt;= 0x1388) { *to = 0; *menu = 1; disp_splash_screen(); }
+    return;
+  }
+```
+
+### 关键结论（供主会话核对）
+
+- **选项→case 映射**（key==1 时 `*0x10001724` 写入值）：`MENU2` 0→3、1→4、2→5、3→6、4→7、5→8、6→0xb、7→9、8→0x5a；每个分支都把 `*0x10001725` 清零。
+- **未调 `0x3534` 保存**：case2 内没有任何 `bl 0x3534`（param_sync_live_to_eeprom），确认"进入子屏不保存"。
+- **标题串 flash 地址**（12p 真实字面量）：菜单页1 选项 `0x5fac/0x5fc0/0x5fd4/0x5fe8`，页2 `0x5ffc/0x6010/0x6024/0x6038`，页3 选项8 `0x604c`，擦除空格串 `0x56d8`；各子屏标题串见上（如 case3 用 `0x647c-0x64b8`）。
+- **光标 clamp**：UP 先 ++ 再 clamp `&gt;8 → 8`（12p 为 9 项，上限 8；6p 蓝图写的 7 是旧上限），DOWN 仅 `&gt;0` 时减；范围 `0..8`。无 0x10001726 参与导航。
+- **key==4**：`*0x10001744=0; *0x10001724=1; bl 0x40b0` 后立即 return（0x5e20-0x5e36）。
+- **key==1 进入时**清 `*0x10001726=0`（≡6p MENU3 编辑态/锁标志），各编辑子屏（选项0/1/2/4）写 `*0x10001758(TIMEOUT3)=0xfa`；密码(选项3)、时钟(选项6)不写 TIMEOUT3。
+- **超时尾**（0x6810-0x683e）：`(*TIMEOUT)++`（word 读宽）；`≥0x1388` 时清零 TIMEOUT、`*MENU=1`、`bl 0x40b0`，然后 return；未超时直接 return。
+- **读宽**：MENU/光标/0x10001726/CTRL_MODE/0x100016bc/0x100016c4/0x100016f7/0x100016fc/0x100016fd/0x10001708-0x10001710/0x1000168c 均 byte（ldrb/strb）；TIMEOUT/TIMEOUT3/0x10001614/0x10001634/0x10001630/0x10001638/0x100016b8/0x100016c0/0x100016f8/0x10001624/0x100015f8/0x100015fc/0x10001604/0x10001608 均 word（ldr/str）。
+- **两处未列入简报的调用**：`0x1042`（波特率查表显示，行为同 6p `disp_number`）、`0x116c`（6p `disp_signed_angle`，case5A 平衡角）。BAUD 表位于 SRAM `0x1000179c`（word 表），索引 `*0x100016f8`。
+
+**注意事项**：12p 的 case2 与 6p 蓝图在结构、选项→case 映射、字符串功能上完全同构，但所有地址（含菜单选项串地址、子屏标题串、SRAM 变量）均为 12p 特有，勿与 6p 地址混用。

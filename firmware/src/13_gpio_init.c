@@ -32,8 +32,8 @@ void gpio2_init(void)
 {
   int fio_base;
 
-  fio_base = DAT_0001087c;                          /* FIO 池基址 0x2009C000 */
-  *(volatile uint *)(DAT_0001087c + 0x40) = *(volatile uint *)(DAT_0001087c + 0x40) | 0x10;  /* FIO2DIR P2.4=输出 */
+  fio_base = DAT_00010a74;                          /* FIO 池基址 0x2009C000 */
+  *(volatile uint *)(DAT_00010a74 + 0x40) = *(volatile uint *)(DAT_00010a74 + 0x40) | 0x10;  /* FIO2DIR P2.4=输出 */
   *(volatile uint *)(fio_base + 0x40) = *(volatile uint *)(fio_base + 0x40) | 8;                   /* FIO2DIR P2.3=输出 */
   *(volatile uint *)(fio_base + 0x40) = *(volatile uint *)(fio_base + 0x40) | 2;                   /* FIO2DIR P2.1=输出 */
   *(volatile uint *)(fio_base + 0x40) = *(volatile uint *)(fio_base + 0x40) & 0xfffffffb;          /* FIO2DIR P2.2=改输入（双向） */

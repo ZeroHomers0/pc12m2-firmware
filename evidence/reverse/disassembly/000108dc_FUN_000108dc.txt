@@ -1,0 +1,167 @@
+# FUN_000108dc entry=0x000108dc body=348
+000108dc  push     {r4, r5, r6, r7, lr}
+000108de  movs     r4, #0
+000108e0  movs     r5, #0
+000108e2  movs     r6, #0
+000108e4  movs     r0, #0
+000108e6  movs     r3, #0
+000108e8  ldr      r7, [pc, #0x188]
+ ; ref 0x00010a74 -> 0x2009c000
+000108ea  ldr      r7, [r7, #0x5c]
+000108ec  orr      r7, r7, #0x10
+000108f0  ldr.w    ip, [pc, #0x180]
+ ; ref 0x00010a74 -> 0x2009c000
+000108f4  str.w    r7, [ip, #0x5c]
+000108f8  movs     r1, #0
+000108fa  b        #0x109fe
+ ; jump -> 0x000109fe (FUN_000108dc)
+000108fc  cbnz     r1, #0x10936
+000108fe  ldr      r7, [pc, #0x17c]
+ ; ref 0x00010a7c -> 0x10001630 (SRAM)  [pool->0x10001630]
+00010900  ldr      r7, [r7]
+00010902  ldr.w    ip, [pc, #0x17c]
+ ; ref 0x00010a80 -> 0x10001644 (SRAM)  [pool->0x10001644]
+00010906  ldrb.w   ip, [ip]
+0001090a  add      r7, ip
+0001090c  ldr.w    ip, [pc, #0x174]
+ ; ref 0x00010a84 -> 0x10001645 (SRAM)  [pool->0x10001645]
+00010910  ldrb.w   ip, [ip]
+00010914  add      r7, ip
+00010916  ldr.w    ip, [pc, #0x170]
+ ; ref 0x00010a88 -> 0x1000164c (SRAM)  [pool->0x1000164c]
+0001091a  ldrb.w   ip, [ip]
+0001091e  add      r7, ip
+00010920  add.w    r0, r7, #0x31
+00010924  eor      r7, r0, #0xc2
+00010928  orr      ip, r0, #0x1b
+0001092c  add      r7, ip
+0001092e  and      ip, r0, #0xb2
+00010932  add      r7, ip
+00010934  uxtb     r5, r7
+00010936  cmp      r1, #8
+00010938  bne      #0x10968
+ ; jump -> 0x00010968 (FUN_000108dc)
+0001093a  ldr      r7, [pc, #0x150]
+ ; ref 0x00010a8c -> 0x1000163c (SRAM)  [pool->0x1000163c]
+0001093c  ldrb     r7, [r7]
+0001093e  ldr.w    ip, [pc, #0x148]
+ ; ref 0x00010a88 -> 0x1000164c (SRAM)  [pool->0x1000164c]
+00010942  ldrb.w   ip, [ip]
+00010946  add      r7, ip
+00010948  ldr.w    ip, [pc, #0x144]
+ ; ref 0x00010a90 -> 0x10001648 (SRAM)  [pool->0x10001648]
+0001094c  ldr.w    ip, [ip]
+00010950  add      r7, ip
+00010952  add.w    r0, r7, #0xc
+00010956  eor      r7, r0, #0x3f
+0001095a  orr      ip, r0, #0xa9
+0001095e  add      r7, ip
+00010960  and      ip, r0, #0xbc
+00010964  add      r7, ip
+00010966  uxtb     r6, r7
+00010968  cmp      r1, #0x10
+0001096a  bne      #0x1096e
+ ; jump -> 0x0001096e (FUN_000108dc)
+0001096c  movs     r0, #0x55
+0001096e  ldr      r7, [pc, #0x104]
+ ; ref 0x00010a74 -> 0x2009c000
+00010970  ldr      r7, [r7, #0x5c]
+00010972  orr      r7, r7, #2
+00010976  ldr.w    ip, [pc, #0xfc]
+ ; ref 0x00010a74 -> 0x2009c000
+0001097a  str.w    r7, [ip, #0x5c]
+0001097e  tst.w    r0, #0x80
+00010982  beq      #0x10990
+ ; jump -> 0x00010990 (FUN_000108dc)
+00010984  mov      r7, ip
+00010986  ldr      r7, [r7, #0x58]
+00010988  orr      r7, r7, #2
+0001098c  str.w    r7, [ip, #0x58]
+00010990  lsls     r0, r0, #1
+00010992  movs     r2, #0
+00010994  b        #0x10998
+ ; jump -> 0x00010998 (FUN_000108dc)
+00010996  adds     r2, r2, #1
+00010998  cmp.w    r2, #0x7d0
+0001099c  blo      #0x10996
+ ; jump -> 0x00010996 (FUN_000108dc)
+0001099e  ldr      r7, [pc, #0xd4]
+ ; ref 0x00010a74 -> 0x2009c000
+000109a0  ldr      r7, [r7, #0x5c]
+000109a2  orr      r7, r7, #8
+000109a6  ldr.w    ip, [pc, #0xcc]
+ ; ref 0x00010a74 -> 0x2009c000
+000109aa  str.w    r7, [ip, #0x5c]
+000109ae  movs     r2, #0
+000109b0  b        #0x109b4
+ ; jump -> 0x000109b4 (FUN_000108dc)
+000109b2  adds     r2, r2, #1
+000109b4  cmp.w    r2, #0x3e8
+000109b8  blo      #0x109b2
+ ; jump -> 0x000109b2 (FUN_000108dc)
+000109ba  cmp      r1, #8
+000109bc  bhs      #0x109d2
+ ; jump -> 0x000109d2 (FUN_000108dc)
+000109be  lsls     r7, r4, #0x19
+000109c0  lsrs     r4, r7, #0x18
+000109c2  ldr      r7, [pc, #0xb0]
+ ; ref 0x00010a74 -> 0x2009c000
+000109c4  ldr      r7, [r7, #0x54]
+000109c6  tst.w    r7, #4
+000109ca  beq      #0x109e0
+ ; jump -> 0x000109e0 (FUN_000108dc)
+000109cc  adds     r7, r4, #1
+000109ce  uxtb     r4, r7
+000109d0  b        #0x109e0
+ ; jump -> 0x000109e0 (FUN_000108dc)
+000109d2  lsls     r3, r3, #1
+000109d4  ldr      r7, [pc, #0x9c]
+ ; ref 0x00010a74 -> 0x2009c000
+000109d6  ldr      r7, [r7, #0x54]
+000109d8  tst.w    r7, #4
+000109dc  beq      #0x109e0
+ ; jump -> 0x000109e0 (FUN_000108dc)
+000109de  adds     r3, r3, #1
+000109e0  movs     r2, #0
+000109e2  b        #0x109e6
+ ; jump -> 0x000109e6 (FUN_000108dc)
+000109e4  adds     r2, r2, #1
+000109e6  cmp.w    r2, #0x3e8
+000109ea  blo      #0x109e4
+ ; jump -> 0x000109e4 (FUN_000108dc)
+000109ec  ldr      r7, [pc, #0x84]
+ ; ref 0x00010a74 -> 0x2009c000
+000109ee  ldr      r7, [r7, #0x58]
+000109f0  orr      r7, r7, #8
+000109f4  ldr.w    ip, [pc, #0x7c]
+ ; ref 0x00010a74 -> 0x2009c000
+000109f8  str.w    r7, [ip, #0x58]
+000109fc  adds     r1, r1, #1
+000109fe  cmp      r1, #0x18
+00010a00  blo.w    #0x108fc
+ ; jump -> 0x000108fc (FUN_000108dc)
+00010a04  ldr      r7, [pc, #0x6c]
+ ; ref 0x00010a74 -> 0x2009c000
+00010a06  ldr      r7, [r7, #0x58]
+00010a08  orr      r7, r7, #0x10
+00010a0c  ldr.w    ip, [pc, #0x64]
+ ; ref 0x00010a74 -> 0x2009c000
+00010a10  str.w    r7, [ip, #0x58]
+00010a14  cmp.w    r5, r3, lsr #8
+00010a18  bne      #0x10a20
+ ; jump -> 0x00010a20 (FUN_000108dc)
+00010a1a  uxtb     r7, r3
+00010a1c  cmp      r7, r6
+00010a1e  beq      #0x10a2c
+ ; jump -> 0x00010a2c (FUN_000108dc)
+00010a20  movs     r7, #1
+00010a22  ldr.w    ip, [pc, #0x70]
+ ; ref 0x00010a94 -> 0x100020c0 (SRAM)  [pool->0x100020c0]
+00010a26  strb.w   r7, [ip]
+00010a2a  b        #0x10a36
+ ; jump -> 0x00010a36 (FUN_000108dc)
+00010a2c  movs     r7, #0
+00010a2e  ldr.w    ip, [pc, #0x64]
+ ; ref 0x00010a94 -> 0x100020c0 (SRAM)  [pool->0x100020c0]
+00010a32  strb.w   r7, [ip]
+00010a36  pop      {r4, r5, r6, r7, pc}

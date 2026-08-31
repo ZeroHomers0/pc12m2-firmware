@@ -1,0 +1,15 @@
+# FUN_00001f56 entry=0x00001f56 body=22
+00001f56  nop
+00001f58  ldr  r0, [0x000022c0]
+      ; ref 0x000022c0 -> 0x40034000
+00001f5a  ldr  r0, [r0,#0x4]
+      ; ref 0x40034004 (no mem)
+00001f5c  tst  r0, #0x80000000
+00001f60  beq  0x00001f58
+      ; jump -> 0x00001f58
+00001f62  ldr  r0, [0x000022c0]
+      ; ref 0x000022c0 -> 0x40034000
+00001f64  ldr  r1, [r0,#0x4]
+      ; ref 0x40034004 (no mem)
+00001f66  ubfx  r0, r1, #0x4, #0xc
+00001f6a  bx  lr

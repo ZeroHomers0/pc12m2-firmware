@@ -1,0 +1,39 @@
+# FUN_00010a38 entry=0x00010a38 body=58
+00010a38  push     {lr}
+00010a3a  ldr      r0, [pc, #0x5c]
+ ; ref 0x00010a98 -> 0x100020c8 (SRAM)  [pool->0x100020c8]
+00010a3c  ldrb     r0, [r0]
+00010a3e  adds     r0, r0, #1
+00010a40  ldr      r1, [pc, #0x54]
+ ; ref 0x00010a98 -> 0x100020c8 (SRAM)  [pool->0x100020c8]
+00010a42  strb     r0, [r1]
+00010a44  movs     r0, #0
+00010a46  strb     r0, [r1]
+00010a48  b        #0x10a68
+ ; jump -> 0x00010a68 (FUN_00010a38)
+00010a4a  bl       #0x108d2
+ ; call -> 0x000108d2 (FUN_000108d2)
+00010a4e  bl       #0x108dc
+ ; call -> 0x000108dc (FUN_000108dc)
+00010a52  ldr      r0, [pc, #0x40]
+ ; ref 0x00010a94 -> 0x100020c0 (SRAM)  [pool->0x100020c0]
+00010a54  ldrb     r0, [r0]
+00010a56  cbnz     r0, #0x10a5e
+00010a58  movs     r0, #0xa
+00010a5a  ldr      r1, [pc, #0x3c]
+ ; ref 0x00010a98 -> 0x100020c8 (SRAM)  [pool->0x100020c8]
+00010a5c  strb     r0, [r1]
+00010a5e  ldr      r0, [pc, #0x38]
+ ; ref 0x00010a98 -> 0x100020c8 (SRAM)  [pool->0x100020c8]
+00010a60  ldrb     r0, [r0]
+00010a62  adds     r0, r0, #1
+00010a64  ldr      r1, [pc, #0x30]
+ ; ref 0x00010a98 -> 0x100020c8 (SRAM)  [pool->0x100020c8]
+00010a66  strb     r0, [r1]
+00010a68  ldr      r0, [pc, #0x2c]
+ ; ref 0x00010a98 -> 0x100020c8 (SRAM)  [pool->0x100020c8]
+00010a6a  ldrb     r0, [r0]
+00010a6c  cmp      r0, #5
+00010a6e  blt      #0x10a4a
+ ; jump -> 0x00010a4a (FUN_00010a38)
+00010a70  pop      {pc}

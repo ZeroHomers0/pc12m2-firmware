@@ -1,0 +1,2932 @@
+# FUN_0000e70c entry=0x0000e70c body=3590
+0000e70c  push  {r4,lr}
+0000e70e  ldr  r0, [0x0000eb08]
+      ; ref 0x0000eb08 -> 0x100015ce
+0000e710  ldr  r0, [r0,#0x0]
+      ; ref 0x100015ce (no mem)
+0000e712  cmp  r0, #0x1
+0000e714  beq  0x0000e806
+      ; jump -> 0x0000e806
+0000e716  ldr  r0, [0x0000eb0c]
+      ; ref 0x0000eb0c -> 0x10002051
+0000e718  ldrb  r0, [r0,#0x0]
+      ; ref 0x10002051 (no mem)
+0000e71a  adds  r0, r0, #0x1
+0000e71c  ldr  r1, [0x0000eb0c]
+      ; ref 0x0000eb0c -> 0x10002051
+0000e71e  strb  r0, [r1,#0x0]
+      ; ref 0x10002051 (no mem)
+0000e720  mov  r0, r1
+0000e722  ldrb  r0, [r0,#0x0]
+      ; ref 0x10002051 (no mem)
+0000e724  cmp  r0, #0xa
+0000e726  blt  0x0000e806
+      ; jump -> 0x0000e806
+0000e728  movs  r0, #0x0
+0000e72a  strb  r0, [r1,#0x0]
+      ; ref 0x10002051 (no mem)
+0000e72c  ldr  r0, [0x0000eb10]
+      ; ref 0x0000eb10 -> 0x10001658
+0000e72e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001658 (no mem)
+0000e730  rsb.w  r0, r0, #0xb4
+0000e734  ldr  r1, [0x0000eb14]
+      ; ref 0x0000eb14 -> 0x10001fe4
+0000e736  str  r0, [r1,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000e738  mov  r0, r1
+0000e73a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000e73c  cbnz  r0, 0x0000e742
+      ; jump -> 0x0000e742
+0000e73e  movs  r0, #0x1
+0000e740  str  r0, [r1,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000e742  ldr  r0, [0x0000eb18]
+      ; ref 0x0000eb18 -> 0x10001648
+0000e744  ldr  r0, [r0,#0x0]
+      ; ref 0x10001648 (no mem)
+0000e746  rsb.w  r0, r0, #0xb4
+0000e74a  ldr  r1, [0x0000eb1c]
+      ; ref 0x0000eb1c -> 0x10001fe8
+0000e74c  str  r0, [r1,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000e74e  ldr  r0, [0x0000eb20]
+      ; ref 0x0000eb20 -> 0x10001620
+0000e750  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001620 (no mem)
+0000e752  cbnz  r0, 0x0000e7b0
+      ; jump -> 0x0000e7b0
+0000e754  movs  r0, #0x0
+0000e756  ldr  r1, [0x0000eb24]
+      ; ref 0x0000eb24 -> 0x10002058
+0000e758  strb  r0, [r1,#0x0]
+      ; ref 0x10002058 (no mem)
+0000e75a  ldr  r0, [0x0000eb28]
+      ; ref 0x0000eb28 -> 0x1000162c
+0000e75c  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000162c (no mem)
+0000e75e  cbnz  r0, 0x0000e76e
+      ; jump -> 0x0000e76e
+0000e760  ldr  r0, [0x0000eb2c]
+      ; ref 0x0000eb2c -> 0x10001630
+0000e762  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000e764  movs  r1, #0xf
+0000e766  udiv  r0, r0, r1
+0000e76a  ldr  r1, [0x0000eb30]
+      ; ref 0x0000eb30 -> 0x10002020
+0000e76c  str  r0, [r1,#0x0]
+      ; ref 0x10002020 (no mem)
+0000e76e  ldr  r0, [0x0000eb28]
+      ; ref 0x0000eb28 -> 0x1000162c
+0000e770  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000162c (no mem)
+0000e772  cmp  r0, #0x1
+0000e774  bne  0x0000e784
+      ; jump -> 0x0000e784
+0000e776  ldr  r0, [0x0000eb34]
+      ; ref 0x0000eb34 -> 0x10001634
+0000e778  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000e77a  movs  r1, #0xf
+0000e77c  udiv  r0, r0, r1
+0000e780  ldr  r1, [0x0000eb30]
+      ; ref 0x0000eb30 -> 0x10002020
+0000e782  str  r0, [r1,#0x0]
+      ; ref 0x10002020 (no mem)
+0000e784  ldr  r0, [0x0000eb28]
+      ; ref 0x0000eb28 -> 0x1000162c
+0000e786  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000162c (no mem)
+0000e788  cmp  r0, #0x2
+0000e78a  bne  0x0000e7b0
+      ; jump -> 0x0000e7b0
+0000e78c  ldr  r0, [0x0000eb38]
+      ; ref 0x0000eb38 -> 0x1000163c
+0000e78e  ldr  r0, [r0,#0x0]
+      ; ref 0x1000163c (no mem)
+0000e790  mov.w  r1, #0x3e8
+0000e794  muls  r0, r1
+0000e796  ldr  r1, [0x0000eb2c]
+      ; ref 0x0000eb2c -> 0x10001630
+0000e798  ldr  r1, [r1,#0x0]
+      ; ref 0x10001630 (no mem)
+0000e79a  udiv  r0, r0, r1
+0000e79e  ldr  r1, [0x0000eb3c]
+      ; ref 0x0000eb3c -> 0x10002028
+0000e7a0  str  r0, [r1,#0x0]
+      ; ref 0x10002028 (no mem)
+0000e7a2  ldr  r0, [0x0000eb2c]
+      ; ref 0x0000eb2c -> 0x10001630
+0000e7a4  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000e7a6  movs  r1, #0xf
+0000e7a8  udiv  r0, r0, r1
+0000e7ac  ldr  r1, [0x0000eb30]
+      ; ref 0x0000eb30 -> 0x10002020
+0000e7ae  str  r0, [r1,#0x0]
+      ; ref 0x10002020 (no mem)
+0000e7b0  ldr  r0, [0x0000eb20]
+      ; ref 0x0000eb20 -> 0x10001620
+0000e7b2  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001620 (no mem)
+0000e7b4  cmp  r0, #0x1
+0000e7b6  bne  0x0000e8b2
+      ; jump -> 0x0000e8b2
+0000e7b8  ldr  r0, [0x0000eb40]
+      ; ref 0x0000eb40 -> 0x100015a8
+0000e7ba  ldr  r0, [r0,#0x0]
+      ; ref 0x100015a8 (no mem)
+0000e7bc  cmp  r0, #0xa
+0000e7be  bcc  0x0000e8b2
+      ; jump -> 0x0000e8b2
+0000e7c0  ldr  r0, [0x0000eb44]
+      ; ref 0x0000eb44 -> 0x100016b8
+0000e7c2  ldr  r0, [r0,#0x0]
+      ; ref 0x100016b8 (no mem)
+0000e7c4  cbz  r0, 0x0000e808
+      ; jump -> 0x0000e808
+0000e7c6  ldr  r0, [0x0000eb48]
+      ; ref 0x0000eb48 -> 0x10001590
+0000e7c8  ldr  r0, [r0,#0x0]
+      ; ref 0x10001590 (no mem)
+0000e7ca  ldr  r1, [0x0000eb44]
+      ; ref 0x0000eb44 -> 0x100016b8
+0000e7cc  ldr  r1, [r1,#0x0]
+      ; ref 0x100016b8 (no mem)
+0000e7ce  cmp  r0, r1
+0000e7d0  bls  0x0000e808
+      ; jump -> 0x0000e808
+0000e7d2  ldr  r0, [0x0000eb4c]
+      ; ref 0x0000eb4c -> 0x10002080
+0000e7d4  ldr  r0, [r0,#0x0]
+      ; ref 0x10002080 (no mem)
+0000e7d6  adds  r0, r0, #0x1
+0000e7d8  ldr  r1, [0x0000eb4c]
+      ; ref 0x0000eb4c -> 0x10002080
+0000e7da  str  r0, [r1,#0x0]
+      ; ref 0x10002080 (no mem)
+0000e7dc  ldr  r0, [0x0000eb50]
+      ; ref 0x0000eb50 -> 0x100016bc
+0000e7de  ldrb  r0, [r0,#0x0]
+      ; ref 0x100016bc (no mem)
+0000e7e0  add.w  r1, r0, r0, lsl #0x3
+0000e7e4  add.w  r0, r1, r0, lsl #0x4
+0000e7e8  ldr  r1, [0x0000eb4c]
+      ; ref 0x0000eb4c -> 0x10002080
+0000e7ea  ldr  r1, [r1,#0x0]
+      ; ref 0x10002080 (no mem)
+0000e7ec  cmp.w  r1, r0, lsl #0x1
+0000e7f0  bls  0x0000e80e
+      ; jump -> 0x0000e80e
+0000e7f2  movs  r0, #0x0
+0000e7f4  ldr  r1, [0x0000eb4c]
+      ; ref 0x0000eb4c -> 0x10002080
+0000e7f6  str  r0, [r1,#0x0]
+      ; ref 0x10002080 (no mem)
+0000e7f8  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e7fa  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e7fc  orr  r0, r0, #0x10
+0000e800  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e802  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e804  b  0x0000e80e
+      ; jump -> 0x0000e80e
+0000e806  b  0x0000efc4
+      ; jump -> 0x0000efc4
+0000e808  movs  r0, #0x0
+0000e80a  ldr  r1, [0x0000eb4c]
+      ; ref 0x0000eb4c -> 0x10002080
+0000e80c  str  r0, [r1,#0x0]
+      ; ref 0x10002080 (no mem)
+0000e80e  ldr  r0, [0x0000eb58]
+      ; ref 0x0000eb58 -> 0x100016c0
+0000e810  ldr  r0, [r0,#0x0]
+      ; ref 0x100016c0 (no mem)
+0000e812  cbz  r0, 0x0000e854
+      ; jump -> 0x0000e854
+0000e814  ldr  r0, [0x0000eb48]
+      ; ref 0x0000eb48 -> 0x10001590
+0000e816  ldr  r0, [r0,#0x0]
+      ; ref 0x10001590 (no mem)
+0000e818  ldr  r1, [0x0000eb58]
+      ; ref 0x0000eb58 -> 0x100016c0
+0000e81a  ldr  r1, [r1,#0x0]
+      ; ref 0x100016c0 (no mem)
+0000e81c  cmp  r0, r1
+0000e81e  bcs  0x0000e854
+      ; jump -> 0x0000e854
+0000e820  ldr  r0, [0x0000eb5c]
+      ; ref 0x0000eb5c -> 0x10002084
+0000e822  ldr  r0, [r0,#0x0]
+      ; ref 0x10002084 (no mem)
+0000e824  adds  r0, r0, #0x1
+0000e826  ldr  r1, [0x0000eb5c]
+      ; ref 0x0000eb5c -> 0x10002084
+0000e828  str  r0, [r1,#0x0]
+      ; ref 0x10002084 (no mem)
+0000e82a  ldr  r0, [0x0000eb60]
+      ; ref 0x0000eb60 -> 0x100016c4
+0000e82c  ldrb  r0, [r0,#0x0]
+      ; ref 0x100016c4 (no mem)
+0000e82e  add.w  r1, r0, r0, lsl #0x3
+0000e832  add.w  r0, r1, r0, lsl #0x4
+0000e836  ldr  r1, [0x0000eb5c]
+      ; ref 0x0000eb5c -> 0x10002084
+0000e838  ldr  r1, [r1,#0x0]
+      ; ref 0x10002084 (no mem)
+0000e83a  cmp.w  r1, r0, lsl #0x1
+0000e83e  bls  0x0000e85a
+      ; jump -> 0x0000e85a
+0000e840  movs  r0, #0x0
+0000e842  ldr  r1, [0x0000eb5c]
+      ; ref 0x0000eb5c -> 0x10002084
+0000e844  str  r0, [r1,#0x0]
+      ; ref 0x10002084 (no mem)
+0000e846  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e848  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e84a  orr  r0, r0, #0x20
+0000e84e  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e850  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e852  b  0x0000e85a
+      ; jump -> 0x0000e85a
+0000e854  movs  r0, #0x0
+0000e856  ldr  r1, [0x0000eb5c]
+      ; ref 0x0000eb5c -> 0x10002084
+0000e858  str  r0, [r1,#0x0]
+      ; ref 0x10002084 (no mem)
+0000e85a  ldr  r0, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e85c  ldr  r0, [r0,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e85e  cmp  r0, #0x0
+0000e860  beq  0x0000e960
+      ; jump -> 0x0000e960
+0000e862  ldr  r0, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e864  ldr  r0, [r0,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e866  adds  r0, r0, #0x1
+0000e868  ldr  r1, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e86a  str  r0, [r1,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e86c  ldr  r0, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000e86e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001594 (no mem)
+0000e870  ldr  r1, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e872  ldr  r1, [r1,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e874  cmp  r0, r1
+0000e876  bcs  0x0000e87e
+      ; jump -> 0x0000e87e
+0000e878  movs  r0, #0x0
+0000e87a  ldr  r1, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e87c  str  r0, [r1,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e87e  ldr  r0, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000e880  ldr  r0, [r0,#0x0]
+      ; ref 0x10001594 (no mem)
+0000e882  ldr  r1, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e884  ldr  r1, [r1,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e886  cmp  r0, r1
+0000e888  bcc  0x0000e8ac
+      ; jump -> 0x0000e8ac
+0000e88a  ldr  r0, [0x0000eb70]
+      ; ref 0x0000eb70 -> 0x100016cc
+0000e88c  ldrb  r0, [r0,#0x0]
+      ; ref 0x100016cc (no mem)
+0000e88e  add.w  r1, r0, r0, lsl #0x3
+0000e892  add.w  r0, r1, r0, lsl #0x4
+0000e896  ldr  r1, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e898  ldr  r1, [r1,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e89a  cmp.w  r1, r0, lsl #0x1
+0000e89e  bls  0x0000e8ac
+      ; jump -> 0x0000e8ac
+0000e8a0  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e8a2  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e8a4  orr  r0, r0, #0x8
+0000e8a8  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e8aa  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e8ac  ldr  r0, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e8ae  ldr  r0, [r0,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e8b0  b  0x0000e8b4
+      ; jump -> 0x0000e8b4
+0000e8b2  b  0x0000f09a
+      ; jump -> 0x0000f09a
+0000e8b4  rsb  r0, r0, r0, lsl #0x4
+0000e8b8  movs  r1, #0xa
+0000e8ba  udiv  r0, r0, r1
+0000e8be  ldr  r1, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000e8c0  ldr  r1, [r1,#0x0]
+      ; ref 0x10001594 (no mem)
+0000e8c2  cmp  r0, r1
+0000e8c4  bcs  0x0000e8e4
+      ; jump -> 0x0000e8e4
+0000e8c6  ldr  r0, [0x0000eb70]
+      ; ref 0x0000eb70 -> 0x100016cc
+0000e8c8  ldrb  r0, [r0,#0x0]
+      ; ref 0x100016cc (no mem)
+0000e8ca  add.w  r0, r0, r0, lsl #0x2
+0000e8ce  ldr  r1, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e8d0  ldr  r1, [r1,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e8d2  cmp.w  r1, r0, lsl #0x2
+0000e8d6  bls  0x0000e8e4
+      ; jump -> 0x0000e8e4
+0000e8d8  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e8da  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e8dc  orr  r0, r0, #0x8
+0000e8e0  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e8e2  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e8e4  ldr  r0, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e8e6  ldr  r0, [r0,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e8e8  ldr  r1, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000e8ea  ldr  r1, [r1,#0x0]
+      ; ref 0x10001594 (no mem)
+0000e8ec  cmp.w  r1, r0, lsl #0x1
+0000e8f0  bls  0x0000e910
+      ; jump -> 0x0000e910
+0000e8f2  ldr  r0, [0x0000eb70]
+      ; ref 0x0000eb70 -> 0x100016cc
+0000e8f4  ldrb  r0, [r0,#0x0]
+      ; ref 0x100016cc (no mem)
+0000e8f6  add.w  r0, r0, r0, lsl #0x2
+0000e8fa  ldr  r1, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e8fc  ldr  r1, [r1,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e8fe  cmp.w  r1, r0, lsl #0x1
+0000e902  bls  0x0000e910
+      ; jump -> 0x0000e910
+0000e904  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e906  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e908  orr  r0, r0, #0x8
+0000e90c  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e90e  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e910  ldr  r0, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e912  ldr  r0, [r0,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e914  add.w  r1, r0, r0, lsl #0x3
+0000e918  add.w  r0, r1, r0, lsl #0x4
+0000e91c  movs  r1, #0xa
+0000e91e  udiv  r0, r0, r1
+0000e922  ldr  r1, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000e924  ldr  r1, [r1,#0x0]
+      ; ref 0x10001594 (no mem)
+0000e926  cmp  r0, r1
+0000e928  bcs  0x0000e946
+      ; jump -> 0x0000e946
+0000e92a  ldr  r0, [0x0000eb70]
+      ; ref 0x0000eb70 -> 0x100016cc
+0000e92c  ldrb  r0, [r0,#0x0]
+      ; ref 0x100016cc (no mem)
+0000e92e  add.w  r0, r0, r0, lsl #0x2
+0000e932  ldr  r1, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e934  ldr  r1, [r1,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e936  cmp  r0, r1
+0000e938  bcs  0x0000e946
+      ; jump -> 0x0000e946
+0000e93a  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e93c  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e93e  orr  r0, r0, #0x200
+0000e942  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e944  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e946  ldr  r0, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e948  ldr  r0, [r0,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e94a  add.w  r0, r0, r0, lsl #0x1
+0000e94e  ldr  r1, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000e950  ldr  r1, [r1,#0x0]
+      ; ref 0x10001594 (no mem)
+0000e952  cmp  r0, r1
+0000e954  bcs  0x0000e974
+      ; jump -> 0x0000e974
+0000e956  ldr  r0, [0x0000eb70]
+      ; ref 0x0000eb70 -> 0x100016cc
+0000e958  ldrb  r0, [r0,#0x0]
+      ; ref 0x100016cc (no mem)
+0000e95a  ldr  r1, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e95c  ldr  r1, [r1,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e95e  b  0x0000e962
+      ; jump -> 0x0000e962
+0000e960  b  0x0000e9a2
+      ; jump -> 0x0000e9a2
+0000e962  cmp.w  r1, r0, lsl #0x1
+0000e966  bls  0x0000e974
+      ; jump -> 0x0000e974
+0000e968  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e96a  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e96c  orr  r0, r0, #0x200
+0000e970  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e972  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e974  ldr  r0, [0x0000eb64]
+      ; ref 0x0000eb64 -> 0x100016c8
+0000e976  ldr  r0, [r0,#0x0]
+      ; ref 0x100016c8 (no mem)
+0000e978  rsb  r0, r0, r0, lsl #0x3
+0000e97c  add.w  r0, r0, r0, lsl #0x2
+0000e980  movs  r1, #0xa
+0000e982  udiv  r0, r0, r1
+0000e986  ldr  r1, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000e988  ldr  r1, [r1,#0x0]
+      ; ref 0x10001594 (no mem)
+0000e98a  cmp  r0, r1
+0000e98c  bcs  0x0000e9a2
+      ; jump -> 0x0000e9a2
+0000e98e  ldr  r0, [0x0000eb68]
+      ; ref 0x0000eb68 -> 0x10002094
+0000e990  ldr  r0, [r0,#0x0]
+      ; ref 0x10002094 (no mem)
+0000e992  cmp  r0, #0x1
+0000e994  bls  0x0000e9a2
+      ; jump -> 0x0000e9a2
+0000e996  ldr  r0, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e998  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e99a  orr  r0, r0, #0x200
+0000e99e  ldr  r1, [0x0000eb54]
+      ; ref 0x0000eb54 -> 0x1000161c
+0000e9a0  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000e9a2  ldr  r0, [0x0000eb74]
+      ; ref 0x0000eb74 -> 0x10002054
+0000e9a4  ldr  r0, [r0,#0x0]
+      ; ref 0x10002054 (no mem)
+0000e9a6  adds  r0, r0, #0x1
+0000e9a8  ldr  r1, [0x0000eb74]
+      ; ref 0x0000eb74 -> 0x10002054
+0000e9aa  str  r0, [r1,#0x0]
+      ; ref 0x10002054 (no mem)
+0000e9ac  mov  r0, r1
+0000e9ae  ldr  r0, [r0,#0x0]
+      ; ref 0x10002054 (no mem)
+0000e9b0  movw  r1, #0x5dc
+0000e9b4  cmp  r0, r1
+0000e9b6  bls  0x0000e9c4
+      ; jump -> 0x0000e9c4
+0000e9b8  movs  r0, #0x0
+0000e9ba  ldr  r1, [0x0000eb74]
+      ; ref 0x0000eb74 -> 0x10002054
+0000e9bc  str  r0, [r1,#0x0]
+      ; ref 0x10002054 (no mem)
+0000e9be  movs  r0, #0x1
+0000e9c0  ldr  r1, [0x0000eb24]
+      ; ref 0x0000eb24 -> 0x10002058
+0000e9c2  strb  r0, [r1,#0x0]
+      ; ref 0x10002058 (no mem)
+0000e9c4  ldr  r0, [0x0000eb28]
+      ; ref 0x0000eb28 -> 0x1000162c
+0000e9c6  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000162c (no mem)
+0000e9c8  cmp  r0, #0x0
+0000e9ca  bne  0x0000eac6
+      ; jump -> 0x0000eac6
+0000e9cc  ldr  r0, [0x0000eb78]
+      ; ref 0x0000eb78 -> 0x100015d0
+0000e9ce  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000e9d0  ldr  r1, [0x0000eb7c]
+      ; ref 0x0000eb7c -> 0x1000202c
+0000e9d2  str  r0, [r1,#0x0]
+      ; ref 0x1000202c (no mem)
+0000e9d4  movs  r0, #0x0
+0000e9d6  ldr  r1, [0x0000eb80]
+      ; ref 0x0000eb80 -> 0x10002004
+0000e9d8  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000e9da  ldr  r0, [0x0000eb84]
+      ; ref 0x0000eb84 -> 0x10001fe0
+0000e9dc  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000e9de  cbnz  r0, 0x0000ea0e
+      ; jump -> 0x0000ea0e
+0000e9e0  movs  r0, #0x4
+0000e9e2  ldr  r1, [0x0000eb84]
+      ; ref 0x0000eb84 -> 0x10001fe0
+0000e9e4  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000e9e6  movs  r0, #0x0
+0000e9e8  ldr  r1, [0x0000eb88]
+      ; ref 0x0000eb88 -> 0x10001fdc
+0000e9ea  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000e9ec  mov  r0, r1
+0000e9ee  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000e9f0  ldr  r1, [0x0000eb8c]
+      ; ref 0x0000eb8c -> 0x100020f8
+0000e9f2  str  r0, [r1,#0x0]
+      ; ref 0x100020f8 (no mem)
+0000e9f4  movs  r0, #0x0
+0000e9f6  ldr  r1, [0x0000eb90]
+      ; ref 0x0000eb90 -> 0x100020e4
+0000e9f8  str  r0, [r1,#0x0]
+      ; ref 0x100020e4 (no mem)
+0000e9fa  ldr  r1, [0x0000eb94]
+      ; ref 0x0000eb94 -> 0x100020e8
+0000e9fc  str  r0, [r1,#0x0]
+      ; ref 0x100020e8 (no mem)
+0000e9fe  ldr  r1, [0x0000eb98]
+      ; ref 0x0000eb98 -> 0x10002074
+0000ea00  str  r0, [r1,#0x0]
+      ; ref 0x10002074 (no mem)
+0000ea02  ldr  r1, [0x0000eb9c]
+      ; ref 0x0000eb9c -> 0x1000204f
+0000ea04  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ea06  movw  r0, #0x1771
+0000ea0a  ldr  r1, [0x0000eba0]
+      ; ref 0x0000eba0 -> 0x10002030
+0000ea0c  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ea0e  ldr  r0, [0x0000eb84]
+      ; ref 0x0000eb84 -> 0x10001fe0
+0000ea10  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000ea12  cmp  r0, #0x4
+0000ea14  bne  0x0000eb04
+      ; jump -> 0x0000eb04
+0000ea16  ldr  r0, [0x0000eb40]
+      ; ref 0x0000eb40 -> 0x100015a8
+0000ea18  ldr  r0, [r0,#0x0]
+      ; ref 0x100015a8 (no mem)
+0000ea1a  ldr  r1, [0x0000eb7c]
+      ; ref 0x0000eb7c -> 0x1000202c
+0000ea1c  str  r0, [r1,#0x0]
+      ; ref 0x1000202c (no mem)
+0000ea1e  ldr  r0, [0x0000eb14]
+      ; ref 0x0000eb14 -> 0x10001fe4
+0000ea20  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000ea22  movw  r1, #0x18bd
+0000ea26  muls  r0, r1
+0000ea28  movs  r1, #0x64
+0000ea2a  udiv  r0, r0, r1
+0000ea2e  movw  r1, #0x2c88
+0000ea32  subs  r0, r1, r0
+0000ea34  movs  r1, #0x32
+0000ea36  udiv  r0, r0, r1
+0000ea3a  ldr  r1, [0x0000eba4]
+      ; ref 0x0000eba4 -> 0x10001644
+0000ea3c  ldrb  r1, [r1,#0x0]
+      ; ref 0x10001644 (no mem)
+0000ea3e  udiv  r0, r0, r1
+0000ea42  ldr  r1, [0x0000eba8]
+      ; ref 0x0000eba8 -> 0x10002040
+0000ea44  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000ea46  ldr  r0, [0x0000ebac]
+      ; ref 0x0000ebac -> 0x10002044
+0000ea48  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000ea4a  ldr  r1, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000ea4c  add  r0, r1
+0000ea4e  ldr  r1, [0x0000ebac]
+      ; ref 0x0000ebac -> 0x10002044
+0000ea50  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000ea52  ldr  r0, [0x0000ebb0]
+      ; ref 0x0000ebb0 -> 0x1000201c
+0000ea54  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201c (no mem)
+0000ea56  cbnz  r0, 0x0000ea78
+      ; jump -> 0x0000ea78
+0000ea58  ldr  r0, [0x0000eb14]
+      ; ref 0x0000eb14 -> 0x10001fe4
+0000ea5a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000ea5c  movw  r1, #0x18bd
+0000ea60  muls  r0, r1
+0000ea62  movs  r1, #0x64
+0000ea64  udiv  r0, r0, r1
+0000ea68  ldr  r1, [0x0000ebac]
+      ; ref 0x0000ebac -> 0x10002044
+0000ea6a  ldr  r1, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000ea6c  add  r0, r1
+0000ea6e  ldr  r1, [0x0000ebb4]
+      ; ref 0x0000ebb4 -> 0x10002048
+0000ea70  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ea72  movs  r0, #0x1
+0000ea74  ldr  r1, [0x0000ebb8]
+      ; ref 0x0000ebb8 -> 0x1000201d
+0000ea76  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000ea78  ldr  r0, [0x0000ebb0]
+      ; ref 0x0000ebb0 -> 0x1000201c
+0000ea7a  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201c (no mem)
+0000ea7c  cmp  r0, #0x1
+0000ea7e  bne  0x0000ea8e
+      ; jump -> 0x0000ea8e
+0000ea80  ldr  r0, [0x0000ebac]
+      ; ref 0x0000ebac -> 0x10002044
+0000ea82  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000ea84  ldr  r1, [0x0000ebb4]
+      ; ref 0x0000ebb4 -> 0x10002048
+0000ea86  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ea88  movs  r0, #0x0
+0000ea8a  ldr  r1, [0x0000ebb8]
+      ; ref 0x0000ebb8 -> 0x1000201d
+0000ea8c  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000ea8e  ldr  r0, [0x0000ebb4]
+      ; ref 0x0000ebb4 -> 0x10002048
+0000ea90  ldr  r0, [r0,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ea92  movs  r1, #0x64
+0000ea94  muls  r0, r1
+0000ea96  ldr  r1, [0x0000eb88]
+      ; ref 0x0000eb88 -> 0x10001fdc
+0000ea98  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ea9a  mov  r0, r1
+0000ea9c  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ea9e  ldr  r1, [0x0000ebbc]
+      ; ref 0x0000ebbc -> 0x10002104
+0000eaa0  str  r0, [r1,#0x0]
+      ; ref 0x10002104 (no mem)
+0000eaa2  ldr  r0, [0x0000eb88]
+      ; ref 0x0000eb88 -> 0x10001fdc
+0000eaa4  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000eaa6  ldr  r1, [0x0000eb8c]
+      ; ref 0x0000eb8c -> 0x100020f8
+0000eaa8  str  r0, [r1,#0x0]
+      ; ref 0x100020f8 (no mem)
+0000eaaa  movs  r0, #0x0
+0000eaac  ldr  r1, [0x0000eb90]
+      ; ref 0x0000eb90 -> 0x100020e4
+0000eaae  str  r0, [r1,#0x0]
+      ; ref 0x100020e4 (no mem)
+0000eab0  ldr  r1, [0x0000eb94]
+      ; ref 0x0000eb94 -> 0x100020e8
+0000eab2  str  r0, [r1,#0x0]
+      ; ref 0x100020e8 (no mem)
+0000eab4  ldr  r0, [0x0000eb7c]
+      ; ref 0x0000eb7c -> 0x1000202c
+0000eab6  ldr  r0, [r0,#0x0]
+      ; ref 0x1000202c (no mem)
+0000eab8  mov.w  r1, #0x2f8
+0000eabc  muls  r0, r1
+0000eabe  movs  r1, #0x64
+0000eac0  udiv  r0, r0, r1
+0000eac4  b  0x0000eac8
+      ; jump -> 0x0000eac8
+0000eac6  b  0x0000ee76
+      ; jump -> 0x0000ee76
+0000eac8  addw  r0, r0, #0xedd
+0000eacc  ldr  r1, [0x0000ebb4]
+      ; ref 0x0000ebb4 -> 0x10002048
+0000eace  ldr  r1, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ead0  cmp  r0, r1
+0000ead2  bcs  0x0000eada
+      ; jump -> 0x0000eada
+0000ead4  movs  r0, #0x5
+0000ead6  ldr  r1, [0x0000eb84]
+      ; ref 0x0000eb84 -> 0x10001fe0
+0000ead8  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000eada  ldr  r0, [0x0000eb6c]
+      ; ref 0x0000eb6c -> 0x10001594
+0000eadc  ldr  r0, [r0,#0x0]
+      ; ref 0x10001594 (no mem)
+0000eade  ldr  r1, [0x0000eb38]
+      ; ref 0x0000eb38 -> 0x1000163c
+0000eae0  ldr  r1, [r1,#0x0]
+      ; ref 0x1000163c (no mem)
+0000eae2  cmp  r0, r1
+0000eae4  bcc  0x0000eaf8
+      ; jump -> 0x0000eaf8
+0000eae6  ldr  r0, [0x0000eb2c]
+      ; ref 0x0000eb2c -> 0x10001630
+0000eae8  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000eaea  ldr  r1, [0x0000eb38]
+      ; ref 0x0000eb38 -> 0x1000163c
+0000eaec  ldr  r1, [r1,#0x0]
+      ; ref 0x1000163c (no mem)
+0000eaee  cmp  r0, r1
+0000eaf0  bcc  0x0000eaf8
+      ; jump -> 0x0000eaf8
+0000eaf2  movs  r0, #0x5
+0000eaf4  ldr  r1, [0x0000eb84]
+      ; ref 0x0000eb84 -> 0x10001fe0
+0000eaf6  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000eaf8  ldr  r0, [0x0000ebc0]
+      ; ref 0x0000ebc0 -> 0x100015b4
+0000eafa  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b4 (no mem)
+0000eafc  ldr  r1, [0x0000ebc4]
+      ; ref 0x0000ebc4 -> 0x100015b8
+0000eafe  ldr  r1, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000eb00  cmp  r0, r1
+0000eb02  b  0x0000ebc8
+      ; jump -> 0x0000ebc8
+0000eb04  b  0x0000ebd0
+      ; jump -> 0x0000ebd0
+0000ebc8  bcs  0x0000ebd0
+      ; jump -> 0x0000ebd0
+0000ebca  movs  r0, #0x5
+0000ebcc  ldr  r1, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000ebce  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000ebd0  ldr  r0, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000ebd2  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000ebd4  cmp  r0, #0x5
+0000ebd6  bne  0x0000ecd4
+      ; jump -> 0x0000ecd4
+0000ebd8  movs  r0, #0x0
+0000ebda  ldr  r1, [0x0000efcc]
+      ; ref 0x0000efcc -> 0x1000201d
+0000ebdc  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000ebde  ldr  r0, [0x0000efd0]
+      ; ref 0x0000efd0 -> 0x10001594
+0000ebe0  ldr  r0, [r0,#0x0]
+      ; ref 0x10001594 (no mem)
+0000ebe2  ldr  r1, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000ebe4  ldr  r1, [r1,#0x0]
+      ; ref 0x1000163c (no mem)
+0000ebe6  cmp  r0, r1
+0000ebe8  bcc  0x0000ec04
+      ; jump -> 0x0000ec04
+0000ebea  ldr  r0, [0x0000efd8]
+      ; ref 0x0000efd8 -> 0x10001590
+0000ebec  ldr  r0, [r0,#0x0]
+      ; ref 0x10001590 (no mem)
+0000ebee  ldr  r1, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ebf0  ldr  r1, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ebf2  cmp  r0, r1
+0000ebf4  bcs  0x0000ec04
+      ; jump -> 0x0000ec04
+0000ebf6  movs  r0, #0x1
+0000ebf8  ldr  r1, [0x0000efe0]
+      ; ref 0x0000efe0 -> 0x10002000
+0000ebfa  str  r0, [r1,#0x0]
+      ; ref 0x10002000 (no mem)
+0000ebfc  movs  r0, #0x0
+0000ebfe  ldr  r1, [0x0000efe4]
+      ; ref 0x0000efe4 -> 0x10001ff8
+0000ec00  str  r0, [r1,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000ec02  b  0x0000ec2e
+      ; jump -> 0x0000ec2e
+0000ec04  ldr  r0, [0x0000efe4]
+      ; ref 0x0000efe4 -> 0x10001ff8
+0000ec06  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000ec08  adds  r0, r0, #0x1
+0000ec0a  ldr  r1, [0x0000efe4]
+      ; ref 0x0000efe4 -> 0x10001ff8
+0000ec0c  str  r0, [r1,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000ec0e  mov  r0, r1
+0000ec10  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000ec12  cmp  r0, #0x32
+0000ec14  bls  0x0000ec2e
+      ; jump -> 0x0000ec2e
+0000ec16  movs  r0, #0x0
+0000ec18  str  r0, [r1,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000ec1a  movs  r0, #0x2
+0000ec1c  ldr  r1, [0x0000efe0]
+      ; ref 0x0000efe0 -> 0x10002000
+0000ec1e  str  r0, [r1,#0x0]
+      ; ref 0x10002000 (no mem)
+0000ec20  ldr  r0, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ec22  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ec24  ldr  r1, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ec26  str  r0, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ec28  movs  r0, #0x0
+0000ec2a  ldr  r1, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000ec2c  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ec2e  ldr  r0, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ec30  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ec32  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ec34  ldr  r1, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ec36  cmp  r0, r1
+0000ec38  bcc  0x0000ec42
+      ; jump -> 0x0000ec42
+0000ec3a  movs  r0, #0x0
+0000ec3c  ldr  r1, [0x0000eff4]
+      ; ref 0x0000eff4 -> 0x10001ffc
+0000ec3e  str  r0, [r1,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000ec40  b  0x0000ec6a
+      ; jump -> 0x0000ec6a
+0000ec42  ldr  r0, [0x0000eff4]
+      ; ref 0x0000eff4 -> 0x10001ffc
+0000ec44  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000ec46  adds  r0, r0, #0x1
+0000ec48  ldr  r1, [0x0000eff4]
+      ; ref 0x0000eff4 -> 0x10001ffc
+0000ec4a  str  r0, [r1,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000ec4c  mov  r0, r1
+0000ec4e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000ec50  cmp  r0, #0xa
+0000ec52  bls  0x0000ec6a
+      ; jump -> 0x0000ec6a
+0000ec54  movs  r0, #0x0
+0000ec56  str  r0, [r1,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000ec58  ldr  r1, [0x0000efe0]
+      ; ref 0x0000efe0 -> 0x10002000
+0000ec5a  str  r0, [r1,#0x0]
+      ; ref 0x10002000 (no mem)
+0000ec5c  ldr  r0, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ec5e  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ec60  ldr  r1, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ec62  str  r0, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ec64  movs  r0, #0x0
+0000ec66  ldr  r1, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000ec68  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ec6a  ldr  r0, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ec6c  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ec6e  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ec70  ldr  r1, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ec72  cmp  r0, r1
+0000ec74  bcc  0x0000ecbc
+      ; jump -> 0x0000ecbc
+0000ec76  ldr  r0, [0x0000eff8]
+      ; ref 0x0000eff8 -> 0x10001630
+0000ec78  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000ec7a  ldr  r1, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000ec7c  ldr  r1, [r1,#0x0]
+      ; ref 0x1000163c (no mem)
+0000ec7e  cmp  r0, r1
+0000ec80  bcc  0x0000ecbc
+      ; jump -> 0x0000ecbc
+0000ec82  ldr  r0, [0x0000efe0]
+      ; ref 0x0000efe0 -> 0x10002000
+0000ec84  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000ec86  cmp  r0, #0x2
+0000ec88  bne  0x0000ecbc
+      ; jump -> 0x0000ecbc
+0000ec8a  ldr  r0, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ec8c  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ec8e  ldr  r1, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ec90  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ec92  ldr  r0, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ec94  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ec96  adds  r0, r0, #0x1
+0000ec98  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ec9a  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ec9c  mov  r0, r1
+0000ec9e  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000eca0  movw  r1, #0x1770
+0000eca4  cmp  r0, r1
+0000eca6  bls  0x0000ecae
+      ; jump -> 0x0000ecae
+0000eca8  mov  r0, r1
+0000ecaa  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ecac  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ecae  ldr  r0, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ecb0  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ecb2  ldr  r1, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ecb4  str  r0, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ecb6  movs  r0, #0x0
+0000ecb8  ldr  r1, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000ecba  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ecbc  ldr  r0, [0x0000eff8]
+      ; ref 0x0000eff8 -> 0x10001630
+0000ecbe  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000ecc0  ldr  r1, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000ecc2  ldr  r1, [r1,#0x0]
+      ; ref 0x1000163c (no mem)
+0000ecc4  cmp  r0, r1
+0000ecc6  bcc  0x0000ed1a
+      ; jump -> 0x0000ed1a
+0000ecc8  ldr  r0, [0x0000efe0]
+      ; ref 0x0000efe0 -> 0x10002000
+0000ecca  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000eccc  cmp  r0, #0x1
+0000ecce  bne  0x0000ed1a
+      ; jump -> 0x0000ed1a
+0000ecd0  ldr  r0, [0x0000effc]
+      ; ref 0x0000effc -> 0x10001634
+0000ecd2  b  0x0000ecd6
+      ; jump -> 0x0000ecd6
+0000ecd4  b  0x0000ee2a
+      ; jump -> 0x0000ee2a
+0000ecd6  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000ecd8  ldr  r1, [0x0000eff8]
+      ; ref 0x0000eff8 -> 0x10001630
+0000ecda  ldr  r1, [r1,#0x0]
+      ; ref 0x10001630 (no mem)
+0000ecdc  cmp  r0, r1
+0000ecde  bcs  0x0000ed1a
+      ; jump -> 0x0000ed1a
+0000ece0  movs  r0, #0x1
+0000ece2  ldr  r1, [0x0000f000]
+      ; ref 0x0000f000 -> 0x10002004
+0000ece4  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000ece6  ldr  r0, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000ece8  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ecea  cmp  r0, #0x1
+0000ecec  beq  0x0000ecfc
+      ; jump -> 0x0000ecfc
+0000ecee  movs  r0, #0x1
+0000ecf0  ldr  r1, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000ecf2  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ecf4  ldr  r0, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ecf6  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ecf8  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ecfa  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ecfc  ldr  r0, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ecfe  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ed00  cmp  r0, #0x2
+0000ed02  bcs  0x0000ed0a
+      ; jump -> 0x0000ed0a
+0000ed04  movs  r0, #0x1
+0000ed06  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ed08  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ed0a  ldr  r0, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000ed0c  ldr  r0, [r0,#0x0]
+      ; ref 0x1000163c (no mem)
+0000ed0e  ldr  r1, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ed10  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ed12  ldr  r0, [0x0000f004]
+      ; ref 0x0000f004 -> 0x100015bc
+0000ed14  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000ed16  ldr  r1, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ed18  str  r0, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ed1a  ldr  r0, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ed1c  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ed1e  ldr  r1, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ed20  ldr  r1, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ed22  cmp  r0, r1
+0000ed24  bcc  0x0000ed80
+      ; jump -> 0x0000ed80
+0000ed26  ldr  r0, [0x0000eff8]
+      ; ref 0x0000eff8 -> 0x10001630
+0000ed28  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000ed2a  ldr  r1, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000ed2c  ldr  r1, [r1,#0x0]
+      ; ref 0x1000163c (no mem)
+0000ed2e  cmp  r0, r1
+0000ed30  bcc  0x0000ed80
+      ; jump -> 0x0000ed80
+0000ed32  ldr  r0, [0x0000efe0]
+      ; ref 0x0000efe0 -> 0x10002000
+0000ed34  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000ed36  cmp  r0, #0x1
+0000ed38  bne  0x0000ed80
+      ; jump -> 0x0000ed80
+0000ed3a  ldr  r0, [0x0000effc]
+      ; ref 0x0000effc -> 0x10001634
+0000ed3c  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000ed3e  ldr  r1, [0x0000eff8]
+      ; ref 0x0000eff8 -> 0x10001630
+0000ed40  ldr  r1, [r1,#0x0]
+      ; ref 0x10001630 (no mem)
+0000ed42  cmp  r0, r1
+0000ed44  bcc  0x0000ed80
+      ; jump -> 0x0000ed80
+0000ed46  movs  r0, #0x1
+0000ed48  ldr  r1, [0x0000f000]
+      ; ref 0x0000f000 -> 0x10002004
+0000ed4a  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000ed4c  ldr  r0, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000ed4e  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ed50  cmp  r0, #0x1
+0000ed52  beq  0x0000ed62
+      ; jump -> 0x0000ed62
+0000ed54  movs  r0, #0x1
+0000ed56  ldr  r1, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000ed58  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000ed5a  ldr  r0, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ed5c  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ed5e  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ed60  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ed62  ldr  r0, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ed64  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ed66  cmp  r0, #0x2
+0000ed68  bcs  0x0000ed70
+      ; jump -> 0x0000ed70
+0000ed6a  movs  r0, #0x1
+0000ed6c  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000ed6e  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000ed70  ldr  r0, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000ed72  ldr  r0, [r0,#0x0]
+      ; ref 0x1000163c (no mem)
+0000ed74  ldr  r1, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ed76  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ed78  ldr  r0, [0x0000f004]
+      ; ref 0x0000f004 -> 0x100015bc
+0000ed7a  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000ed7c  ldr  r1, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ed7e  str  r0, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ed80  ldr  r0, [0x0000efd8]
+      ; ref 0x0000efd8 -> 0x10001590
+0000ed82  ldr  r0, [r0,#0x0]
+      ; ref 0x10001590 (no mem)
+0000ed84  cmp  r0, #0x2
+0000ed86  bcs  0x0000edd4
+      ; jump -> 0x0000edd4
+0000ed88  ldr  r0, [0x0000eff8]
+      ; ref 0x0000eff8 -> 0x10001630
+0000ed8a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000ed8c  ldr  r1, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000ed8e  ldr  r1, [r1,#0x0]
+      ; ref 0x1000163c (no mem)
+0000ed90  cmp  r0, r1
+0000ed92  bcc  0x0000edd4
+      ; jump -> 0x0000edd4
+0000ed94  ldr  r0, [0x0000efe0]
+      ; ref 0x0000efe0 -> 0x10002000
+0000ed96  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000ed98  cmp  r0, #0x1
+0000ed9a  bne  0x0000edd4
+      ; jump -> 0x0000edd4
+0000ed9c  ldr  r1, [0x0000f000]
+      ; ref 0x0000f000 -> 0x10002004
+0000ed9e  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000eda0  ldr  r0, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000eda2  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000204f (no mem)
+0000eda4  cmp  r0, #0x1
+0000eda6  beq  0x0000edb6
+      ; jump -> 0x0000edb6
+0000eda8  movs  r0, #0x1
+0000edaa  ldr  r1, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000edac  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000edae  ldr  r0, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000edb0  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000edb2  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000edb4  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000edb6  ldr  r0, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000edb8  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000edba  cmp  r0, #0x2
+0000edbc  bcs  0x0000edc4
+      ; jump -> 0x0000edc4
+0000edbe  movs  r0, #0x1
+0000edc0  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000edc2  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000edc4  ldr  r0, [0x0000efd4]
+      ; ref 0x0000efd4 -> 0x1000163c
+0000edc6  ldr  r0, [r0,#0x0]
+      ; ref 0x1000163c (no mem)
+0000edc8  ldr  r1, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000edca  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000edcc  ldr  r0, [0x0000f004]
+      ; ref 0x0000f004 -> 0x100015bc
+0000edce  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000edd0  ldr  r1, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000edd2  str  r0, [r1,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000edd4  ldr  r0, [0x0000f008]
+      ; ref 0x0000f008 -> 0x100015b0
+0000edd6  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b0 (no mem)
+0000edd8  cmp  r0, #0x5
+0000edda  bcs  0x0000ee0c
+      ; jump -> 0x0000ee0c
+0000eddc  ldr  r0, [0x0000f00c]
+      ; ref 0x0000f00c -> 0x10002058
+0000edde  ldrb  r0, [r0,#0x0]
+      ; ref 0x10002058 (no mem)
+0000ede0  cmp  r0, #0x1
+0000ede2  bne  0x0000ee0c
+      ; jump -> 0x0000ee0c
+0000ede4  ldr  r0, [0x0000f010]
+      ; ref 0x0000f010 -> 0x10001651
+0000ede6  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001651 (no mem)
+0000ede8  cmp  r0, #0x1
+0000edea  bne  0x0000ee0c
+      ; jump -> 0x0000ee0c
+0000edec  ldr  r0, [0x0000f014]
+      ; ref 0x0000f014 -> 0x10002074
+0000edee  ldr  r0, [r0,#0x0]
+      ; ref 0x10002074 (no mem)
+0000edf0  adds  r0, r0, #0x1
+0000edf2  ldr  r1, [0x0000f014]
+      ; ref 0x0000f014 -> 0x10002074
+0000edf4  str  r0, [r1,#0x0]
+      ; ref 0x10002074 (no mem)
+0000edf6  mov  r0, r1
+0000edf8  ldr  r0, [r0,#0x0]
+      ; ref 0x10002074 (no mem)
+0000edfa  cmp  r0, #0x64
+0000edfc  bls  0x0000ee12
+      ; jump -> 0x0000ee12
+0000edfe  ldr  r0, [0x0000f018]
+      ; ref 0x0000f018 -> 0x1000161c
+0000ee00  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000ee02  orr  r0, r0, #0x800
+0000ee06  ldr  r1, [0x0000f018]
+      ; ref 0x0000f018 -> 0x1000161c
+0000ee08  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000ee0a  b  0x0000ee12
+      ; jump -> 0x0000ee12
+0000ee0c  movs  r0, #0x0
+0000ee0e  ldr  r1, [0x0000f014]
+      ; ref 0x0000f014 -> 0x10002074
+0000ee10  str  r0, [r1,#0x0]
+      ; ref 0x10002074 (no mem)
+0000ee12  ldr  r0, [0x0000f01c]
+      ; ref 0x0000f01c -> 0x10001707
+0000ee14  ldrb  r3, [r0,#0x0]
+      ; ref 0x10001707 (no mem)
+0000ee16  ldr  r0, [0x0000f020]
+      ; ref 0x0000f020 -> 0x10001706
+0000ee18  ldrb  r2, [r0,#0x0]
+      ; ref 0x10001706 (no mem)
+0000ee1a  ldr  r0, [0x0000efe8]
+      ; ref 0x0000efe8 -> 0x100015b8
+0000ee1c  ldr  r1, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000ee1e  ldr  r0, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ee20  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ee22  bl  0x000110f6
+      ; call -> 0x000110f6
+0000ee26  ldr  r1, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ee28  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ee2a  ldr  r0, [0x0000f028]
+      ; ref 0x0000f028 -> 0x10001fe8
+0000ee2c  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000ee2e  movw  r1, #0x18bd
+0000ee32  muls  r0, r1
+0000ee34  ldr  r1, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ee36  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ee38  cmp  r0, r1
+0000ee3a  bcs  0x0000ee50
+      ; jump -> 0x0000ee50
+0000ee3c  ldr  r0, [0x0000f02c]
+      ; ref 0x0000f02c -> 0x10001762
+0000ee3e  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000ee40  cbnz  r0, 0x0000ee50
+      ; jump -> 0x0000ee50
+0000ee42  ldr  r0, [0x0000f028]
+      ; ref 0x0000f028 -> 0x10001fe8
+0000ee44  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000ee46  movw  r1, #0x18bd
+0000ee4a  muls  r0, r1
+0000ee4c  ldr  r1, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ee4e  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ee50  ldr  r0, [0x0000f030]
+      ; ref 0x0000f030 -> 0x10001fe4
+0000ee52  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000ee54  movw  r1, #0x18bd
+0000ee58  muls  r0, r1
+0000ee5a  ldr  r1, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ee5c  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ee5e  cmp  r0, r1
+0000ee60  bcc  0x0000ee76
+      ; jump -> 0x0000ee76
+0000ee62  ldr  r0, [0x0000f02c]
+      ; ref 0x0000f02c -> 0x10001762
+0000ee64  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000ee66  cbnz  r0, 0x0000ee76
+      ; jump -> 0x0000ee76
+0000ee68  ldr  r0, [0x0000f030]
+      ; ref 0x0000f030 -> 0x10001fe4
+0000ee6a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000ee6c  movw  r1, #0x18bd
+0000ee70  muls  r0, r1
+0000ee72  ldr  r1, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ee74  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ee76  ldr  r0, [0x0000f034]
+      ; ref 0x0000f034 -> 0x1000162c
+0000ee78  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000162c (no mem)
+0000ee7a  cmp  r0, #0x1
+0000ee7c  bne  0x0000ef7c
+      ; jump -> 0x0000ef7c
+0000ee7e  ldr  r0, [0x0000efdc]
+      ; ref 0x0000efdc -> 0x100015d0
+0000ee80  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000ee82  ldr  r1, [0x0000f038]
+      ; ref 0x0000f038 -> 0x1000202c
+0000ee84  str  r0, [r1,#0x0]
+      ; ref 0x1000202c (no mem)
+0000ee86  movs  r0, #0x0
+0000ee88  ldr  r1, [0x0000f000]
+      ; ref 0x0000f000 -> 0x10002004
+0000ee8a  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000ee8c  ldr  r0, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000ee8e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000ee90  cbnz  r0, 0x0000eec0
+      ; jump -> 0x0000eec0
+0000ee92  movs  r0, #0x4
+0000ee94  ldr  r1, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000ee96  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000ee98  movs  r0, #0x0
+0000ee9a  ldr  r1, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ee9c  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ee9e  mov  r0, r1
+0000eea0  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000eea2  ldr  r1, [0x0000f03c]
+      ; ref 0x0000f03c -> 0x100020f8
+0000eea4  str  r0, [r1,#0x0]
+      ; ref 0x100020f8 (no mem)
+0000eea6  movs  r0, #0x0
+0000eea8  ldr  r1, [0x0000f040]
+      ; ref 0x0000f040 -> 0x100020e4
+0000eeaa  str  r0, [r1,#0x0]
+      ; ref 0x100020e4 (no mem)
+0000eeac  ldr  r1, [0x0000f044]
+      ; ref 0x0000f044 -> 0x100020e8
+0000eeae  str  r0, [r1,#0x0]
+      ; ref 0x100020e8 (no mem)
+0000eeb0  ldr  r1, [0x0000f014]
+      ; ref 0x0000f014 -> 0x10002074
+0000eeb2  str  r0, [r1,#0x0]
+      ; ref 0x10002074 (no mem)
+0000eeb4  ldr  r1, [0x0000efec]
+      ; ref 0x0000efec -> 0x1000204f
+0000eeb6  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000eeb8  movw  r0, #0x1771
+0000eebc  ldr  r1, [0x0000eff0]
+      ; ref 0x0000eff0 -> 0x10002030
+0000eebe  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000eec0  ldr  r0, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000eec2  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000eec4  cmp  r0, #0x4
+0000eec6  bne  0x0000efbc
+      ; jump -> 0x0000efbc
+0000eec8  ldr  r0, [0x0000f048]
+      ; ref 0x0000f048 -> 0x100015a8
+0000eeca  ldr  r0, [r0,#0x0]
+      ; ref 0x100015a8 (no mem)
+0000eecc  ldr  r1, [0x0000f038]
+      ; ref 0x0000f038 -> 0x1000202c
+0000eece  str  r0, [r1,#0x0]
+      ; ref 0x1000202c (no mem)
+0000eed0  ldr  r0, [0x0000f030]
+      ; ref 0x0000f030 -> 0x10001fe4
+0000eed2  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000eed4  movw  r1, #0x18bd
+0000eed8  muls  r0, r1
+0000eeda  movs  r1, #0x64
+0000eedc  udiv  r0, r0, r1
+0000eee0  movw  r1, #0x2c88
+0000eee4  subs  r0, r1, r0
+0000eee6  movs  r1, #0x32
+0000eee8  udiv  r0, r0, r1
+0000eeec  ldr  r1, [0x0000f04c]
+      ; ref 0x0000f04c -> 0x10001644
+0000eeee  ldrb  r1, [r1,#0x0]
+      ; ref 0x10001644 (no mem)
+0000eef0  udiv  r0, r0, r1
+0000eef4  ldr  r1, [0x0000f050]
+      ; ref 0x0000f050 -> 0x10002040
+0000eef6  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000eef8  ldr  r0, [0x0000f054]
+      ; ref 0x0000f054 -> 0x10002044
+0000eefa  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000eefc  ldr  r1, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000eefe  add  r0, r1
+0000ef00  ldr  r1, [0x0000f054]
+      ; ref 0x0000f054 -> 0x10002044
+0000ef02  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000ef04  ldr  r0, [0x0000f058]
+      ; ref 0x0000f058 -> 0x1000201c
+0000ef06  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201c (no mem)
+0000ef08  cbnz  r0, 0x0000ef2a
+      ; jump -> 0x0000ef2a
+0000ef0a  ldr  r0, [0x0000f030]
+      ; ref 0x0000f030 -> 0x10001fe4
+0000ef0c  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000ef0e  movw  r1, #0x18bd
+0000ef12  muls  r0, r1
+0000ef14  movs  r1, #0x64
+0000ef16  udiv  r0, r0, r1
+0000ef1a  ldr  r1, [0x0000f054]
+      ; ref 0x0000f054 -> 0x10002044
+0000ef1c  ldr  r1, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000ef1e  add  r0, r1
+0000ef20  ldr  r1, [0x0000f05c]
+      ; ref 0x0000f05c -> 0x10002048
+0000ef22  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ef24  movs  r0, #0x1
+0000ef26  ldr  r1, [0x0000efcc]
+      ; ref 0x0000efcc -> 0x1000201d
+0000ef28  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000ef2a  ldr  r0, [0x0000f058]
+      ; ref 0x0000f058 -> 0x1000201c
+0000ef2c  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201c (no mem)
+0000ef2e  cmp  r0, #0x1
+0000ef30  bne  0x0000ef40
+      ; jump -> 0x0000ef40
+0000ef32  ldr  r0, [0x0000f054]
+      ; ref 0x0000f054 -> 0x10002044
+0000ef34  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000ef36  ldr  r1, [0x0000f05c]
+      ; ref 0x0000f05c -> 0x10002048
+0000ef38  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ef3a  movs  r0, #0x0
+0000ef3c  ldr  r1, [0x0000efcc]
+      ; ref 0x0000efcc -> 0x1000201d
+0000ef3e  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000ef40  ldr  r0, [0x0000f05c]
+      ; ref 0x0000f05c -> 0x10002048
+0000ef42  ldr  r0, [r0,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ef44  movs  r1, #0x64
+0000ef46  muls  r0, r1
+0000ef48  ldr  r1, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ef4a  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ef4c  mov  r0, r1
+0000ef4e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ef50  ldr  r1, [0x0000f060]
+      ; ref 0x0000f060 -> 0x10002104
+0000ef52  str  r0, [r1,#0x0]
+      ; ref 0x10002104 (no mem)
+0000ef54  ldr  r0, [0x0000f024]
+      ; ref 0x0000f024 -> 0x10001fdc
+0000ef56  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000ef58  ldr  r1, [0x0000f03c]
+      ; ref 0x0000f03c -> 0x100020f8
+0000ef5a  str  r0, [r1,#0x0]
+      ; ref 0x100020f8 (no mem)
+0000ef5c  movs  r0, #0x0
+0000ef5e  ldr  r1, [0x0000f040]
+      ; ref 0x0000f040 -> 0x100020e4
+0000ef60  str  r0, [r1,#0x0]
+      ; ref 0x100020e4 (no mem)
+0000ef62  ldr  r1, [0x0000f044]
+      ; ref 0x0000f044 -> 0x100020e8
+0000ef64  str  r0, [r1,#0x0]
+      ; ref 0x100020e8 (no mem)
+0000ef66  ldr  r0, [0x0000f038]
+      ; ref 0x0000f038 -> 0x1000202c
+0000ef68  ldr  r0, [r0,#0x0]
+      ; ref 0x1000202c (no mem)
+0000ef6a  mov.w  r1, #0x2f8
+0000ef6e  muls  r0, r1
+0000ef70  movs  r1, #0x64
+0000ef72  udiv  r0, r0, r1
+0000ef76  addw  r0, r0, #0xedd
+0000ef7a  b  0x0000ef7e
+      ; jump -> 0x0000ef7e
+0000ef7c  b  0x0000f30e
+      ; jump -> 0x0000f30e
+0000ef7e  ldr  r1, [0x0000f05c]
+      ; ref 0x0000f05c -> 0x10002048
+0000ef80  ldr  r1, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000ef82  cmp  r0, r1
+0000ef84  bcs  0x0000ef8c
+      ; jump -> 0x0000ef8c
+0000ef86  movs  r0, #0x5
+0000ef88  ldr  r1, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000ef8a  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000ef8c  ldr  r0, [0x0000efd8]
+      ; ref 0x0000efd8 -> 0x10001590
+0000ef8e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001590 (no mem)
+0000ef90  ldr  r1, [0x0000f064]
+      ; ref 0x0000f064 -> 0x10001640
+0000ef92  ldr  r1, [r1,#0x0]
+      ; ref 0x10001640 (no mem)
+0000ef94  cmp  r0, r1
+0000ef96  bcc  0x0000efaa
+      ; jump -> 0x0000efaa
+0000ef98  ldr  r0, [0x0000effc]
+      ; ref 0x0000effc -> 0x10001634
+0000ef9a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000ef9c  ldr  r1, [0x0000f064]
+      ; ref 0x0000f064 -> 0x10001640
+0000ef9e  ldr  r1, [r1,#0x0]
+      ; ref 0x10001640 (no mem)
+0000efa0  cmp  r0, r1
+0000efa2  bcc  0x0000efaa
+      ; jump -> 0x0000efaa
+0000efa4  movs  r0, #0x5
+0000efa6  ldr  r1, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000efa8  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000efaa  ldr  r0, [0x0000f068]
+      ; ref 0x0000f068 -> 0x100015b4
+0000efac  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b4 (no mem)
+0000efae  ldr  r1, [0x0000f004]
+      ; ref 0x0000f004 -> 0x100015bc
+0000efb0  ldr  r1, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000efb2  cmp  r0, r1
+0000efb4  bcs  0x0000efbc
+      ; jump -> 0x0000efbc
+0000efb6  movs  r0, #0x5
+0000efb8  ldr  r1, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000efba  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000efbc  ldr  r0, [0x0000efc8]
+      ; ref 0x0000efc8 -> 0x10001fe0
+0000efbe  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000efc0  cmp  r0, #0x5
+0000efc2  b  0x0000f06c
+      ; jump -> 0x0000f06c
+0000efc4  b  0x0000f5d4
+      ; jump -> 0x0000f5d4
+0000f06c  bne  0x0000f16c
+      ; jump -> 0x0000f16c
+0000f06e  movs  r0, #0x0
+0000f070  ldr  r1, [0x0000f468]
+      ; ref 0x0000f468 -> 0x1000201d
+0000f072  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000f074  ldr  r0, [0x0000f46c]
+      ; ref 0x0000f46c -> 0x10001590
+0000f076  ldr  r0, [r0,#0x0]
+      ; ref 0x10001590 (no mem)
+0000f078  ldr  r1, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f07a  ldr  r1, [r1,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f07c  cmp  r0, r1
+0000f07e  bcc  0x0000f09c
+      ; jump -> 0x0000f09c
+0000f080  ldr  r0, [0x0000f474]
+      ; ref 0x0000f474 -> 0x10001594
+0000f082  ldr  r0, [r0,#0x0]
+      ; ref 0x10001594 (no mem)
+0000f084  ldr  r1, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f086  ldr  r1, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f088  cmp  r0, r1
+0000f08a  bcs  0x0000f09c
+      ; jump -> 0x0000f09c
+0000f08c  movs  r0, #0x1
+0000f08e  ldr  r1, [0x0000f47c]
+      ; ref 0x0000f47c -> 0x10002000
+0000f090  str  r0, [r1,#0x0]
+      ; ref 0x10002000 (no mem)
+0000f092  movs  r0, #0x0
+0000f094  ldr  r1, [0x0000f480]
+      ; ref 0x0000f480 -> 0x10001ff8
+0000f096  str  r0, [r1,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000f098  b  0x0000f0c6
+      ; jump -> 0x0000f0c6
+0000f09a  b  0x0000f414
+      ; jump -> 0x0000f414
+0000f09c  ldr  r0, [0x0000f480]
+      ; ref 0x0000f480 -> 0x10001ff8
+0000f09e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000f0a0  adds  r0, r0, #0x1
+0000f0a2  ldr  r1, [0x0000f480]
+      ; ref 0x0000f480 -> 0x10001ff8
+0000f0a4  str  r0, [r1,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000f0a6  mov  r0, r1
+0000f0a8  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000f0aa  cmp  r0, #0x32
+0000f0ac  bls  0x0000f0c6
+      ; jump -> 0x0000f0c6
+0000f0ae  movs  r0, #0x0
+0000f0b0  str  r0, [r1,#0x0]
+      ; ref 0x10001ff8 (no mem)
+0000f0b2  movs  r0, #0x2
+0000f0b4  ldr  r1, [0x0000f47c]
+      ; ref 0x0000f47c -> 0x10002000
+0000f0b6  str  r0, [r1,#0x0]
+      ; ref 0x10002000 (no mem)
+0000f0b8  ldr  r0, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f0ba  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f0bc  ldr  r1, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f0be  str  r0, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f0c0  movs  r0, #0x0
+0000f0c2  ldr  r1, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f0c4  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f0c6  ldr  r0, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f0c8  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f0ca  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f0cc  ldr  r1, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f0ce  cmp  r0, r1
+0000f0d0  bcc  0x0000f0da
+      ; jump -> 0x0000f0da
+0000f0d2  movs  r0, #0x0
+0000f0d4  ldr  r1, [0x0000f490]
+      ; ref 0x0000f490 -> 0x10001ffc
+0000f0d6  str  r0, [r1,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000f0d8  b  0x0000f102
+      ; jump -> 0x0000f102
+0000f0da  ldr  r0, [0x0000f490]
+      ; ref 0x0000f490 -> 0x10001ffc
+0000f0dc  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000f0de  adds  r0, r0, #0x1
+0000f0e0  ldr  r1, [0x0000f490]
+      ; ref 0x0000f490 -> 0x10001ffc
+0000f0e2  str  r0, [r1,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000f0e4  mov  r0, r1
+0000f0e6  ldr  r0, [r0,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000f0e8  cmp  r0, #0xa
+0000f0ea  bls  0x0000f102
+      ; jump -> 0x0000f102
+0000f0ec  movs  r0, #0x0
+0000f0ee  str  r0, [r1,#0x0]
+      ; ref 0x10001ffc (no mem)
+0000f0f0  ldr  r1, [0x0000f47c]
+      ; ref 0x0000f47c -> 0x10002000
+0000f0f2  str  r0, [r1,#0x0]
+      ; ref 0x10002000 (no mem)
+0000f0f4  ldr  r0, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f0f6  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f0f8  ldr  r1, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f0fa  str  r0, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f0fc  movs  r0, #0x0
+0000f0fe  ldr  r1, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f100  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f102  ldr  r0, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f104  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f106  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f108  ldr  r1, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f10a  cmp  r0, r1
+0000f10c  bcc  0x0000f154
+      ; jump -> 0x0000f154
+0000f10e  ldr  r0, [0x0000f494]
+      ; ref 0x0000f494 -> 0x10001634
+0000f110  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000f112  ldr  r1, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f114  ldr  r1, [r1,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f116  cmp  r0, r1
+0000f118  bcc  0x0000f154
+      ; jump -> 0x0000f154
+0000f11a  ldr  r0, [0x0000f47c]
+      ; ref 0x0000f47c -> 0x10002000
+0000f11c  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000f11e  cmp  r0, #0x2
+0000f120  bne  0x0000f154
+      ; jump -> 0x0000f154
+0000f122  ldr  r0, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f124  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f126  ldr  r1, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f128  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f12a  ldr  r0, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f12c  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f12e  adds  r0, r0, #0x1
+0000f130  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f132  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f134  mov  r0, r1
+0000f136  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f138  movw  r1, #0x1770
+0000f13c  cmp  r0, r1
+0000f13e  bls  0x0000f146
+      ; jump -> 0x0000f146
+0000f140  mov  r0, r1
+0000f142  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f144  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f146  ldr  r0, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f148  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f14a  ldr  r1, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f14c  str  r0, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f14e  movs  r0, #0x0
+0000f150  ldr  r1, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f152  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f154  ldr  r0, [0x0000f494]
+      ; ref 0x0000f494 -> 0x10001634
+0000f156  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000f158  ldr  r1, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f15a  ldr  r1, [r1,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f15c  cmp  r0, r1
+0000f15e  bcc  0x0000f1b2
+      ; jump -> 0x0000f1b2
+0000f160  ldr  r0, [0x0000f47c]
+      ; ref 0x0000f47c -> 0x10002000
+0000f162  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000f164  cmp  r0, #0x1
+0000f166  bne  0x0000f1b2
+      ; jump -> 0x0000f1b2
+0000f168  ldr  r0, [0x0000f498]
+      ; ref 0x0000f498 -> 0x10001630
+0000f16a  b  0x0000f16e
+      ; jump -> 0x0000f16e
+0000f16c  b  0x0000f2c2
+      ; jump -> 0x0000f2c2
+0000f16e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000f170  ldr  r1, [0x0000f494]
+      ; ref 0x0000f494 -> 0x10001634
+0000f172  ldr  r1, [r1,#0x0]
+      ; ref 0x10001634 (no mem)
+0000f174  cmp  r0, r1
+0000f176  bcs  0x0000f1b2
+      ; jump -> 0x0000f1b2
+0000f178  movs  r0, #0x1
+0000f17a  ldr  r1, [0x0000f49c]
+      ; ref 0x0000f49c -> 0x10002004
+0000f17c  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000f17e  ldr  r0, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f180  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f182  cmp  r0, #0x1
+0000f184  beq  0x0000f194
+      ; jump -> 0x0000f194
+0000f186  movs  r0, #0x1
+0000f188  ldr  r1, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f18a  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f18c  ldr  r0, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f18e  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f190  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f192  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f194  ldr  r0, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f196  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f198  cmp  r0, #0x2
+0000f19a  bcs  0x0000f1a2
+      ; jump -> 0x0000f1a2
+0000f19c  movs  r0, #0x1
+0000f19e  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f1a0  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f1a2  ldr  r0, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f1a4  ldr  r0, [r0,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f1a6  ldr  r1, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f1a8  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f1aa  ldr  r0, [0x0000f4a0]
+      ; ref 0x0000f4a0 -> 0x100015b8
+0000f1ac  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000f1ae  ldr  r1, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f1b0  str  r0, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f1b2  ldr  r0, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f1b4  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f1b6  ldr  r1, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f1b8  ldr  r1, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f1ba  cmp  r0, r1
+0000f1bc  bcc  0x0000f218
+      ; jump -> 0x0000f218
+0000f1be  ldr  r0, [0x0000f494]
+      ; ref 0x0000f494 -> 0x10001634
+0000f1c0  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000f1c2  ldr  r1, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f1c4  ldr  r1, [r1,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f1c6  cmp  r0, r1
+0000f1c8  bcc  0x0000f218
+      ; jump -> 0x0000f218
+0000f1ca  ldr  r0, [0x0000f47c]
+      ; ref 0x0000f47c -> 0x10002000
+0000f1cc  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000f1ce  cmp  r0, #0x1
+0000f1d0  bne  0x0000f218
+      ; jump -> 0x0000f218
+0000f1d2  ldr  r0, [0x0000f498]
+      ; ref 0x0000f498 -> 0x10001630
+0000f1d4  ldr  r0, [r0,#0x0]
+      ; ref 0x10001630 (no mem)
+0000f1d6  ldr  r1, [0x0000f494]
+      ; ref 0x0000f494 -> 0x10001634
+0000f1d8  ldr  r1, [r1,#0x0]
+      ; ref 0x10001634 (no mem)
+0000f1da  cmp  r0, r1
+0000f1dc  bcc  0x0000f218
+      ; jump -> 0x0000f218
+0000f1de  movs  r0, #0x1
+0000f1e0  ldr  r1, [0x0000f49c]
+      ; ref 0x0000f49c -> 0x10002004
+0000f1e2  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000f1e4  ldr  r0, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f1e6  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f1e8  cmp  r0, #0x1
+0000f1ea  beq  0x0000f1fa
+      ; jump -> 0x0000f1fa
+0000f1ec  movs  r0, #0x1
+0000f1ee  ldr  r1, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f1f0  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f1f2  ldr  r0, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f1f4  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f1f6  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f1f8  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f1fa  ldr  r0, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f1fc  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f1fe  cmp  r0, #0x2
+0000f200  bcs  0x0000f208
+      ; jump -> 0x0000f208
+0000f202  movs  r0, #0x1
+0000f204  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f206  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f208  ldr  r0, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f20a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f20c  ldr  r1, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f20e  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f210  ldr  r0, [0x0000f4a0]
+      ; ref 0x0000f4a0 -> 0x100015b8
+0000f212  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000f214  ldr  r1, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f216  str  r0, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f218  ldr  r0, [0x0000f474]
+      ; ref 0x0000f474 -> 0x10001594
+0000f21a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001594 (no mem)
+0000f21c  cmp  r0, #0x2
+0000f21e  bcs  0x0000f26c
+      ; jump -> 0x0000f26c
+0000f220  ldr  r0, [0x0000f494]
+      ; ref 0x0000f494 -> 0x10001634
+0000f222  ldr  r0, [r0,#0x0]
+      ; ref 0x10001634 (no mem)
+0000f224  ldr  r1, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f226  ldr  r1, [r1,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f228  cmp  r0, r1
+0000f22a  bcc  0x0000f26c
+      ; jump -> 0x0000f26c
+0000f22c  ldr  r0, [0x0000f47c]
+      ; ref 0x0000f47c -> 0x10002000
+0000f22e  ldr  r0, [r0,#0x0]
+      ; ref 0x10002000 (no mem)
+0000f230  cmp  r0, #0x1
+0000f232  bne  0x0000f26c
+      ; jump -> 0x0000f26c
+0000f234  ldr  r1, [0x0000f49c]
+      ; ref 0x0000f49c -> 0x10002004
+0000f236  str  r0, [r1,#0x0]
+      ; ref 0x10002004 (no mem)
+0000f238  ldr  r0, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f23a  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f23c  cmp  r0, #0x1
+0000f23e  beq  0x0000f24e
+      ; jump -> 0x0000f24e
+0000f240  movs  r0, #0x1
+0000f242  ldr  r1, [0x0000f488]
+      ; ref 0x0000f488 -> 0x1000204f
+0000f244  strb  r0, [r1,#0x0]
+      ; ref 0x1000204f (no mem)
+0000f246  ldr  r0, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f248  ldr  r0, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f24a  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f24c  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f24e  ldr  r0, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f250  ldr  r0, [r0,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f252  cmp  r0, #0x2
+0000f254  bcs  0x0000f25c
+      ; jump -> 0x0000f25c
+0000f256  movs  r0, #0x1
+0000f258  ldr  r1, [0x0000f48c]
+      ; ref 0x0000f48c -> 0x10002030
+0000f25a  str  r0, [r1,#0x0]
+      ; ref 0x10002030 (no mem)
+0000f25c  ldr  r0, [0x0000f470]
+      ; ref 0x0000f470 -> 0x10001640
+0000f25e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001640 (no mem)
+0000f260  ldr  r1, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f262  str  r0, [r1,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f264  ldr  r0, [0x0000f4a0]
+      ; ref 0x0000f4a0 -> 0x100015b8
+0000f266  ldr  r0, [r0,#0x0]
+      ; ref 0x100015b8 (no mem)
+0000f268  ldr  r1, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f26a  str  r0, [r1,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f26c  ldr  r0, [0x0000f4a4]
+      ; ref 0x0000f4a4 -> 0x100015ac
+0000f26e  ldr  r0, [r0,#0x0]
+      ; ref 0x100015ac (no mem)
+0000f270  cmp  r0, #0x5
+0000f272  bcs  0x0000f2a4
+      ; jump -> 0x0000f2a4
+0000f274  ldr  r0, [0x0000f4a8]
+      ; ref 0x0000f4a8 -> 0x10002058
+0000f276  ldrb  r0, [r0,#0x0]
+      ; ref 0x10002058 (no mem)
+0000f278  cmp  r0, #0x1
+0000f27a  bne  0x0000f2a4
+      ; jump -> 0x0000f2a4
+0000f27c  ldr  r0, [0x0000f4ac]
+      ; ref 0x0000f4ac -> 0x10001651
+0000f27e  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001651 (no mem)
+0000f280  cmp  r0, #0x1
+0000f282  bne  0x0000f2a4
+      ; jump -> 0x0000f2a4
+0000f284  ldr  r0, [0x0000f4b0]
+      ; ref 0x0000f4b0 -> 0x10002074
+0000f286  ldr  r0, [r0,#0x0]
+      ; ref 0x10002074 (no mem)
+0000f288  adds  r0, r0, #0x1
+0000f28a  ldr  r1, [0x0000f4b0]
+      ; ref 0x0000f4b0 -> 0x10002074
+0000f28c  str  r0, [r1,#0x0]
+      ; ref 0x10002074 (no mem)
+0000f28e  mov  r0, r1
+0000f290  ldr  r0, [r0,#0x0]
+      ; ref 0x10002074 (no mem)
+0000f292  cmp  r0, #0x64
+0000f294  bls  0x0000f2aa
+      ; jump -> 0x0000f2aa
+0000f296  ldr  r0, [0x0000f4b4]
+      ; ref 0x0000f4b4 -> 0x1000161c
+0000f298  ldr  r0, [r0,#0x0]
+      ; ref 0x1000161c (no mem)
+0000f29a  orr  r0, r0, #0x800
+0000f29e  ldr  r1, [0x0000f4b4]
+      ; ref 0x0000f4b4 -> 0x1000161c
+0000f2a0  str  r0, [r1,#0x0]
+      ; ref 0x1000161c (no mem)
+0000f2a2  b  0x0000f2aa
+      ; jump -> 0x0000f2aa
+0000f2a4  movs  r0, #0x0
+0000f2a6  ldr  r1, [0x0000f4b0]
+      ; ref 0x0000f4b0 -> 0x10002074
+0000f2a8  str  r0, [r1,#0x0]
+      ; ref 0x10002074 (no mem)
+0000f2aa  ldr  r0, [0x0000f4b8]
+      ; ref 0x0000f4b8 -> 0x10001707
+0000f2ac  ldrb  r3, [r0,#0x0]
+      ; ref 0x10001707 (no mem)
+0000f2ae  ldr  r0, [0x0000f4bc]
+      ; ref 0x0000f4bc -> 0x10001706
+0000f2b0  ldrb  r2, [r0,#0x0]
+      ; ref 0x10001706 (no mem)
+0000f2b2  ldr  r0, [0x0000f484]
+      ; ref 0x0000f484 -> 0x100015bc
+0000f2b4  ldr  r1, [r0,#0x0]
+      ; ref 0x100015bc (no mem)
+0000f2b6  ldr  r0, [0x0000f478]
+      ; ref 0x0000f478 -> 0x100015d0
+0000f2b8  ldr  r0, [r0,#0x0]
+      ; ref 0x100015d0 (no mem)
+0000f2ba  bl  0x000110f6
+      ; call -> 0x000110f6
+0000f2be  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+0000f2c0  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f2c2  ldr  r0, [0x0000f4c4]
+      ; ref 0x0000f4c4 -> 0x10001fe8
+0000f2c4  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000f2c6  movw  r1, #0x18bd
+0000f2ca  muls  r0, r1
+0000f2cc  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+0000f2ce  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f2d0  cmp  r0, r1
+0000f2d2  bhi  0x0000f2e8
+      ; jump -> 0x0000f2e8
+0000f2d4  ldr  r0, [0x0000f4c8]
+      ; ref 0x0000f4c8 -> 0x10001762
+0000f2d6  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000f2d8  cbnz  r0, 0x0000f2e8
+      ; jump -> 0x0000f2e8
+0000f2da  ldr  r0, [0x0000f4c4]
+      ; ref 0x0000f4c4 -> 0x10001fe8
+0000f2dc  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000f2de  movw  r1, #0x18bd
+0000f2e2  muls  r0, r1
+0000f2e4  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+0000f2e6  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f2e8  ldr  r0, [0x0000f4cc]
+      ; ref 0x0000f4cc -> 0x10001fe4
+0000f2ea  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f2ec  movw  r1, #0x18bd
+0000f2f0  muls  r0, r1
+0000f2f2  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+0000f2f4  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f2f6  cmp  r0, r1
+0000f2f8  bcc  0x0000f30e
+      ; jump -> 0x0000f30e
+0000f2fa  ldr  r0, [0x0000f4c8]
+      ; ref 0x0000f4c8 -> 0x10001762
+0000f2fc  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000f2fe  cbnz  r0, 0x0000f30e
+      ; jump -> 0x0000f30e
+0000f300  ldr  r0, [0x0000f4cc]
+      ; ref 0x0000f4cc -> 0x10001fe4
+0000f302  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f304  movw  r1, #0x18bd
+0000f308  muls  r0, r1
+0000f30a  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+      ; ref 0x10001fdc (no mem)
+0000f30c  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f30e  ldr  r0, [0x0000f4d0]
+      ; ref 0x0000f4d0 -> 0x1000162c
+0000f310  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000162c (no mem)
+0000f312  cmp  r0, #0x2
+0000f314  bne  0x0000f414
+      ; jump -> 0x0000f414
+0000f316  ldr  r0, [0x0000f4d4]
+      ; ref 0x0000f4d4 -> 0x100015a8
+0000f318  ldr  r0, [r0,#0x0]
+      ; ref 0x100015a8 (no mem)
+0000f31a  ldr  r1, [0x0000f4d8]
+      ; ref 0x0000f4d8 -> 0x1000200c
+0000f31c  str  r0, [r1,#0x0]
+      ; ref 0x1000200c (no mem)
+0000f31e  mov  r0, r1
+0000f320  ldr  r0, [r0,#0x0]
+      ; ref 0x1000200c (no mem)
+0000f322  movw  r1, #0x2710
+0000f326  udiv  r2, r0, r1
+0000f32a  mls  r0, r1, r2, r0
+0000f32e  ldr  r1, [0x0000f4dc]
+      ; ref 0x0000f4dc -> 0x1000202c
+0000f330  str  r0, [r1,#0x0]
+      ; ref 0x1000202c (no mem)
+0000f332  mov  r0, r1
+0000f334  ldr  r0, [r0,#0x0]
+      ; ref 0x1000202c (no mem)
+0000f336  cmp.w  r0, #0x3e8
+0000f33a  bls  0x0000f342
+      ; jump -> 0x0000f342
+0000f33c  mov.w  r0, #0x3e8
+0000f340  str  r0, [r1,#0x0]
+      ; ref 0x1000202c (no mem)
+0000f342  ldr  r0, [0x0000f4dc]
+      ; ref 0x0000f4dc -> 0x1000202c
+0000f344  ldr  r0, [r0,#0x0]
+      ; ref 0x1000202c (no mem)
+0000f346  cmp  r0, #0xa
+0000f348  bcs  0x0000f350
+      ; jump -> 0x0000f350
+0000f34a  movs  r0, #0xa
+0000f34c  ldr  r1, [0x0000f4dc]
+      ; ref 0x0000f4dc -> 0x1000202c
+0000f34e  str  r0, [r1,#0x0]
+      ; ref 0x1000202c (no mem)
+0000f350  ldr  r0, [0x0000f4e0]
+      ; ref 0x0000f4e0 -> 0x10001fe0
+0000f352  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f354  cbnz  r0, 0x0000f35c
+      ; jump -> 0x0000f35c
+0000f356  movs  r0, #0x4
+0000f358  ldr  r1, [0x0000f4e0]
+      ; ref 0x0000f4e0 -> 0x10001fe0
+0000f35a  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f35c  ldr  r0, [0x0000f4e0]
+      ; ref 0x0000f4e0 -> 0x10001fe0
+0000f35e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f360  cmp  r0, #0x4
+0000f362  bne  0x0000f41e
+      ; jump -> 0x0000f41e
+0000f364  ldr  r0, [0x0000f4e4]
+      ; ref 0x0000f4e4 -> 0x10001644
+0000f366  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001644 (no mem)
+0000f368  cbnz  r0, 0x0000f370
+      ; jump -> 0x0000f370
+0000f36a  movs  r0, #0x5
+0000f36c  ldr  r1, [0x0000f4e0]
+      ; ref 0x0000f4e0 -> 0x10001fe0
+0000f36e  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f370  ldr  r0, [0x0000f4cc]
+      ; ref 0x0000f4cc -> 0x10001fe4
+0000f372  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f374  movw  r1, #0x18bd
+0000f378  muls  r0, r1
+0000f37a  movs  r1, #0x64
+0000f37c  udiv  r0, r0, r1
+0000f380  movw  r1, #0x2c88
+0000f384  subs  r0, r1, r0
+0000f386  movs  r1, #0x32
+0000f388  udiv  r0, r0, r1
+0000f38c  ldr  r1, [0x0000f4e4]
+      ; ref 0x0000f4e4 -> 0x10001644
+0000f38e  ldrb  r1, [r1,#0x0]
+      ; ref 0x10001644 (no mem)
+0000f390  udiv  r0, r0, r1
+0000f394  ldr  r1, [0x0000f4e8]
+      ; ref 0x0000f4e8 -> 0x10002040
+0000f396  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f398  ldr  r0, [0x0000f4ec]
+      ; ref 0x0000f4ec -> 0x10002044
+0000f39a  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f39c  ldr  r1, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f39e  add  r0, r1
+0000f3a0  ldr  r1, [0x0000f4ec]
+      ; ref 0x0000f4ec -> 0x10002044
+0000f3a2  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f3a4  ldr  r0, [0x0000f4f0]
+      ; ref 0x0000f4f0 -> 0x1000201c
+0000f3a6  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201c (no mem)
+0000f3a8  cbnz  r0, 0x0000f3ca
+      ; jump -> 0x0000f3ca
+0000f3aa  ldr  r0, [0x0000f4cc]
+      ; ref 0x0000f4cc -> 0x10001fe4
+0000f3ac  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f3ae  movw  r1, #0x18bd
+0000f3b2  muls  r0, r1
+0000f3b4  movs  r1, #0x64
+0000f3b6  udiv  r0, r0, r1
+0000f3ba  ldr  r1, [0x0000f4ec]
+      ; ref 0x0000f4ec -> 0x10002044
+0000f3bc  ldr  r1, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f3be  add  r0, r1
+0000f3c0  ldr  r1, [0x0000f4f4]
+      ; ref 0x0000f4f4 -> 0x10002048
+0000f3c2  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f3c4  movs  r0, #0x1
+0000f3c6  ldr  r1, [0x0000f468]
+      ; ref 0x0000f468 -> 0x1000201d
+0000f3c8  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000f3ca  ldr  r0, [0x0000f4f0]
+      ; ref 0x0000f4f0 -> 0x1000201c
+0000f3cc  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201c (no mem)
+0000f3ce  cmp  r0, #0x1
+0000f3d0  bne  0x0000f3e0
+      ; jump -> 0x0000f3e0
+0000f3d2  ldr  r0, [0x0000f4ec]
+      ; ref 0x0000f4ec -> 0x10002044
+0000f3d4  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f3d6  ldr  r1, [0x0000f4f4]
+      ; ref 0x0000f4f4 -> 0x10002048
+0000f3d8  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f3da  movs  r0, #0x0
+0000f3dc  ldr  r1, [0x0000f468]
+      ; ref 0x0000f468 -> 0x1000201d
+0000f3de  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000f3e0  ldr  r0, [0x0000f4f4]
+      ; ref 0x0000f4f4 -> 0x10002048
+0000f3e2  ldr  r0, [r0,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f3e4  movs  r1, #0x64
+0000f3e6  muls  r0, r1
+0000f3e8  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+0000f3ea  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f3ec  mov  r0, r1
+0000f3ee  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f3f0  cmp  r0, #0xa
+0000f3f2  bcs  0x0000f3f8
+      ; jump -> 0x0000f3f8
+0000f3f4  movs  r0, #0xa
+0000f3f6  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f3f8  ldr  r0, [0x0000f4dc]
+      ; ref 0x0000f4dc -> 0x1000202c
+0000f3fa  ldr  r0, [r0,#0x0]
+      ; ref 0x1000202c (no mem)
+0000f3fc  mov.w  r1, #0x2f8
+0000f400  muls  r0, r1
+0000f402  movs  r1, #0x64
+0000f404  udiv  r0, r0, r1
+0000f408  addw  r0, r0, #0xedd
+0000f40c  ldr  r1, [0x0000f4f4]
+      ; ref 0x0000f4f4 -> 0x10002048
+0000f40e  ldr  r1, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f410  cmp  r0, r1
+0000f412  b  0x0000f416
+      ; jump -> 0x0000f416
+0000f414  b  0x0000f52e
+      ; jump -> 0x0000f52e
+0000f416  bcs  0x0000f41e
+      ; jump -> 0x0000f41e
+0000f418  movs  r0, #0x5
+0000f41a  ldr  r1, [0x0000f4e0]
+      ; ref 0x0000f4e0 -> 0x10001fe0
+0000f41c  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f41e  ldr  r0, [0x0000f4e0]
+      ; ref 0x0000f4e0 -> 0x10001fe0
+0000f420  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f422  cmp  r0, #0x5
+0000f424  bne  0x0000f450
+      ; jump -> 0x0000f450
+0000f426  movs  r0, #0x0
+0000f428  ldr  r1, [0x0000f468]
+      ; ref 0x0000f468 -> 0x1000201d
+0000f42a  strb  r0, [r1,#0x0]
+      ; ref 0x1000201d (no mem)
+0000f42c  ldr  r0, [0x0000f4dc]
+      ; ref 0x0000f4dc -> 0x1000202c
+0000f42e  ldr  r0, [r0,#0x0]
+      ; ref 0x1000202c (no mem)
+0000f430  mov.w  r1, #0x2f8
+0000f434  muls  r0, r1
+0000f436  movs  r1, #0x64
+0000f438  udiv  r0, r0, r1
+0000f43c  addw  r0, r0, #0xedd
+0000f440  ldr  r1, [0x0000f4f4]
+      ; ref 0x0000f4f4 -> 0x10002048
+0000f442  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f444  mov  r0, r1
+0000f446  ldr  r0, [r0,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f448  movs  r1, #0x64
+0000f44a  muls  r0, r1
+0000f44c  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+0000f44e  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f450  ldr  r0, [0x0000f4c4]
+      ; ref 0x0000f4c4 -> 0x10001fe8
+0000f452  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000f454  movw  r1, #0x18bd
+0000f458  muls  r0, r1
+0000f45a  ldr  r1, [0x0000f4c0]
+      ; ref 0x0000f4c0 -> 0x10001fdc
+0000f45c  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f45e  cmp  r0, r1
+0000f460  bhi  0x0000f508
+      ; jump -> 0x0000f508
+0000f462  ldr  r0, [0x0000f4c8]
+      ; ref 0x0000f4c8 -> 0x10001762
+0000f464  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000f466  b  0x0000f4f8
+      ; jump -> 0x0000f4f8
+0000f4f8  cbnz  r0, 0x0000f508
+      ; jump -> 0x0000f508
+0000f4fa  ldr  r0, [0x0000f8f4]
+      ; ref 0x0000f8f4 -> 0x10001fe8
+0000f4fc  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000f4fe  movw  r1, #0x18bd
+0000f502  muls  r0, r1
+0000f504  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+0000f506  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f508  ldr  r0, [0x0000f8fc]
+      ; ref 0x0000f8fc -> 0x10001fe4
+0000f50a  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f50c  movw  r1, #0x18bd
+0000f510  muls  r0, r1
+0000f512  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+0000f514  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f516  cmp  r0, r1
+0000f518  bcc  0x0000f52e
+      ; jump -> 0x0000f52e
+0000f51a  ldr  r0, [0x0000f900]
+      ; ref 0x0000f900 -> 0x10001762
+0000f51c  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000f51e  cbnz  r0, 0x0000f52e
+      ; jump -> 0x0000f52e
+0000f520  ldr  r0, [0x0000f8fc]
+      ; ref 0x0000f8fc -> 0x10001fe4
+0000f522  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f524  movw  r1, #0x18bd
+0000f528  muls  r0, r1
+0000f52a  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+      ; ref 0x10001fdc (no mem)
+0000f52c  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f52e  ldr  r0, [0x0000f904]
+      ; ref 0x0000f904 -> 0x10001620
+0000f530  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001620 (no mem)
+0000f532  cbnz  r0, 0x0000f56c
+      ; jump -> 0x0000f56c
+0000f534  ldr  r0, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f536  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f538  cbz  r0, 0x0000f56c
+      ; jump -> 0x0000f56c
+0000f53a  ldr  r0, [0x0000f90c]
+      ; ref 0x0000f90c -> 0x1000175d
+0000f53c  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000175d (no mem)
+0000f53e  cmp  r0, #0x1
+0000f540  bne  0x0000f56c
+      ; jump -> 0x0000f56c
+0000f542  bl  0x0000e4fa
+      ; call -> 0x0000e4fa
+0000f546  movs  r0, #0x0
+0000f548  ldr  r1, [0x0000f910]
+      ; ref 0x0000f910 -> 0x10002040
+0000f54a  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f54c  ldr  r1, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f54e  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f550  ldr  r1, [0x0000f918]
+      ; ref 0x0000f918 -> 0x10002048
+0000f552  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f554  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+      ; ref 0x10001fdc (no mem)
+0000f556  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f558  bl  0x0000e6c6
+      ; call -> 0x0000e6c6
+0000f55c  movs  r0, #0x0
+0000f55e  bl  0x0000e6a6
+      ; call -> 0x0000e6a6
+0000f562  movs  r0, #0x0
+0000f564  ldr  r1, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f566  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f568  ldr  r1, [0x0000f91c]
+      ; ref 0x0000f91c -> 0x1000201c
+      ; ref 0x1000201c (no mem)
+0000f56a  strb  r0, [r1,#0x0]
+      ; ref 0x1000201c (no mem)
+0000f56c  ldr  r0, [0x0000f904]
+      ; ref 0x0000f904 -> 0x10001620
+0000f56e  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001620 (no mem)
+0000f570  cbnz  r0, 0x0000f578
+      ; jump -> 0x0000f578
+0000f572  ldr  r0, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f574  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f576  cbnz  r0, 0x0000f580
+      ; jump -> 0x0000f580
+0000f578  ldr  r0, [0x0000f920]
+      ; ref 0x0000f920 -> 0x100015a8
+0000f57a  ldr  r0, [r0,#0x0]
+      ; ref 0x100015a8 (no mem)
+0000f57c  cmp  r0, #0xa
+0000f57e  bcs  0x0000f5d4
+      ; jump -> 0x0000f5d4
+0000f580  ldr  r0, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f582  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f584  cmp  r0, #0x5
+0000f586  bne  0x0000f59c
+      ; jump -> 0x0000f59c
+0000f588  movs  r0, #0x4
+0000f58a  ldr  r1, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f58c  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f58e  ldr  r0, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+0000f590  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f592  movs  r1, #0x64
+0000f594  udiv  r0, r0, r1
+0000f598  ldr  r1, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+      ; ref 0x10002044 (no mem)
+0000f59a  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f59c  ldr  r0, [0x0000f924]
+      ; ref 0x0000f924 -> 0x10001645
+0000f59e  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001645 (no mem)
+0000f5a0  cbnz  r0, 0x0000f5d6
+      ; jump -> 0x0000f5d6
+0000f5a2  bl  0x0000e4fa
+      ; call -> 0x0000e4fa
+0000f5a6  movs  r0, #0x0
+0000f5a8  ldr  r1, [0x0000f910]
+      ; ref 0x0000f910 -> 0x10002040
+0000f5aa  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f5ac  ldr  r1, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f5ae  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f5b0  ldr  r1, [0x0000f918]
+      ; ref 0x0000f918 -> 0x10002048
+0000f5b2  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f5b4  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+      ; ref 0x10001fdc (no mem)
+0000f5b6  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f5b8  ldr  r0, [0x0000f904]
+      ; ref 0x0000f904 -> 0x10001620
+0000f5ba  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001620 (no mem)
+0000f5bc  cbnz  r0, 0x0000f5ca
+      ; jump -> 0x0000f5ca
+0000f5be  movs  r0, #0x0
+0000f5c0  bl  0x0000e6c6
+      ; call -> 0x0000e6c6
+0000f5c4  movs  r0, #0x0
+0000f5c6  bl  0x0000e6a6
+      ; call -> 0x0000e6a6
+0000f5ca  movs  r0, #0x0
+0000f5cc  ldr  r1, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f5ce  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f5d0  ldr  r1, [0x0000f91c]
+      ; ref 0x0000f91c -> 0x1000201c
+0000f5d2  strb  r0, [r1,#0x0]
+      ; ref 0x1000201c (no mem)
+0000f5d4  b  0x0000f708
+      ; jump -> 0x0000f708
+0000f5d6  ldr  r0, [0x0000f8fc]
+      ; ref 0x0000f8fc -> 0x10001fe4
+0000f5d8  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f5da  movw  r1, #0x18bd
+0000f5de  muls  r0, r1
+0000f5e0  movs  r1, #0x64
+0000f5e2  udiv  r0, r0, r1
+0000f5e6  movw  r1, #0x2c88
+0000f5ea  subs  r0, r1, r0
+0000f5ec  movs  r1, #0x32
+0000f5ee  udiv  r0, r0, r1
+0000f5f2  ldr  r1, [0x0000f924]
+      ; ref 0x0000f924 -> 0x10001645
+0000f5f4  ldrb  r1, [r1,#0x0]
+      ; ref 0x10001645 (no mem)
+0000f5f6  udiv  r0, r0, r1
+0000f5fa  ldr  r1, [0x0000f910]
+      ; ref 0x0000f910 -> 0x10002040
+0000f5fc  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f5fe  ldr  r0, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f600  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f602  ldr  r1, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f604  cmp  r0, r1
+0000f606  bls  0x0000f6d6
+      ; jump -> 0x0000f6d6
+0000f608  movs  r0, #0x4
+0000f60a  ldr  r1, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f60c  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f60e  ldr  r0, [0x0000f928]
+      ; ref 0x0000f928 -> 0x1000201d
+0000f610  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201d (no mem)
+0000f612  cbnz  r0, 0x0000f61a
+      ; jump -> 0x0000f61a
+0000f614  movs  r0, #0x1
+0000f616  ldr  r1, [0x0000f91c]
+      ; ref 0x0000f91c -> 0x1000201c
+0000f618  strb  r0, [r1,#0x0]
+      ; ref 0x1000201c (no mem)
+0000f61a  ldr  r0, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f61c  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f61e  ldr  r1, [0x0000f910]
+      ; ref 0x0000f910 -> 0x10002040
+0000f620  ldr  r1, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f622  subs  r0, r0, r1
+0000f624  ldr  r1, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f626  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f628  ldr  r0, [0x0000f928]
+      ; ref 0x0000f928 -> 0x1000201d
+0000f62a  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201d (no mem)
+0000f62c  cmp  r0, #0x1
+0000f62e  bne  0x0000f64a
+      ; jump -> 0x0000f64a
+0000f630  ldr  r0, [0x0000f8fc]
+      ; ref 0x0000f8fc -> 0x10001fe4
+0000f632  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f634  movw  r1, #0x18bd
+0000f638  muls  r0, r1
+0000f63a  movs  r1, #0x64
+0000f63c  udiv  r0, r0, r1
+0000f640  ldr  r1, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f642  ldr  r1, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f644  add  r0, r1
+0000f646  ldr  r1, [0x0000f918]
+      ; ref 0x0000f918 -> 0x10002048
+0000f648  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f64a  ldr  r0, [0x0000f928]
+      ; ref 0x0000f928 -> 0x1000201d
+0000f64c  ldrb  r0, [r0,#0x0]
+      ; ref 0x1000201d (no mem)
+0000f64e  cbnz  r0, 0x0000f658
+      ; jump -> 0x0000f658
+0000f650  ldr  r0, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f652  ldr  r0, [r0,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f654  ldr  r1, [0x0000f918]
+      ; ref 0x0000f918 -> 0x10002048
+0000f656  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f658  ldr  r0, [0x0000f918]
+      ; ref 0x0000f918 -> 0x10002048
+0000f65a  ldr  r0, [r0,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f65c  movs  r1, #0x64
+0000f65e  muls  r0, r1
+0000f660  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+0000f662  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f664  ldr  r0, [0x0000f8f4]
+      ; ref 0x0000f8f4 -> 0x10001fe8
+0000f666  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000f668  movw  r1, #0x18bd
+0000f66c  muls  r0, r1
+0000f66e  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+0000f670  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f672  cmp  r0, r1
+0000f674  bhi  0x0000f68a
+      ; jump -> 0x0000f68a
+0000f676  ldr  r0, [0x0000f900]
+      ; ref 0x0000f900 -> 0x10001762
+0000f678  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000f67a  cbnz  r0, 0x0000f68a
+      ; jump -> 0x0000f68a
+0000f67c  ldr  r0, [0x0000f8f4]
+      ; ref 0x0000f8f4 -> 0x10001fe8
+0000f67e  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe8 (no mem)
+0000f680  movw  r1, #0x18bd
+0000f684  muls  r0, r1
+0000f686  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+0000f688  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f68a  ldr  r0, [0x0000f8fc]
+      ; ref 0x0000f8fc -> 0x10001fe4
+0000f68c  ldr  r0, [r0,#0x0]
+      ; ref 0x10001fe4 (no mem)
+0000f68e  movw  r1, #0x18bd
+0000f692  muls  r0, r1
+0000f694  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+0000f696  ldr  r1, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f698  cmp  r0, r1
+0000f69a  bcc  0x0000f708
+      ; jump -> 0x0000f708
+0000f69c  ldr  r0, [0x0000f900]
+      ; ref 0x0000f900 -> 0x10001762
+0000f69e  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001762 (no mem)
+0000f6a0  cbnz  r0, 0x0000f708
+      ; jump -> 0x0000f708
+0000f6a2  bl  0x0000e4fa
+      ; call -> 0x0000e4fa
+0000f6a6  movs  r0, #0x0
+0000f6a8  ldr  r1, [0x0000f910]
+      ; ref 0x0000f910 -> 0x10002040
+0000f6aa  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f6ac  ldr  r1, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f6ae  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f6b0  ldr  r1, [0x0000f918]
+      ; ref 0x0000f918 -> 0x10002048
+0000f6b2  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f6b4  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+      ; ref 0x10001fdc (no mem)
+0000f6b6  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f6b8  ldr  r0, [0x0000f904]
+      ; ref 0x0000f904 -> 0x10001620
+0000f6ba  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001620 (no mem)
+0000f6bc  cbnz  r0, 0x0000f6ca
+      ; jump -> 0x0000f6ca
+0000f6be  movs  r0, #0x0
+0000f6c0  bl  0x0000e6c6
+      ; call -> 0x0000e6c6
+0000f6c4  movs  r0, #0x0
+0000f6c6  bl  0x0000e6a6
+      ; call -> 0x0000e6a6
+0000f6ca  movs  r0, #0x0
+0000f6cc  ldr  r1, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f6ce  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f6d0  ldr  r1, [0x0000f91c]
+      ; ref 0x0000f91c -> 0x1000201c
+0000f6d2  strb  r0, [r1,#0x0]
+      ; ref 0x1000201c (no mem)
+0000f6d4  b  0x0000f708
+      ; jump -> 0x0000f708
+0000f6d6  bl  0x0000e4fa
+      ; call -> 0x0000e4fa
+0000f6da  movs  r0, #0x0
+0000f6dc  ldr  r1, [0x0000f910]
+      ; ref 0x0000f910 -> 0x10002040
+0000f6de  str  r0, [r1,#0x0]
+      ; ref 0x10002040 (no mem)
+0000f6e0  ldr  r1, [0x0000f914]
+      ; ref 0x0000f914 -> 0x10002044
+0000f6e2  str  r0, [r1,#0x0]
+      ; ref 0x10002044 (no mem)
+0000f6e4  ldr  r1, [0x0000f918]
+      ; ref 0x0000f918 -> 0x10002048
+0000f6e6  str  r0, [r1,#0x0]
+      ; ref 0x10002048 (no mem)
+0000f6e8  ldr  r1, [0x0000f8f8]
+      ; ref 0x0000f8f8 -> 0x10001fdc
+      ; ref 0x10001fdc (no mem)
+0000f6ea  str  r0, [r1,#0x0]
+      ; ref 0x10001fdc (no mem)
+0000f6ec  ldr  r0, [0x0000f904]
+      ; ref 0x0000f904 -> 0x10001620
+0000f6ee  ldrb  r0, [r0,#0x0]
+      ; ref 0x10001620 (no mem)
+0000f6f0  cbnz  r0, 0x0000f6fe
+      ; jump -> 0x0000f6fe
+0000f6f2  movs  r0, #0x0
+0000f6f4  bl  0x0000e6c6
+      ; call -> 0x0000e6c6
+0000f6f8  movs  r0, #0x0
+0000f6fa  bl  0x0000e6a6
+      ; call -> 0x0000e6a6
+0000f6fe  movs  r0, #0x0
+0000f700  ldr  r1, [0x0000f908]
+      ; ref 0x0000f908 -> 0x10001fe0
+0000f702  str  r0, [r1,#0x0]
+      ; ref 0x10001fe0 (no mem)
+0000f704  ldr  r1, [0x0000f91c]
+      ; ref 0x0000f91c -> 0x1000201c
+0000f706  strb  r0, [r1,#0x0]
+      ; ref 0x1000201c (no mem)
+0000f708  pop  {r4,pc}

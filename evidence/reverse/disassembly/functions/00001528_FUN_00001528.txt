@@ -1,0 +1,83 @@
+# FUN_00001528 entry=0x00001528 body=134
+00001528  ldr  r0, [0x00001924]
+      ; ref 0x00001924 -> 0x2009c000
+0000152a  ldr  r0, [r0,#0x20]
+      ; ref 0x2009c020 (no mem)
+0000152c  bic  r0, r0, #0x80000
+00001530  ldr  r1, [0x00001924]
+      ; ref 0x00001924 -> 0x2009c000
+00001532  str  r0, [r1,#0x20]
+      ; ref 0x2009c020 (no mem)
+00001534  mov  r0, r1
+00001536  ldr  r0, [r0,#0x20]
+      ; ref 0x2009c020 (no mem)
+00001538  bic  r0, r0, #0x40000
+0000153c  str  r0, [r1,#0x20]
+      ; ref 0x2009c020 (no mem)
+0000153e  mov  r0, r1
+00001540  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001542  bic  r0, r0, #0x40000000
+00001546  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001548  mov  r0, r1
+0000154a  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+0000154c  bic  r0, r0, #0x20000000
+00001550  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001552  mov  r0, r1
+00001554  ldr  r0, [r0,#0x60]
+      ; ref 0x2009c060 (no mem)
+00001556  bic  r0, r0, #0x2000000
+0000155a  str  r0, [r1,#0x60]
+      ; ref 0x2009c060 (no mem)
+0000155c  mov  r0, r1
+0000155e  ldr  r0, [r0,#0x60]
+      ; ref 0x2009c060 (no mem)
+00001560  bic  r0, r0, #0x4000000
+00001564  str  r0, [r1,#0x60]
+      ; ref 0x2009c060 (no mem)
+00001566  mov  r0, r1
+00001568  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+0000156a  bic  r0, r0, #0x8000000
+0000156e  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001570  mov  r0, r1
+00001572  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001574  bic  r0, r0, #0x10000000
+00001578  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+0000157a  mov  r0, r1
+0000157c  ldr  r0, [r0,#0x20]
+      ; ref 0x2009c020 (no mem)
+0000157e  bic  r0, r0, #0x10000
+00001582  str  r0, [r1,#0x20]
+      ; ref 0x2009c020 (no mem)
+00001584  mov  r0, r1
+00001586  ldr  r0, [r0,#0x20]
+      ; ref 0x2009c020 (no mem)
+00001588  bic  r0, r0, #0x20000
+0000158c  str  r0, [r1,#0x20]
+      ; ref 0x2009c020 (no mem)
+0000158e  mov  r0, r1
+00001590  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001592  bic  r0, r0, #0x40
+00001596  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001598  mov  r0, r1
+0000159a  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+0000159c  bic  r0, r0, #0x4
+000015a0  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+000015a2  mov  r0, r1
+000015a4  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+000015a6  bic  r0, r0, #0x8
+000015aa  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+000015ac  bx  lr

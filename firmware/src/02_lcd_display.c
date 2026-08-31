@@ -23,10 +23,10 @@ extern void Delay(int loops);   /* 01_startup.c（0x7A8 延时×50） */
 void lcd_ctrl_line(int on)
 {
   if (on < 1) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x1000000;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x1000000;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x1000000;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x1000000;
   }
   return;
 }
@@ -35,52 +35,52 @@ void lcd_ctrl_line(int on)
 void lcd_data_byte(uint byte_val)
 {
   if ((byte_val & 0x80) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x8000;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x8000;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x8000;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x8000;
   }
   if ((byte_val & 0x40) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x4000;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x4000;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x4000;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x4000;
   }
   if ((byte_val & 0x20) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x400;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x400;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x400;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x400;
   }
   if ((byte_val & 0x10) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x200;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x200;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x200;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x200;
   }
   if ((byte_val & 8) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x100;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x100;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x100;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x100;
   }
   if ((byte_val & 4) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x10;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x10;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x10;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x10;
   }
   if ((byte_val & 2) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 2;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 2;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 2;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 2;
   }
   if ((byte_val & 1) == 0) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 1;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 1;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 1;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 1;
   }
   return;
 }
@@ -90,7 +90,7 @@ void lcd_data_byte(uint byte_val)
  *   → Delay(1) → E=1 → Delay(1) → E=0 → Delay(1)。原 Ghidra 3 参/extraout 为伪影。 */
 void disp_data(uint byte_val,int invert)
 {
-  *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x8000000;  /* P1.27 RS=1（数据模式） */
+  *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x8000000;  /* P1.27 RS=1（数据模式） */
   Delay(1);
   if (invert == 0) {
     lcd_data_byte(byte_val);
@@ -99,9 +99,9 @@ void disp_data(uint byte_val,int invert)
     lcd_data_byte(byte_val ^ 0xff);
   }
   Delay(1);
-  *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x10000000;  /* P1.28 E=1 */
+  *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x10000000;  /* P1.28 E=1 */
   Delay(1);
-  *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x10000000;  /* P1.28 E=0 */
+  *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x10000000;  /* P1.28 E=0 */
   Delay(1);
   return;
 }
@@ -109,13 +109,13 @@ void disp_data(uint byte_val,int invert)
 /* 0x0000094A —— 写命令（RS=0，P1.27）—— 反汇编核实 1 实参 */
 void disp_cmd(uint cmd)
 {
-  *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x8000000;  /* P1.27 RS=0（命令模式） */
+  *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x8000000;  /* P1.27 RS=0（命令模式） */
   Delay(1);
   lcd_data_byte(cmd);
   Delay(1);
-  *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x10000000;  /* E=1 */
+  *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x10000000;  /* E=1 */
   Delay(1);
-  *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x10000000;  /* E=0 */
+  *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x10000000;  /* E=0 */
   Delay(1);
   return;
 }
@@ -127,18 +127,18 @@ void disp_clear(void)
   byte col;
   byte page;
 
-  fio = DAT_00000bb4;
-  *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x4000000;   /* CS1=1（上半屏） */
+  fio = DAT_00000b64;
+  *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x4000000;   /* CS1=1（上半屏） */
   *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x2000000;                 /* CS2=0 */
   Delay(10);
   disp_cmd(0xc0);                          /* 起始行=0 */
-  for (page = 0; fio = DAT_00000bb4, page < 8; page = page + 1) {
+  for (page = 0; fio = DAT_00000b64, page < 8; page = page + 1) {
     disp_cmd(page + 0xb8);                /* 页 0..7 */
     for (col = 0; col < 0x40; col = col + 1) {
       disp_data(0,0);
     }
   }
-  *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x4000000;
+  *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x4000000;
   *(volatile uint *)(fio + 0x38) = *(volatile uint *)(fio + 0x38) | 0x2000000;
   Delay(10);
   disp_cmd(0xc0);
@@ -157,8 +157,8 @@ void gpio1_init(void)
 {
   int fio;
 
-  fio = DAT_00000bb4;
-  *(volatile uint *)(DAT_00000bb4 + 0x20) = *(volatile uint *)(DAT_00000bb4 + 0x20) | 0x8000000;   /* FIODIR bit27 */
+  fio = DAT_00000b64;
+  *(volatile uint *)(DAT_00000b64 + 0x20) = *(volatile uint *)(DAT_00000b64 + 0x20) | 0x8000000;   /* FIODIR bit27 */
   *(volatile uint *)(fio + 0x20) = *(volatile uint *)(fio + 0x20) | 0x10000000;                /* bit28 */
   *(volatile uint *)(fio + 0x20) = *(volatile uint *)(fio + 0x20) | 0x4000000;                 /* bit26 */
   *(volatile uint *)(fio + 0x20) = *(volatile uint *)(fio + 0x20) | 0x2000000;                 /* bit25 */
@@ -174,17 +174,17 @@ void gpio1_init(void)
   *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x1000000;                 /* RES=0 */
   *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x8000000;                 /* R/W=0 */
   Delay(1);
-  *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x10000000;  /* E=0 */
+  *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x10000000;  /* E=0 */
   Delay(1);
-  fio = DAT_00000bb4;
-  *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x4000000;
+  fio = DAT_00000b64;
+  *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x4000000;
   *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x2000000;
   Delay(1);
   disp_cmd(0xc0);
   disp_cmd(0x3f);                          /* DISPLAY ON */
   Delay(1);
-  fio = DAT_00000bb4;
-  *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x4000000;
+  fio = DAT_00000b64;
+  *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x4000000;
   *(volatile uint *)(fio + 0x38) = *(volatile uint *)(fio + 0x38) | 0x2000000;
   Delay(1);
   disp_cmd(0xc0);
@@ -206,21 +206,21 @@ void disp_render_char8(uint ch,char row,uint col,undefined4 invert)
   uint bit_i;
   uint tbl_idx;
 
-  fio = DAT_00000bb4;
+  fio = DAT_00000b64;
   tbl_idx = 0;
   while( true ) {
     if (0x23 < tbl_idx) {
       return;
     }
-    if (*(volatile byte *)(DAT_00000bb8 + tbl_idx) == ch) break;
+    if (*(volatile byte *)(DAT_00000b68 + tbl_idx) == ch) break;
     tbl_idx = tbl_idx + 1 & 0xff;
   }
   if ((int)col < 8) {
-    *(volatile uint *)(DAT_00000bb4 + 0x3c) = *(volatile uint *)(DAT_00000bb4 + 0x3c) | 0x4000000;
+    *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x4000000;
     *(volatile uint *)(fio + 0x38) = *(volatile uint *)(fio + 0x38) | 0x2000000;
   }
   else {
-    *(volatile uint *)(DAT_00000bb4 + 0x38) = *(volatile uint *)(DAT_00000bb4 + 0x38) | 0x4000000;
+    *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x4000000;
     *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x2000000;
     col = col - 8 & 0xff;
   }
@@ -229,12 +229,12 @@ void disp_render_char8(uint ch,char row,uint col,undefined4 invert)
   disp_cmd(row * '\x02' + -0x48);      /* 页 = 行×2 - 0x48 */
   for (bit_i = 0; bit_i < 8; bit_i = bit_i + 1 & 0xff) {
     disp_cmd(col * 8 + 0x40 + bit_i & 0xff);   /* 列地址 */
-    disp_data(*(volatile undefined1 *)(DAT_00000fc0 + tbl_idx * 0x10 + bit_i),invert);
+    disp_data(*(volatile undefined1 *)(DAT_00000f70 + tbl_idx * 0x10 + bit_i),invert);
   }
   disp_cmd(row * '\x02' + -0x47);      /* 下一行 */
   for (bit_i = 0; bit_i < 8; bit_i = bit_i + 1 & 0xff) {
     disp_cmd(col * 8 + 0x40 + bit_i & 0xff);
-    disp_data(*(volatile undefined1 *)(DAT_00000fc0 + tbl_idx * 0x10 + bit_i + 8),invert);
+    disp_data(*(volatile undefined1 *)(DAT_00000f70 + tbl_idx * 0x10 + bit_i + 8),invert);
   }
   return;
 }
@@ -249,23 +249,23 @@ void disp_render_char16(uint gb_hi,uint gb_lo,char row,int col,undefined4 invert
   uint bit_i;
   uint tbl_idx;
 
-  fio = DAT_00000fc8;
+  fio = DAT_00000f78;
   tbl_idx = 0;
   col2 = (col - (col >> 0x1f) & 0x1ffU) >> 1;
   while( true ) {
     if (0x8e < tbl_idx) {
       return;
     }
-    if ((*(volatile byte *)(DAT_00000fc4 + tbl_idx * 2) == gb_hi) &&
-       (*(volatile byte *)(DAT_00000fc4 + tbl_idx * 2 + 1) == gb_lo)) break;
+    if ((*(volatile byte *)(DAT_00000f74 + tbl_idx * 2) == gb_hi) &&
+       (*(volatile byte *)(DAT_00000f74 + tbl_idx * 2 + 1) == gb_lo)) break;
     tbl_idx = tbl_idx + 1 & 0xff;
   }
   if (col2 < 4) {
-    *(volatile uint *)(DAT_00000fc8 + 0x3c) = *(volatile uint *)(DAT_00000fc8 + 0x3c) | 0x4000000;
+    *(volatile uint *)(DAT_00000f78 + 0x3c) = *(volatile uint *)(DAT_00000f78 + 0x3c) | 0x4000000;
     *(volatile uint *)(fio + 0x38) = *(volatile uint *)(fio + 0x38) | 0x2000000;
   }
   else {
-    *(volatile uint *)(DAT_00000fc8 + 0x38) = *(volatile uint *)(DAT_00000fc8 + 0x38) | 0x4000000;
+    *(volatile uint *)(DAT_00000f78 + 0x38) = *(volatile uint *)(DAT_00000f78 + 0x38) | 0x4000000;
     *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x2000000;
     col2 = col2 - 4 & 0xff;
   }
@@ -274,12 +274,12 @@ void disp_render_char16(uint gb_hi,uint gb_lo,char row,int col,undefined4 invert
   disp_cmd(row * '\x02' + -0x48);
   for (bit_i = 0; bit_i < 0x10; bit_i = bit_i + 1 & 0xff) {
     disp_cmd(col2 * 0x10 + 0x40 + bit_i & 0xff);
-    disp_data(*(volatile undefined1 *)(DAT_00000fcc + tbl_idx * 0x20 + bit_i),invert);
+    disp_data(*(volatile undefined1 *)(DAT_00000f7c + tbl_idx * 0x20 + bit_i),invert);
   }
   disp_cmd(row * '\x02' + -0x47);
   for (bit_i = 0; bit_i < 0x10; bit_i = bit_i + 1 & 0xff) {
     disp_cmd(col2 * 0x10 + 0x40 + bit_i & 0xff);
-    disp_data(*(volatile undefined1 *)(DAT_00000fcc + tbl_idx * 0x20 + bit_i + 0x10),invert);
+    disp_data(*(volatile undefined1 *)(DAT_00000f7c + tbl_idx * 0x20 + bit_i + 0x10),invert);
   }
   return;
 }
@@ -431,8 +431,8 @@ void disp_uint5(uint val,undefined4 row,int col,undefined4 invert)
 /* 0x00001092 —— 6 位数字（DAT_0000149C=最大位权除数） */
 void disp_number(uint val,undefined4 row,int col,undefined4 invert)
 {
-  if (DAT_0000149c - 1 < val) {
-    disp_digit(val / DAT_0000149c & 0xff,row,col,invert);
+  if (DAT_0000144c - 1 < val) {
+    disp_digit(val / DAT_0000144c & 0xff,row,col,invert);
   }
   else {
     disp_render_char8(0x20,row,col,invert);
@@ -597,44 +597,48 @@ void disp_decimal1(uint val,undefined4 row,int col,undefined4 invert)
 
 /* ==================== 整屏渲染 ==================== */
 
-/* 0x0000427C —— 开机画面（4 行：ST33C / 版本 V2.0.2016 / SINEP0WER / 电话）
- *   右上角显示增益档位值（gain_sel 对应增益，cfg_1710 组）；底部运行状态/子状态文字 */
+/* 0x000040B0 —— 开机画面（4 行：ST33C / 版本 / SINEP0WER / 电话）
+ *   右上角显示参数值（sel=0x1000164D 选 menu_param_2/adc_conv_ch3/0x100015D8）；
+ *   底部运行状态/子状态文字。12p 等价 6p 0x427C，地址平移、cfg_word/gain_sel 读宽 ldrb。 */
 void disp_splash_screen(void)
 {
-  disp_string((int)0x4370,0,0,0);
-  disp_string((int)0x4384,1,0,0);
-  disp_string((int)0x4398,2,0,0);
-  disp_string((int)0x43ac,3,0,0);
-  if (*DAT_000043c0 == '\0') {
-    disp_fixed_1dec(*g_src_value,0,9,0);   /* 反汇编 0x42B4 核：r3=0 → 4 参 */
+  volatile uint8_t *sel = (volatile uint8_t *)0x1000164D;    /* 显示参数选择（6p 0x10001655） */
+  volatile uint32_t *p3  = (volatile uint32_t *)0x100015D8;  /* 第 3 参数值（6p 0x100015D8） */
+
+  disp_string((int)0x42c8,0,0,0);
+  disp_string((int)0x42dc,1,0,0);
+  disp_string((int)0x42f0,2,0,0);
+  disp_string((int)0x4304,3,0,0);
+  if (*sel == '\0') {
+    disp_fixed_1dec(*menu_param_2,0,9,0);   /* 0x10001768，bl 0x13EC（6p 0x143C） */
   }
-  if (*DAT_000047c4 == '\x01') {
-    disp_fixed_1dec(*DAT_000047c8,0,9,0);
+  if (*sel == '\x01') {
+    disp_fixed_1dec(*adc_conv_ch3,0,9,0);   /* 0x100015A8 */
   }
-  if (*DAT_000047c4 == '\x02') {
-    disp_fixed_1dec(*DAT_000047cc,0,9,0);
+  if (*sel == '\x02') {
+    disp_fixed_1dec(*p3,0,9,0);             /* 0x100015D8 */
   }
-  disp_uint4(*DAT_000047d0,1,9,0);
-  disp_uint4(*DAT_000047d4,2,9,0);
-  if (*DAT_000047d8 == 0) {
-    if (*g_cfg_word == '\0') {
-      disp_string((int)0x47e8,3,10,0);
-    }
-    if (*g_cfg_word == '\x01') {
-      disp_string((int)0x47f0,3,10,0);
-    }
+  disp_uint4(*adc_conv_ch5,1,9,0);          /* bl 0xE80（6p 0xED0） */
+  disp_uint4(*adc_conv_ch4,2,9,0);
+  if (*out_param != 0) {                    /* 0x1000161C */
+    disp_string((int)0x4334,3,10,0);
   }
   else {
-    disp_string((int)0x47dc,3,10,0);
+    if (*(volatile uint8_t *)cfg_word == '\0') {   /* 0x10001620 读宽 ldrb */
+      disp_string((int)0x4340,3,10,0);
+    }
+    if (*(volatile uint8_t *)cfg_word == '\x01') {
+      disp_string((int)0x4348,3,10,0);
+    }
   }
-  if (*g_gain_sel == '\0') {
-    disp_string((int)0x47fc,3,0,0);
+  if (*(volatile uint8_t *)gain_sel == '\0') {     /* 0x1000162C 读宽 ldrb */
+    disp_string((int)0x4354,3,0,0);
   }
-  if (*g_gain_sel == '\x01') {
-    disp_string((int)0x4804,3,0,0);
+  if (*(volatile uint8_t *)gain_sel == '\x01') {
+    disp_string((int)0x435c,3,0,0);
   }
-  if (*g_gain_sel == '\x02') {
-    disp_string((int)0x480c,3,0,0);
+  if (*(volatile uint8_t *)gain_sel == '\x02') {
+    disp_string((int)0x4364,3,0,0);
   }
   return;
 }
@@ -650,37 +654,44 @@ void disp_screen_static(void)
   return;
 }
 
-/* 0x000044C2 —— 标定屏：4 行标定值 + 光标行高亮（ADC 标定除数显示；与相位校准相关）
- *   0x100048A4=光标行；0x100048A8/AC/B0/B4=4 个标定值 */
+/* 0x000041EC —— 标定屏：4 行标定值 + 光标行高亮（ADC 标定除数显示；与相位校准相关）
+ *   0x10001725=光标行（6p 0x10001745）；0x10001690/0x10001698/0x100016A0/0x100016A8
+ *   =4 个标定值（6p 0x10001698/A0/A8/B0） */
 void disp_screen_calib(void)
 {
-  disp_string((int)0x4854,0,0,0);
-  disp_string((int)0x4868,1,0,0);
-  disp_string((int)0x487c,2,0,0);
-  disp_string((int)0x4890,3,0,0);
-  if (*DAT_000048a4 == '\0') {
-    disp_uint4(*DAT_000048a8,0,0xb,1);   /* 反汇编 0x44FA/0x4520 核：if 分支 r3=1、else r3=0 */
+  volatile uint8_t *cur = (volatile uint8_t *)0x10001725;   /* 光标行（6p 0x10001745） */
+  volatile uint32_t *v1  = (volatile uint32_t *)0x10001690;
+  volatile uint32_t *v2  = (volatile uint32_t *)0x10001698;
+  volatile uint32_t *v3  = (volatile uint32_t *)0x100016A0;
+  volatile uint32_t *v4  = (volatile uint32_t *)0x100016A8;
+
+  disp_string((int)0x43ac,0,0,0);
+  disp_string((int)0x43c0,1,0,0);
+  disp_string((int)0x43d4,2,0,0);
+  disp_string((int)0x43e8,3,0,0);
+  if (*cur == '\0') {
+    disp_uint4(*v1,0,0xb,1);   /* 反汇编 0x4224/0x4234 核：if 分支 r3=1、else r3=0 */
   }
   else {
-    disp_uint4(*DAT_000048a8,0,0xb,0);
+    disp_uint4(*v1,0,0xb,0);
   }
-  if (*DAT_000048a4 == '\x01') {
-    disp_uint4(*DAT_000048ac,1,0xb,1);
-  }
-  else {
-    disp_uint4(*DAT_000048ac,1,0xb,0);
-  }
-  if (*DAT_000048a4 == '\x02') {
-    disp_uint4(*DAT_000048b0,2,0xb,1);
+  if (*cur == '\x01') {
+    disp_uint4(*v2,1,0xb,1);
   }
   else {
-    disp_uint4(*DAT_000048b0,2,0xb,0);
+    disp_uint4(*v2,1,0xb,0);
   }
-  if (*DAT_000048a4 == '\x03') {
-    disp_uint4(*DAT_000048b4,3,0xb,1);
+  if (*cur == '\x02') {
+    disp_uint4(*v3,2,0xb,1);
   }
   else {
-    disp_uint4(*DAT_000048b4,3,0xb,0);
+    disp_uint4(*v3,2,0xb,0);
+  }
+  if (*cur == '\x03') {
+    disp_uint4(*v4,3,0xb,1);
+  }
+  else {
+    disp_uint4(*v4,3,0xb,0);
   }
   return;
 }

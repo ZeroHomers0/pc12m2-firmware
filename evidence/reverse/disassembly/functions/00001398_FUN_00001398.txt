@@ -1,0 +1,38 @@
+# FUN_00001398 entry=0x00001398 body=84
+00001398  push  {r4,r5,r6,r7,r8,lr}
+0000139c  mov  r4, r0
+0000139e  mov  r6, r1
+000013a0  mov  r5, r2
+000013a2  mov  r7, r3
+000013a4  mov.w  r8, #0x0
+000013a8  movs  r0, #0xa
+000013aa  udiv  r0, r4, r0
+000013ae  and  r8, r0, #0xff
+000013b2  cmp  r4, #0x9
+000013b4  bls  0x000013c4
+      ; jump -> 0x000013c4
+000013b6  mov  r3, r7
+000013b8  mov  r2, r5
+000013ba  mov  r1, r6
+000013bc  mov  r0, r8
+000013be  bl  0x00000d44
+      ; call -> 0x00000d44
+000013c2  b  0x000013d0
+      ; jump -> 0x000013d0
+000013c4  mov  r3, r7
+000013c6  mov  r2, r5
+000013c8  mov  r1, r6
+000013ca  movs  r0, #0x20
+000013cc  bl  0x00000af4
+      ; call -> 0x00000af4
+000013d0  movs  r0, #0xa
+000013d2  udiv  r1, r4, r0
+000013d6  mls  r8, r0, r1, r4
+000013da  adds  r0, r5, #0x1
+000013dc  uxtb  r2, r0
+000013de  mov  r3, r7
+000013e0  mov  r1, r6
+000013e2  mov  r0, r8
+000013e4  bl  0x00000d44
+      ; call -> 0x00000d44
+000013e8  pop.w  {r4,r5,r6,r7,r8,pc}

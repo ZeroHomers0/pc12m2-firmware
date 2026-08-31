@@ -1,0 +1,24 @@
+# FUN_0000e598 entry=0x0000e598 body=54
+0000e598  push     {r4, lr}
+0000e59a  ldr      r0, [pc, #0x158]
+ ; ref 0x0000e6f4 -> 0x400fc0c4 (PERI)  [pool->0x400fc0c4]
+0000e59c  ldr      r0, [r0]
+0000e59e  orr      r0, r0, #0x400000
+0000e5a2  ldr      r1, [pc, #0x154]
+ ; ref 0x0000e6f8 -> 0x400fc000 (PERI)  [pool->0x400fc000]
+0000e5a4  str.w    r0, [r1, #0xc4]
+0000e5a8  mov.w    r0, #2
+0000e5ac  ldr      r1, [pc, #0x14c]
+ ; ref 0x0000e6fc -> 0x40090000 (PERI)  [pool->0x40090000]
+0000e5ae  str      r0, [r1, #4]
+0000e5b0  mov.w    r0, #0x18
+0000e5b4  str      r0, [r1, #0xc]
+0000e5b6  movw     r0, #0x3e7
+0000e5ba  str      r0, [r1, #0x18]
+0000e5bc  mov.w    r0, #0xff
+0000e5c0  str      r0, [r1]
+0000e5c2  mov.w    r0, #3
+0000e5c6  str      r0, [r1, #0x14]
+0000e5c8  bl       #0x10860
+ ; call -> 0x00010860 (FUN_00010860)
+0000e5cc  pop      {r4, pc}

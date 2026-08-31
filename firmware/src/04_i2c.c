@@ -8,8 +8,9 @@
  *   3) puVar1 等 int* 局部 → volatile uint32_t*（DAT_00001efc 语义）—— 本模块
  *      局部已语义化：fio（FIO 池指针）、i/j（循环计数）、units（延时单位数）、
  *      data/i/ack（写字节）、ack（读寄存器 ACK）、out_buf/reg_addr（读写参数）。
- * 符号：DAT_00001efc=0x2009C000 FIO0 池；[5]=+0x14 FIO0PIN、[6]=+0x18
- *       FIO0SET、[7]=+0x1C FIO0CLR。DAT_00001f00=0x1000158C ACK 记录（byte）。
+ * 符号：DAT_00001eac=0x2009C000 FIO0 池（12p globals 为标量，用时强转）；
+ *       [5]=+0x14 FIO0PIN、[6]=+0x18 FIO0SET、[7]=+0x1C FIO0CLR。
+ *       DAT_00001eb0=0x1000158C ACK 记录（byte）。
  * ========================================================================== */
 #include "inc/types.h"
 #include "inc/reg.h"
@@ -20,8 +21,8 @@ void i2c_gpio_init(void)
 {
   volatile uint32_t *fio;
 
-  fio = DAT_00001efc;
-  *DAT_00001efc = *DAT_00001efc | 0x800;    /* P0.11 SCL 输出 */
+  fio = (volatile uint32_t *)DAT_00001eac;
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) | 0x800;    /* P0.11 SCL 输出 */
   *fio = *fio | 0x400;                /* P0.10 SDA 输出 */
   fio[6] = fio[6] | 0x800;            /* SCL 初始高 */
   fio[6] = fio[6] | 0x400;            /* SDA 初始高 */
@@ -55,15 +56,15 @@ undefined4 i2c_start(void)
 {
   volatile uint32_t *fio;
 
-  *DAT_00001efc = *DAT_00001efc | 0x400;    /* SDA=1 */
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) | 0x400;    /* SDA=1 */
   i2c_delay_short();
-  fio = DAT_00001efc;
-  DAT_00001efc[6] = DAT_00001efc[6] | 0x400;
+  fio = (volatile uint32_t *)DAT_00001eac;
+  ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x400;
   fio[6] = fio[6] | 0x800;            /* SCL=1 */
   i2c_delay_short();
-  DAT_00001efc[7] = DAT_00001efc[7] | 0x400;  /* SDA=0 */
+  ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x400;  /* SDA=0 */
   i2c_delay_short();
-  DAT_00001efc[7] = DAT_00001efc[7] | 0x800;  /* SCL=0 */
+  ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x800;  /* SCL=0 */
   i2c_delay_short();
   return 1;
 }
@@ -73,13 +74,13 @@ void i2c_stop(void)
 {
   volatile uint32_t *fio;
 
-  *DAT_00001efc = *DAT_00001efc | 0x400;    /* SDA=1 */
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) | 0x400;    /* SDA=1 */
   i2c_delay_short();
-  fio = DAT_00001efc;
-  DAT_00001efc[7] = DAT_00001efc[7] | 0x400;  /* SDA=0 */
+  fio = (volatile uint32_t *)DAT_00001eac;
+  ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x400;  /* SDA=0 */
   fio[6] = fio[6] | 0x800;            /* SCL=1 */
   i2c_delay_short();
-  DAT_00001efc[6] = DAT_00001efc[6] | 0x400;  /* SDA=1 */
+  ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x400;  /* SDA=1 */
   i2c_delay_short();
   return;
 }
@@ -94,30 +95,30 @@ undefined4 i2c_write_byte(undefined4 byte_val)
   uint ack;
 
   data = byte_val;
-  *DAT_00001efc = *DAT_00001efc | 0x400;    /* SDA=1 */
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) | 0x400;    /* SDA=1 */
   i2c_delay_short();
   for (i = 0; i < 8; i = i + 1) {
     if ((data & 0x80) != 0) {
-      DAT_00001efc[6] = DAT_00001efc[6] | 0x400;   /* 位=1 → SDA=1 */
+      ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x400;   /* 位=1 → SDA=1 */
     }
     else {
-      DAT_00001efc[7] = DAT_00001efc[7] | 0x400;   /* 位=0 → SDA=0 */
+      ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x400;   /* 位=0 → SDA=0 */
     }
-    DAT_00001efc[6] = DAT_00001efc[6] | 0x800;     /* SCL=1 */
+    ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x800;     /* SCL=1 */
     i2c_delay_short();
-    DAT_00001efc[7] = DAT_00001efc[7] | 0x800;     /* SCL=0 */
+    ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x800;     /* SCL=0 */
     i2c_delay_short();
     data = (data << 1) & 0xFF;                     /* 下一位（=lsls/lsrs） */
   }
-  *DAT_00001efc = *DAT_00001efc & 0xfffffbff;   /* SDA 方向输入（读 ACK） */
-  DAT_00001efc[6] = DAT_00001efc[6] | 0x400;    /* 释放 SDA */
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) & 0xfffffbff;   /* SDA 方向输入（读 ACK） */
+  ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x400;    /* 释放 SDA */
   i2c_delay_short();
-  DAT_00001efc[6] = DAT_00001efc[6] | 0x800;    /* SCL=1 */
+  ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x800;    /* SCL=1 */
   i2c_delay_short();
-  ack = (DAT_00001efc[5] & 0x400) != 0;         /* 读 FIO0PIN bit10 */
-  DAT_00001efc[7] = DAT_00001efc[7] | 0x800;    /* SCL=0 */
+  ack = (((volatile uint32_t *)DAT_00001eac)[5] & 0x400) != 0;         /* 读 FIO0PIN bit10 */
+  ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x800;    /* SCL=0 */
   i2c_delay_short();
-  *DAT_00001efc = *DAT_00001efc | 0x400;        /* SDA 方向输出 */
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) | 0x400;        /* SDA 方向输出 */
   return ack;
 }
 
@@ -128,26 +129,26 @@ undefined4 i2c_read_byte(void)
   uint data;
   uint i;
 
-  *DAT_00001efc = *DAT_00001efc & 0xfffffbff;   /* SDA 输入 */
-  DAT_00001efc[6] = DAT_00001efc[6] | 0x400;    /* 释放 SDA */
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) & 0xfffffbff;   /* SDA 输入 */
+  ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x400;    /* 释放 SDA */
   i2c_delay_short();
   data = 0;
   for (i = 0; i < 8; i = i + 1) {
     i2c_delay_short();
-    DAT_00001efc[7] = DAT_00001efc[7] | 0x800;  /* SCL=0 */
+    ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x800;  /* SCL=0 */
     i2c_delay_short();
-    DAT_00001efc[6] = DAT_00001efc[6] | 0x800;  /* SCL=1 */
+    ((volatile uint32_t *)DAT_00001eac)[6] = ((volatile uint32_t *)DAT_00001eac)[6] | 0x800;  /* SCL=1 */
     i2c_delay_short();
     data = (data << 1) & 0xFF;                  /* 移位累加 */
-    if ((DAT_00001efc[5] & 0x400) != 0) {       /* 读 SDA 引脚 */
+    if ((((volatile uint32_t *)DAT_00001eac)[5] & 0x400) != 0) {       /* 读 SDA 引脚 */
       data = data + 1;                          /* 位=1 */
     }
     i2c_delay_short();
   }
   i2c_delay_short();
-  DAT_00001efc[7] = DAT_00001efc[7] | 0x800;    /* SCL=0 */
+  ((volatile uint32_t *)DAT_00001eac)[7] = ((volatile uint32_t *)DAT_00001eac)[7] | 0x800;    /* SCL=0 */
   i2c_delay_short();
-  *DAT_00001efc = *DAT_00001efc | 0x400;        /* SDA 输出（NACK） */
+  *((volatile uint32_t *)DAT_00001eac) = *((volatile uint32_t *)DAT_00001eac) | 0x400;        /* SDA 输出（NACK） */
   i2c_delay_short();
   return data;
 }
@@ -160,11 +161,11 @@ void i2c_write_reg(undefined4 data,undefined4 reg_addr)
 
   i2c_start();
   ack = i2c_write_byte(0xa6);      /* 器件地址写（0x53<<1） */
-  *DAT_00001f00 = ack;
+  *DAT_00001eb0 = ack;
   ack = i2c_write_byte(reg_addr);   /* 寄存器号 */
-  *DAT_00001f00 = ack;
+  *DAT_00001eb0 = ack;
   ack = i2c_write_byte(data);   /* 数据 */
-  *DAT_00001f00 = ack;
+  *DAT_00001eb0 = ack;
   i2c_stop();
   i2c_delay(5);                      /* EEPROM 写周期 */
   return;
@@ -178,12 +179,12 @@ void i2c_read_reg(undefined1 *out_buf,undefined4 reg_addr)
 
   i2c_start();
   ack = i2c_write_byte(0xa6);      /* 器件地址写 */
-  *DAT_00001f00 = ack;
+  *DAT_00001eb0 = ack;
   ack = i2c_write_byte(reg_addr);   /* 寄存器号 */
-  *DAT_00001f00 = ack;
+  *DAT_00001eb0 = ack;
   i2c_start();                       /* 重复 START */
   ack = i2c_write_byte(0xa7);      /* 器件地址读 */
-  *DAT_00001f00 = ack;
+  *DAT_00001eb0 = ack;
   ack = i2c_read_byte();           /* 原反编译 i2c_read_byte(0) 实参去掉 */
   *out_buf = ack;                  /* 读 1 字节 */
   i2c_stop();

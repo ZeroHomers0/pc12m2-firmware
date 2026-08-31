@@ -1,0 +1,171 @@
+All facts are verified. Here is the complete deliverable.
+
+## 关键发现（case8/caseB/case9 地址与差异）
+
+- **case8 相位偏移槽**：12p 为 **0x10001624**（word），非 6p 的 0x1000162c；其保存副本 **0x10001628**（word）。
+- **case8 运行标志**：RUN=**0x10001620**（byte，case8 局部 run 标志，**不是** 0x1000175e）；STATUS=**0x100015cc**（byte）；FAULT=**0x1000161c**（word，简报误标 LATCH_OUT，此处作 FAULT 门控）。
+- **0x1e38** 经 Ghidra 反编译确认为 **EEPROM 写 `(data, reg)`**（device 0xa6，写 reg 字节再写 data 字节）——即 `i2c_write_reg`，简报把它标成 disp_by_index 是错的。保存 reg 号为 0xc9/0xca，与 6p 一致。
+- 三个 case 的屏内/返回菜单字符串基址均为 **0x5ffc**（+0x14=0x6010、+0x28=0x6024、+0x3c=0x6038），状态串基址 **0x4334**（+0xc=0x4340、+0x14=0x4348）。
+- case8 超时尾 **0x3a98**，caseB 超时尾 **0x1388**，case9 超时尾 **0x3a98**。
+- caseB 时间变量与 6p 同址：HOUR_NOW=0x100015f8 / MIN_NOW=0x100015fc / HOUR_TOTAL=0x10001604 / MIN_TOTAL=0x10001608（word）。
+
+以下片段用到的宏（主会话统一 #define）：`MENU`=0x10001724、`MENU2`=0x10001725、`TIMEOUT`=0x10001744（word）、`HOUR_NOW`=0x100015f8、`MIN_NOW`=0x100015fc、`HOUR_TOTAL`=0x10001604、`MIN_TOTAL`=0x10001608。case8 独有变量全部用真实地址字面量直写。
+
+---
+
+### case8 @0x97a8-0x99da
+
+```c
+  /* =====================================================================*/
+  /* ---------- case8 相位参数校准 @0x97a8-0x99da，MENU==8 ----------
+     本片段用宏：MENU=0x10001724，MENU2=0x10001725，TIMEOUT=0x10001744（word）。
+     case8 独有变量（按 dump 读宽直写）：
+       PHASE_OFF=0x10001624（word，ldr/str）、保存副本 0x10001628（word）、
+       FAULT=0x1000161c（word，简报标 LATCH_OUT）、RUN=0x10001620（byte）、
+       STATUS=0x100015cc（byte）、屏内置位 0x100015ce（byte）。 */
+  if (*MENU == 8) {
+    *((volatile uint8_t*)0x100015ce) = 1;             /* 屏内置位 @0x97b0 */
+    /* 相位偏移 增（key3/0x21 上限 0x2b0）/ 减（key2/0x16 下限 0x45）@0x97b6-0x987a */
+    if (key == 3 || key == 0x21) {
+      *TIMEOUT = 0;
+      (*(volatile uint32_t*)0x10001624)++;
+      if (*(volatile uint32_t*)0x10001624 &gt; 0x2b0)
+        *(volatile uint32_t*)0x10001624 = 0x2b0;
+      disp_offset(*(volatile uint32_t*)0x10001624, 2, 7, 1);   /* 0x1260 @0x983c */
+    }
+    if (key == 2 || key == 0x16) {
+      *TIMEOUT = 0;
+      if (*(volatile uint32_t*)0x10001624 &lt; 0x45)
+        *(volatile uint32_t*)0x10001624 = 0x45;
+      (*(volatile uint32_t*)0x10001624)--;
+      disp_offset(*(volatile uint32_t*)0x10001624, 2, 7, 1);   /* 0x1260 @0x9870 */
+    }
+    /* 运行状态行显示（FAULT!=0 停机 / RUN 控制 STATUS 0/1/2）@0x987e-0x98dc */
+    if (*(volatile uint32_t*)0x1000161c != 0) {       /* FAULT/LATCH_OUT */
+      *(volatile uint8_t*)0x100015cc = 0;             /* STATUS=0 */
+      disp_string(0x4334, 3, 0xa, 0);
+    } else {
+      if (*(volatile uint8_t*)0x10001620 == 0 &amp;&amp; *(volatile uint8_t*)0x100015cc != 1) {
+        *(volatile uint8_t*)0x100015cc = 1;
+        disp_string(0x4340, 3, 0xa, 0);
+      }
+      if (*(volatile uint8_t*)0x10001620 == 1 &amp;&amp; *(volatile uint8_t*)0x100015cc != 2) {
+        *(volatile uint8_t*)0x100015cc = 2;
+        disp_string(0x4348, 3, 0xa, 0);
+      }
+    }
+    if (key == 5) {                                   /* 启动 @0x98e0-0x98ee */
+      *(volatile uint8_t*)0x10001620 = 1;             /* RUN=1 */
+      *TIMEOUT = 0;
+    }
+    if (key == 6) {                                   /* 停机 @0x98f0-0x98fe */
+      *(volatile uint8_t*)0x10001620 = 0;             /* RUN=0 */
+      *TIMEOUT = 0;
+      gpio_outputs_set();                             /* 0xe4fa */
+    }
+    run_stop_preset();                                /* 0xf70a @0x9902 */
+    if (key == 4) {                                   /* SET 保存退出 @0x9906-0x999a */
+      *TIMEOUT = 0;
+      *MENU = 2;
+      *MENU2 = 5;
+      disp_clear();                                   /* 0x942 */
+      disp_string(0x5ffc, 0, 0, 0);
+      disp_string(0x6010, 1, 0, 1);
+      disp_string(0x6024, 2, 0, 0);
+      disp_string(0x6038, 3, 0, 0);
+      if (*(volatile uint32_t*)0x10001624 != *(volatile uint32_t*)0x10001628) {
+        /* 写 EEPROM reg 0xc9/0xca；0x1e38 = i2c_write_reg(data,reg) @0x9956-0x997e */
+        *(volatile uint32_t*)0x10001628 = *(volatile uint32_t*)0x10001624;
+        i2c_write_reg((uint16_t)*(volatile uint32_t*)0x10001628 &gt;&gt; 8, 0xc9);
+        i2c_write_reg((uint8_t)*(volatile uint32_t*)0x10001628, 0xca);
+      }
+      gpio_outputs_set();                             /* 0xe4fa @0x9982 */
+      *(volatile uint8_t*)0x10001620 = 0;             /* RUN=0 @0x9986 */
+      run_stop_preset();                              /* 0xf70a @0x998c */
+      *((volatile uint8_t*)0x100015ce) = 0;           /* 屏内置位清 @0x9990 */
+      *(volatile uint8_t*)0x100015cc = 0;             /* STATUS=0 @0x9996 */
+      return;
+    }
+    /* 超时尾（0x3a98=15000）@0x999c-0x99d8 */
+    (*TIMEOUT)++;
+    if (*TIMEOUT &gt;= 0x3a98) {
+      *TIMEOUT = 0;
+      *(volatile uint8_t*)0x10001620 = 0;             /* RUN=0 */
+      gpio_outputs_set();                             /* 0xe4fa @0x99bc */
+      *MENU = 1;
+      disp_splash_screen();                           /* 0x40b0 @0x99c6 */
+      *((volatile uint8_t*)0x100015ce) = 0;           /* 屏内置位清 @0x99ca */
+      *(volatile uint8_t*)0x100015cc = 0;             /* STATUS=0 @0x99d0 */
+    }
+    return;
+  }
+```
+
+### caseB @0x99da-0x9ab6
+
+```c
+  /* =====================================================================*/
+  /* ---------- caseB 运行时间查询 @0x99da-0x9ab6，MENU==0xb ----------
+     时间变量（word，ldr/str）：HOUR_NOW=0x100015f8 / MIN_NOW=0x100015fc /
+     HOUR_TOTAL=0x10001604 / MIN_TOTAL=0x10001608。 */
+  if (*MENU == 0xb) {
+    if (key == 4) {                                   /* SET 退出回主菜单 @0x99e2-0x9a38 */
+      *TIMEOUT = 0;
+      *MENU = 2;
+      *MENU2 = 6;
+      param_sync_live_to_eeprom();                    /* 0x3534 @0x99f8 */
+      disp_clear();                                   /* 0x942 @0x99fc */
+      disp_string(0x5ffc, 0, 0, 0);
+      disp_string(0x6010, 1, 0, 0);
+      disp_string(0x6024, 2, 0, 1);
+      disp_string(0x6038, 3, 0, 0);
+      return;
+    }
+    /* key==0x17 统计清零 → 4 个时间 word 归零并重显 @0x9a3a-0x9a84 */
+    if (key == 0x17) {
+      *HOUR_NOW = 0;
+      *MIN_NOW = 0;
+      *HOUR_TOTAL = 0;
+      *MIN_TOTAL = 0;
+      disp_uint5(*HOUR_NOW, 1, 3, 0);                 /* 0xf3c */
+      disp_uint2(*MIN_NOW, 1, 0xa, 0);                /* 0x1398 */
+      disp_uint5(*HOUR_TOTAL, 3, 3, 0);
+      disp_uint2(*MIN_TOTAL, 3, 0xa, 0);
+    }
+    (*TIMEOUT)++;
+    if (*TIMEOUT &gt;= 0x1388) { *TIMEOUT = 0; *MENU = 1; disp_splash_screen(); }
+    return;
+  }
+```
+
+### case9 @0x9ab6-0x9b44
+
+```c
+  /* =====================================================================*/
+  /* ---------- case9 产品版本信息 @0x9ab6-0x9b44，MENU==9 ---------- */
+  if (*MENU == 9) {
+    if (key == 4) {                                   /* SET 退出回主菜单 @0x9abe-0x9b14 */
+      *TIMEOUT = 0;
+      *MENU = 2;
+      *MENU2 = 7;
+      param_sync_live_to_eeprom();                    /* 0x3534 @0x9ad4 */
+      disp_clear();                                   /* 0x942 @0x9ad8 */
+      disp_string(0x5ffc, 0, 0, 0);
+      disp_string(0x6010, 1, 0, 0);
+      disp_string(0x6024, 2, 0, 0);
+      disp_string(0x6038, 3, 0, 1);
+      return;
+    }
+    (*TIMEOUT)++;
+    if (*TIMEOUT &gt;= 0x3a98) { *TIMEOUT = 0; *MENU = 1; disp_splash_screen(); }
+    return;
+  }
+```
+
+---
+
+### 说明
+
+- 三个 case 的门控地址均为 0x10001724（MENU byte，dump 中由 0x9c3c 池槽引用）；读宽严格按 dump（ldrb/strb→byte、ldr/str→word），仅 case8 的 PHASE_OFF/副本/FAULT 为 word，RUN/STATUS/屏内标志为 byte。
+- case8 无 fio1_pin/0x10001762 独有逻辑；运行状态行与 6p 形状一致，但寄存器为 12p 实际值。
+- 0x1e38 反编译证实为 `(data, reg)` 双参 EEPROM 写（device 0xa6），故按 `i2c_write_reg(value, reg)` 调用；如主会话已将其命名别的符号，替换函数名即可，参数序勿改。

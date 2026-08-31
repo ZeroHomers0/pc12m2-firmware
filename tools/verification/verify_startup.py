@@ -33,8 +33,8 @@ def main():
         return tuple(int(value, 16) for value in match.groups())
 
     RAM_IMAGE_VMA, RAM_IMAGE_LEN, RAM_IMAGE_LMA = section('fw_image')
-    RAM_BSS_START  = 0x1000213c
-    RAM_BSS_END    = 0x100029c8
+    RAM_BSS_START  = 0x10002110   # 12p：data_image 0x2110 字节后为 .bss 清零区
+    RAM_BSS_END    = 0x100029a0   # 12p _estack（原始复位栈顶）
     SDATA, DATA_LEN, SIDATA = section('data')
     EDATA = SDATA + DATA_LEN
 
@@ -55,12 +55,12 @@ def main():
     sram0 = bytearray(0x8000)  # 32K
     sram0[0:RAM_IMAGE_LEN] = embedded                    # 拷贝 data_image
     sram0[RAM_BSS_START - RAM_IMAGE_VMA : RAM_BSS_END - RAM_IMAGE_VMA] = b'\x00' * (RAM_BSS_END - RAM_BSS_START)  # 清零 .bss
-    print('[2] 模拟启动：SRAM0 前 0x213C = data_image，0x213C..0x29C8 清零 -> 完成')
+    print('[2] 模拟启动：SRAM0 前 0x2110 = data_image，0x2110..0x29A0 清零 -> 完成')
 
     # ---- 验证 3：关键 SRAM0 初始值 ----
     print('\n[3] SRAM0 关键地址初始值：')
     checks = [
-        (0x100017bc, '波特率表[0]', lambda v: v in (2400, 4800, 9600, 19200, 38400, 57600, 115200)),
+        (0x1000179c, '波特率表[0]', lambda v: v in (2400, 4800, 9600, 19200, 38400, 57600, 115200)),
         (0x1000172c, '认证锁定标志(750)', lambda v: v == 0),   # 初始应锁定态=0
         (0x10001734, '认证结果(748)', lambda v: True),          # 任意，只 dump
     ]
@@ -70,9 +70,9 @@ def main():
         print('    %s @0x%08x = 0x%08x (%d)  %s' % (name, addr, v, v, tag))
         ok &= pred(v)
 
-    # 波特率表完整 dump（0x100017bc 起 8 个 word）
-    print('    波特率表 0x100017BC 全量:', end=' ')
-    vals = [dword(bytes(sram0), 0x17bc + i*4) for i in range(8)]
+    # 波特率表完整 dump（0x1000179C 起 8 个 word，12p comm_baud_table）
+    print('    波特率表 0x1000179C 全量:', end=' ')
+    vals = [dword(bytes(sram0), 0x179c + i*4) for i in range(8)]
     print(vals)
 
     # 本固件 .data 拷贝长度自检

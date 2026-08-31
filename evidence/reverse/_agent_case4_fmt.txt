@@ -1,0 +1,270 @@
+I have everything needed. Here is the complete decode deliverable for case4 (12p protection parameter screen).\n\n## Deliverable: case4 (0x7962-0x84A2) 12p 解码片段\n\n```c\n/* =============================================================================\n * case4 单项目值渲染 (12p 内嵌 0x7FB6-0x8316)：按项号 it 显示保护参数值+单位到 (row,0xb)。\n * attr=1 高亮当前项；0 普通。值串/单位地址全部从 12p dump 提取，禁止臆造。\n * 项映射：0=过压0x100016b8(word) 1=过压时间0x100016bc(byte) 2=欠压0x100016c0(word)\n *   3=欠压时间0x100016c4(byte) 4=IF过载0x100016c8(word) 5=IF过载时间0x100016cc(byte)\n *   6=CT过载0x100016d0(word) 7=CT过载时间0x100016d4(byte) 8=缺相0x100016d5(byte)\n *   9=三相平衡0x100016d6(byte)。与 6p 相比整组前移 8 字节（6p 从 0x100016c0 起）。\n * ========================================================================== */\nstatic void sm4_draw_value(uint32_t it, uint32_t row, uint32_t attr)\n{\n  volatile uint32_t *w_b8 = (volatile uint32_t*)0x100016b8;
+ /* 过压 */\n  volatile uint8_t  *b_bc = (volatile uint8_t*)0x100016bc;
+  /* 过压时间 */\n  volatile uint32_t *w_c0 = (volatile uint32_t*)0x100016c0;
+ /* 欠压 */\n  volatile uint8_t  *b_c4 = (volatile uint8_t*)0x100016c4;
+  /* 欠压时间 */\n  volatile uint32_t *w_c8 = (volatile uint32_t*)0x100016c8;
+ /* IF过载 */\n  volatile uint8_t  *b_cc = (volatile uint8_t*)0x100016cc;
+  /* IF过载时间 */\n  volatile uint32_t *w_d0 = (volatile uint32_t*)0x100016d0;
+ /* CT过载 */\n  volatile uint8_t  *b_d4 = (volatile uint8_t*)0x100016d4;
+  /* CT过载时间 */\n  volatile uint8_t  *b_d5 = (volatile uint8_t*)0x100016d5;
+  /* 缺相 */\n  volatile uint8_t  *b_d6 = (volatile uint8_t*)0x100016d6;
+  /* 三相平衡 */\n  switch (it) {\n    case 0:\n      if (*w_b8) { disp_uint4(*w_b8,row,0xb,attr);
+ disp_string(0x7488,row,0xf,0);
+ }
+\n      else disp_string(0x5f54,row,0xb,attr);
+\n      break;
+\n    case 1: disp_uint4(*b_bc,row,0xb,attr);
+ break;
+\n    case 2:\n      if (*w_c0) { disp_uint4(*w_c0,row,0xb,attr);
+ disp_string(0x7488,row,0xf,0);
+ }
+\n      else disp_string(0x5f54,row,0xb,attr);
+\n      break;
+\n    case 3: disp_uint4(*b_c4,row,0xb,attr);
+ break;
+\n    case 4:\n      if (*w_c8) { disp_uint4(*w_c8,row,0xb,attr);
+ disp_string(0x7490,row,0xf,0);
+ }
+\n      else disp_string(0x5f54,row,0xb,attr);
+\n      break;
+\n    case 5: disp_uint4(*b_cc,row,0xb,attr);
+ break;
+\n    case 6:\n      if (*w_d0) { disp_uint4(*w_d0,row,0xb,attr);
+ disp_string(0x7490,row,0xf,0);
+ }
+\n      else disp_string(0x5f54,row,0xb,attr);
+\n      break;
+\n    case 7: disp_uint4(*b_d4,row,0xb,attr);
+ break;
+\n    case 8:\n      if (*b_d5) disp_string(0x65d4,row,0xb,attr);
+\n      else disp_string(0x5f54,row,0xb,attr);
+\n      break;
+\n    case 9:\n      if (*b_d6 &gt;
+= 0xa) { disp_uint4(*b_d6,row,0xb,attr);
+ disp_string(0x8638,row,0xf,0);
+ }
+\n      else disp_string(0x5f54,row,0xb,attr);
+\n      break;
+\n  }
+\n}
+\n\n/* 绘制当前项所在整页（10 项 = 页0:0-3, 页1:4-7, 页2:8-9），高亮当前项 */\nstatic void sm4_draw_page(uint32_t it)\n{\n  uint32_t page = it &gt;
+&gt;
+ 2;
+\n  uint32_t start = page &lt;
+&lt;
+ 2;
+\n  uint32_t n = (page &lt;
+ 2) ? 4 : 2;
+\n  uint32_t k;
+\n  for (k = 0;
+ k &lt;
+ n;
+ k++)\n    sm4_draw_value(start + k, k, (start + k) == it ? 1 : 0);
+\n}
+\n\n/* ================= case4 保护参数屏 (0x7962-0x84A2) =================\n   说明：MENU2(0x10001725)=当前项号 0-9；0x10001726=编辑态标志(0=导航,1=修改，\n   与 case63 的锁定标志共用同一字节，即 6p MENU3 语义)。10 项 = 3 页。\n   项映射(全部从 12p dump 提取)：0=过压0x100016b8(word,上限*0x10001634)\n     1=过压时间0x100016bc(byte,&lt;
+=0xc8) 2=欠压0x100016c0(word,上限*0x10001634)\n     3=欠压时间0x100016c4(byte,&lt;
+=0xc8) 4=IF过载0x100016c8(word,上限*0x10001630)\n     5=IF过载时间0x100016cc(byte,&lt;
+=0xc8) 6=CT过载0x100016d0(word,上限*0x10001638)\n     7=CT过载时间0x100016d4(byte,&lt;
+=0xc8) 8=缺相0x100016d5(byte,0..1)\n     9=三相平衡0x100016d6(byte,0..0x3c,减下限 0x9)。\n   与 6p 相比整组前移 8 字节(6p 从 0x100016c0 起)；上限参照 0x10001630/34/38\n   在 globals.c 中同时标为 gain_a/gain_b/gain_coef，12p 此处用作保护上限。\n   编辑方向：2/0x16 增、3/0x21 减；word 项 0x16/0x21 走 ±5。key==4 保存退回。 */\n  if (*MENU == 4) {        /* *MENU @0x10001724（byte） */\n    volatile uint8_t  *m25 = (volatile uint8_t*)0x10001725;
+  /* MENU2：当前项号 0-9 */\n    volatile uint8_t  *m26 = (volatile uint8_t*)0x10001726;
+  /* 编辑/锁定标志(≡6p MENU3) */\n    volatile uint32_t *t44 = (volatile uint32_t*)0x10001744;
+ /* TIMEOUT：菜单超时 */\n    volatile uint32_t *t58 = (volatile uint32_t*)0x10001758;
+ /* TIMEOUT3：重绘节流 */\n    volatile uint32_t *w_b8=(volatile uint32_t*)0x100016b8;
+  /* 过压 */\n    volatile uint8_t  *b_bc=(volatile uint8_t*)0x100016bc;
+   /* 过压时间 */\n    volatile uint32_t *w_c0=(volatile uint32_t*)0x100016c0;
+  /* 欠压 */\n    volatile uint8_t  *b_c4=(volatile uint8_t*)0x100016c4;
+   /* 欠压时间 */\n    volatile uint32_t *w_c8=(volatile uint32_t*)0x100016c8;
+  /* IF过载 */\n    volatile uint8_t  *b_cc=(volatile uint8_t*)0x100016cc;
+   /* IF过载时间 */\n    volatile uint32_t *w_d0=(volatile uint32_t*)0x100016d0;
+  /* CT过载 */\n    volatile uint8_t  *b_d4=(volatile uint8_t*)0x100016d4;
+   /* CT过载时间 */\n    volatile uint8_t  *b_d5=(volatile uint8_t*)0x100016d5;
+   /* 缺相 */\n    volatile uint8_t  *b_d6=(volatile uint8_t*)0x100016d6;
+   /* 三相平衡 */\n    volatile uint32_t *w30 =(volatile uint32_t*)0x10001630;
+  /* IF过载上限参照 */\n    volatile uint32_t *w34 =(volatile uint32_t*)0x10001634;
+  /* 过压/欠压上限参照 */\n    volatile uint32_t *w38 =(volatile uint32_t*)0x10001638;
+  /* CT过载上限参照 */\n\n    /* ---- key==1：切换编辑态 (0x796A-0x79A4) ---- */\n    if (key == 1) {\n      *t44 = 0;
+\n      (*m26)++;
+\n      if (*m26 &gt;
+ 1) *m26 = 0;
+\n      *t58 = (*m26 == 0) ? 0xfa : 0x1f4;
+\n    }
+\n    /* ---- key==4：保存并退回 参数子菜单(type2 屏) (0x79A6-0x79F6) ---- */\n    else if (key == 4) {\n      *t44 = 0;
+ *MENU = 2;
+ *m25 = 1;
+\n      param_sync_live_to_eeprom();
+ disp_clear();
+\n      disp_string((int)0x436c,0,0,0);
+ disp_string((int)0x437c,1,0,1);
+\n      disp_string((int)0x438c,2,0,0);
+ disp_string((int)0x439c,3,0,0);
+\n    }
+\n    /* ---- key==2/3 且 查看态：项间导航 (MENU2=0..9) + 画页标题 (0x79FA-0x7B06) ---- */\n    else if ((key == 2 || key == 3) &amp;
+&amp;
+ *m26 == 0) {\n      *t44 = 0;
+\n      if (key == 3) { (*m25)++;
+ if (*m25 &gt;
+ 9) *m25 = 9;
+ }
+\n      else          { if (*m25 &gt;
+ 0) (*m25)--;
+ }
+\n      /* 画当前项所在页 4 行标题；页2 的 2/3 行用 4 空格串 0x56d8 占位 */\n      if (*m25 &lt;
+ 4) {\n        disp_string((int)0x64f8,0,0,0);
+ disp_string((int)0x650c,1,0,0);
+\n        disp_string((int)0x6520,2,0,0);
+ disp_string((int)0x6534,3,0,0);
+\n      }
+else if (*m25 &lt;
+ 8) {\n        disp_string((int)0x7d30,0,0,0);
+ disp_string((int)0x7d44,1,0,0);
+\n        disp_string((int)0x7d58,2,0,0);
+ disp_string((int)0x7d6c,3,0,0);
+\n      }
+else {\n        disp_string((int)0x7d80,0,0,0);
+ disp_string((int)0x7d94,1,0,0);
+\n        disp_string((int)0x56d8,2,0,0);
+ disp_string((int)0x56d8,3,0,0);
+\n      }
+\n      *t58 = 0xfa;
+\n    }
+\n    /* ---- key==2/0x16/3/0x21 且 编辑态：修改当前项值 (0x7B08-0x7FA2) ---- */\n    else if ((key == 2 || key == 0x16 || key == 3 || key == 0x21) &amp;
+&amp;
+ *m26 == 1) {\n      uint32_t it = *m25;
+\n      *t44 = 0;
+\n      if (key == 2 || key == 0x16) {\n        /* 增：byte 项 1/3/5/7/8/9 +1 clamp (0x7B28-0x7BE0) */\n        if (it == 1) { (*b_bc)++;
+ if (*b_bc &gt;
+ 0xc8) *b_bc = 0xc8;
+ }
+\n        else if (it == 3) { (*b_c4)++;
+ if (*b_c4 &gt;
+ 0xc8) *b_c4 = 0xc8;
+ }
+\n        else if (it == 5) { (*b_cc)++;
+ if (*b_cc &gt;
+ 0xc8) *b_cc = 0xc8;
+ }
+\n        else if (it == 7) { (*b_d4)++;
+ if (*b_d4 &gt;
+ 0xc8) *b_d4 = 0xc8;
+ }
+\n        else if (it == 8) { (*b_d5)++;
+ if (*b_d5 &gt;
+ 1) *b_d5 = 1;
+ }
+\n        else if (it == 9) { (*b_d6)++;
+ if (*b_d6 &gt;
+ 0x3c) *b_d6 = 0x3c;
+ }
+\n        /* word 项：key==2 +1 (0x7BE6-0x7C84)、key==0x16 +5 (0x7C86-0x7E02) */\n        if (it == 0) {\n          *w_b8 += (key == 0x16) ? 5 : 1;
+\n          if (*w_b8 &gt;
+ *w34) *w_b8 = *w34;
+\n        }
+else if (it == 2) {\n          *w_c0 += (key == 0x16) ? 5 : 1;
+\n          if (*w_c0 &gt;
+ *w34) *w_c0 = *w34;
+\n        }
+else if (it == 4) {\n          *w_c8 += (key == 0x16) ? 5 : 1;
+\n          if (*w_c8 &gt;
+ *w30) *w_c8 = *w30;
+\n        }
+else if (it == 6) {\n          *w_d0 += (key == 0x16) ? 5 : 1;
+\n          if (*w_d0 &gt;
+ *w38) *w_d0 = *w38;
+\n        }
+\n      }
+else {\n        /* 减：byte 项 1/3/5/7/8 若 &gt;
+0 → -1；item9 下限 0x9 (0x7E04-0x7EAE) */\n        if (it == 1) { uint8_t v=*b_bc;
+ if (v) *b_bc = v-1;
+ }
+\n        else if (it == 3) { uint8_t v=*b_c4;
+ if (v) *b_c4 = v-1;
+ }
+\n        else if (it == 5) { uint8_t v=*b_cc;
+ if (v) *b_cc = v-1;
+ }
+\n        else if (it == 7) { uint8_t v=*b_d4;
+ if (v) *b_d4 = v-1;
+ }
+\n        else if (it == 8) { uint8_t v=*b_d5;
+ if (v) *b_d5 = v-1;
+ }
+\n        else if (it == 9) { uint8_t v=*b_d6;
+ if (v &gt;
+ 0x9) *b_d6 = v-1;
+ }
+\n        /* 减：word 项 key==3 若 v&gt;
+0 → -1(下限0)；key==0x21 若 v&lt;
+6 先置 5，再 -5(下限0)\n           (0x7EAE-0x7F9E) */\n        if (it == 0) { uint32_t v=*w_b8;
+ if (key==0x21) { uint32_t w=(v&lt;
+6)?5:v;
+ *w_b8=w-5;
+ }
+else if (v) *w_b8=v-1;
+ }
+\n        else if (it == 2) { uint32_t v=*w_c0;
+ if (key==0x21) { uint32_t w=(v&lt;
+6)?5:v;
+ *w_c0=w-5;
+ }
+else if (v) *w_c0=v-1;
+ }
+\n        else if (it == 4) { uint32_t v=*w_c8;
+ if (key==0x21) { uint32_t w=(v&lt;
+6)?5:v;
+ *w_c8=w-5;
+ }
+else if (v) *w_c8=v-1;
+ }
+\n        else if (it == 6) { uint32_t v=*w_d0;
+ if (key==0x21) { uint32_t w=(v&lt;
+6)?5:v;
+ *w_d0=w-5;
+ }
+else if (v) *w_d0=v-1;
+ }
+\n      }
+\n      *t58 = 0xfa;
+\n    }
+\n\n    /* ---- 刷新节流：TIMEOUT3 自增；==0xfb 重绘当前页（高亮当前项） (0x7FA4-0x8316) ---- */\n    (*t58)++;
+\n    if (*t58 == 0xfb) sm4_draw_page(*m25);
+\n\n    /* ---- TIMEOUT3 &gt;
+ 0x1F4：回绕为 0；查看态返回；编辑态按 MENU2 用空格擦除当前项值列 ---- */\n    /*     与 0xfb 整页重绘交替 → 值\"反显/消失\"闪烁，周期≈501 帧 (0x831A-0x8470)。\n     *     擦除串：0x7d8c=4 空格（word 项 0/2/4/6 值≠0、byte 项 1/3/5/7）、\n     *             0x5f98=4 空格（word 项值==0、byte 项 8/9）。12p 两者同为 4 空格。 */\n    if (*t58 &gt;
+ 0x1f4) {\n      *t58 = 0;
+\n      if (*m26 == 0) return;
+              /* 查看态：本帧提前返回 */\n      switch (*m25) {\n        case 0:  if (*w_b8 != 0) disp_string(0x7d8c,0,0xb,0);
+ else disp_string(0x5f98,0,0xb,0);
+ break;
+\n        case 1:  disp_string(0x7d8c,1,0xb,0);
+ break;
+\n        case 2:  if (*w_c0 != 0) disp_string(0x7d8c,2,0xb,0);
+ else disp_string(0x5f98,2,0xb,0);
+ break;
+\n        case 3:  disp_string(0x7d8c,3,0xb,0);
+ break;
+\n        case 4:  if (*w_c8 != 0) disp_string(0x7d8c,0,0xb,0);
+ else disp_string(0x5f98,0,0xb,0);
+ break;
+\n        case 5:  disp_string(0x7d8c,1,0xb,0);
+ break;
+\n        case 6:  if (*w_d0 != 0) disp_string(0x7d8c,2,0xb,0);
+ else disp_string(0x5f98,2,0xb,0);
+ break;
+\n        case 7:  disp_string(0x7d8c,3,0xb,0);
+ break;
+\n        case 8:  disp_string(0x5f98,0,0xb,0);
+ break;
+\n        case 9:  disp_string(0x5f98,1,0xb,0);
+ break;
+\n      }
+\n    }
+\n    (*t44)++;
+\n    if (*t44 &gt;
+= 0x1388) { *t44 = 0;
+ *MENU = 1;
+ disp_splash_screen();
+ }
+\n    return;
+\n  }
+\n```\n\n## 关键发现与说明\n\n1. **12p 项映射与 6p 不同（整组前移 8 字节）**。12p：`0=0x100016b8(w) 1=0x100016bc(b) 2=0x100016c0(w) 3=0x100016c4(b) 4=0x100016c8(w) 5=0x100016cc(b) 6=0x100016d0(w) 7=0x100016d4(b) 8=0x100016d5(b) 9=0x100016d6(b)`。6p 从 0x100016c0 起、且缺相/三相平衡在 0x100016dd/de；12p 的 byte 项 1/3/5/7 相邻（6p 是 word 项后跟 byte 项各占 4 字节）。项数仍为 10（3 页结构同 6p）。\n\n2. **word 项上限参照移位**：item0/2（过压/欠压）clamp 到 `*0x10001634`；item4（IF过载）clamp 到 `*0x10001630`；item6（CT过载）clamp 到 `*0x10001638`。globals.c 标这 3 个为 gain_a/gain_b/gain_coef，12p 在此复用为保护上限。\n\n3. **编辑标志**：12p 没有独立 MENU3，key==1 切换的是 `0x10001726`（byte），与 case63 锁定标志共用同一字节（简报已标注 0x10001726=锁标志）。\n\n4. **TIMEOUT3 节流常量不同**：12p 用 `0xfa` 预置（key==1 查看态/导航/改值后），自增到 `0xfb` 触发整页重绘；进入编辑态预置 `0x1f4`，`&gt;
+0x1f4` 回绕擦除。6p 的 `0xfb/0x1f5` 在 12p 为 `0xfa/0x1f4`。\n\n5. **擦除串**：12p 的窄串 `0x7d8c` 与宽串 `0x5f98` **同为 4 空格**（6p 宽串为 5 空格），编译器对 item9 两个分支生成了相同的 `0x5f98` 绘制。\n\n6. **字符串地址**：单位 `0x7488`('V')、`0x7490`('A')、`0x8638`('%')；值==0 显示串 `0x5f54`；item8 开态串 `0x65d4`；页标题 0x64f8/0x650c/0x6520/0x6534（页0）、0x7d30/0x7d44/0x7d58/0x7d6c（页1）、0x7d80/0x7d94/0x56d8/0x56d8（页2）；key==4 退出屏标题 0x436c/0x437c/0x438c/0x439c。全部为 dump 字面量。\n\n7. **返回点**：查看态擦除分支提前 `return`（0x8332→0x4932）；超时尾 `*MENU=1;
+ disp_splash_screen()`（0x40b0）后 `return`。

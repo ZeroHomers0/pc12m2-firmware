@@ -1,0 +1,80 @@
+# FUN_00001daa entry=0x00001daa body=142
+00001daa  push     {r4, lr}
+00001dac  mov      r4, r0
+00001dae  movs     r1, #0
+00001db0  ldr      r0, [pc, #0xf8]
+ ; ref 0x00001eac -> 0x2009c000
+00001db2  ldr      r0, [r0]
+00001db4  bic      r0, r0, #0x400
+ ; jump -> 0x00000400 (FUN_000002ee)
+00001db8  ldr      r3, [pc, #0xf0]
+ ; ref 0x00001eac -> 0x2009c000
+00001dba  str      r0, [r3]
+00001dbc  mov      r0, r3
+00001dbe  ldr      r0, [r0, #0x18]
+00001dc0  orr      r0, r0, #0x400
+00001dc4  str      r0, [r3, #0x18]
+00001dc6  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001dca  movs     r2, #0
+00001dcc  b        #0x1e0c
+ ; jump -> 0x00001e0c (FUN_00001daa)
+00001dce  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001dd2  ldr      r0, [pc, #0xd8]
+ ; ref 0x00001eac -> 0x2009c000
+00001dd4  ldr      r0, [r0, #0x1c]
+00001dd6  orr      r0, r0, #0x800
+00001dda  ldr      r3, [pc, #0xd0]
+ ; ref 0x00001eac -> 0x2009c000
+00001ddc  str      r0, [r3, #0x1c]
+00001dde  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001de2  ldr      r0, [pc, #0xc8]
+ ; ref 0x00001eac -> 0x2009c000
+00001de4  ldr      r0, [r0, #0x18]
+00001de6  orr      r0, r0, #0x800
+00001dea  ldr      r3, [pc, #0xc0]
+ ; ref 0x00001eac -> 0x2009c000
+00001dec  str      r0, [r3, #0x18]
+00001dee  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001df2  lsls     r0, r1, #0x19
+00001df4  lsrs     r1, r0, #0x18
+00001df6  ldr      r0, [pc, #0xb4]
+ ; ref 0x00001eac -> 0x2009c000
+00001df8  ldr      r0, [r0, #0x14]
+00001dfa  tst.w    r0, #0x400
+00001dfe  beq      #0x1e04
+ ; jump -> 0x00001e04 (FUN_00001daa)
+00001e00  adds     r0, r1, #1
+00001e02  uxtb     r1, r0
+00001e04  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001e08  adds     r0, r2, #1
+00001e0a  uxtb     r2, r0
+00001e0c  cmp      r2, #8
+00001e0e  blt      #0x1dce
+ ; jump -> 0x00001dce (FUN_00001daa)
+00001e10  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001e14  ldr      r0, [pc, #0x94]
+ ; ref 0x00001eac -> 0x2009c000
+00001e16  ldr      r0, [r0, #0x1c]
+00001e18  orr      r0, r0, #0x800
+00001e1c  ldr      r3, [pc, #0x8c]
+ ; ref 0x00001eac -> 0x2009c000
+00001e1e  str      r0, [r3, #0x1c]
+00001e20  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001e24  ldr      r0, [pc, #0x84]
+ ; ref 0x00001eac -> 0x2009c000
+00001e26  ldr      r0, [r0]
+00001e28  orr      r0, r0, #0x400
+00001e2c  ldr      r3, [pc, #0x7c]
+ ; ref 0x00001eac -> 0x2009c000
+00001e2e  str      r0, [r3]
+00001e30  bl       #0x1c1c
+ ; call -> 0x00001c1c (FUN_00001c1c)
+00001e34  mov      r0, r1
+00001e36  pop      {r4, pc}

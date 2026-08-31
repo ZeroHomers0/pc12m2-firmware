@@ -1,0 +1,36 @@
+# FUN_00001e6c entry=0x00001e6c body=64
+00001e6c  push     {r4, r5, lr}
+00001e6e  mov      r4, r0
+00001e70  mov      r5, r1
+00001e72  bl       #0x1c5e
+ ; call -> 0x00001c5e (FUN_00001c5e)
+00001e76  movs     r0, #0xa6
+00001e78  bl       #0x1cec
+ ; call -> 0x00001cec (FUN_00001cec)
+00001e7c  ldr      r1, [pc, #0x30]
+ ; ref 0x00001eb0 -> 0x1000158c (SRAM)  [pool->0x1000158c]
+00001e7e  strb     r0, [r1]
+00001e80  mov      r0, r5
+00001e82  bl       #0x1cec
+ ; call -> 0x00001cec (FUN_00001cec)
+00001e86  ldr      r1, [pc, #0x28]
+ ; ref 0x00001eb0 -> 0x1000158c (SRAM)  [pool->0x1000158c]
+00001e88  strb     r0, [r1]
+00001e8a  bl       #0x1c5e
+ ; call -> 0x00001c5e (FUN_00001c5e)
+00001e8e  movs     r0, #0xa7
+00001e90  bl       #0x1cec
+ ; call -> 0x00001cec (FUN_00001cec)
+00001e94  ldr      r1, [pc, #0x18]
+ ; ref 0x00001eb0 -> 0x1000158c (SRAM)  [pool->0x1000158c]
+00001e96  strb     r0, [r1]
+00001e98  movs     r0, #0
+00001e9a  bl       #0x1daa
+ ; call -> 0x00001daa (FUN_00001daa)
+00001e9e  strb     r0, [r4]
+00001ea0  bl       #0x1cae
+ ; call -> 0x00001cae (FUN_00001cae)
+00001ea4  movs     r0, #2
+00001ea6  bl       #0x1c32
+ ; call -> 0x00001c32 (FUN_00001c32)
+00001eaa  pop      {r4, r5, pc}

@@ -1,0 +1,403 @@
+I now have the complete picture of the 12p case3 dump (0x6840-0x7962) and verified the display function identities (0x116c = `disp_signed_angle`). Here is the deliverable.\n\n---\n\n## 辅助函数（提取自 case3 尾部内嵌整页重绘块 0x71A6-0x76D8）\n\n```c\n/* =============================================================================\n * case3 当前项值渲染 (12p 0x71A6-0x76D8 内嵌重绘块提取)：按项号 it 显示其值/枚举到\n * (row,0xb)。item0 附带按 CTRL_MODE 驱动 fio1 P0.20/P0.21。attr=1 高亮当前项。\n * 所有值串地址与枚举宽度均经 12p dump 校验，禁止臆造。\n * 读宽注意：item8/15 修改用 word(ldr/str)、此处显示用 byte(ldrb)。\n * ========================================================================== */\nstatic void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)\n{\n  volatile uint8_t  *b2c = (volatile uint8_t*)0x1000162c;
+  /* CTRL_MODE */\n  volatile uint8_t  *b44 = (volatile uint8_t*)0x10001644;
+  /* item6 软起时间 */\n  volatile uint8_t  *b45 = (volatile uint8_t*)0x10001645;
+  /* item7 */\n  volatile uint8_t  *b48 = (volatile uint8_t*)0x10001648;
+  /* item8 (byte 显示) */\n  volatile uint8_t  *b4c = (volatile uint8_t*)0x1000164c;
+  /* item9 角度 */\n  volatile uint8_t  *b4d = (volatile uint8_t*)0x1000164d;
+  /* DISP_SEL */\n  volatile uint8_t  *b4e = (volatile uint8_t*)0x1000164e;
+  /* item11 配对标志 */\n  volatile uint8_t  *b4f = (volatile uint8_t*)0x1000164f;
+  /* ESTOP */\n  volatile uint8_t  *b51 = (volatile uint8_t*)0x10001651;
+  /* item13 */\n  volatile uint8_t  *b52 = (volatile uint8_t*)0x10001652;
+  /* item14 */\n  volatile uint8_t  *b58 = (volatile uint8_t*)0x10001658;
+  /* item15 (byte 显示) */\n  volatile uint32_t *w30 = (volatile uint32_t*)0x10001630;
+ /* item2 */\n  volatile uint32_t *w34 = (volatile uint32_t*)0x10001634;
+ /* item1 */\n  volatile uint32_t *w38 = (volatile uint32_t*)0x10001638;
+ /* item3 */\n  volatile uint32_t *w3c = (volatile uint32_t*)0x1000163c;
+ /* item5 限位 */\n  volatile uint32_t *w40 = (volatile uint32_t*)0x10001640;
+ /* item4 限位 */\n  switch (it) {\n    case 0:\n      if (*b2c == 0) { disp_string((int)0x64d0, row, 0xb, attr);
+ fio1_pin20_ctrl(1);
+ fio1_pin21_ctrl(0);
+ }
+\n      else if (*b2c == 1) { disp_string((int)0x64d8, row, 0xb, attr);
+ fio1_pin20_ctrl(0);
+ fio1_pin21_ctrl(1);
+ }
+\n      else { disp_string((int)0x64e0, row, 0xb, attr);
+ fio1_pin20_ctrl(0);
+ fio1_pin21_ctrl(0);
+ }
+\n      break;
+\n    case 1: disp_uint4(*w34, row, 0xb, attr);
+ break;
+\n    case 2: disp_uint4(*w30, row, 0xb, attr);
+ break;
+\n    case 3: disp_uint4(*w38, row, 0xb, attr);
+ break;
+\n    case 4:                                   /* 限位：item1&gt;
+=item4 时显示值+V 单位(0x7488=\"V\")，否则 0x5f54 */\n      if (*w34 &gt;
+= *w40) { disp_uint4(*w40, row, 0xb, attr);
+ disp_string((int)0x7488, row, 0xf, 0);
+ }
+\n      else disp_string((int)0x5f54, row, 0xb, attr);
+\n      break;
+\n    case 5:                                   /* 限位：item2&gt;
+=item5 时显示值+A 单位(0x7490=\"A\")，否则 0x5f54 */\n      if (*w30 &gt;
+= *w3c) { disp_uint4(*w3c, row, 0xb, attr);
+ disp_string((int)0x7490, row, 0xf, 0);
+ }
+\n      else disp_string((int)0x5f54, row, 0xb, attr);
+\n      break;
+\n    case 6: disp_uint4(*b44, row, 0xb, attr);
+ break;
+\n    case 7: disp_uint4(*b45, row, 0xb, attr);
+ break;
+\n    case 8: disp_number3(*b48, row, 0xb, attr);
+ break;
+\n    case 9: disp_signed_angle(*b4c, row, 0xb, attr);
+ break;
+   /* 0x116c */\n    case 10:\n      if (*b4d == 0) disp_string((int)0x78ac, row, 0xb, attr);
+\n      else if (*b4d == 1) disp_string((int)0x78b4, row, 0xb, attr);
+\n      else disp_string((int)0x78bc, row, 0xb, attr);
+\n      break;
+\n    case 11:\n      if (*b4e == 0) disp_string((int)0x78c8, row, 0xb, attr);
+\n      else disp_string((int)0x78d0, row, 0xb, attr);
+\n      break;
+\n    case 12:\n      if (*b4f == 0) disp_string((int)0x5b2c, row, 0xb, attr);
+\n      else if (*b4f == 1) disp_string((int)0x5b34, row, 0xb, attr);
+\n      else disp_string((int)0x5b3c, row, 0xb, attr);
+\n      break;
+\n    case 13:\n      if (*b51 == 0) disp_string((int)0x5f54, row, 0xb, attr);
+\n      else disp_string((int)0x5f5c, row, 0xb, attr);
+\n      break;
+\n    case 14:\n      if (*b52 == 0) disp_string((int)0x5f68, row, 0xb, attr);
+\n      else disp_string((int)0x5f70, row, 0xb, attr);
+\n      break;
+\n    case 15: disp_number3(*b58, row, 0xb, attr);
+ break;
+\n  }
+\n}
+\n\n/* =============================================================================\n * case3 整页值渲染 (12p 0x71A6-0x76D8)：TIMEOUT3 计数到 0xFB 后重绘当前页全部 4 项值，\n * 当前项高亮(attr=1)、其余正常(attr=0)。原厂导航/编辑后仅重画标签会把值列清掉，\n * 靠此公共尾部整页重绘恢复。\n * ========================================================================== */\nstatic void sm3_draw_page(uint32_t it)\n{\n  uint32_t page = it &gt;
+&gt;
+ 2;
+\n  uint32_t k;
+\n  for (k = 0;
+ k &lt;
+ 4;
+ k++)\n    sm3_draw_item((page &lt;
+&lt;
+ 2) + k, k, ((page &lt;
+&lt;
+ 2) + k) == it ? 1 : 0);
+\n}
+\n```\n\n## case3 完整 C 片段（0x6840-0x7962）\n\n```c\n  /* ================= case3 基本参数屏 (12p 0x6840-0x7962) =================\n     说明：MENU2(0x10001725)=当前项号 0-15（4 页×4 项）；MENU3(0x10001726)=编辑态标志\n       (0=查看/导航, 1=修改)。项映射(全部 12p bin 校验)：\n       0=CTRL_MODE 0x1000162c 0..2(环绕) | 1=0x10001634 word 0x1770\n       | 2=0x10001630 word 0x1770 | 3=0x10001638 word 0x1770\n       | 4=限位0x10001640 word(&lt;
+=0x10001634+1) | 5=限位0x1000163c word(&lt;
+=0x10001630+1)\n       | 6=软起0x10001644 byte 0xc8 | 7=0x10001645 byte 0xc8\n       | 8=0x10001648 word 0xb4 | 9=角度0x1000164c byte 0xa0(disp_signed_angle)\n       | 10=DISP_SEL 0x1000164d 0..2 | 11=配对标志0x1000164e 0..1\n       | 12=ESTOP 0x1000164f 0..2 | 13=0x10001651 0..1\n       | 14=0x10001652 0..1 | 15=0x10001658 word 0xb4\n     读宽注意：item8/15 修改用 word(ldr/str)、显示用 byte(ldrb)。\n     key==1 切换编辑态(0x684a)；key==4 保存退出回 type2 屏(0x6886)；\n     key==2/3 且查看态→导航(0x68da)；key∈{2,0x16,3,0x21}
+且编辑态→改值(0x6a28)。 */\n  if (*MENU == 3) {\n    volatile uint8_t  *b2c = (volatile uint8_t*)0x1000162c;
+  /* CTRL_MODE */\n    volatile uint8_t  *b44 = (volatile uint8_t*)0x10001644;
+  /* item6 软起时间 */\n    volatile uint8_t  *b45 = (volatile uint8_t*)0x10001645;
+  /* item7 */\n    volatile uint8_t  *b4c = (volatile uint8_t*)0x1000164c;
+  /* item9 角度 */\n    volatile uint8_t  *b4d = (volatile uint8_t*)0x1000164d;
+  /* DISP_SEL */\n    volatile uint8_t  *b4e = (volatile uint8_t*)0x1000164e;
+  /* item11 配对标志 */\n    volatile uint8_t  *b4f = (volatile uint8_t*)0x1000164f;
+  /* ESTOP */\n    volatile uint8_t  *b51 = (volatile uint8_t*)0x10001651;
+  /* item13 */\n    volatile uint8_t  *b52 = (volatile uint8_t*)0x10001652;
+  /* item14 */\n    volatile uint32_t *w30 = (volatile uint32_t*)0x10001630;
+ /* item2 */\n    volatile uint32_t *w34 = (volatile uint32_t*)0x10001634;
+ /* item1 */\n    volatile uint32_t *w38 = (volatile uint32_t*)0x10001638;
+ /* item3 */\n    volatile uint32_t *w3c = (volatile uint32_t*)0x1000163c;
+ /* item5 限位 */\n    volatile uint32_t *w40 = (volatile uint32_t*)0x10001640;
+ /* item4 限位 */\n    volatile uint32_t *w48 = (volatile uint32_t*)0x10001648;
+ /* item8 (word) */\n    volatile uint32_t *w58 = (volatile uint32_t*)0x10001658;
+ /* item15 (word) */\n    uint32_t it = *MENU2;
+\n\n    /* ---- key==1：查看/编辑 切换 MENU3，并复位修改空闲计时 (0x684a-0x6884) ---- */\n    if (key == 1) {\n      *TIMEOUT = 0;
+\n      (*MENU3)++;
+\n      if (*MENU3 &gt;
+ 1) *MENU3 = 0;
+\n      /* 进编辑→0x1f4、出编辑→0xfa；公共尾部 ++ 后分别成 0x1f5(擦除)/0xfb(重绘) */\n      *TIMEOUT3 = (*MENU3 == 0) ? 0xfa : 0x1f4;
+\n    }
+\n\n    /* ---- key==4：保存并退回 参数子菜单(type2 屏) (0x6886-0x68d6) ---- */\n    else if (key == 4) {\n      *TIMEOUT = 0;
+ *MENU = 2;
+ *MENU2 = 0;
+\n      param_sync_live_to_eeprom();
+ disp_clear();
+\n      disp_string((int)0x436c,0,0,1);
+ disp_string((int)0x437c,1,0,0);
+\n      disp_string((int)0x438c,2,0,0);
+ disp_string((int)0x439c,3,0,0);
+\n    }
+\n\n    /* ---- key==2/3 且 *MENU3==0：项间导航 (MENU2=0..15) (0x68da-0x6a26) ---- */\n    else if ((key == 2 || key == 3) &amp;
+&amp;
+ *MENU3 == 0) {\n      *TIMEOUT = 0;
+\n      if (key == 3) { (*MENU2)++;
+ if (*MENU2 &gt;
+ 0xf) *MENU2 = 0xf;
+ }
+\n      else          { if (*MENU2 &gt;
+ 0) (*MENU2)--;
+ }
+\n      it = *MENU2;
+\n      switch (it &gt;
+&gt;
+ 2) {   /* 重绘新项所在页标题(值列清空；值由尾部整页重绘恢复) */\n        case 0: disp_string((int)0x647c,0,0,0);
+ disp_string((int)0x6490,1,0,0);
+\n                disp_string((int)0x64a4,2,0,0);
+ disp_string((int)0x64b8,3,0,0);
+ break;
+\n        case 1: disp_string((int)0x6b28,0,0,0);
+ disp_string((int)0x6b3c,1,0,0);
+\n                disp_string((int)0x6b50,2,0,0);
+ disp_string((int)0x6b64,3,0,0);
+ break;
+\n        case 2: disp_string((int)0x6b78,0,0,0);
+ disp_string((int)0x6b8c,1,0,0);
+\n                disp_string((int)0x6ba0,2,0,0);
+ disp_string((int)0x6bb4,3,0,0);
+ break;
+\n        default: disp_string((int)0x6bc8,0,0,0);
+ disp_string((int)0x6bdc,1,0,0);
+\n                disp_string((int)0x6bf0,2,0,0);
+ disp_string((int)0x6c04,3,0,0);
+ break;
+\n      }
+\n      *TIMEOUT3 = 0xfa;
+   /* 尾部 ++ 成 0xfb 触发整页重绘 */\n    }
+\n\n    /* ---- key∈{2,0x16,3,0x21}
+且 *MENU3==1：修改当前项值 (0x6a28-0x7196) ---- */\n    else if ((key == 2 || key == 0x16 || key == 3 || key == 0x21) &amp;
+&amp;
+ *MENU3 == 1) {\n      *TIMEOUT = 0;
+\n      it = *MENU2;
+\n      if (it == 0) {                       /* CTRL_MODE 枚举(环绕) */\n        if (key == 3 || key == 0x21) { if (*b2c == 0) *b2c = 3;
+ (*b2c)--;
+ }
+\n        else { (*b2c)++;
+ if (*b2c &gt;
+ 2) *b2c = 0;
+ }
+\n      }
+else if (it &gt;
+= 1 &amp;
+&amp;
+ it &lt;
+= 5) {     /* 数字项(word) */\n        if (key == 2) {                    /* +1 */\n          if (it == 1) { (*w34)++;
+ if (*w34 &gt;
+ 0x1770) *w34 = 0x1770;
+ }
+\n          else if (it == 2) { (*w30)++;
+ if (*w30 &gt;
+ 0x1770) *w30 = 0x1770;
+ }
+\n          else if (it == 3) { (*w38)++;
+ if (*w38 &gt;
+ 0x1770) *w38 = 0x1770;
+ }
+\n          else if (it == 4) { (*w40)++;
+ if (*w40 &gt;
+ *w34 + 1) *w40 = *w34 + 1;
+ }
+\n          else              { (*w3c)++;
+ if (*w3c &gt;
+ *w30 + 1) *w3c = *w30 + 1;
+ }
+\n        }
+else if (key == 0x16) {          /* 快加 +5 */\n          if (it == 1) { *w34 += 5;
+ if (*w34 &gt;
+ 0x1770) *w34 = 0x1770;
+ }
+\n          else if (it == 2) { *w30 += 5;
+ if (*w30 &gt;
+ 0x1770) *w30 = 0x1770;
+ }
+\n          else if (it == 3) { *w38 += 5;
+ if (*w38 &gt;
+ 0x1770) *w38 = 0x1770;
+ }
+\n          else if (it == 4) { *w40 += 5;
+ if (*w40 &gt;
+ *w34 + 1) *w40 = *w34 + 1;
+ }
+\n          else              { *w3c += 5;
+ if (*w3c &gt;
+ *w30 + 1) *w3c = *w30 + 1;
+ }
+\n        }
+else if (key == 3) {             /* -1 (下限 0xa) */\n          if (it == 1) { if (*w34 &gt;
+ 0xa) (*w34)--;
+ }
+\n          else if (it == 2) { if (*w30 &gt;
+ 0xa) (*w30)--;
+ }
+\n          else if (it == 3) { if (*w38 &gt;
+ 0xa) (*w38)--;
+ }
+\n          else if (it == 4) { if (*w40 &gt;
+ 0xa) (*w40)--;
+ }
+\n          else              { if (*w3c &gt;
+ 0xa) (*w3c)--;
+ }
+\n        }
+else {                           /* 快减 -5 (值&lt;
+0x10 先置 0xf，再 -5 → 下限 0xa) */\n          if (it == 1) { if (*w34 &lt;
+ 0x10) *w34 = 0xf;
+ *w34 -= 5;
+ }
+\n          else if (it == 2) { if (*w30 &lt;
+ 0x10) *w30 = 0xf;
+ *w30 -= 5;
+ }
+\n          else if (it == 3) { if (*w38 &lt;
+ 0x10) *w38 = 0xf;
+ *w38 -= 5;
+ }
+\n          else if (it == 4) { if (*w40 &lt;
+ 0x10) *w40 = 0xf;
+ *w40 -= 5;
+ }
+\n          else              { if (*w3c &lt;
+ 0x10) *w3c = 0xf;
+ *w3c -= 5;
+ }
+\n        }
+\n      }
+else {                             /* 非数字项(6..15) */\n        if (key == 3 || key == 0x21) {     /* 减 */\n          switch (it) {\n            case 6: if (*b44 &gt;
+ 0) (*b44)--;
+ break;
+\n            case 7: if (*b45 &gt;
+ 0) (*b45)--;
+ break;
+\n            case 8: if (*w48 != 0) (*w48)--;
+ break;
+\n            case 9: if (*b4c &gt;
+ 0x28) (*b4c)--;
+ break;
+   /* 下限 0x28 */\n            case 10: if (*b4d &gt;
+ 0) (*b4d)--;
+ break;
+\n            case 11: if (*b4e &gt;
+ 0) (*b4e)--;
+ break;
+\n            case 12: if (*b4f &gt;
+ 0) (*b4f)--;
+ break;
+\n            case 13: if (*b51 &gt;
+ 0) (*b51)--;
+ break;
+\n            case 14: if (*b52 &gt;
+ 0) (*b52)--;
+ break;
+\n            case 15: if (*w58 != 0) (*w58)--;
+ break;
+\n          }
+\n        }
+else {                           /* 加 (key==2/0x16) */\n          switch (it) {\n            case 6: (*b44)++;
+ if (*b44 &gt;
+ 0xc8) *b44 = 0xc8;
+ break;
+\n            case 7: (*b45)++;
+ if (*b45 &gt;
+ 0xc8) *b45 = 0xc8;
+ break;
+\n            case 8: (*w48)++;
+ if (*w48 &gt;
+ 0xb4) *w48 = 0xb4;
+ break;
+\n            case 9: (*b4c)++;
+ if (*b4c &gt;
+ 0xa0) *b4c = 0xa0;
+ break;
+\n            case 10: (*b4d)++;
+ if (*b4d &gt;
+ 2) *b4d = 2;
+ break;
+\n            case 11: (*b4e)++;
+ if (*b4e &gt;
+ 1) *b4e = 1;
+ break;
+\n            case 12: (*b4f)++;
+ if (*b4f &gt;
+ 2) *b4f = 2;
+ break;
+\n            case 13: (*b51)++;
+ if (*b51 &gt;
+ 1) *b51 = 1;
+ break;
+\n            case 14: (*b52)++;
+ if (*b52 &gt;
+ 1) *b52 = 1;
+ break;
+\n            case 15: (*w58)++;
+ if (*w58 &gt;
+ 0xb4) *w58 = 0xb4;
+ break;
+\n          }
+\n        }
+\n      }
+\n      *TIMEOUT3 = 0xfa;
+   /* 0x7192 */\n    }
+\n\n    /* ---- 公共尾部 (0x7198-0x791e)：TIMEOUT3 计数到 0xFB 整页重绘 / 超过 0x1F4 回绕擦除 ---- */\n    (*TIMEOUT3)++;
+\n    if (*TIMEOUT3 == 0xfb) sm3_draw_page(*MENU2);
+\n\n    /* 编辑态按 MENU2 用空格擦除当前项值列 (0x7708-0x791e)；与 0xFB 整页重绘交替 → 值\"反显/消失\"闪烁。\n     * 空格串：0x5f98=4空格(item0/10..14)、0x6bac=4空格(item1..7)、0x5fa0=3空格(item8/9/15)。\n     * item4/5 按量程是否顶到限位选串。 */\n    if (*TIMEOUT3 &gt;
+ 0x1f4) {\n      *TIMEOUT3 = 0;
+\n      if (*MENU3 == 0) return;
+              /* 查看态：本帧提前返回，跳过 TIMEOUT++ */\n      switch (it) {\n        case 0:  disp_string((int)0x5f98, 0, 0xb, 0);
+ break;
+\n        case 1:  disp_string((int)0x6bac, 1, 0xb, 0);
+ break;
+\n        case 2:  disp_string((int)0x6bac, 2, 0xb, 0);
+ break;
+\n        case 3:  disp_string((int)0x6bac, 3, 0xb, 0);
+ break;
+\n        case 4:  if (*w34 &gt;
+= *w40) disp_string((int)0x6bac, 0, 0xb, 0);
+\n                 else disp_string((int)0x5f98, 0, 0xb, 0);
+\n                 break;
+\n        case 5:  if (*w30 &gt;
+= *w3c) disp_string((int)0x6bac, 1, 0xb, 0);
+\n                 else disp_string((int)0x5f98, 1, 0xb, 0);
+\n                 break;
+\n        case 6:  disp_string((int)0x6bac, 2, 0xb, 0);
+ break;
+\n        case 7:  disp_string((int)0x6bac, 3, 0xb, 0);
+ break;
+\n        case 8:  disp_string((int)0x5fa0, 0, 0xb, 0);
+ break;
+\n        case 9:  disp_string((int)0x5fa0, 1, 0xb, 0);
+ break;
+\n        case 10: disp_string((int)0x5f98, 2, 0xb, 0);
+ break;
+\n        case 11: disp_string((int)0x5f98, 3, 0xb, 0);
+ break;
+\n        case 12: disp_string((int)0x5f98, 0, 0xb, 0);
+ break;
+\n        case 13: disp_string((int)0x5f98, 1, 0xb, 0);
+ break;
+\n        case 14: disp_string((int)0x5f98, 2, 0xb, 0);
+ break;
+\n        case 15: disp_string((int)0x5fa0, 3, 0xb, 0);
+ break;
+\n      }
+\n    }
+\n\n    /* ---- 恒压/恒流(CTRL_MODE&lt;
+2)且软起时间 b44 未配置时自动置 1 (0x792a-0x793c)；\n     *      随后编辑空闲超时回到主屏 (0x793e-0x7960) ---- */\n    (*TIMEOUT)++;
+\n    if (*b2c &lt;
+ 2 &amp;
+&amp;
+ *b44 == 0) *b44 = 1;
+\n    if (*TIMEOUT &gt;
+= 0x1388) { *TIMEOUT = 0;
+ *MENU = 1;
+ disp_splash_screen();
+ }
+\n    return;
+\n  }
+\n```\n\n---\n\n### 关键解码要点（供主会话核对）\n\n- **16 项变量地址全部取自 12p dump 的加减/重绘代码**，与 6p 完全不同：item1=0x10001634(word)、item2=0x10001630、item3=0x10001638、item4=限位 0x10001640(≤item1+1)、item5=限位 0x1000163c(≤item2+1)、item6=0x10001644、item7=0x10001645、item8=0x10001648(word,clamp 0xb4)、item9=0x1000164c(角度 0xa0)、item10=DISP_SEL 0x1000164d、item11=0x1000164e、item12=ESTOP 0x1000164f、item13=0x10001651、item14=0x10001652、item15=0x10001658(word,clamp 0xb4)。\n- **读宽铁律**：item8/15 在修改分支用 `ldr/str`(word)，在重绘分支用 `ldrb`(byte)——已按 dump 分别用 `w48/w58` 与 `b48/b58` 呈现并注释。\n- **key 结构**：key==1 切编辑态(0x684a，出编辑 0xfa/进编辑 0x1f4，靠尾部 ++ 变 0xfb 重绘/0x1f5 擦除)；key==4 保存退出(0x6886，*MENU=2、*MENU2=0、bl 0x3534、disp_clear、画 0x436c/0x437c/0x438c/0x439c 四行标题)；key==2/3 查看态导航(0x68da，画 4 组页标题 0x647c../0x6b28../0x6b78../0x6bc8..)；key∈{2,0x16,3,0x21}
+编辑态改值(0x6a28，数字项 1-5 步进 +1/+5/-1/-5，非数字项 6-15 枚举钳位，item0 环绕 0..2)。\n- **TIMEOUT3 尾部**在 12p 位于按键分支之后(0x7198)，`==0xfb` 整页重绘(0x71a6，内嵌 switch 分项绘制，已提取为 `sm3_draw_item`/`sm3_draw_page`)；`&gt;
+0x1f4` 回绕擦除(0x76fe)，查看态直接 `return`（0x7714 提前返回，跳过 TIMEOUT++）。\n- **超时尾**(0x7920-0x7960)：`*TIMEOUT++`；`if (*CTRL_MODE&lt;
+2 &amp;
+&amp;
+ *b44==0) *b44=1;
+`（软起自动置位）；`*TIMEOUT&gt;
+=0x1388` → `*TIMEOUT=0;
+ *MENU=1;
+ disp_splash_screen();
+` 回主屏，返回 0。\n- **待主会话确认**：0x116c 已核实为 `disp_signed_angle`（比较 0x64=100 显示 ± 偏移）；单位串 0x7488=\"V\"、0x7490=\"A\"（item4/5 限位到顶时显示在 col 0xf）。item0 重绘同时按 CTRL_MODE 调 `fio1_pin20_ctrl`/`fio1_pin21_ctrl`（0x10800/0x10820），与 6p 一致。

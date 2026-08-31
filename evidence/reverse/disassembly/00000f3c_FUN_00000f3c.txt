@@ -1,0 +1,27 @@
+# FUN_00000f3c entry=0x00000f3c body=244
+00000f3c  push.w   {r4, r5, r6, r7, r8, lr}
+00000f40  mov      r4, r0
+00000f42  mov      r6, r1
+00000f44  mov      r5, r2
+00000f46  mov      r7, r3
+00000f48  mov.w    r8, #0
+00000f4c  movw     r0, #0x2710
+00000f50  udiv     r0, r4, r0
+00000f54  and      r8, r0, #0xff
+00000f58  movw     r0, #0x270f
+00000f5c  cmp      r4, r0
+00000f5e  bls      #0xf80
+ ; jump -> 0x00000f80 (FUN_00000f3c)
+00000f60  mov      r3, r7
+00000f62  mov      r2, r5
+00000f64  mov      r1, r6
+00000f66  mov      r0, r8
+00000f68  bl       #0xd44
+ ; call -> 0x00000d44 (FUN_00000d44)
+00000f6c  b        #0xf8c
+ ; jump -> 0x00000f8c (FUN_00000f3c)
+00000f6e  movs     r0, r0
+00000f70  asrs     r6, r0, #0xc
+00000f72  asrs     r0, r0, #0x20
+00000f74  asrs     r0, r5, #7
+00000f76  asrs     r0, r0, #0x20

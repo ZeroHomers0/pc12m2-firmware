@@ -1,0 +1,14 @@
+# FUN_00001c1c entry=0x00001c1c body=22
+00001c1c  push     {r3, lr}
+00001c1e  movs     r0, #5
+00001c20  str      r0, [sp]
+00001c22  b        #0x1c2a
+ ; jump -> 0x00001c2a (FUN_00001c1c)
+00001c24  ldr      r0, [sp]
+00001c26  subs     r0, r0, #1
+00001c28  str      r0, [sp]
+00001c2a  ldr      r0, [sp]
+00001c2c  cmp      r0, #0
+00001c2e  bne      #0x1c24
+ ; jump -> 0x00001c24 (FUN_00001c1c)
+00001c30  pop      {r3, pc}

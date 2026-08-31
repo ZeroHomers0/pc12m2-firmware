@@ -1,0 +1,38 @@
+# FUN_000110f6 entry=0x000110f6 body=52
+000110f6  push  {r4,r5,r6,r7,lr}
+000110f8  mov  r4, r0
+000110fa  mov  r5, r1
+000110fc  mov  r6, r2
+000110fe  mov  r7, r3
+00011100  ldr  r0, [0x00011170]
+      ; ref 0x00011170 -> 0x100020cc
+00011102  ldr  r0, [r0,#0x0]
+      ; ref 0x100020cc (no mem)
+00011104  adds  r0, r0, #0x1
+00011106  ldr  r1, [0x00011170]
+      ; ref 0x00011170 -> 0x100020cc
+00011108  str  r0, [r1,#0x0]
+      ; ref 0x100020cc (no mem)
+0001110a  mov  r0, r1
+0001110c  ldr  r0, [r0,#0x0]
+      ; ref 0x100020cc (no mem)
+0001110e  cbz  r0, 0x00011124
+      ; jump -> 0x00011124
+00011110  movs  r0, #0x0
+00011112  str  r0, [r1,#0x0]
+      ; ref 0x100020cc (no mem)
+00011114  mov  r3, r7
+00011116  mov  r2, r6
+00011118  mov  r1, r5
+0001111a  mov  r0, r4
+0001111c  bl  0x00010a9c
+      ; call -> 0x00010a9c
+00011120  ldr  r1, [0x00011174]
+      ; ref 0x00011174 -> 0x10002104
+00011122  str  r0, [r1,#0x0]
+      ; ref 0x10002104 (no mem)
+00011124  ldr  r0, [0x00011174]
+      ; ref 0x00011174 -> 0x10002104
+00011126  ldr  r0, [r0,#0x0]
+      ; ref 0x10002104 (no mem)
+00011128  pop  {r4,r5,r6,r7,pc}

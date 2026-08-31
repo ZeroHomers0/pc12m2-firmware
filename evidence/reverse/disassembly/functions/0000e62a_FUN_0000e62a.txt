@@ -1,0 +1,37 @@
+# FUN_0000e62a entry=0x0000e62a body=62
+0000e62a  push  {r4,lr}
+0000e62c  ldr  r0, [0x0000e704]
+      ; ref 0x0000e704 -> 0x4002c000
+0000e62e  ldr  r0, [r0,#0x10]
+      ; ref 0x4002c010 (no mem)
+0000e630  orr  r0, r0, #0x1000000
+0000e634  ldr  r1, [0x0000e704]
+      ; ref 0x0000e704 -> 0x4002c000
+0000e636  str  r0, [r1,#0x10]
+      ; ref 0x4002c010 (no mem)
+0000e638  mov  r0, r1
+0000e63a  ldr  r0, [r0,#0x10]
+      ; ref 0x4002c010 (no mem)
+0000e63c  bic  r0, r0, #0x2000000
+0000e640  str  r0, [r1,#0x10]
+      ; ref 0x4002c010 (no mem)
+0000e642  ldr  r0, [0x0000e708]
+      ; ref 0x0000e708 -> 0x400fc148
+0000e644  ldr  r0, [r0,#0x0]
+      ; ref 0x400fc148 (no mem)
+0000e646  orr  r0, r0, #0x4
+0000e64a  ldr  r1, [0x0000e6f8]
+      ; ref 0x0000e6f8 -> 0x400fc000
+      ; ref 0x400fc000 (no mem)
+0000e64c  str.w  r0, [r1,#0x148]
+      ; ref 0x400fc148 (no mem)
+0000e650  mov  r0, r1
+0000e652  ldr.w  r0, [r0,#0x14c]
+      ; ref 0x400fc14c (no mem)
+0000e656  bic  r0, r0, #0x4
+0000e65a  str.w  r0, [r1,#0x14c]
+      ; ref 0x400fc14c (no mem)
+0000e65e  mov.w  r0, #0x14
+0000e662  bl  0x00010860
+      ; call -> 0x00010860
+0000e666  pop  {r4,pc}

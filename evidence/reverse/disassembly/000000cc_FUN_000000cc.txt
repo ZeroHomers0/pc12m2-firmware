@@ -1,0 +1,83 @@
+# FUN_000000cc entry=0x000000cc body=192
+000000cc  adr      r0, #0x28
+ ; ref 0x00000028 -> 0x00000000
+000000ce  ldm.w    r0, {sl, fp}
+000000d2  add      sl, r0
+000000d4  add      fp, r0
+000000d6  sub.w    r7, sl, #1
+000000da  cmp      sl, fp
+000000dc  bne      #0xe2
+ ; jump -> 0x000000e2 (FUN_000000cc)
+000000de  bl       #0x188
+ ; call -> 0x00000188 (FUN_00000188)
+000000e2  subw     lr, pc, #9
+000000e6  ldm.w    sl!, {r0, r1, r2, r3}
+000000ea  tst.w    r3, #1
+000000ee  it       ne
+000000f0  subne    r3, r7, r3
+000000f2  orr      r3, r3, #1
+000000f6  bx       r3
+000000f8  asrs     r0, r4, #0xb
+000000fa  movs     r1, r0
+000000fc  asrs     r0, r0, #0xc
+000000fe  movs     r1, r0
+00000100  ldrb     r3, [r0], #1
+00000104  add      r2, r1
+00000106  ands     r4, r3, #3
+0000010a  it       eq
+0000010c  ldrbeq   r4, [r0], #1
+00000110  asrs     r5, r3, #4
+00000112  it       eq
+00000114  ldrbeq   r5, [r0], #1
+00000118  subs     r4, r4, #1
+0000011a  beq      #0x128
+ ; jump -> 0x00000128 (FUN_000000cc)
+0000011c  ldrb     r6, [r0], #1
+00000120  subs     r4, r4, #1
+00000122  strb     r6, [r1], #1
+00000126  bne      #0x11c
+ ; jump -> 0x0000011c (FUN_000000cc)
+00000128  cmp      r5, #0
+0000012a  beq      #0x158
+ ; jump -> 0x00000158 (FUN_000000cc)
+0000012c  ldrb     r4, [r0], #1
+00000130  and      r3, r3, #0xc
+00000134  cmp      r3, #0xc
+00000136  sub.w    r4, r1, r4
+0000013a  itet     eq
+0000013c  ldrbeq   r3, [r0], #1
+00000140  subne.w  r4, r4, r3, lsl #6
+00000144  subeq.w  r4, r4, r3, lsl #8
+00000148  add.w    r3, r5, #1
+0000014c  ldrb     r6, [r4], #1
+00000150  subs     r3, r3, #1
+00000152  strb     r6, [r1], #1
+00000156  bpl      #0x14c
+ ; jump -> 0x0000014c (FUN_000000cc)
+00000158  cmp      r1, r2
+0000015a  it       lo
+0000015c  ldrblo   r3, [r0], #1
+00000160  blo      #0x106
+ ; jump -> 0x00000106 (FUN_000000cc)
+00000162  bx       lr
+00000164  movs     r3, #0
+00000166  movs     r4, #0
+00000168  movs     r5, #0
+0000016a  movs     r6, #0
+0000016c  subs     r2, #0x10
+0000016e  it       hs
+00000170  stmhs    r1!, {r3, r4, r5, r6}
+00000172  bhi      #0x16c
+ ; jump -> 0x0000016c (FUN_000000cc)
+00000174  lsls     r2, r2, #0x1d
+00000176  it       hs
+00000178  stmhs    r1!, {r4, r5}
+0000017a  it       mi
+0000017c  strmi    r3, [r1]
+0000017e  bx       lr
+00000180  push     {r0, r1, r2, r3, r4, lr}
+00000182  pop      {r0, r1, r2, r3, r4, pc}
+00000184  push     {r4, lr}
+00000186  pop      {r4, pc}
+00000188  bl       #0x11178
+ ; call -> 0x00011178 (FUN_00011178)

@@ -1,0 +1,174 @@
+All addresses verified. I have the complete picture of case63 (0x5472-0x5e18). I verified every branch against the dump, including the tail (0x5b84-0x5e1c) the main session asked me to complete. Here is the deliverable.
+
+---
+
+```c
+  /* ================= case63 设置屏 (0x5472-0x5e18) =================
+     锁标志 0x10001726=0 查看态 / =1 编辑态；光标 0x10001725(MENU2)=0..10。
+     值映射(12p bin 逐条校验)：
+       0=0x10001690 | 1=0x10001698 | 2=0x100016a0 | 3=0x100016a8 | 4=0x100016b0
+           (word，加 clamp 0x1194 / 减门控 &gt;0xdac)
+       5=0x1000164f | 6=0x10001650 (byte clamp 2) | 7=0x10001651 | 8=0x10001652
+           | 9=0x10001653 (byte clamp 1) | 0xa=0x10001658 (word 加 clamp 0xb4 / 减 &gt;0)
+     显示：项5-9 为文字串(值→串地址见重绘段)；项0xa 显示按 ldrb 8位装入 disp_number3
+           (加/减仍按 word 0x10001658)。 */
+  if (*MENU == 0x63) {
+    volatile uint8_t *m25 = (volatile uint8_t*)0x10001725;   /* 光标/子项 */
+    volatile uint8_t *m26 = (volatile uint8_t*)0x10001726;   /* 锁标志 0/1 */
+    volatile uint32_t *w44 = (volatile uint32_t*)0x10001744; /* TIMEOUT 菜单超时 */
+    volatile uint32_t *w58 = (volatile uint32_t*)0x10001758; /* TIMEOUT3 刷新计数 */
+
+    /* ---- key==1：锁标志 0/1 翻转并设刷新初值 (0x547a-0x54b4) ---- */
+    if (key == 1) {
+      *w44 = 0;
+      (*m26)++;
+      if (*m26 &gt; 1) *m26 = 0;
+      if (*m26 == 0) *w58 = 0xfa;   /* 锁开(查看)→ 慢刷 */
+      if (*m26 == 1) *w58 = 0x1f4;  /* 锁合(编辑)→ 快刷 */
+    }
+
+    /* ---- key==4：保存参数并退回主屏 (0x54b6-0x54ca) ----
+       注：12p 此处不回返，落入公共尾部(刷新计数++等)；6p 蓝图是立即 return。
+       主会话未标注此差异——以 dump 为准，不回返。 */
+    if (key == 4) {
+      *w44 = 0; param_sync_live_to_eeprom(); *MENU = 1; disp_splash_screen();
+    }
+
+    /* ---- key==2/3：锁开→光标导航 + 3 页标题；锁合→进入编辑态加减 ----
+       (0x54ce-0x55d8 导航 / 0x55de-0x598a 加减) */
+    if (key == 2 || key == 3) {
+      if (*m26 == 0) {
+        /* 查看态导航 (0x54de-0x55d8)：光标 0..10，重绘当前项所在页标题 */
+        *w44 = 0;
+        if (key == 3) { (*m25)++; if (*m25 &gt; 0xa) *m25 = 0xa; }
+        if (key == 2) { if (*m25 &gt; 0) (*m25)--; }
+        if (*m25 &lt; 4) {
+          disp_string(0x43ac, 0, 0, 0); disp_string(0x43c0, 1, 0, 0);
+          disp_string(0x43d4, 2, 0, 0); disp_string(0x43e8, 3, 0, 0);
+        }
+        if (*m25 &gt;= 4 &amp;&amp; *m25 &lt; 8) {
+          disp_string(0x564c, 0, 0, 0); disp_string(0x5660, 1, 0, 0);
+          disp_string(0x5674, 2, 0, 0); disp_string(0x5688, 3, 0, 0);
+        }
+        if (*m25 &gt;= 8 &amp;&amp; *m25 &lt; 0xc) {
+          disp_string(0x569c, 0, 0, 0); disp_string(0x56b0, 1, 0, 0);
+          disp_string(0x56c4, 2, 0, 0); disp_string(0x56d8, 3, 0, 0);
+        }
+        *w58 = 0xfa;
+      }
+    }
+    /* 编辑态加减 (0x55de-0x598a)：dump 中该块对所有 key 都会进入(0x55c4 直通)，
+       但仅当 key∈{2,0x16,3,0x21} 且锁==1 才改动值；末尾统一 *TIMEOUT3=0xfa。 */
+    if (key == 2 || key == 0x16 || key == 3 || key == 0x21) {
+      if (*m26 == 1) {
+        /* 加：key 2 / 0x16 (0x55fe-0x5846) */
+        if (key == 2 || key == 0x16) {
+          *w44 = 0;
+          if (*m25 == 0) { (*(volatile uint32_t*)0x10001690)++; if (*(volatile uint32_t*)0x10001690 &gt; 0x1194) *(volatile uint32_t*)0x10001690 = 0x1194; }
+          if (*m25 == 1) { (*(volatile uint32_t*)0x10001698)++; if (*(volatile uint32_t*)0x10001698 &gt; 0x1194) *(volatile uint32_t*)0x10001698 = 0x1194; }
+          if (*m25 == 2) { (*(volatile uint32_t*)0x100016a0)++; if (*(volatile uint32_t*)0x100016a0 &gt; 0x1194) *(volatile uint32_t*)0x100016a0 = 0x1194; }
+          if (*m25 == 3) { (*(volatile uint32_t*)0x100016a8)++; if (*(volatile uint32_t*)0x100016a8 &gt; 0x1194) *(volatile uint32_t*)0x100016a8 = 0x1194; }
+          if (*m25 == 4) { (*(volatile uint32_t*)0x100016b0)++; if (*(volatile uint32_t*)0x100016b0 &gt; 0x1194) *(volatile uint32_t*)0x100016b0 = 0x1194; }
+          if (*m25 == 5) { (*((volatile uint8_t*)0x1000164f))++; if (*(volatile uint8_t*)0x1000164f &gt; 2) *(volatile uint8_t*)0x1000164f = 2; }
+          if (*m25 == 6) { (*((volatile uint8_t*)0x10001650))++; if (*(volatile uint8_t*)0x10001650 &gt; 2) *(volatile uint8_t*)0x10001650 = 2; }
+          if (*m25 == 7) { (*((volatile uint8_t*)0x10001651))++; if (*(volatile uint8_t*)0x10001651 &gt; 1) *(volatile uint8_t*)0x10001651 = 1; }
+          if (*m25 == 8) { (*((volatile uint8_t*)0x10001652))++; if (*(volatile uint8_t*)0x10001652 &gt; 1) *(volatile uint8_t*)0x10001652 = 1; }
+          if (*m25 == 9) { (*((volatile uint8_t*)0x10001653))++; if (*(volatile uint8_t*)0x10001653 &gt; 1) *(volatile uint8_t*)0x10001653 = 1; }
+          if (*m25 == 0xa) { (*(volatile uint32_t*)0x10001658)++; if (*(volatile uint32_t*)0x10001658 &gt; 0xb4) *(volatile uint32_t*)0x10001658 = 0xb4; }
+        }
+        /* 减：key 3 / 0x21 (0x5846-0x5986)；word 项门控 &gt;0xdac、byte 项门控 &gt;0 */
+        if (key == 3 || key == 0x21) {
+          *w44 = 0;
+          if (*m25 == 0) { if (*(volatile uint32_t*)0x10001690 &gt; 0xdac) (*(volatile uint32_t*)0x10001690)--; }
+          if (*m25 == 1) { if (*(volatile uint32_t*)0x10001698 &gt; 0xdac) (*(volatile uint32_t*)0x10001698)--; }
+          if (*m25 == 2) { if (*(volatile uint32_t*)0x100016a0 &gt; 0xdac) (*(volatile uint32_t*)0x100016a0)--; }
+          if (*m25 == 3) { if (*(volatile uint32_t*)0x100016a8 &gt; 0xdac) (*(volatile uint32_t*)0x100016a8)--; }
+          if (*m25 == 4) { if (*(volatile uint32_t*)0x100016b0 &gt; 0xdac) (*(volatile uint32_t*)0x100016b0)--; }
+          if (*m25 == 5) { if (*(volatile uint8_t*)0x1000164f &gt; 0) (*(volatile uint8_t*)0x1000164f)--; }
+          if (*m25 == 6) { if (*(volatile uint8_t*)0x10001650 &gt; 0) (*(volatile uint8_t*)0x10001650)--; }
+          if (*m25 == 7) { if (*(volatile uint8_t*)0x10001651 &gt; 0) (*(volatile uint8_t*)0x10001651)--; }
+          if (*m25 == 8) { if (*(volatile uint8_t*)0x10001652 &gt; 0) (*(volatile uint8_t*)0x10001652)--; }
+          if (*m25 == 9) { if (*(volatile uint8_t*)0x10001653 &gt; 0) (*(volatile uint8_t*)0x10001653)--; }
+          if (*m25 == 0xa) { if (*(volatile uint32_t*)0x10001658 &gt; 0) (*(volatile uint32_t*)0x10001658)--; }
+        }
+        *w58 = 0xfa;
+      }
+    }
+
+    /* ---- 公共尾部 (0x598c-0x5e16)：刷新计数每帧 +1 ---- */
+    (*w58)++;
+    /* TIMEOUT3==0xfb → 整页重绘，当前项反显(attr=1) (0x599e-0x5ce2)。
+       行号=项号%4；项0-4=disp_uint4(word)、项5-9=文字串、项0xa=disp_number3(ldrb)。 */
+    if (*w58 == 0xfb) {
+      if (*m25 &lt; 4) {
+        disp_uint4(*(volatile uint32_t*)0x10001690, 0, 0xb, (*m25 == 0) ? 1 : 0);
+        disp_uint4(*(volatile uint32_t*)0x10001698, 1, 0xb, (*m25 == 1) ? 1 : 0);
+        disp_uint4(*(volatile uint32_t*)0x100016a0, 2, 0xb, (*m25 == 2) ? 1 : 0);
+        disp_uint4(*(volatile uint32_t*)0x100016a8, 3, 0xb, (*m25 == 3) ? 1 : 0);
+      } else if (*m25 &gt;= 4 &amp;&amp; *m25 &lt; 8) {
+        /* item4=0x100016b0 数值 row0 */
+        disp_uint4(*(volatile uint32_t*)0x100016b0, 0, 0xb, (*m25 == 4) ? 1 : 0);
+        /* item5=0x1000164f row1：0→0x5b2c、1→0x5b34、2→0x5b3c */
+        if (*(volatile uint8_t*)0x1000164f == 0) disp_string(0x5b2c, 1, 0xb, (*m25 == 5) ? 1 : 0);
+        else if (*(volatile uint8_t*)0x1000164f == 1) disp_string(0x5b34, 1, 0xb, (*m25 == 5) ? 1 : 0);
+        else disp_string(0x5b3c, 1, 0xb, (*m25 == 5) ? 1 : 0);
+        /* item6=0x10001650 row2：0→0x5f48、1→0x5b34、2→0x5b3c */
+        if (*(volatile uint8_t*)0x10001650 == 0) disp_string(0x5f48, 2, 0xb, (*m25 == 6) ? 1 : 0);
+        else if (*(volatile uint8_t*)0x10001650 == 1) disp_string(0x5b34, 2, 0xb, (*m25 == 6) ? 1 : 0);
+        else disp_string(0x5b3c, 2, 0xb, (*m25 == 6) ? 1 : 0);
+        /* item7=0x10001651 row3：0→0x5f54、非0→0x5f5c */
+        if (*(volatile uint8_t*)0x10001651 == 0) disp_string(0x5f54, 3, 0xb, (*m25 == 7) ? 1 : 0);
+        else disp_string(0x5f5c, 3, 0xb, (*m25 == 7) ? 1 : 0);
+      } else if (*m25 &gt;= 8 &amp;&amp; *m25 &lt; 0xc) {
+        /* item8=0x10001652 row0：0→0x5f68、非0→0x5f70 */
+        if (*(volatile uint8_t*)0x10001652 == 0) disp_string(0x5f68, 0, 0xb, (*m25 == 8) ? 1 : 0);
+        else disp_string(0x5f70, 0, 0xb, (*m25 == 8) ? 1 : 0);
+        /* item9=0x10001653 row1：0→0x5f7c、非0→0x5f84 */
+        if (*(volatile uint8_t*)0x10001653 == 0) disp_string(0x5f7c, 1, 0xb, (*m25 == 9) ? 1 : 0);
+        else disp_string(0x5f84, 1, 0xb, (*m25 == 9) ? 1 : 0);
+        /* item0xa=0x10001658 row2：显示按 ldrb 8位装入 disp_number3 (0x5cbc-0x5cde) */
+        disp_number3(*(volatile uint8_t*)0x10001658, 2, 0xb, (*m25 == 0xa) ? 1 : 0);
+      }
+    }
+    /* TIMEOUT3 超 0x1F4 → 回绕 0；编辑态按光标项用空格串擦除值列 (0x5ce2-0x5de4)
+       (与 0xFB 整页重绘交替 → 值"反显/消失"闪烁，周期≈501 帧)。
+       擦除串：0x566c=4空格(项0-4 数值)、0x5f98=4空格(项5-9 文字)、0x5fa0=3空格(项0xa)。
+       行号=项号%4。查看态(锁==0)本帧提前返回，跳过 TIMEOUT++。 */
+    if (*w58 &gt; 0x1f4) {
+      *w58 = 0;
+      if (*m26 == 0) return;
+      if (*m25 == 0) disp_string(0x566c, 0, 0xb, 0);
+      if (*m25 == 1) disp_string(0x566c, 1, 0xb, 0);
+      if (*m25 == 2) disp_string(0x566c, 2, 0xb, 0);
+      if (*m25 == 3) disp_string(0x566c, 3, 0xb, 0);
+      if (*m25 == 4) disp_string(0x566c, 0, 0xb, 0);
+      if (*m25 == 5) disp_string(0x5f98, 1, 0xb, 0);
+      if (*m25 == 6) disp_string(0x5f98, 2, 0xb, 0);
+      if (*m25 == 7) disp_string(0x5f98, 3, 0xb, 0);
+      if (*m25 == 8) disp_string(0x5f98, 0, 0xb, 0);
+      if (*m25 == 9) disp_string(0x5f98, 1, 0xb, 0);
+      if (*m25 == 0xa) disp_string(0x5fa0, 2, 0xb, 0);
+    }
+    /* 编辑空闲超时回主屏 (0x5de6-0x5e16)：TIMEOUT 每帧累加；查看态擦除帧已提前返回。
+       超时路径含 param_sync_live_to_eeprom()（0x5e02 bl 0x3534）——主会话遗漏了此项。 */
+    (*w44)++;
+    if (*w44 &gt;= 0x1388) { *w44 = 0; param_sync_live_to_eeprom(); *MENU = 1; disp_splash_screen(); return; }
+    return;
+  }
+```
+
+---
+
+## 完成说明
+
+已完整读取简报、6p 蓝图 case63、12p dump 0x5472-0x5e1c，逐条对照核实并补全尾部。主会话解码结论**全部与 dump 相符**，仅以下两处补充/修正（以 dump 为准）：
+
+1. **超时尾含保存调用**：0x5e02 `bl 0x3534`（param_sync_live_to_eeprom）在 `*MENU=1; disp_splash_screen()` 之前——主会话摘要漏了它（6p 蓝图也有该调用）。
+2. **key==4 不回返**：0x54ca 之后直接落到 0x54ce，无 `return`，会继续执行公共尾部（TIMEOUT3++/重绘/擦除/TIMEOUT++）；6p 蓝图是 `return`。已在注释中标明差异。
+
+关键提取（尾部 0x5b84-0x5e1c）：
+- **重绘块**（0x599e-0x5ce2，TIMEOUT3==0xfb）：项 0-4 用 disp_uint4（word 0x10001690/98/a0/a8/b0）；项 5-9 用文字串（5:0x5b2c/0x5b34/0x5b3c，6:0x5f48/0x5b34/0x5b3c，7:0x5f54/0x5f5c，8:0x5f68/0x5f70，9:0x5f7c/0x5f84）；项 0xa 用 ldrb 8位装入 disp_number3（0x10001658）。
+- **擦除块**（0x5ce2-0x5de4，TIMEOUT3&gt;0x1f4）：锁==0 提前 return；项 0-4 → 0x566c（4空格）、项 5-9 → 0x5f98（4空格）、项 0xa → 0x5fa0（3空格），行=项号%4，列 0xb。
+- **0x5cd2 跳转区**：`0x5a9c b 0x5cd2; 0x5cd2 b 0x5ce2` 是"非重绘帧跳过重绘"的直通跳板，C 中用 `if (*w58 == 0xfb)` 结构自然等价。
+
+读宽已按 dump 铁律：0x10001726/0x10001725/0x1000164f/0x10001650/0x10001651/0x10001652/0x10001653 用 ldrb/strb（byte）；0x10001744/0x10001758/0x10001690/0x10001698/0x100016a0/0x100016a8/0x100016b0/0x10001658 用 ldr/str（word）。唯一歧义是 0x10001658：加/减按 word、显示按 ldrb，已在注释标明。

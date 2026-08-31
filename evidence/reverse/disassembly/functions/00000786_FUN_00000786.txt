@@ -1,0 +1,200 @@
+# FUN_00000786 entry=0x00000786 body=286
+00000786  tst  r0, #0x80
+0000078a  beq  0x0000079a
+      ; jump -> 0x0000079a
+0000078c  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000078e  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000790  orr  r1, r1, #0x8000
+00000794  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000796  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000798  b  0x000007a6
+      ; jump -> 0x000007a6
+0000079a  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000079c  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+0000079e  orr  r1, r1, #0x8000
+000007a2  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007a4  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+000007a6  lsls  r1, r0, #0x19
+000007a8  lsrs  r0, r1, #0x18
+000007aa  tst  r0, #0x80
+000007ae  beq  0x000007be
+      ; jump -> 0x000007be
+000007b0  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007b2  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+000007b4  orr  r1, r1, #0x4000
+000007b8  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007ba  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+000007bc  b  0x000007ca
+      ; jump -> 0x000007ca
+000007be  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007c0  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+000007c2  orr  r1, r1, #0x4000
+000007c6  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007c8  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+000007ca  lsls  r1, r0, #0x19
+000007cc  lsrs  r0, r1, #0x18
+000007ce  tst  r0, #0x80
+000007d2  beq  0x000007e2
+      ; jump -> 0x000007e2
+000007d4  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007d6  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+000007d8  orr  r1, r1, #0x400
+000007dc  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007de  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+000007e0  b  0x000007ee
+      ; jump -> 0x000007ee
+000007e2  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007e4  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+000007e6  orr  r1, r1, #0x400
+000007ea  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007ec  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+000007ee  lsls  r1, r0, #0x19
+000007f0  lsrs  r0, r1, #0x18
+000007f2  tst  r0, #0x80
+000007f6  beq  0x00000806
+      ; jump -> 0x00000806
+000007f8  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000007fa  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+000007fc  orr  r1, r1, #0x200
+00000800  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000802  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000804  b  0x00000812
+      ; jump -> 0x00000812
+00000806  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000808  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+0000080a  orr  r1, r1, #0x200
+0000080e  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000810  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000812  lsls  r1, r0, #0x19
+00000814  lsrs  r0, r1, #0x18
+00000816  tst  r0, #0x80
+0000081a  beq  0x0000082a
+      ; jump -> 0x0000082a
+0000081c  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000081e  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000820  orr  r1, r1, #0x100
+00000824  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000826  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000828  b  0x00000836
+      ; jump -> 0x00000836
+0000082a  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000082c  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+0000082e  orr  r1, r1, #0x100
+00000832  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000834  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000836  lsls  r1, r0, #0x19
+00000838  lsrs  r0, r1, #0x18
+0000083a  tst  r0, #0x80
+0000083e  beq  0x0000084e
+      ; jump -> 0x0000084e
+00000840  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000842  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000844  orr  r1, r1, #0x10
+00000848  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000084a  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+0000084c  b  0x0000085a
+      ; jump -> 0x0000085a
+0000084e  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000850  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000852  orr  r1, r1, #0x10
+00000856  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000858  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+0000085a  lsls  r1, r0, #0x19
+0000085c  lsrs  r0, r1, #0x18
+0000085e  tst  r0, #0x80
+00000862  beq  0x00000872
+      ; jump -> 0x00000872
+00000864  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000866  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000868  orr  r1, r1, #0x2
+0000086c  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000086e  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000870  b  0x0000087e
+      ; jump -> 0x0000087e
+00000872  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000874  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000876  orr  r1, r1, #0x2
+0000087a  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000087c  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+0000087e  lsls  r1, r0, #0x19
+00000880  lsrs  r0, r1, #0x18
+00000882  tst  r0, #0x80
+00000886  beq  0x00000896
+      ; jump -> 0x00000896
+00000888  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+0000088a  ldr  r1, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+0000088c  orr  r1, r1, #0x1
+00000890  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000892  str  r1, [r2,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000894  b  0x000008a2
+      ; jump -> 0x000008a2
+00000896  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000898  ldr  r1, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+0000089a  orr  r1, r1, #0x1
+0000089e  ldr  r2, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+000008a0  str  r1, [r2,#0x3c]
+      ; ref 0x2009c03c (no mem)
+000008a2  bx  lr

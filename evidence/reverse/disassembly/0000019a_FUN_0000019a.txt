@@ -1,0 +1,14 @@
+# FUN_0000019a entry=0x0000019a body=22
+0000019a  push     {r0, r1}
+0000019c  bl       #0x184
+ ; call -> 0x00000184 (FUN_00000184)
+000001a0  pop      {r0, r1}
+000001a2  bl       #0x111cc
+ ; call -> 0x000111cc (FUN_000111cc)
+000001a6  movs     r0, r0
+000001a8  ldr      r0, [pc, #0x24]
+ ; ref 0x000001d0 -> 0x000441 (flash)
+000001aa  blx      r0
+000001ac  ldr      r0, [pc, #0x24]
+ ; ref 0x000001d4 -> 0x000000c5
+000001ae  bx       r0

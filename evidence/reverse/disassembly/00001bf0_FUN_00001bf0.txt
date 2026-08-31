@@ -1,0 +1,21 @@
+# FUN_00001bf0 entry=0x00001bf0 body=44
+00001bf0  ldr      r0, [pc, #0x2b8]
+ ; ref 0x00001eac -> 0x2009c000
+00001bf2  ldr      r0, [r0]
+00001bf4  orr      r0, r0, #0x800
+00001bf8  ldr      r1, [pc, #0x2b0]
+ ; ref 0x00001eac -> 0x2009c000
+00001bfa  str      r0, [r1]
+00001bfc  mov      r0, r1
+00001bfe  ldr      r0, [r0]
+00001c00  orr      r0, r0, #0x400
+00001c04  str      r0, [r1]
+00001c06  mov      r0, r1
+00001c08  ldr      r0, [r0, #0x18]
+00001c0a  orr      r0, r0, #0x800
+00001c0e  str      r0, [r1, #0x18]
+00001c10  mov      r0, r1
+00001c12  ldr      r0, [r0, #0x18]
+00001c14  orr      r0, r0, #0x400
+00001c18  str      r0, [r1, #0x18]
+00001c1a  bx       lr

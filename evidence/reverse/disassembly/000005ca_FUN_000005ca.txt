@@ -1,0 +1,2 @@
+# FUN_000005ca entry=0x000005ca body=2
+000005ca  bx       lr

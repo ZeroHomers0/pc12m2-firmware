@@ -1,0 +1,400 @@
+# FUN_0000b050 entry=0x0000b050 body=568
+0000b050  push     {r4, lr}
+0000b052  mov      r2, r0
+0000b054  movs     r0, #0
+0000b056  ubfx     r3, r1, #0, #0xc
+0000b05a  ldr      r4, [pc, #0x2a8]
+ ; ref 0x0000b304 -> 0x10001788 (SRAM)  [pool->0x10001788]
+0000b05c  str      r3, [r4]
+0000b05e  mov      r3, r4
+0000b060  ldrb     r4, [r3]
+0000b062  cmp      r4, #0x3e
+0000b064  bhs      #0xb148
+ ; jump -> 0x0000b148 (FUN_0000b050)
+0000b066  tbb      [pc, r4]
+0000b06a  movs     r3, #0x1f
+0000b06c  cmp      r3, #0x27
+0000b06e  adds     r3, #0x2f
+0000b070  subs     r3, #0x37
+0000b072  orrs     r7, r7
+0000b074  ldr      r3, [pc, #0x11c]
+ ; ref 0x0000b194 -> 0x60236813
+0000b076  strh     r7, [r1, r5]
+0000b078  ldrh     r7, [r2, r5]
+0000b07a  str      r7, [r3, #0x34]
+0000b07c  ldr      r7, [r4, #0x34]
+0000b07e  strb     r0, [r6, #0x11]
+0000b080  ldrb     r0, [r7, #0x11]
+0000b082  strh     r0, [r0, #0x24]
+0000b084  ldrh     r0, [r1, #0x24]
+0000b086  str      r4, [sp, #0x240]
+0000b088  ldr      r4, [sp, #0x260]
+0000b08a  adr      r4, #0x280
+ ; ref 0x00000280 -> 0xfa014601
+0000b08c  add      r4, sp, #0x2a0
+0000b08e  push     {r4, r5, r7}
+0000b090  pop      {r3, r4, r5, r7}
+0000b092  stm      r4!, {r6, r7}
+0000b094  udf      #0xc8
+0000b096  bgt      #0xb054
+ ; jump -> 0x0000b054 (FUN_0000b050)
+0000b098  bge      #0xb052
+ ; jump -> 0x0000b052 (FUN_0000b050)
+0000b09a  bhi      #0xb050
+ ; jump -> 0x0000b050 (FUN_0000b050)
+0000b09c  bvs      #0xb04e
+ ; jump -> 0x0000b04e (FUN_0000ad04)
+0000b09e  bmi      #0xb04c
+ ; jump -> 0x0000b04c (FUN_0000ad04)
+0000b0a0  bhs      #0xb04a
+ ; jump -> 0x0000b04a (FUN_0000ad04)
+0000b0a2  beq      #0xb048
+ ; jump -> 0x0000b048 (FUN_0000ad04)
+0000b0a4  ldm      r6, {r0, r1, r2, r3, r6, r7}
+0000b0a6  ldm      r4!, {r0, r2, r3, r6, r7}
+0000b0a8  ldrb     r3, [r2]
+0000b0aa  ldr      r4, [pc, #0x17c]
+ ; ref 0x0000b228 -> 0x1000162c (SRAM)  [pool->0x1000162c]
+0000b0ac  strb     r3, [r4]
+0000b0ae  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0b0  ldr      r4, [pc, #0x178]
+ ; ref 0x0000b22c -> 0x10001634 (SRAM)  [pool->0x10001634]
+0000b0b2  ldr      r3, [r2]
+0000b0b4  str      r3, [r4]
+0000b0b6  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0b8  ldr      r4, [pc, #0x174]
+ ; ref 0x0000b230 -> 0x10001630 (SRAM)  [pool->0x10001630]
+0000b0ba  ldr      r3, [r2]
+0000b0bc  str      r3, [r4]
+0000b0be  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0c0  ldr      r4, [pc, #0x170]
+ ; ref 0x0000b234 -> 0x10001638 (SRAM)  [pool->0x10001638]
+0000b0c2  ldr      r3, [r2]
+0000b0c4  str      r3, [r4]
+0000b0c6  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0c8  ldr      r4, [pc, #0x16c]
+ ; ref 0x0000b238 -> 0x10001640 (SRAM)  [pool->0x10001640]
+0000b0ca  ldr      r3, [r2]
+0000b0cc  str      r3, [r4]
+0000b0ce  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0d0  ldr      r4, [pc, #0x168]
+ ; ref 0x0000b23c -> 0x1000163c (SRAM)  [pool->0x1000163c]
+0000b0d2  ldr      r3, [r2]
+0000b0d4  str      r3, [r4]
+0000b0d6  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0d8  ldrb     r3, [r2]
+0000b0da  ldr      r4, [pc, #0x164]
+ ; ref 0x0000b240 -> 0x10001644 (SRAM)  [pool->0x10001644]
+0000b0dc  strb     r3, [r4]
+0000b0de  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0e0  ldrb     r3, [r2]
+0000b0e2  ldr      r4, [pc, #0x160]
+ ; ref 0x0000b244 -> 0x10001645 (SRAM)  [pool->0x10001645]
+0000b0e4  strb     r3, [r4]
+0000b0e6  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0e8  ldr      r4, [pc, #0x15c]
+ ; ref 0x0000b248 -> 0x10001648 (SRAM)  [pool->0x10001648]
+0000b0ea  ldr      r3, [r2]
+0000b0ec  str      r3, [r4]
+0000b0ee  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0f0  ldrb     r3, [r2]
+0000b0f2  ldr      r4, [pc, #0x158]
+ ; ref 0x0000b24c -> 0x1000164c (SRAM)  [pool->0x1000164c]
+0000b0f4  strb     r3, [r4]
+0000b0f6  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b0f8  ldrb     r3, [r2]
+0000b0fa  ldr      r4, [pc, #0x154]
+ ; ref 0x0000b250 -> 0x1000164d (SRAM)  [pool->0x1000164d]
+0000b0fc  strb     r3, [r4]
+0000b0fe  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b100  ldrb     r3, [r2]
+0000b102  ldr      r4, [pc, #0x150]
+ ; ref 0x0000b254 -> 0x1000164e (SRAM)  [pool->0x1000164e]
+0000b104  strb     r3, [r4]
+0000b106  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b108  ldr      r4, [pc, #0x14c]
+ ; ref 0x0000b258 -> 0x100016b8 (SRAM)  [pool->0x100016b8]
+0000b10a  ldr      r3, [r2]
+0000b10c  str      r3, [r4]
+0000b10e  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b110  ldrb     r3, [r2]
+0000b112  ldr      r4, [pc, #0x148]
+ ; ref 0x0000b25c -> 0x100016bc (SRAM)  [pool->0x100016bc]
+0000b114  strb     r3, [r4]
+0000b116  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b118  ldr      r4, [pc, #0x144]
+ ; ref 0x0000b260 -> 0x100016c0 (SRAM)  [pool->0x100016c0]
+0000b11a  ldr      r3, [r2]
+0000b11c  str      r3, [r4]
+0000b11e  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b120  ldrb     r3, [r2]
+0000b122  ldr      r4, [pc, #0x140]
+ ; ref 0x0000b264 -> 0x100016c4 (SRAM)  [pool->0x100016c4]
+0000b124  strb     r3, [r4]
+0000b126  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b128  ldr      r4, [pc, #0x13c]
+ ; ref 0x0000b268 -> 0x100016c8 (SRAM)  [pool->0x100016c8]
+0000b12a  ldr      r3, [r2]
+0000b12c  str      r3, [r4]
+0000b12e  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b130  ldrb     r3, [r2]
+0000b132  ldr      r4, [pc, #0x138]
+ ; ref 0x0000b26c -> 0x100016cc (SRAM)  [pool->0x100016cc]
+0000b134  strb     r3, [r4]
+0000b136  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b138  ldr      r4, [pc, #0x134]
+ ; ref 0x0000b270 -> 0x100016d0 (SRAM)  [pool->0x100016d0]
+0000b13a  ldr      r3, [r2]
+0000b13c  str      r3, [r4]
+0000b13e  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b140  ldrb     r3, [r2]
+0000b142  ldr      r4, [pc, #0x130]
+ ; ref 0x0000b274 -> 0x100016d4 (SRAM)  [pool->0x100016d4]
+0000b144  strb     r3, [r4]
+0000b146  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b148  b        #0xb3ac
+ ; jump -> 0x0000b3ac (FUN_0000b050)
+0000b14a  ldrb     r3, [r2]
+0000b14c  ldr      r4, [pc, #0x128]
+ ; ref 0x0000b278 -> 0x100016d5 (SRAM)  [pool->0x100016d5]
+0000b14e  strb     r3, [r4]
+0000b150  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b152  ldrb     r3, [r2]
+0000b154  ldr      r4, [pc, #0x124]
+ ; ref 0x0000b27c -> 0x100016d6 (SRAM)  [pool->0x100016d6]
+0000b156  strb     r3, [r4]
+0000b158  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b15a  ldrb     r3, [r2]
+0000b15c  ldr      r4, [pc, #0x120]
+ ; ref 0x0000b280 -> 0x10001708 (SRAM)  [pool->0x10001708]
+0000b15e  strb     r3, [r4]
+0000b160  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b162  ldrb     r3, [r2]
+0000b164  ldr      r4, [pc, #0x1a0]
+ ; ref 0x0000b308 -> 0x1000170f (SRAM)  [pool->0x1000170f]
+0000b166  strb     r3, [r4]
+0000b168  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b16a  ldrb     r3, [r2]
+0000b16c  ldr      r4, [pc, #0x19c]
+ ; ref 0x0000b30c -> 0x10001710 (SRAM)  [pool->0x10001710]
+0000b16e  strb     r3, [r4]
+0000b170  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b172  ldrb     r3, [r2]
+0000b174  ldr      r4, [pc, #0x114]
+ ; ref 0x0000b28c -> 0x1000168c (SRAM)  [pool->0x1000168c]
+0000b176  strb     r3, [r4]
+0000b178  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b17a  ldr      r4, [pc, #0x194]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b17c  ldr      r3, [r2]
+0000b17e  str      r3, [r4]
+0000b180  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b182  ldr      r4, [pc, #0x18c]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b184  ldr      r3, [r2]
+0000b186  str      r3, [r4]
+0000b188  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b18a  ldr      r4, [pc, #0x184]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b18c  ldr      r3, [r2]
+0000b18e  str      r3, [r4]
+0000b190  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b192  ldr      r4, [pc, #0x17c]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b194  ldr      r3, [r2]
+0000b196  str      r3, [r4]
+0000b198  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b19a  ldr      r4, [pc, #0x174]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b19c  ldr      r3, [r2]
+0000b19e  str      r3, [r4]
+0000b1a0  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1a2  ldr      r4, [pc, #0x16c]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b1a4  ldr      r3, [r2]
+0000b1a6  str      r3, [r4]
+0000b1a8  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1aa  ldr      r4, [pc, #0xe4]
+ ; ref 0x0000b290 -> 0x100015fc (SRAM)  [pool->0x100015fc]
+0000b1ac  ldr      r3, [r2]
+0000b1ae  str      r3, [r4]
+0000b1b0  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1b2  ldr      r4, [pc, #0xe0]
+ ; ref 0x0000b294 -> 0x100015f8 (SRAM)  [pool->0x100015f8]
+0000b1b4  ldr      r3, [r2]
+0000b1b6  str      r3, [r4]
+0000b1b8  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1ba  ldr      r4, [pc, #0xdc]
+ ; ref 0x0000b298 -> 0x10001608 (SRAM)  [pool->0x10001608]
+0000b1bc  ldr      r3, [r2]
+0000b1be  str      r3, [r4]
+0000b1c0  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1c2  ldr      r4, [pc, #0xd8]
+ ; ref 0x0000b29c -> 0x10001604 (SRAM)  [pool->0x10001604]
+0000b1c4  ldr      r3, [r2]
+0000b1c6  str      r3, [r4]
+0000b1c8  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1ca  ldr      r4, [pc, #0x144]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b1cc  ldr      r3, [r2]
+0000b1ce  str      r3, [r4]
+0000b1d0  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1d2  ldr      r4, [pc, #0x13c]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b1d4  ldr      r3, [r2]
+0000b1d6  str      r3, [r4]
+0000b1d8  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1da  ldrb     r3, [r2]
+0000b1dc  ldr      r4, [pc, #0xc0]
+ ; ref 0x0000b2a0 -> 0x10001765 (SRAM)  [pool->0x10001765]
+0000b1de  strb     r3, [r4]
+0000b1e0  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1e2  ldr      r4, [pc, #0xc0]
+ ; ref 0x0000b2a4 -> 0x100015a8 (SRAM)  [pool->0x100015a8]
+0000b1e4  ldr      r3, [r2]
+0000b1e6  str      r3, [r4]
+0000b1e8  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1ea  ldr      r4, [pc, #0x124]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b1ec  ldr      r3, [r2]
+0000b1ee  str      r3, [r4]
+0000b1f0  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1f2  ldr      r4, [pc, #0x11c]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b1f4  ldr      r3, [r2]
+0000b1f6  str      r3, [r4]
+0000b1f8  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b1fa  ldr      r4, [pc, #0x114]
+ ; ref 0x0000b310 -> 0x1000178c (SRAM)  [pool->0x1000178c]
+0000b1fc  ldr      r3, [r2]
+0000b1fe  str      r3, [r4]
+0000b200  b        #0xb3ae
+ ; jump -> 0x0000b3ae (FUN_0000b050)
+0000b202  b        #0xb3a4
+ ; jump -> 0x0000b3a4 (FUN_0000b050)
+0000b204  b        #0xb39c
+ ; jump -> 0x0000b39c (FUN_0000b050)
+0000b206  b        #0xb394
+ ; jump -> 0x0000b394 (FUN_0000b050)
+0000b208  b        #0xb38c
+ ; jump -> 0x0000b38c (FUN_0000b050)
+0000b20a  b        #0xb384
+ ; jump -> 0x0000b384 (FUN_0000b050)
+0000b20c  b        #0xb37c
+ ; jump -> 0x0000b37c (FUN_0000b050)
+0000b20e  b        #0xb374
+ ; jump -> 0x0000b374 (FUN_0000b050)
+0000b210  b        #0xb36c
+ ; jump -> 0x0000b36c (FUN_0000b050)
+0000b212  b        #0xb364
+ ; jump -> 0x0000b364 (FUN_0000b050)
+0000b214  b        #0xb35c
+ ; jump -> 0x0000b35c (FUN_0000b050)
+0000b216  b        #0xb354
+ ; jump -> 0x0000b354 (FUN_0000b050)
+0000b218  b        #0xb34c
+ ; jump -> 0x0000b34c (FUN_0000b050)
+0000b21a  b        #0xb344
+ ; jump -> 0x0000b344 (FUN_0000b050)
+0000b21c  b        #0xb33c
+ ; jump -> 0x0000b33c (FUN_0000b050)
+0000b21e  b        #0xb334
+ ; jump -> 0x0000b334 (FUN_0000b050)
+0000b220  b        #0xb32c
+ ; jump -> 0x0000b32c (FUN_0000b050)
+0000b222  b        #0xb324
+ ; jump -> 0x0000b324 (FUN_0000b050)
+0000b224  b        #0xb31c
+ ; jump -> 0x0000b31c (FUN_0000b050)
+0000b226  b        #0xb314
+ ; jump -> 0x0000b314 (FUN_0000b050)
+0000b228  asrs     r4, r5, #0x18
+0000b22a  asrs     r0, r0, #0x20
+0000b22c  asrs     r4, r6, #0x18
+0000b22e  asrs     r0, r0, #0x20
+0000b230  asrs     r0, r6, #0x18
+0000b232  asrs     r0, r0, #0x20
+0000b234  asrs     r0, r7, #0x18
+0000b236  asrs     r0, r0, #0x20
+0000b238  asrs     r0, r0, #0x19
+0000b23a  asrs     r0, r0, #0x20
+0000b23c  asrs     r4, r7, #0x18
+0000b23e  asrs     r0, r0, #0x20
+0000b240  asrs     r4, r0, #0x19
+0000b242  asrs     r0, r0, #0x20
+0000b244  asrs     r5, r0, #0x19
+0000b246  asrs     r0, r0, #0x20
+0000b248  asrs     r0, r1, #0x19
+0000b24a  asrs     r0, r0, #0x20
+0000b24c  asrs     r4, r1, #0x19
+0000b24e  asrs     r0, r0, #0x20
+0000b250  asrs     r5, r1, #0x19
+0000b252  asrs     r0, r0, #0x20
+0000b254  asrs     r6, r1, #0x19
+0000b256  asrs     r0, r0, #0x20
+0000b258  asrs     r0, r7, #0x1a
+0000b25a  asrs     r0, r0, #0x20
+0000b25c  asrs     r4, r7, #0x1a
+0000b25e  asrs     r0, r0, #0x20
+0000b260  asrs     r0, r0, #0x1b
+0000b262  asrs     r0, r0, #0x20
+0000b264  asrs     r4, r0, #0x1b
+0000b266  asrs     r0, r0, #0x20
+0000b268  asrs     r0, r1, #0x1b
+0000b26a  asrs     r0, r0, #0x20
+0000b26c  asrs     r4, r1, #0x1b
+0000b26e  asrs     r0, r0, #0x20
+0000b270  asrs     r0, r2, #0x1b
+0000b272  asrs     r0, r0, #0x20
+0000b274  asrs     r4, r2, #0x1b
+0000b276  asrs     r0, r0, #0x20
+0000b278  asrs     r5, r2, #0x1b
+0000b27a  asrs     r0, r0, #0x20
+0000b27c  asrs     r6, r2, #0x1b
+0000b27e  asrs     r0, r0, #0x20
+0000b280  asrs     r0, r1, #0x1c
+0000b282  asrs     r0, r0, #0x20
+0000b284  asrs     r6, r0, #0x1c
+0000b286  asrs     r0, r0, #0x20

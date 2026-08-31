@@ -1,0 +1,26 @@
+# FUN_00001c32 entry=0x00001c32 body=44
+00001c32  push     {r2, r3, lr}
+00001c34  movs     r1, #0
+00001c36  str      r1, [sp, #4]
+00001c38  b        #0x1c56
+ ; jump -> 0x00001c56 (FUN_00001c32)
+00001c3a  movs     r1, #0
+00001c3c  str      r1, [sp]
+00001c3e  b        #0x1c46
+ ; jump -> 0x00001c46 (FUN_00001c32)
+00001c40  ldr      r1, [sp]
+00001c42  adds     r1, r1, #1
+00001c44  str      r1, [sp]
+00001c46  movw     r2, #0x2710
+00001c4a  ldr      r1, [sp]
+00001c4c  cmp      r1, r2
+00001c4e  blo      #0x1c40
+ ; jump -> 0x00001c40 (FUN_00001c32)
+00001c50  ldr      r1, [sp, #4]
+00001c52  adds     r1, r1, #1
+00001c54  str      r1, [sp, #4]
+00001c56  ldr      r1, [sp, #4]
+00001c58  cmp      r1, r0
+00001c5a  blo      #0x1c3a
+ ; jump -> 0x00001c3a (FUN_00001c32)
+00001c5c  pop      {r2, r3, pc}

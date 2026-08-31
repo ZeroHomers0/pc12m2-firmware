@@ -1,0 +1,22 @@
+# eint1_isr entry=0x0000f748 body=34
+0000f748  ldr  r0, [0x0000f930]
+      ; ref 0x0000f930 -> 0x400fc140
+0000f74a  ldr  r0, [r0,#0x0]
+0000f74c  orr  r0, r0, #0x2
+0000f750  ldr  r1, [0x0000f934]
+      ; ref 0x0000f934 -> 0x400fc000
+0000f752  str.w  r0, [r1,#0x140]
+0000f756  ldr  r0, [0x0000f938]
+      ; ref 0x0000f938 -> 0x1000204e
+0000f758  ldrb  r0, [r0,#0x0]
+0000f75a  cbnz  r0, 0x0000f762
+      ; jump -> 0x0000f762
+0000f75c  movs  r0, #0x2
+0000f75e  ldr  r1, [0x0000f938]
+      ; ref 0x0000f938 -> 0x1000204e
+0000f760  strb  r0, [r1,#0x0]
+0000f762  movs  r0, #0x1
+0000f764  ldr  r1, [0x0000f93c]
+      ; ref 0x0000f93c -> 0x10002098
+0000f766  strb  r0, [r1,#0x0]
+0000f768  bx  lr

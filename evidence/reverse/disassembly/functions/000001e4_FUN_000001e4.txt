@@ -1,0 +1,18 @@
+# wdt_isr entry=0x000001e4 body=28
+000001e4  mov.w  r0, #0x40000000
+000001e8  ldrb  r0, [r0,#0x0]
+      ; ref 0x40000000 (no mem)
+000001ea  bic  r0, r0, #0x4
+000001ee  mov.w  r1, #0x40000000
+000001f2  strb  r0, [r1,#0x0]
+      ; ref 0x40000000 (no mem)
+000001f4  ldr  r0, [0x00000244]
+      ; ref 0x00000244 -> 0x1000210c
+000001f6  ldr  r0, [r0,#0x0]
+      ; ref 0x1000210c (no mem)
+000001f8  adds  r0, r0, #0x1
+000001fa  ldr  r1, [0x00000244]
+      ; ref 0x00000244 -> 0x1000210c
+000001fc  str  r0, [r1,#0x0]
+      ; ref 0x1000210c (no mem)
+000001fe  bx  lr

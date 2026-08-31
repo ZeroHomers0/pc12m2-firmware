@@ -1,0 +1,28 @@
+# FUN_00000598 entry=0x00000598 body=50
+00000598  push     {r2, r3, lr}
+0000059a  movs     r0, #0
+0000059c  str      r0, [sp, #4]
+0000059e  str      r0, [sp]
+000005a0  str      r0, [sp, #4]
+000005a2  b        #0x5be
+ ; jump -> 0x000005be (FUN_00000598)
+000005a4  movs     r0, #0
+000005a6  str      r0, [sp]
+000005a8  b        #0x5b0
+ ; jump -> 0x000005b0 (FUN_00000598)
+000005aa  ldr      r0, [sp]
+000005ac  adds     r0, r0, #1
+000005ae  str      r0, [sp]
+000005b0  ldr      r0, [sp]
+000005b2  cmp.w    r0, #0x3e8
+000005b6  blo      #0x5aa
+ ; jump -> 0x000005aa (FUN_00000598)
+000005b8  ldr      r0, [sp, #4]
+000005ba  adds     r0, r0, #1
+000005bc  str      r0, [sp, #4]
+000005be  movw     r1, #0x1770
+000005c2  ldr      r0, [sp, #4]
+000005c4  cmp      r0, r1
+000005c6  blo      #0x5a4
+ ; jump -> 0x000005a4 (FUN_00000598)
+000005c8  pop      {r2, r3, pc}

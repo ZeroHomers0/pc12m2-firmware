@@ -1,0 +1,25 @@
+# FUN_0000acd4 entry=0x0000acd4 body=48
+0000acd4  push  {r4,r5,r6,lr}
+0000acd6  mov  r2, r0
+0000acd8  mov  r4, r1
+0000acda  movs  r5, #0xff
+0000acdc  movs  r3, #0xff
+0000acde  b  0x0000acf4
+      ; jump -> 0x0000acf4
+0000ace0  ldrb.w  r0, [r2],#0x1
+0000ace4  eor.w  r1, r0, r3
+0000ace8  ldr  r0, [0x0000adcc]
+      ; ref 0x0000adcc -> 0x000111d8
+0000acea  ldrb  r0, [r0,r1]
+      ; ref 0x000111d8 -> 0x4081c100
+0000acec  eor.w  r3, r0, r5
+0000acf0  ldr  r0, [0x0000add0]
+      ; ref 0x0000add0 -> 0x000112d8
+0000acf2  ldrb  r5, [r0,r1]
+0000acf4  movs  r0, r4
+0000acf6  sub.w  r6, r4, #0x1
+0000acfa  uxtb  r4, r6
+0000acfc  bne  0x0000ace0
+      ; jump -> 0x0000ace0
+0000acfe  orr.w  r0, r3, r5, lsl #0x8
+0000ad02  pop  {r4,r5,r6,pc}

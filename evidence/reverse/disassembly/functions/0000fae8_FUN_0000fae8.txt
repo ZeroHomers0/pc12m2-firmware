@@ -1,0 +1,22 @@
+# timer2_svc entry=0x0000fae8 body=36
+0000fae8  movs  r0, #0xff
+0000faea  ldr  r1, [0x0000fd54]
+      ; ref 0x0000fd54 -> 0x40090000
+0000faec  str  r0, [r1,#0x0]
+0000faee  movs  r0, #0x2
+0000faf0  str  r0, [r1,#0x4]
+0000faf2  movs  r0, #0x0
+0000faf4  ldr  r1, [0x0000fd6c]
+      ; ref 0x0000fd6c -> 0x1000204c
+0000faf6  strb  r0, [r1,#0x0]
+0000faf8  movs  r0, #0x2
+0000fafa  ldr  r1, [0x0000fd70]
+      ; ref 0x0000fd70 -> 0x40008000
+0000fafc  str  r0, [r1,#0x4]
+0000fafe  movs  r0, #0xff
+0000fb00  str  r0, [r1,#0x0]
+0000fb02  movs  r0, #0x31
+0000fb04  str  r0, [r1,#0x18]
+0000fb06  movs  r0, #0x1
+0000fb08  str  r0, [r1,#0x4]
+0000fb0a  bx  lr

@@ -34,7 +34,7 @@ void func_0x0000aed0(void)
   }
 }
 
-/* 0x0000AB48 —— 联锁/错误屏频率调节 + EEPROM 写回（07 迁入，完整实现） */
+/* 0x0000A856 —— 联锁/错误屏频率调节 + EEPROM 写回（12p；6p 0xAB48。07 迁入，完整实现） */
 undefined4 debounce_p09(void);
 void i2c_write_reg(undefined4 param_1, undefined4 param_2);
 void disp_offset(uint param_1, undefined4 param_2, int param_3, undefined4 param_4);
@@ -46,33 +46,34 @@ void freq_adjust_sync(int param_1)
   int iVar2;
 
   iVar2 = debounce_p09();
-  if ((iVar2 == 1) && (*DAT_0000ac0c != *DAT_0000ac10)) {
-    *DAT_0000ac10 = *DAT_0000ac0c;
-    i2c_write_reg((ushort)*DAT_0000ac10 >> 8,0xc9);
-    i2c_write_reg((char)*DAT_0000ac10,0xca);
+  if ((iVar2 == 1) && (*out_freq_adj != *out_freq_adj_shadow)) {
+    /* shadow = live；16 位 EEPROM 写回：高字节→reg 0xc9、低字节→reg 0xca（12p 字节序） */
+    *out_freq_adj_shadow = *out_freq_adj;
+    i2c_write_reg((ushort)*out_freq_adj_shadow >> 8,0xc9);
+    i2c_write_reg((char)*out_freq_adj_shadow,0xca);
   }
-  puVar1 = DAT_0000ac0c;
+  puVar1 = out_freq_adj;
   if ((param_1 == 2) || (param_1 == 0x16)) {
-    *DAT_0000ac0c = *DAT_0000ac0c + 1;
+    *out_freq_adj = *out_freq_adj + 1;
     if (0x2b0 < *puVar1) {
       *puVar1 = 0x2b0;
     }
-    disp_offset(*DAT_0000ac0c,2,7,1);
+    disp_offset(*out_freq_adj,2,7,1);
   }
   if ((param_1 == 3) || (param_1 == 0x21)) {
-    if (*DAT_0000ac0c < 0x45) {
-      *DAT_0000ac0c = 0x45;
+    if (*out_freq_adj < 0x45) {
+      *out_freq_adj = 0x45;
     }
-    *DAT_0000ac0c = *DAT_0000ac0c - 1;
-    disp_offset(*DAT_0000ac0c,2,7,1);
+    *out_freq_adj = *out_freq_adj - 1;
+    disp_offset(*out_freq_adj,2,7,1);
   }
   if (param_1 == 5) {
-    *g_cfg_word = 1;
-    disp_string((int)0x47F0,3,0xb,0);    /* 0x47F0：高档字符串（&DAT_0000ac18 内容） */
+    *g_cfg_word = 1;                               /* strb → 0x10001620：运行标志 */
+    disp_string((int)0x4348,3,0xb,0);    /* 0x4348："运行"（GBK d4cb d0d0） */
   }
   if (param_1 == 6) {
-    *g_cfg_word = 0;
-    disp_string((int)0xAC1C,3,0xb,0);    /* 0xAC1C：低档字符串（&DAT_0000ac1c 即地址） */
+    *g_cfg_word = 0;                               /* strb → 0x10001620：停止标志 */
+    disp_string((int)0xa98c,3,0xb,0);    /* 0xa98c："停止"（GBK cda3 d6b9，adr 取址） */
   }
   return;
 }

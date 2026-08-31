@@ -1,0 +1,104 @@
+# FUN_00000d44 entry=0x00000d44 body=164
+00000d44  push  {r4,r5,r6,r7,lr}
+00000d46  mov  r4, r0
+00000d48  mov  r5, r1
+00000d4a  mov  r6, r2
+00000d4c  mov  r7, r3
+00000d4e  cmp  r4, #0xa
+00000d50  bcs  0x00000dec
+      ; jump -> 0x00000dec
+00000d52  tbb  [pc,r4]
+      ; jump -> 0x00000dde
+      ; jump -> 0x00000d60
+      ; jump -> 0x00000d6e
+      ; jump -> 0x00000d7c
+      ; jump -> 0x00000d8a
+      ; jump -> 0x00000d98
+      ; jump -> 0x00000da6
+      ; jump -> 0x00000db4
+      ; jump -> 0x00000dc2
+      ; jump -> 0x00000dd0
+      ; ref 0x00000d56 -> 0x130c0544
+00000d60  mov  r3, r7
+00000d62  mov  r2, r6
+00000d64  mov  r1, r5
+00000d66  movs  r0, #0x31
+00000d68  bl  0x00000af4
+      ; call -> 0x00000af4
+00000d6c  b  0x00000dee
+      ; jump -> 0x00000dee
+00000d6e  mov  r3, r7
+00000d70  mov  r2, r6
+00000d72  mov  r1, r5
+00000d74  movs  r0, #0x32
+00000d76  bl  0x00000af4
+      ; call -> 0x00000af4
+00000d7a  b  0x00000dee
+      ; jump -> 0x00000dee
+00000d7c  mov  r3, r7
+00000d7e  mov  r2, r6
+00000d80  mov  r1, r5
+00000d82  movs  r0, #0x33
+00000d84  bl  0x00000af4
+      ; call -> 0x00000af4
+00000d88  b  0x00000dee
+      ; jump -> 0x00000dee
+00000d8a  mov  r3, r7
+00000d8c  mov  r2, r6
+00000d8e  mov  r1, r5
+00000d90  movs  r0, #0x34
+00000d92  bl  0x00000af4
+      ; call -> 0x00000af4
+00000d96  b  0x00000dee
+      ; jump -> 0x00000dee
+00000d98  mov  r3, r7
+00000d9a  mov  r2, r6
+00000d9c  mov  r1, r5
+00000d9e  movs  r0, #0x35
+00000da0  bl  0x00000af4
+      ; call -> 0x00000af4
+00000da4  b  0x00000dee
+      ; jump -> 0x00000dee
+00000da6  mov  r3, r7
+00000da8  mov  r2, r6
+00000daa  mov  r1, r5
+00000dac  movs  r0, #0x36
+00000dae  bl  0x00000af4
+      ; call -> 0x00000af4
+00000db2  b  0x00000dee
+      ; jump -> 0x00000dee
+00000db4  mov  r3, r7
+00000db6  mov  r2, r6
+00000db8  mov  r1, r5
+00000dba  movs  r0, #0x37
+00000dbc  bl  0x00000af4
+      ; call -> 0x00000af4
+00000dc0  b  0x00000dee
+      ; jump -> 0x00000dee
+00000dc2  mov  r3, r7
+00000dc4  mov  r2, r6
+00000dc6  mov  r1, r5
+00000dc8  movs  r0, #0x38
+00000dca  bl  0x00000af4
+      ; call -> 0x00000af4
+00000dce  b  0x00000dee
+      ; jump -> 0x00000dee
+00000dd0  mov  r3, r7
+00000dd2  mov  r2, r6
+00000dd4  mov  r1, r5
+00000dd6  movs  r0, #0x39
+00000dd8  bl  0x00000af4
+      ; call -> 0x00000af4
+00000ddc  b  0x00000dee
+      ; jump -> 0x00000dee
+00000dde  mov  r3, r7
+00000de0  mov  r2, r6
+00000de2  mov  r1, r5
+00000de4  movs  r0, #0x30
+00000de6  bl  0x00000af4
+      ; call -> 0x00000af4
+00000dea  b  0x00000dee
+      ; jump -> 0x00000dee
+00000dec  nop
+00000dee  nop
+00000df0  pop  {r4,r5,r6,r7,pc}

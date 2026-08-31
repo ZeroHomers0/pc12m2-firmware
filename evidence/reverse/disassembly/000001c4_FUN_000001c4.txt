@@ -1,0 +1,10 @@
+# FUN_000001c4 entry=0x000001c4 body=10
+000001c4  ldr      r0, [pc, #0x10]
+ ; ref 0x000001d8 -> 0x100027a0 (SRAM)  [pool->0x100027a0]
+000001c6  ldr      r1, [pc, #0x14]
+ ; ref 0x000001dc -> 0x100029a0 (SRAM)  [pool->0x100029a0]
+000001c8  ldr      r2, [pc, #0xc]
+ ; ref 0x000001d8 -> 0x100027a0 (SRAM)  [pool->0x100027a0]
+000001ca  ldr      r3, [pc, #0x14]
+ ; ref 0x000001e0 -> 0x100027a0 (SRAM)  [pool->0x100027a0]
+000001cc  bx       lr

@@ -1,0 +1,161 @@
+# FUN_000040b0 entry=0x000040b0 body=260
+000040b0  push     {r4, lr}
+000040b2  movs     r3, #0
+000040b4  mov      r2, r3
+000040b6  mov      r1, r3
+000040b8  adr      r0, #0x20c
+ ; ref 0x0000020c -> 0x40822201 (PERI)  [pool->0x40822201]
+000040ba  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000040be  movs     r3, #0
+000040c0  mov      r2, r3
+000040c2  movs     r1, #1
+000040c4  adr      r0, #0x214
+ ; ref 0x00000214 -> 0xeb0424e0
+000040c6  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000040ca  movs     r3, #0
+000040cc  mov      r2, r3
+000040ce  movs     r1, #2
+000040d0  adr      r0, #0x21c
+ ; ref 0x0000021c -> 0xbf002100
+000040d2  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000040d6  movs     r3, #0
+000040d8  mov      r2, r3
+000040da  movs     r1, #3
+000040dc  adr      r0, #0x224
+ ; ref 0x00000224 -> 0x4280f04f (PERI)  [pool->0x4280f04f]
+000040de  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000040e2  ldr      r0, [pc, #0x234]
+ ; ref 0x00004318 -> 0x1000164d (SRAM)  [pool->0x1000164d]
+000040e4  ldrb     r0, [r0]
+000040e6  cbnz     r0, #0x40f6
+000040e8  movs     r3, #0
+000040ea  movs     r2, #9
+000040ec  mov      r1, r3
+000040ee  ldr      r0, [pc, #0x22c]
+ ; ref 0x0000431c -> 0x10001768 (SRAM)  [pool->0x10001768]
+000040f0  ldr      r0, [r0]
+000040f2  bl       #0x13ec
+ ; call -> 0x000013ec (FUN_000013ec)
+000040f6  ldr      r0, [pc, #0x220]
+ ; ref 0x00004318 -> 0x1000164d (SRAM)  [pool->0x1000164d]
+000040f8  ldrb     r0, [r0]
+000040fa  cmp      r0, #1
+000040fc  bne      #0x410c
+ ; jump -> 0x0000410c (FUN_000040b0)
+000040fe  movs     r3, #0
+00004100  movs     r2, #9
+00004102  mov      r1, r3
+00004104  ldr      r0, [pc, #0x218]
+ ; ref 0x00004320 -> 0x100015a8 (SRAM)  [pool->0x100015a8]
+00004106  ldr      r0, [r0]
+00004108  bl       #0x13ec
+ ; call -> 0x000013ec (FUN_000013ec)
+0000410c  ldr      r0, [pc, #0x208]
+ ; ref 0x00004318 -> 0x1000164d (SRAM)  [pool->0x1000164d]
+0000410e  ldrb     r0, [r0]
+00004110  cmp      r0, #2
+00004112  bne      #0x4122
+ ; jump -> 0x00004122 (FUN_000040b0)
+00004114  movs     r3, #0
+00004116  movs     r2, #9
+00004118  mov      r1, r3
+0000411a  ldr      r0, [pc, #0x208]
+ ; ref 0x00004324 -> 0x100015d8 (SRAM)  [pool->0x100015d8]
+0000411c  ldr      r0, [r0]
+0000411e  bl       #0x13ec
+ ; call -> 0x000013ec (FUN_000013ec)
+00004122  movs     r3, #0
+00004124  movs     r2, #9
+00004126  movs     r1, #1
+00004128  ldr      r0, [pc, #0x1fc]
+ ; ref 0x00004328 -> 0x10001590 (SRAM)  [pool->0x10001590]
+0000412a  ldr      r0, [r0]
+0000412c  bl       #0xe80
+ ; call -> 0x00000e80 (FUN_00000e80)
+00004130  movs     r3, #0
+00004132  movs     r2, #9
+00004134  movs     r1, #2
+00004136  ldr      r0, [pc, #0x1f4]
+ ; ref 0x0000432c -> 0x10001594 (SRAM)  [pool->0x10001594]
+00004138  ldr      r0, [r0]
+0000413a  bl       #0xe80
+ ; call -> 0x00000e80 (FUN_00000e80)
+0000413e  ldr      r0, [pc, #0x1f0]
+ ; ref 0x00004330 -> 0x1000161c (SRAM)  [pool->0x1000161c]
+00004140  ldr      r0, [r0]
+00004142  cbz      r0, #0x4152
+00004144  movs     r3, #0
+00004146  movs     r2, #0xa
+00004148  movs     r1, #3
+0000414a  adr      r0, #0x1e8
+ ; ref 0x000001e8 -> 0xf0207800
+0000414c  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+00004150  b        #0x4178
+ ; jump -> 0x00004178 (FUN_000040b0)
+00004152  ldr      r0, [pc, #0x1e8]
+ ; ref 0x0000433c -> 0x10001620 (SRAM)  [pool->0x10001620]
+00004154  ldrb     r0, [r0]
+00004156  cbnz     r0, #0x4164
+00004158  movs     r3, #0
+0000415a  movs     r2, #0xa
+0000415c  movs     r1, #3
+0000415e  adr      r0, #0x1e0
+ ; ref 0x000001e0 -> 0x100027a0 (SRAM)  [pool->0x100027a0]
+00004160  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+00004164  ldr      r0, [pc, #0x1d4]
+ ; ref 0x0000433c -> 0x10001620 (SRAM)  [pool->0x10001620]
+00004166  ldrb     r0, [r0]
+00004168  cmp      r0, #1
+0000416a  bne      #0x4178
+ ; jump -> 0x00004178 (FUN_000040b0)
+0000416c  movs     r3, #0
+0000416e  movs     r2, #0xa
+00004170  movs     r1, #3
+00004172  adr      r0, #0x1d4
+ ; ref 0x000001d4 -> 0x000000c5
+00004174  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+00004178  ldr      r0, [pc, #0x1d4]
+ ; ref 0x00004350 -> 0x1000162c (SRAM)  [pool->0x1000162c]
+0000417a  ldrb     r0, [r0]
+0000417c  cbnz     r0, #0x418a
+0000417e  movs     r3, #0
+00004180  mov      r2, r3
+00004182  movs     r1, #3
+00004184  adr      r0, #0x1cc
+ ; ref 0x000001cc -> 0x004770 (flash)
+00004186  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+0000418a  ldr      r0, [pc, #0x1c4]
+ ; ref 0x00004350 -> 0x1000162c (SRAM)  [pool->0x1000162c]
+0000418c  ldrb     r0, [r0]
+0000418e  cmp      r0, #1
+00004190  bne      #0x419e
+ ; jump -> 0x0000419e (FUN_000040b0)
+00004192  movs     r3, #0
+00004194  mov      r2, r3
+00004196  movs     r1, #3
+00004198  adr      r0, #0x1c0
+ ; ref 0x000001c0 -> 0xe7fee7fe
+0000419a  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+0000419e  ldr      r0, [pc, #0x1b0]
+ ; ref 0x00004350 -> 0x1000162c (SRAM)  [pool->0x1000162c]
+000041a0  ldrb     r0, [r0]
+000041a2  cmp      r0, #2
+000041a4  bne      #0x41b2
+ ; jump -> 0x000041b2 (FUN_000040b0)
+000041a6  movs     r3, #0
+000041a8  mov      r2, r3
+000041aa  movs     r1, #3
+000041ac  adr      r0, #0x1b4
+ ; ref 0x000001b4 -> 0xe7fee7fe
+000041ae  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000041b2  pop      {r4, pc}

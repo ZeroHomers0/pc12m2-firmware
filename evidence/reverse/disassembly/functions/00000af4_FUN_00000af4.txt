@@ -1,0 +1,139 @@
+# FUN_00000af4 entry=0x00000af4 body=236
+00000af4  push  {r3,r4,r5,r6,r7,r8,r9,r10,r11,lr}
+00000af8  mov  r8, r0
+00000afa  mov  r6, r1
+00000afc  mov  r5, r2
+00000afe  mov  r9, r3
+00000b00  movs  r4, #0x0
+00000b02  movs  r7, #0x0
+00000b04  movs  r0, #0x0
+00000b06  str  r0, [sp,#0x0]
+      ; ref 0xffffffffffffffd8 (no mem)
+00000b08  mov.w  r10, #0xb8
+00000b0c  mov.w  r11, #0x40
+00000b10  nop
+00000b12  b  0x00000be0
+      ; jump -> 0x00000be0
+00000b14  ldr  r0, [0x00000b68]
+      ; ref 0x00000b68 -> 0x10001546
+00000b16  ldrb  r0, [r0,r7]
+      ; ref 0x10001546 (no mem)
+00000b18  cmp  r0, r8
+00000b1a  bne  0x00000bdc
+      ; jump -> 0x00000bdc
+00000b1c  cmp  r5, #0x7
+00000b1e  ble  0x00000b3e
+      ; jump -> 0x00000b3e
+00000b20  ldr  r0, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000b22  ldr  r0, [r0,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000b24  orr  r0, r0, #0x4000000
+00000b28  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+      ; ref 0x2009c000 (no mem)
+00000b2a  str  r0, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000b2c  mov  r0, r1
+00000b2e  ldr  r0, [r0,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000b30  orr  r0, r0, #0x2000000
+00000b34  str  r0, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000b36  sub.w  r0, r5, #0x8
+00000b3a  uxtb  r5, r0
+00000b3c  b  0x00000b54
+      ; jump -> 0x00000b54
+00000b3e  ldr  r0, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+00000b40  ldr  r0, [r0,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000b42  orr  r0, r0, #0x4000000
+00000b46  ldr  r1, [0x00000b64]
+      ; ref 0x00000b64 -> 0x2009c000
+      ; ref 0x2009c000 (no mem)
+00000b48  str  r0, [r1,#0x3c]
+      ; ref 0x2009c03c (no mem)
+00000b4a  mov  r0, r1
+00000b4c  ldr  r0, [r0,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000b4e  orr  r0, r0, #0x2000000
+00000b52  str  r0, [r1,#0x38]
+      ; ref 0x2009c038 (no mem)
+00000b54  movs  r0, #0xa
+00000b56  bl  0x00000758
+      ; call -> 0x00000758
+00000b5a  movs  r0, #0xc0
+00000b5c  bl  0x000008fa
+      ; call -> 0x000008fa
+00000b60  b  0x00000b6c
+      ; jump -> 0x00000b6c
+00000b6c  add.w  r1, r10, r6, lsl #0x1
+00000b70  uxtb  r0, r1
+00000b72  bl  0x000008fa
+      ; call -> 0x000008fa
+00000b76  movs  r4, #0x0
+00000b78  b  0x00000b9c
+      ; jump -> 0x00000b9c
+00000b7a  add.w  r1, r11, r5, lsl #0x3
+00000b7e  add  r1, r4
+00000b80  uxtb  r0, r1
+00000b82  bl  0x000008fa
+      ; call -> 0x000008fa
+00000b86  ldr  r0, [0x00000f70]
+      ; ref 0x00000f70 -> 0x10001306
+00000b88  add.w  r0, r0, r7, lsl #0x4
+00000b8c  ldrb  r0, [r0,r4]
+      ; ref 0x10001306 (no mem)
+00000b8e  str  r0, [sp,#0x0]
+      ; ref 0xffffffffffffffd8 (no mem)
+00000b90  mov  r1, r9
+00000b92  ldr  r0, [sp,#0x0]
+      ; ref 0xffffffffffffffd8 (no mem)
+00000b94  bl  0x000008a4
+      ; call -> 0x000008a4
+00000b98  adds  r0, r4, #0x1
+00000b9a  uxtb  r4, r0
+00000b9c  cmp  r4, #0x8
+00000b9e  blt  0x00000b7a
+      ; jump -> 0x00000b7a
+00000ba0  add.w  r1, r10, r6, lsl #0x1
+00000ba4  adds  r1, r1, #0x1
+00000ba6  uxtb  r0, r1
+00000ba8  bl  0x000008fa
+      ; call -> 0x000008fa
+00000bac  movs  r4, #0x0
+00000bae  b  0x00000bd6
+      ; jump -> 0x00000bd6
+00000bb0  add.w  r1, r11, r5, lsl #0x3
+00000bb4  add  r1, r4
+00000bb6  uxtb  r0, r1
+00000bb8  bl  0x000008fa
+      ; call -> 0x000008fa
+00000bbc  ldr  r0, [0x00000f70]
+      ; ref 0x00000f70 -> 0x10001306
+00000bbe  add.w  r1, r0, r7, lsl #0x4
+00000bc2  add.w  r0, r4, #0x8
+00000bc6  ldrb  r0, [r1,r0]
+      ; ref 0x1000130e (no mem)
+00000bc8  str  r0, [sp,#0x0]
+      ; ref 0xffffffffffffffd8 (no mem)
+00000bca  mov  r1, r9
+00000bcc  ldr  r0, [sp,#0x0]
+      ; ref 0xffffffffffffffd8 (no mem)
+00000bce  bl  0x000008a4
+      ; call -> 0x000008a4
+00000bd2  adds  r0, r4, #0x1
+00000bd4  uxtb  r4, r0
+00000bd6  cmp  r4, #0x8
+00000bd8  blt  0x00000bb0
+      ; jump -> 0x00000bb0
+00000bda  b  0x00000be4
+      ; jump -> 0x00000be4
+00000bdc  adds  r0, r7, #0x1
+00000bde  uxtb  r7, r0
+00000be0  cmp  r7, #0x24
+00000be2  blt  0x00000b14
+      ; jump -> 0x00000b14
+00000be4  nop
+00000be6  pop.w  {r3,r4,r5,r6,r7,r8,r9,r10,r11,pc}

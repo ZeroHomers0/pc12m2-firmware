@@ -1,0 +1,130 @@
+# FUN_00000bea entry=0x00000bea body=258
+00000bea  push.w   {r3, r4, r5, r6, r7, r8, sb, sl, fp, lr}
+00000bee  mov      r8, r0
+00000bf0  mov      sb, r1
+00000bf2  mov      r7, r2
+00000bf4  mov      r4, r3
+00000bf6  movs     r5, #0
+00000bf8  movs     r6, #0
+00000bfa  movs     r0, #0
+00000bfc  str      r0, [sp]
+00000bfe  mov.w    sl, #0xb8
+00000c02  mov.w    fp, #0x40
+00000c06  mov      r0, r4
+00000c08  add.w    r1, r4, r0, lsr #31
+00000c0c  ubfx     r4, r1, #1, #8
+00000c10  nop      
+00000c12  b        #0xce2
+ ; jump -> 0x00000ce2 (FUN_00000bea)
+00000c14  ldr      r0, [pc, #0x35c]
+ ; ref 0x00000f74 -> 0x100011e8 (SRAM)  [pool->0x100011e8]
+00000c16  ldrb.w   r0, [r0, r6, lsl #1]
+00000c1a  cmp      r0, r8
+00000c1c  bne      #0xcde
+ ; jump -> 0x00000cde (FUN_00000bea)
+00000c1e  movs     r0, #1
+00000c20  add.w    r0, r0, r6, lsl #1
+00000c24  ldr      r1, [pc, #0x34c]
+ ; ref 0x00000f74 -> 0x100011e8 (SRAM)  [pool->0x100011e8]
+00000c26  ldrb     r0, [r1, r0]
+00000c28  cmp      r0, sb
+00000c2a  bne      #0xcde
+ ; jump -> 0x00000cde (FUN_00000bea)
+00000c2c  cmp      r4, #3
+00000c2e  ble      #0xc4c
+ ; jump -> 0x00000c4c (FUN_00000bea)
+00000c30  ldr      r0, [pc, #0x344]
+ ; ref 0x00000f78 -> 0x2009c000
+00000c32  ldr      r0, [r0, #0x38]
+00000c34  orr      r0, r0, #0x4000000
+00000c38  ldr      r1, [pc, #0x33c]
+ ; ref 0x00000f78 -> 0x2009c000
+00000c3a  str      r0, [r1, #0x38]
+00000c3c  mov      r0, r1
+00000c3e  ldr      r0, [r0, #0x3c]
+00000c40  orr      r0, r0, #0x2000000
+00000c44  str      r0, [r1, #0x3c]
+00000c46  subs     r0, r4, #4
+00000c48  uxtb     r4, r0
+00000c4a  b        #0xc62
+ ; jump -> 0x00000c62 (FUN_00000bea)
+00000c4c  ldr      r0, [pc, #0x328]
+ ; ref 0x00000f78 -> 0x2009c000
+00000c4e  ldr      r0, [r0, #0x3c]
+00000c50  orr      r0, r0, #0x4000000
+00000c54  ldr      r1, [pc, #0x320]
+ ; ref 0x00000f78 -> 0x2009c000
+00000c56  str      r0, [r1, #0x3c]
+00000c58  mov      r0, r1
+00000c5a  ldr      r0, [r0, #0x38]
+00000c5c  orr      r0, r0, #0x2000000
+00000c60  str      r0, [r1, #0x38]
+00000c62  movs     r0, #0xa
+00000c64  bl       #0x758
+ ; call -> 0x00000758 (FUN_00000758)
+00000c68  movs     r0, #0xc0
+00000c6a  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+00000c6e  add.w    r1, sl, r7, lsl #1
+00000c72  uxtb     r0, r1
+00000c74  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+00000c78  movs     r5, #0
+00000c7a  b        #0xc9e
+ ; jump -> 0x00000c9e (FUN_00000bea)
+00000c7c  add.w    r1, fp, r4, lsl #4
+00000c80  add      r1, r5
+00000c82  uxtb     r0, r1
+00000c84  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+00000c88  ldr      r0, [pc, #0x2f0]
+ ; ref 0x00000f7c -> 0x10000008 (SRAM)  [pool->0x10000008]
+00000c8a  add.w    r0, r0, r6, lsl #5
+00000c8e  ldrb     r0, [r0, r5]
+00000c90  str      r0, [sp]
+00000c92  ldr      r1, [sp, #0x28]
+00000c94  ldr      r0, [sp]
+00000c96  bl       #0x8a4
+ ; call -> 0x000008a4 (FUN_000008a4)
+00000c9a  adds     r0, r5, #1
+00000c9c  uxtb     r5, r0
+00000c9e  cmp      r5, #0x10
+00000ca0  blt      #0xc7c
+ ; jump -> 0x00000c7c (FUN_00000bea)
+00000ca2  add.w    r1, sl, r7, lsl #1
+00000ca6  adds     r1, r1, #1
+00000ca8  uxtb     r0, r1
+00000caa  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+00000cae  movs     r5, #0
+00000cb0  b        #0xcd8
+ ; jump -> 0x00000cd8 (FUN_00000bea)
+00000cb2  add.w    r1, fp, r4, lsl #4
+00000cb6  add      r1, r5
+00000cb8  uxtb     r0, r1
+00000cba  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+00000cbe  ldr      r0, [pc, #0x2bc]
+ ; ref 0x00000f7c -> 0x10000008 (SRAM)  [pool->0x10000008]
+00000cc0  add.w    r1, r0, r6, lsl #5
+00000cc4  add.w    r0, r5, #0x10
+00000cc8  ldrb     r0, [r1, r0]
+00000cca  str      r0, [sp]
+00000ccc  ldr      r1, [sp, #0x28]
+00000cce  ldr      r0, [sp]
+00000cd0  bl       #0x8a4
+ ; call -> 0x000008a4 (FUN_000008a4)
+00000cd4  adds     r0, r5, #1
+00000cd6  uxtb     r5, r0
+00000cd8  cmp      r5, #0x10
+00000cda  blt      #0xcb2
+ ; jump -> 0x00000cb2 (FUN_00000bea)
+00000cdc  b        #0xce6
+ ; jump -> 0x00000ce6 (FUN_00000bea)
+00000cde  adds     r0, r6, #1
+00000ce0  uxtb     r6, r0
+00000ce2  cmp      r6, #0x8f
+00000ce4  blt      #0xc14
+ ; jump -> 0x00000c14 (FUN_00000bea)
+00000ce6  nop      
+00000ce8  pop.w    {r3, r4, r5, r6, r7, r8, sb, sl, fp, pc}

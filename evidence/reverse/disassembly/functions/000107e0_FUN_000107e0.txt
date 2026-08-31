@@ -1,0 +1,25 @@
+# FUN_000107e0 entry=0x000107e0 body=32
+000107e0  cmp  r0, #0x0
+000107e2  ble  0x000107f2
+      ; jump -> 0x000107f2
+000107e4  ldr  r1, [0x00010878]
+      ; ref 0x00010878 -> 0x2009c000
+000107e6  ldr  r1, [r1,#0x18]
+      ; ref 0x2009c018 (no mem)
+000107e8  orr  r1, r1, #0x200000
+000107ec  ldr  r2, [0x00010878]
+      ; ref 0x00010878 -> 0x2009c000
+000107ee  str  r1, [r2,#0x18]
+      ; ref 0x2009c018 (no mem)
+000107f0  b  0x000107fe
+      ; jump -> 0x000107fe
+000107f2  ldr  r1, [0x00010878]
+      ; ref 0x00010878 -> 0x2009c000
+000107f4  ldr  r1, [r1,#0x1c]
+      ; ref 0x2009c01c (no mem)
+000107f6  orr  r1, r1, #0x200000
+000107fa  ldr  r2, [0x00010878]
+      ; ref 0x00010878 -> 0x2009c000
+000107fc  str  r1, [r2,#0x1c]
+      ; ref 0x2009c01c (no mem)
+000107fe  bx  lr

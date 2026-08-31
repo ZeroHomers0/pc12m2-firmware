@@ -1,0 +1,58 @@
+# FUN_00001c5e entry=0x00001c5e body=80
+00001c5e  push  {lr}
+00001c60  ldr  r0, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+00001c62  ldr  r0, [r0,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001c64  orr  r0, r0, #0x400
+00001c68  ldr  r1, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+      ; ref 0x2009c000 (no mem)
+00001c6a  str  r0, [r1,#0x0]
+      ; ref 0x2009c000 (no mem)
+00001c6c  bl  0x00001c1c
+      ; call -> 0x00001c1c
+00001c70  ldr  r0, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+00001c72  ldr  r0, [r0,#0x18]
+      ; ref 0x2009c018 (no mem)
+00001c74  orr  r0, r0, #0x400
+00001c78  ldr  r1, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+      ; ref 0x2009c000 (no mem)
+00001c7a  str  r0, [r1,#0x18]
+      ; ref 0x2009c018 (no mem)
+00001c7c  mov  r0, r1
+00001c7e  ldr  r0, [r0,#0x18]
+      ; ref 0x2009c018 (no mem)
+00001c80  orr  r0, r0, #0x800
+00001c84  str  r0, [r1,#0x18]
+      ; ref 0x2009c018 (no mem)
+00001c86  bl  0x00001c1c
+      ; call -> 0x00001c1c
+00001c8a  ldr  r0, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+00001c8c  ldr  r0, [r0,#0x1c]
+      ; ref 0x2009c01c (no mem)
+00001c8e  orr  r0, r0, #0x400
+00001c92  ldr  r1, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+      ; ref 0x2009c000 (no mem)
+00001c94  str  r0, [r1,#0x1c]
+      ; ref 0x2009c01c (no mem)
+00001c96  bl  0x00001c1c
+      ; call -> 0x00001c1c
+00001c9a  ldr  r0, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+00001c9c  ldr  r0, [r0,#0x1c]
+      ; ref 0x2009c01c (no mem)
+00001c9e  orr  r0, r0, #0x800
+00001ca2  ldr  r1, [0x00001eac]
+      ; ref 0x00001eac -> 0x2009c000
+      ; ref 0x2009c000 (no mem)
+00001ca4  str  r0, [r1,#0x1c]
+      ; ref 0x2009c01c (no mem)
+00001ca6  bl  0x00001c1c
+      ; call -> 0x00001c1c
+00001caa  movs  r0, #0x1
+00001cac  pop  {pc}

@@ -1,0 +1,33 @@
+# FUN_000041b4 entry=0x000041b4 body=56
+000041b4  push     {r4, lr}
+000041b6  bl       #0x942
+ ; call -> 0x00000942 (FUN_00000942)
+000041ba  movs     r3, #1
+000041bc  movs     r2, #0
+000041be  mov      r1, r2
+000041c0  adr      r0, #0x1a8
+ ; ref 0x000001a8 -> 0x47804809 (PERI)  [pool->0x47804809]
+000041c2  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000041c6  movs     r3, #0
+000041c8  mov      r2, r3
+000041ca  movs     r1, #1
+000041cc  adr      r0, #0x1ac
+ ; ref 0x000001ac -> 0x47004809 (PERI)  [pool->0x47004809]
+000041ce  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000041d2  movs     r3, #0
+000041d4  mov      r2, r3
+000041d6  movs     r1, #2
+000041d8  adr      r0, #0x1b0
+ ; ref 0x000001b0 -> 0xe7fee7fe
+000041da  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000041de  movs     r3, #0
+000041e0  mov      r2, r3
+000041e2  movs     r1, #3
+000041e4  adr      r0, #0x1b4
+ ; ref 0x000001b4 -> 0xe7fee7fe
+000041e6  bl       #0xcec
+ ; call -> 0x00000cec (FUN_00000cec)
+000041ea  pop      {r4, pc}

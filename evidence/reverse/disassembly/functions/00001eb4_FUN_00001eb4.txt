@@ -1,0 +1,80 @@
+# FUN_00001eb4 entry=0x00001eb4 body=124
+00001eb4  ldr  r0, [0x000022b0]
+      ; ref 0x000022b0 -> 0x4002c000
+00001eb6  ldr  r0, [r0,#0x4]
+      ; ref 0x4002c004 (no mem)
+00001eb8  bic  r0, r0, #0x3fc000
+00001ebc  ldr  r1, [0x000022b0]
+      ; ref 0x000022b0 -> 0x4002c000
+00001ebe  str  r0, [r1,#0x4]
+      ; ref 0x4002c004 (no mem)
+00001ec0  mov  r0, r1
+00001ec2  ldr  r0, [r0,#0x4]
+      ; ref 0x4002c004 (no mem)
+00001ec4  orr  r0, r0, #0x154000
+00001ec8  str  r0, [r1,#0x4]
+      ; ref 0x4002c004 (no mem)
+00001eca  mov  r0, r1
+00001ecc  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ece  bic  r0, r0, #0x30000000
+00001ed2  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ed4  mov  r0, r1
+00001ed6  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ed8  orr  r0, r0, #0x30000000
+00001edc  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ede  mov  r0, r1
+00001ee0  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ee2  bic  r0, r0, #0x30000000
+00001ee6  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ee8  mov  r0, r1
+00001eea  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001eec  orr  r0, r0, #0x30000000
+00001ef0  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ef2  mov  r0, r1
+00001ef4  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001ef6  bic  r0, r0, #0xc0000000
+00001efa  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001efc  mov  r0, r1
+00001efe  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001f00  orr  r0, r0, #0xc0000000
+00001f04  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001f06  mov  r0, r1
+00001f08  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001f0a  bic  r0, r0, #0xc0000000
+00001f0e  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001f10  mov  r0, r1
+00001f12  ldr  r0, [r0,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001f14  orr  r0, r0, #0xc0000000
+00001f18  str  r0, [r1,#0xc]
+      ; ref 0x4002c00c (no mem)
+00001f1a  ldr  r0, [0x000022b4]
+      ; ref 0x000022b4 -> 0x400fc0c4
+00001f1c  ldr  r0, [r0,#0x0]
+      ; ref 0x400fc0c4 (no mem)
+00001f1e  orr  r0, r0, #0x1000
+00001f22  ldr  r1, [0x000022b8]
+      ; ref 0x000022b8 -> 0x400fc000
+00001f24  str.w  r0, [r1,#0xc4]
+      ; ref 0x400fc0c4 (no mem)
+00001f28  ldr  r0, [0x000022bc]
+      ; ref 0x000022bc -> 0x00201820
+00001f2a  ldr  r1, [0x000022c0]
+      ; ref 0x000022c0 -> 0x40034000
+00001f2c  str  r0, [r1,#0x0]
+      ; ref 0x40034000 (no mem)
+00001f2e  bx  lr

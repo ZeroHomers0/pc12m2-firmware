@@ -1,0 +1,17 @@
+# FUN_00001f30 entry=0x00001f30 body=24
+00001f30  ldr  r0, [0x000022c0]
+      ; ref 0x000022c0 -> 0x40034000
+00001f32  ldr  r0, [r0,#0x0]
+      ; ref 0x40034000 (no mem)
+00001f34  bic  r0, r0, #0x7000000
+00001f38  ldr  r1, [0x000022c0]
+      ; ref 0x000022c0 -> 0x40034000
+00001f3a  str  r0, [r1,#0x0]
+      ; ref 0x40034000 (no mem)
+00001f3c  mov  r0, r1
+00001f3e  ldr  r0, [r0,#0x0]
+      ; ref 0x40034000 (no mem)
+00001f40  orr  r0, r0, #0x1000000
+00001f44  str  r0, [r1,#0x0]
+      ; ref 0x40034000 (no mem)
+00001f46  bx  lr

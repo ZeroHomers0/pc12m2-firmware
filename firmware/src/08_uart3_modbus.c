@@ -1,35 +1,48 @@
 /* =============================================================================
- * LPC1765FBD100 (ST33C 变频电源 / PC6M-10 三相晶闸管移相触发板)
- * 反编译源码导出 — 模块 08：UART3（Modbus RTU 从站）+ CRC16
+ * PC12M-2 (12 相晶闸管移相触发板) / LPC1765FBD100 — 模块 08：UART3
+ * 反编译源码导出（12p，基准 pc12m2_orig.bin SHA 2bc60868…bd271bd1）
  *
- * UART3 硬件：g_uart3 = UART3 基址 0x4009C000（U3RBR/U3THR=+0x00、
- *   U3IER=+0x04、U3IIR/FCR=+0x08、U3LCR=+0x0C、U3LSR=+0x14、U3DLL=+0x00、
- *   U3DLM=+0x04）。DAT_0000b00c = FIO 池 0x2009C000（+0x20 FIO0DIR、+0x3c FIO1CLR，
- *   RS485 方向/空闲态）；DAT_0000b014 = SCB 0x400FC000（+0xc4 PCONP UART3 上电）；
- *   g_pinsel = PINSEL 0x4002C000（+0 引脚复用为 UART3 TXD/RXD）。
- *   L0 修正：上游反汇编注"B00C=SCB(0x400F4000)"有误，实为 FIO 池 0x2009C000。
- * 波特率：U3LCR=0x80.. 0x9B（DLAB 置位写分频），分频值 = PCLK /
- *   (波特率×查表系数/1000)，系数随 PCLK 表 0x1000B028（BAUD_FAC_0/BAUD_FAC_3/...）。
- * 协议：Modbus RTU，CRC16 查表（初值 0xFFFF 低位在前）。寄存器映射见
- *   MENU_PARAMETER_MAPPING.md §3；reg 0x0-0x3F 段地址 0x1000B4B8..0x1000B590，
- *   reg 0x2B-0x3D 段 0x1000B984..0x1000B9C4（按 0x1000B068 控制方式选择组）。
- * 导出：2026-08-21
+ * UART3 硬件：UART3 基址 0x4009C000（U3RBR/U3THR/U3DLL=+0x00、U3IER/U3DLM=+0x04、
+ *   U3FCR=+0x08、U3LCR=+0x0C、U3LSR=+0x14）；FIO 池 0x2009C000（+0x20 FIO0DIR、
+ *   +0x38 FIO1SET、+0x3C FIO1CLR，bit29=P1.29 RS485 方向）；PCONP=0x400FC0C4
+ *   （bit25 UART3 上电）；PINSEL0=0x4002C000（+0/4 P0.0/P0.1 UART3 TXD/RXD）；
+ *   NVIC ISER0=0xE000E100，UART3 IRQ=8（=0x100）。
  *
- * 交叉引用：
- *   · Modbus-RTU 协议逆向（帧/功能码/CRC/异常码）→ docs/uart3_protocol.md
- *   · 63 寄存器全表 / 读写不对称 → docs/PROGRESS_2026-08-20.md §4b、§4d
- *   · 通讯菜单参数 → docs/MENU_PARAMETER_MAPPING.md §3
- *   · 上位机集成示例 → APPLICATION_GUIDE_2026-08-21.md §二
- *   · 模块变量地址表 → DATA_SEGMENT_2026-08-21.md §5（flash 0x0000B00C 指针表）
+ * 波特率：LCR DLAB 置位（0x80..0x9B）写分频；分频值 = PCLK(0x16E360=1500000) /
+ *   (波特率×查表系数/1000)。波特率索引 comm_baud_idx(0x100016F8 字)，系数随索引
+ *   取 consts.h BAUD_FAC_0..7；波特率表 comm_baud_table=0x1000179C（字数组）。
+ *   帧格式由 comm_div_sel(0x100016FC 字节)：0/1/2/3 → LCR(DLAB 开) 0x87/0x8B/0x9B/0x83，
+ *   LCR(DLAB 关) 0x07/0x0B/0x1B/0x03。
+ *
+ * 协议：Modbus RTU，CRC16 查表（初值 0xFFFF 低位在前）。寄存器读/写映射见
+ *   modbus_read_reg(0xAD04)/modbus_write_multi(0xB050) 与 08_modbus_dispatch.c(0xB3B2)。
+ *
+ * 函数地址（12p）：
+ *   uart3_init              0x0000A994
+ *   uart3_tx_byte           0x0000AB7C
+ *   uart3_rx_timeout_monitor 0x0000ABC0
+ *   comm_rx_frame(static)   0x0000AC40
+ *   UART3_IRQHandler        0x0000AC78
+ *   crc16                   0x0000ACD4
+ *   modbus_read_reg         0x0000AD04
+ *   modbus_write_multi      0x0000B050
+ *   modbus_dispatch         → 08_modbus_dispatch.c（0x0000B3B2，本文件尾注释仅简述）
+ * 导出：2026-08-31
  * ========================================================================== */
 
 /* =============================================================================
- * src/08_uart3_modbus.c — 反编译模块 08（UART3 RS485 Modbus RTU 从站）可编译副本
- * 目标B 阶段4 修正：
- *   1) 补 include（types.h/reg.h/globals.h）。
- *   2) DAT_0000b00c 等 = UART3 指针表（flash 0xB00C-0xB094，初值 0x4009C000 基址），
- *      value 型下 DAT_x+off = 字节偏移 ✓（UART3 寄存器）。
- *   3) 跨模块函数 extern。
+ * 符号约定（12p verified 变量映射，见 globals.c / _pc12m2_verified_vars.json）：
+ *   comm_state=0x10001770   comm_tx_param=0x10001774  comm_tx_data=0x10001773
+ *   comm_tx_len=0x10001772   comm_tx_count=0x10001771  comm_frame_buf=0x10002340(TX)
+ *   comm_quiet_timer=0x1000176C  comm_scan_timer=0x10001798  comm_rx_flag=0x100016FD
+ *   comm_baud_idx=0x100016F8  comm_div_sel=0x100016FC  lookup_table=0x10002278(RX)
+ *   out_param=0x1000161C  menu_state=0x100016F7  menu_state2=0x10001765
+ *   g_reg_cur_idx=0x10001788  pid_kp2=0x10001706  pid_ki2=0x10001707
+ *   g_cfg_pid_sel=0x10001708  comm_baud_table=uint32_t(0x1000179C,值型)
+ *   无语义名槽位（0x10001640/0x1000164C/0x1000164D/0x100016B8/0x100016BC/0x100016C0/
+ *   0x100016C4/0x100016C8/0x100016CC/0x100016D0/0x100016D4/0x10001650/0x10001598/
+ *   0x1000159C/0x100015A0/0x10001728/0x10001690/0x10001698/0x100016A0/0x100016A8/
+ *   0x100016B0/0x1000178C(scratch)）用裸 cast，地址为 12p 池槽→SRAM 映射确认值。
  * ========================================================================== */
 #include "inc/types.h"
 #include "inc/reg.h"
@@ -37,172 +50,226 @@
 #include "inc/consts.h"
 #include <stdbool.h>
 
-/* CRC16 查表表（内嵌 const 数组，原 flash 0x11034/0x11134 —— 见 crc16_table.c，
- * bug #S9：原反编译用 0x11034/0x11134 悬空 flash 指针，GCC 重定位后读未编程区 0xFF） */
+/* CRC16 查表（内嵌 const 数组，原 flash 0x11034/0x11134 —— 见 crc16_table.c） */
 extern const uint8_t crc16_hi_tbl[256];
 extern const uint8_t crc16_lo_tbl[256];
 
-/* 0xAED0 RX 组帧子例程（骨架 stub 在 firmware/stub.c，W1 还原） */
-void func_0x0000aed0(void);
+/* 跨模块：08_modbus_dispatch.c 引用（本文件不调用，签名以定义处为准） */
 
-/* 0x0000AC24 —— UART3 初始化：波特率重算 + 8N1 + 使能 TX/RX
- *   0x1000B01C=数据位(0/1/2/3→LCR 0x87/8B/9B/83 含 DLAB)；
- *   0x1000B024=波特率索引(0..7)→查表 0x1000B028 得系数，分频=PCLK/(波特率×系数/1000) */
-void uart3_init(uint divisor)
+/* =============================================================================
+ * 0x0000A994 —— UART3 初始化：FIO 方向/RS485 空闲、PCONP 上电、PINSEL 复用、
+ *   波特率重算（DLAB 置位写 DLL/DLM）+ 帧格式 + FCR 清 FIFO + NVIC 使能 + IER。
+ * 12p 要点（字节级核对）：
+ *   · comm_div_sel 字节读、comm_baud_idx 字读；LCR 各分支为独立 if（cbnz/cmp+bne）。
+ *   · DLM/DLL = (divisor>>8)/(divisor&0xff)，divisor 经 uxth 截 16 位。
+ *   · NVIC_ISER0 = 0x100 为普通 str.w（非 |=）；U3IER |=1 再 |=2（分两条）。
+ * ========================================================================== */
+void uart3_init(void)
 {
-  int fio;
   volatile uint32_t *pinsel;
-  volatile uint8_t *uart3;
+  volatile uint8_t *u3;
+  volatile uint8_t *fio;
+  uint32_t baud_idx;
+  uint32_t baud;
+  uint32_t factor;
+  uint16_t divisor;
+  uint8_t sel;
 
-  fio = DAT_0000b00c;
-  *(volatile uint *)(DAT_0000b00c + 0x20) = *(volatile uint *)(DAT_0000b00c + 0x20) | 0x20000000;
-  *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x20000000;
-  *(volatile uint *)(DAT_0000b014 + 0xc4) = *g_pconp | 0x2000000;   /* PCONP UART3 上电 */
-  pinsel = g_pinsel;
-  *g_pinsel = *g_pinsel | 2;                            /* PINSEL UART3 引脚 */
-  *pinsel = *pinsel | 8;
-  if (*g_uart_frame_sel == '\0') {
-    g_uart3[0xc] = 0x87;                                   /* LCR：8 位+DLAB */
+  fio = (volatile uint8_t *)0x2009c000;                   /* FIO 池 */
+  *(volatile uint32_t *)(fio + 0x20) |= 0x20000000;       /* FIO0DIR P0.29 输出 */
+  *(volatile uint32_t *)(fio + 0x3c) |= 0x20000000;       /* FIO1CLR P1.29 RS485 空闲 */
+  REG32(0x400FC0C4UL) |= 0x2000000;                       /* PCONP UART3 上电 */
+  pinsel = (volatile uint32_t *)0x4002c000;               /* PINSEL0 */
+  *pinsel |= 2;                                           /* P0.0 UART3 TXD */
+  *pinsel |= 8;                                           /* P0.1 UART3 RXD */
+
+  u3 = (volatile uint8_t *)0x4009c000;                    /* UART3 */
+  /* DLAB 置位写分频：LCR 按帧格式含 0x80 */
+  sel = *(volatile uint8_t *)comm_div_sel;                /* 0x100016FC 字节 */
+  if (sel == 0) {
+    u3[0xc] = 0x87;
   }
-  if (*g_uart_frame_sel == '\x01') {
-    g_uart3[0xc] = 0x8b;
+  if (sel == 1) {
+    u3[0xc] = 0x8b;
   }
-  if (*g_uart_frame_sel == '\x02') {
-    g_uart3[0xc] = 0x9b;
+  if (sel == 2) {
+    u3[0xc] = 0x9b;
   }
-  if (*g_uart_frame_sel == '\x03') {
-    g_uart3[0xc] = 0x83;
+  if (sel == 3) {
+    u3[0xc] = 0x83;
   }
-  uart3 = g_uart3;
-  if (*g_baud_idx < 3) {
-    divisor = (uint)(ushort)((ulonglong)DAT_0000b02c /
-                            ((ulonglong)(uint)(*(volatile int *)(DAT_0000b028 + *g_baud_idx * 4) * BAUD_FAC_0) /
-                            1000));
+  /* 波特率：comm_baud_idx(0x100016F8) 字读；系数随索引选 BAUD_FAC_x；
+     baud_tbl = comm_baud_table(0x1000179C) 字数组；
+     divisor = PCLK(1500000) / (baud × factor / 1000)，uxth 截 16 位 */
+  baud_idx = *comm_baud_idx;
+  factor = BAUD_FAC_0;
+  if (baud_idx < 3) {
+    factor = BAUD_FAC_0;                                  /* 0x3BB */
   }
-  if (*g_baud_idx == 3) {
-    divisor = (uint)(ushort)((ulonglong)DAT_0000b02c /
-                            ((ulonglong)(uint)(*(volatile int *)(DAT_0000b028 + *g_baud_idx * 4) * BAUD_FAC_3) /
-                            1000));
+  if (baud_idx == 3) {
+    factor = BAUD_FAC_3;                                  /* 0x3B6 */
   }
-  if (*g_baud_idx == 4) {
-    divisor = (uint)(ushort)((ulonglong)DAT_0000b02c /
-                            ((ulonglong)(uint)(*(volatile int *)(DAT_0000b028 + *g_baud_idx * 4) * BAUD_FAC_4) /
-                            1000));
+  if (baud_idx == 4) {
+    factor = BAUD_FAC_4;                                  /* 0x3B1 */
   }
-  if (*g_baud_idx == 5) {
-    divisor = (uint)(ushort)((ulonglong)DAT_0000b02c /
-                            ((ulonglong)(uint)(*(volatile int *)(DAT_0000b028 + *g_baud_idx * 4) * BAUD_FAC_5) /
-                            1000));
+  if (baud_idx == 5) {
+    factor = BAUD_FAC_5;                                  /* 0x3AA */
   }
-  if (*g_baud_idx == 6) {
-    divisor = (uint)(ushort)((ulonglong)DAT_0000b02c /
-                            ((ulonglong)(uint)(*(volatile int *)(DAT_0000b028 + *g_baud_idx * 4) * BAUD_FAC_6) /
-                            1000));
+  if (baud_idx == 6) {
+    factor = BAUD_FAC_6;                                  /* 0x39D */
   }
-  if (*g_baud_idx == 7) {
-    divisor = (uint)(ushort)((ulonglong)DAT_0000b02c /
-                            ((ulonglong)(uint)(*(volatile int *)(DAT_0000b028 + *g_baud_idx * 4) * BAUD_FAC_7) /
-                            1000));
+  if (baud_idx == 7) {
+    factor = BAUD_FAC_7;                                  /* 0x393 */
   }
-  g_uart3[4] = (char)(divisor + ((uint)((int)divisor >> 0x1f) >> 0x18) >> 8);  /* DLM=高字节 */
-  *uart3 = (char)divisor;                                         /* DLL=低字节 */
-  if (*g_uart_frame_sel == '\0') {
-    uart3[0xc] = 7;                                             /* LCR：8N1，清 DLAB */
+  baud = *(volatile uint32_t *)(comm_baud_table + baud_idx * 4);
+  divisor = (uint16_t)(1500000UL / ((uint32_t)(baud * factor) / 1000));
+  u3[4] = (uint8_t)(divisor >> 8);                        /* U3DLM=分频高字节 */
+  u3[0] = (uint8_t)divisor;                               /* U3DLL=分频低字节 */
+  /* 清 DLAB：8N1 */
+  sel = *(volatile uint8_t *)comm_div_sel;
+  if (sel == 0) {
+    u3[0xc] = 7;
   }
-  if (*g_uart_frame_sel == '\x01') {
-    g_uart3[0xc] = 0xb;
+  if (sel == 1) {
+    u3[0xc] = 0xb;
   }
-  if (*g_uart_frame_sel == '\x02') {
-    g_uart3[0xc] = 0x1b;
+  if (sel == 2) {
+    u3[0xc] = 0x1b;
   }
-  if (*g_uart_frame_sel == '\x03') {
-    g_uart3[0xc] = 3;
+  if (sel == 3) {
+    u3[0xc] = 3;                                          /* strb comm_div_sel 值 */
   }
-  g_uart3[8] = 7;                                           /* FCR：使能 FIFO+清 */
-  uart3 = g_uart3;
-  NVIC_ISER0 = 0x100;
-  *(volatile uint *)(g_uart3 + 4) = *(volatile uint *)(g_uart3 + 4) | 1;  /* IER RBR 中断 */
-  *(volatile uint *)(uart3 + 4) = *(volatile uint *)(uart3 + 4) | 2;              /* IER THRE 中断 */
+  u3[8] = 7;                                              /* U3FCR FIFO 使能+清 */
+  NVIC_ISER0 = 0x100;                                     /* 普通写（非 |=） */
+  *(volatile uint32_t *)(u3 + 4) |= 1;                    /* U3IER RBR 中断 */
+  *(volatile uint32_t *)(u3 + 4) |= 2;                    /* U3IER THRE 中断 */
   return;
 }
 
-/* 0x0000AE0C —— UART3 发送 1 字节（U3THR 写 + 等 THRE 位）
- *   0x1000B030=发送状态、0x1000B038=发送长度、0x1000B03C=发送缓冲 */
-void uart3_tx_byte(undefined1 tx_byte)
+/* =============================================================================
+ * 0x0000AB7C —— UART3 发送一帧（帧长 frame_len）：RS485 置发送方向、
+ *   置 comm_state=6、comm_tx_param=0、comm_tx_data=frame_len，
+ *   等 U3LSR THRE 后 U3THR = comm_frame_buf[0]（后续字节由 THRE 中断发）。
+ * 12p 要点：comm_state/comm_tx_param/comm_tx_data 均字节写（strb）。
+ * ========================================================================== */
+void uart3_tx_byte(uint8_t frame_len)
 {
-  *(volatile uint *)(DAT_0000b00c + 0x38) = *(volatile uint *)(DAT_0000b00c + 0x38) | 0x20000000;
-  *g_uart_tx_state = 6;
-  *g_uart_tx_flag = 0;
-  *g_uart_tx_len = tx_byte;
-  do {
-  } while ((g_uart3[0x14] & 0x20) == 0);                    /* 等 THRE */
-  *g_uart3 = *g_uart_tx_buf;
+  volatile uint8_t *u3 = (volatile uint8_t *)0x4009c000;   /* UART3 */
+  volatile uint8_t *fio = (volatile uint8_t *)0x2009c000;  /* FIO 池 */
+  volatile uint8_t *buf = (volatile uint8_t *)comm_frame_buf;  /* 0x10002340 TX */
+
+  *(volatile uint32_t *)(fio + 0x38) |= 0x20000000;       /* FIO1SET P1.29 RS485 发送 */
+  *(volatile uint8_t *)comm_state = 6;                    /* comm_state=6 */
+  *(volatile uint8_t *)comm_tx_param = 0;                 /* comm_tx_param=0 */
+  *(volatile uint8_t *)comm_tx_data = frame_len;          /* comm_tx_data=帧长 */
+  while ((*(volatile uint8_t *)(u3 + 0x14) & 0x20) == 0) { }  /* 等 THRE */
+  u3[0] = buf[0];                                         /* U3THR=frame[0] */
   return;
 }
 
-/* 0x0000AE50 —— 接收超时监控（主循环每 tick 调）：
- *   0x1000B040=接收进行标志、0x1000B044=接收空闲计数（>0x7530 置 0x1000B048|0x8000 帧超时）、
- *   0x1000B04C=全局 tick 计数（>300 重新 uart3_init 防锁死）、
- *   0x1000B030=1 发送中：计数>10 → 状态=5、关 THRE 中断 */
+/* =============================================================================
+ * 0x0000ABC0 —— 接收超时监控（主循环每 tick 调，12p）：
+ *   · comm_rx_flag(0x100016FD 有符号字节)>0：comm_quiet_timer(0x1000176C 字)++；
+ *     若 >0x7530 → 清零并 out_param(0x1000161C)|=0x8000（帧超时）。
+ *   · comm_scan_timer(0x10001798 字)++；若 >0x12C(300) → 清零并重 uart3_init()。
+ *   · comm_state==1（发送中）：comm_tx_count(0x10001771 字节)++；
+ *     若 >0xA → 清零、comm_state=5、U3IER&=~1（关 RBR 中断，帧就绪）。
+ * ========================================================================== */
 void uart3_rx_timeout_monitor(void)
 {
-  volatile uint32_t *rx_gap_cnt;
-  volatile uint32_t *tick_cnt;
-  volatile uint8_t *tx_tick;
+  volatile uint8_t *u3 = (volatile uint8_t *)0x4009c000;   /* UART3 */
+  volatile uint8_t *state = (volatile uint8_t *)comm_state;   /* 0x10001770 */
+  volatile uint8_t *tx_cnt = (volatile uint8_t *)comm_tx_count;  /* 0x10001771 */
+  volatile uint8_t *rx_flag = (volatile uint8_t *)comm_rx_flag;  /* 0x100016FD */
 
-  rx_gap_cnt = g_uart_rx_timeout;
-  if ((*g_comm_detect != '\0') &&
-     (*g_uart_rx_timeout = *g_uart_rx_timeout + 1, 0x7530 < *rx_gap_cnt)) {
-    *g_uart_rx_timeout = 0;
-    *DAT_0000b048 = *DAT_0000b048 | 0x8000;
+  if ((int8_t)*rx_flag > 0) {                             /* 接收进行中（有符号） */
+    *comm_quiet_timer = *comm_quiet_timer + 1;
+    if (*comm_quiet_timer > 0x7530) {                     /* 帧超时 */
+      *comm_quiet_timer = 0;
+      *out_param = *out_param | 0x8000;
+    }
   }
-  tick_cnt = g_uart_global_tick;
-  *g_uart_global_tick = *g_uart_global_tick + 1;
-  if (300 < *tick_cnt) {
-    *tick_cnt = 0;
-    uart3_init(0);
+  *comm_scan_timer = *comm_scan_timer + 1;
+  if (*comm_scan_timer > 0x12c) {                         /* 300 tick 无活动重初始化 */
+    *comm_scan_timer = 0;
+    uart3_init();
   }
-  tx_tick = g_uart_tx_busy;
-  if (*g_uart_tx_state == '\x01') {
-    *g_uart_tx_busy = *g_uart_tx_busy + 1;
-    if (10 < *tx_tick) {
-      *tx_tick = 0;
-      *g_uart_tx_state = '\x05';
-      *(volatile uint *)(g_uart3 + 4) = *(volatile uint *)(g_uart3 + 4) & 0xfffffffe;
+  if (*state == 1) {                                      /* 发送中 */
+    *tx_cnt = *tx_cnt + 1;
+    if (*tx_cnt > 0xa) {
+      *tx_cnt = 0;
+      *state = 5;                                         /* 帧完整待处理 */
+      *(volatile uint32_t *)(u3 + 4) &= ~1;               /* U3IER &= ~RBR */
     }
   }
   return;
 }
 
-/* 0x0000AF08 —— UART3 中断：IIR 判因
- *   因=4（RX 数据可用）→ 子例程 0xAED0（接收组帧，未识别为函数，逐字节存入
- *     0x1000B054 缓冲，并置 0x1000B040=1 接收进行；长度满/收完置标志）
- *   因=2（THRE）→ 从 0x1000B03C 缓冲取下一字节发送，发完关 THRE 中断 */
+/* =============================================================================
+ * 0x0000AC40 —— UART3 RX 组帧子例程（12p；6p func_0x0000aed0 指令等价、地址平移）
+ *   读 U3RBR 逐字节存入 RX 缓冲。comm_state(0x10001770) 为帧态：
+ *   state==0 → 清 comm_tx_len(0x10001772，作 RX 索引) 并置 state=1；
+ *   state==1 → 清 comm_tx_count(0x10001771，作帧间隙计数) 并
+ *   rx_buf(0x10002278，verified 命名 lookup_table/查表区，地址复用)[rx_idx++] = U3RBR。
+ *   与 6p func_0x0000aed0（state=0x10001790/gap=0x10001791/rx_idx=0x10001792/
+ *   rx_buf=0x100022A4）指令等价、地址平移。仅 UART3 ISR(0xac78) 调用。 */
+static void comm_rx_frame(void)
+{
+  volatile uint8_t *state = (volatile uint8_t *)comm_state;     /* 0x10001770 */
+  volatile uint8_t *gap   = (volatile uint8_t *)comm_tx_count;  /* 0x10001771 */
+  volatile uint8_t *idx   = (volatile uint8_t *)comm_tx_len;    /* 0x10001772 */
+  volatile uint8_t *buf   = (volatile uint8_t *)lookup_table;   /* 0x10002278 */
+  volatile uint8_t *uart3 = (volatile uint8_t *)0x4009c000;     /* UART3 */
+
+  if (*state == 0) {
+    *idx = 0;
+    *state = 1;
+  }
+  if (*state == 1) {
+    *gap = 0;
+    buf[*idx] = uart3[0];          /* U3RBR */
+    *idx = *idx + 1;
+  }
+  return;
+}
+
+/* =============================================================================
+ * 0x0000AC78 —— UART3 中断：IIR 判因（12p；6p 0x0000AF08）
+ *   U3IIR(+8)&0xe：因=4（RX 数据可用）→ comm_rx_frame() 组帧；
+ *   因=2（THRE）→ comm_tx_param(0x10001774)++：未发完则 U3THR =
+ *   comm_frame_buf(0x10002340)[param]；发完则 FIO1CLR P1.29 置位（RS485 释放）、
+ *   comm_state(0x10001770)=0、U3IER(+4)|=1（RBR 中断恢复）。
+ * 局部：param/len/buf/state = SRAM 变量字节别名；uart3 = UART3；fio = FIO 池。 */
 void UART3_IRQHandler(void)
 {
-  volatile uint8_t *tx_idx;
+  volatile uint8_t *param = (volatile uint8_t *)comm_tx_param;   /* 0x10001774 发送索引 */
+  volatile uint8_t *len   = (volatile uint8_t *)comm_tx_data;    /* 0x10001773 发送长度 */
+  volatile uint8_t *buf   = (volatile uint8_t *)comm_frame_buf;  /* 0x10002340 发送缓冲 */
+  volatile uint8_t *state = (volatile uint8_t *)comm_state;      /* 0x10001770 通讯状态 */
+  volatile uint8_t *uart3 = (volatile uint8_t *)0x4009c000;      /* UART3 */
+  volatile uint        fio = 0x2009c000;                         /* FIO 池 */
   uint iir_cause;
 
-  iir_cause = *(volatile uint *)(g_uart3 + 8) & 0xe;                 /* IIR 中断原因 */
+  iir_cause = *(volatile uint *)(uart3 + 8) & 0xe;               /* U3IIR 中断原因 */
   if (iir_cause == 4) {
-    func_0x0000aed0();   /* RX 组帧子例程（extraout_r3 伪影已删：IIR 原因保持原值） */
+    comm_rx_frame();                                             /* bl 0xac40 */
   }
-  tx_idx = g_uart_tx_flag;
-  if (iir_cause == 2) {
-    *g_uart_tx_flag = *g_uart_tx_flag + 1;                           /* 发送索引++ */
-    if (*tx_idx < *g_uart_tx_len) {                               /* 未发完 */
-      *g_uart3 = *(volatile undefined1 *)(g_uart_tx_buf + (uint)*g_uart_tx_flag);
+  if (iir_cause == 2) {                                          /* THRE */
+    *param = *param + 1;                                         /* comm_tx_param++ */
+    if (*param < *len) {                                         /* 未发完 */
+      *uart3 = buf[*param];                                      /* U3THR = frame[param] */
     }
-    else {                                                        /* 发完 */
-      *(volatile uint *)(DAT_0000b00c + 0x3c) = *(volatile uint *)(DAT_0000b00c + 0x3c) | 0x20000000;
-      *g_uart_tx_state = 0;
-      *(volatile uint *)(g_uart3 + 4) = *(volatile uint *)(g_uart3 + 4) | 1;
+    else {                                                       /* 发完 */
+      *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x20000000;  /* FIO1CLR P1.29 */
+      *state = 0;                                                /* comm_state = 0 */
+      *(volatile uint *)(uart3 + 4) = *(volatile uint *)(uart3 + 4) | 1;            /* U3IER |= 1 */
     }
   }
   return;
 }
 
-/* 0x0000AF64 —— Modbus CRC16（查表，初值 0xFFFF，低位在前）
+/* =============================================================================
+ * 0x0000ACD4 —— Modbus CRC16（查表，初值 0xFFFF，低位在前）
  *   状态：crc_hi=高字节、crc_lo=低字节，tbl_idx = 数据字节 ^ crc_lo；
  *   查表内嵌 crc16_hi_tbl/crc16_lo_tbl（原 flash 0x11034/0x11134）。
  *
@@ -228,593 +295,193 @@ uint16_t crc16(uint8_t *data,uint16_t len)
   return crc_lo | crc_hi << 8;
 }
 
-/* 0x0000AF94 —— Modbus 读保持寄存器（reg_addr=寄存器号 & 0xFFF）
- *   0x1000B064=寄存器号、0x1000B068=控制方式组选择(1..4)，
- *   组基址表：组1→0x1000B06C/0x1000B074、组2→0x1000B07C/0x1000B080、
- *   组3→0x1000B084/0x1000B088、组4→0x1000B08C/0x1000B090；
- *   reg 0x00-0x3F 映射 0x1000B4B8..0x1000B590（0x1A-0x1F/0x24-0x25 等保留返回 0） */
-undefined4 modbus_read_reg(uint *out_val,uint reg_addr)
+/* =============================================================================
+ * 0x0000AD04 —— Modbus 读保持寄存器（out_val=值槽、reg_addr=寄存器号&0xFFF）
+ *   PID 前导：g_cfg_pid_sel(0x10001708 字节)==1..4 时，把所选参数银行 KP/KI
+ *   （银行1 0x1709/0x170A、银行2 0x170B/0x170C、银行3 0x170D/0x170E、
+ *   银行4 0x170F/0x1710）字节复制到活动槽 pid_kp2(0x1706)/pid_ki2(0x1707)。
+ *   守卫：(uint8_t)*g_reg_cur_idx >= 0x3F → return 0（不写 out_val）。
+ *   TBB 分派 idx0-62（63 项）。宽度要点（12p）：
+ *   · B 目标 ldrb 零扩展 → `(uint32_t)*(volatile uint8_t *)PTR`（≠6p 字读！）；
+ *   · W 目标 ldr → `*PTR`；
+ *   · idx 0x1A-0x1F/0x24-0x25 为 `movs r3,#0; str r3,[out_val]`（写 0，非不写！）。
+ *   返回恒 0。REG 表见下方注释（63 项，idx→(SRAM 地址, 宽度)）。
+ * ========================================================================== */
+uint32_t modbus_read_reg(uint32_t *out_val, uint32_t reg_addr)
 {
-  *g_reg_cur_idx = reg_addr & 0xfff;
-  if (*g_cfg_pid_sel == '\x01') {
-    *g_act_gain_a = *DAT_0000b06c;
-    *g_act_gain_b = *DAT_0000b074;
-  }
-  if (*g_cfg_pid_sel == '\x02') {
-    *g_act_gain_a = *DAT_0000b07c;
-    *g_act_gain_b = *DAT_0000b080;
-  }
-  if (*g_cfg_pid_sel == '\x03') {
-    *g_act_gain_a = *DAT_0000b084;
-    *g_act_gain_b = *DAT_0000b088;
-  }
-  if (*g_cfg_pid_sel == '\x04') {
-    *g_act_gain_a = *DAT_0000b08c;
-    *g_act_gain_b = *DAT_0000b090;
-  }
-  switch((char)*g_reg_cur_idx) {
-  case '\0':
-    *out_val = (uint)*g_gain_sel;
-    break;
-  case '\x01':
-    *out_val = *g_gain_a;
-    break;
-  case '\x02':
-    *out_val = *g_gain_b;
-    break;
-  case '\x03':
-    *out_val = *DAT_0000b4c4;
-    break;
-  case '\x04':
-    *out_val = *DAT_0000b4c8;
-    break;
-  case '\x05':
-    *out_val = *DAT_0000b4cc;
-    break;
-  case '\x06':
-    *out_val = (uint)*DAT_0000b4d0;
-    break;
-  case '\a':
-    *out_val = (uint)*DAT_0000b4d4;
-    break;
-  case '\b':
-    *out_val = *DAT_0000b4d8;
-    break;
-  case '\t':
-    *out_val = (uint)*g_out_fine;
-    break;
-  case '\n':
-    *out_val = (uint)*DAT_0000b4e0;
-    break;
-  case '\v':
-    *out_val = (uint)*DAT_0000b4e4;
-    break;
-  case '\f':
-    *out_val = *DAT_0000b4e8;
-    break;
-  case '\r':
-    *out_val = (uint)*DAT_0000b4ec;
-    break;
-  case '\x0e':
-    *out_val = *DAT_0000b4f0;
-    break;
-  case '\x0f':
-    *out_val = (uint)*DAT_0000b4f4;
-    break;
-  case '\x10':
-    *out_val = *DAT_0000b4f8;
-    break;
-  case '\x11':
-    *out_val = (uint)*DAT_0000b4fc;
-    break;
-  case '\x12':
-    *out_val = *DAT_0000b500;
-    break;
-  case '\x13':
-    *out_val = (uint)*DAT_0000b504;
-    break;
-  case '\x14':
-    *out_val = (uint)*DAT_0000b508;
-    break;
-  case '\x15':
-    *out_val = (uint)*DAT_0000b50c;
-    break;
-  case '\x16':
-    *out_val = (uint)*g_cfg_pid_sel;
-    break;
-  case '\x17':
-    *out_val = (uint)*g_act_gain_a;
-    break;
-  case '\x18':
-    *out_val = (uint)*g_act_gain_b;
-    break;
-  case '\x19':
-    *out_val = (uint)*g_phase_calib;
-    break;
-  case '\x1a':
-    *out_val = 0;
-    break;
-  case '\x1b':
-    *out_val = 0;
-    break;
-  case '\x1c':
-    *out_val = 0;
-    break;
-  case '\x1d':
-    *out_val = 0;
-    break;
-  case '\x1e':
-    *out_val = 0;
-    break;
-  case '\x1f':
-    *out_val = 0;
-    break;
-  case ' ':
-    *out_val = *DAT_0000b520;
-    break;
-  case '!':
-    *out_val = *DAT_0000b524;
-    break;
-  case '\"':
-    *out_val = *DAT_0000b528;
-    break;
-  case '#':
-    *out_val = *DAT_0000b52c;
-    break;
-  case '$':
-    *out_val = 0;
-    break;
-  case '%':
-    *out_val = 0;
-    break;
-  case '&':
-    *out_val = (uint)*g_run_flag;
-    break;
-  case '\'':
-    *out_val = *DAT_0000b534;
-    break;
-  case '(':
-    *out_val = *DAT_0000b538;
-    break;
-  case ')':
-    *out_val = *DAT_0000b53c;
-    break;
-  case '*':
-    *out_val = *DAT_0000b540;
-    break;
-  case '+':
-    *out_val = *DAT_0000b544;
-    break;
-  case ',':
-    *out_val = *DAT_0000b548;
-    break;
-  case '-':
-    *out_val = *DAT_0000b54c;
-    break;
-  case '.':
-    *out_val = (uint)*g_slave_addr;
-    break;
-  case '/':
-    *out_val = *g_baud_idx;
-    break;
-  case '0':
-    *out_val = (uint)*g_uart_frame_sel;
-    break;
-  case '1':
-    *out_val = (uint)*g_comm_detect;
-    break;
-  case '2':
-    *out_val = *DAT_0000b560;
-    break;
-  case '3':
-    *out_val = *DAT_0000b564;
-    break;
-  case '4':
-    *out_val = *DAT_0000b568;
-    break;
-  case '5':
-    *out_val = *DAT_0000b56c;
-    break;
-  case '6':
-    *out_val = *DAT_0000b570;
-    break;
-  case '7':
-    *out_val = (uint)*DAT_0000b574;
-    break;
-  case '8':
-    *out_val = (uint)*DAT_0000b578;
-    break;
-  case '9':
-    *out_val = (uint)*DAT_0000b57c;
-    break;
-  case ':':
-    *out_val = (uint)*DAT_0000b580;
-    break;
-  case ';':
-    *out_val = (uint)*g_out_phase;
-    break;
-  case '<':
-    *out_val = *g_reg61_remote_en;
-    break;
-  case '=':
-    *out_val = *g_reg62_start_phase;
-    break;
-  case '>':
-    *out_val = *DAT_0000b590;
-  }
-  return 0;
-}
+  uint8_t sel;
+  uint8_t idx;
 
-/* 0x0000B2E0 —— Modbus 写保持寄存器（src_val=数据指针、reg_addr=寄存器号）
- *   0x1000B594=寄存器号；0x1A-0x1F/0x24-0x25/0x2B-0x2F/0x40-0x42 等映射到
- *   0x1000B5A0（保留/汇总区），0x2B-0x3D 段写 0x1000B984..0x1000B9C4 */
-undefined4 modbus_write_multi(undefined4 *src_val,uint reg_addr)
-{
-  volatile uint32_t *reg_ofs;
-
-  reg_ofs = g_reg_cur_idx;
   *g_reg_cur_idx = reg_addr & 0xfff;
-  switch((char)*reg_ofs) {
-  case '\0':
-    *g_gain_sel = *(volatile undefined1 *)src_val;
-    break;
-  case '\x01':
-    *g_gain_a = *src_val;
-    break;
-  case '\x02':
-    *g_gain_b = *src_val;
-    break;
-  case '\x03':
-    *DAT_0000b4c4 = *src_val;
-    break;
-  case '\x04':
-    *DAT_0000b4c8 = *src_val;
-    break;
-  case '\x05':
-    *DAT_0000b4cc = *src_val;
-    break;
-  case '\x06':
-    *DAT_0000b4d0 = *(volatile undefined1 *)src_val;
-    break;
-  case '\a':
-    *DAT_0000b4d4 = *(volatile undefined1 *)src_val;
-    break;
-  case '\b':
-    *DAT_0000b4d8 = *src_val;
-    break;
-  case '\t':
-    *g_out_fine = *(volatile undefined1 *)src_val;
-    break;
-  case '\n':
-    *DAT_0000b4e0 = *(volatile undefined1 *)src_val;
-    break;
-  case '\v':
-    *DAT_0000b4e4 = *(volatile undefined1 *)src_val;
-    break;
-  case '\f':
-    *DAT_0000b4e8 = *src_val;
-    break;
-  case '\r':
-    *DAT_0000b4ec = *(volatile undefined1 *)src_val;
-    break;
-  case '\x0e':
-    *DAT_0000b4f0 = *src_val;
-    break;
-  case '\x0f':
-    *DAT_0000b4f4 = *(volatile undefined1 *)src_val;
-    break;
-  case '\x10':
-    *DAT_0000b4f8 = *src_val;
-    break;
-  case '\x11':
-    *DAT_0000b4fc = *(volatile undefined1 *)src_val;
-    break;
-  case '\x12':
-    *DAT_0000b500 = *src_val;
-    break;
-  case '\x13':
-    *DAT_0000b504 = *(volatile undefined1 *)src_val;
-    break;
-  case '\x14':
-    *DAT_0000b508 = *(volatile undefined1 *)src_val;
-    break;
-  case '\x15':
-    *DAT_0000b50c = *(volatile undefined1 *)src_val;
-    break;
-  case '\x16':
-    *g_cfg_pid_sel = *(volatile undefined1 *)src_val;
-    break;
-  case '\x17':
-    *DAT_0000b598 = *(volatile undefined1 *)src_val;
-    break;
-  case '\x18':
-    *DAT_0000b59c = *(volatile undefined1 *)src_val;
-    break;
-  case '\x19':
-    *g_phase_calib = *(volatile undefined1 *)src_val;
-    break;
-  case '\x1a':
-    *g_scratch = *src_val;
-    break;
-  case '\x1b':
-    *g_scratch = *src_val;
-    break;
-  case '\x1c':
-    *g_scratch = *src_val;
-    break;
-  case '\x1d':
-    *g_scratch = *src_val;
-    break;
-  case '\x1e':
-    *g_scratch = *src_val;
-    break;
-  case '\x1f':
-    *g_scratch = *src_val;
-    break;
-  case ' ':
-    *DAT_0000b520 = *src_val;
-    break;
-  case '!':
-    *DAT_0000b524 = *src_val;
-    break;
-  case '\"':
-    *DAT_0000b528 = *src_val;
-    break;
-  case '#':
-    *DAT_0000b52c = *src_val;
-    break;
-  case '$':
-    *g_scratch = *src_val;
-    break;
-  case '%':
-    *g_scratch = *src_val;
-    break;
-  case '&':
-    *g_run_flag = *(volatile undefined1 *)src_val;
-    break;
-  case '\'':
-    *DAT_0000b534 = *src_val;
-    break;
-  case '(':
-    *g_scratch = *src_val;
-    break;
-  case ')':
-    *g_scratch = *src_val;
-    break;
-  case '*':
-    *g_scratch = *src_val;
-    break;
-  case '+':
-    *g_scratch = *src_val;
-    break;
-  case ',':
-    *g_scratch = *src_val;
-    break;
-  case '-':
-    *g_scratch = *src_val;
-    break;
-  case '.':
-    *g_slave_addr = *(volatile undefined1 *)src_val;
-    break;
-  case '/':
-    *g_baud_idx = *src_val;
-    break;
-  case '0':
-    *g_uart_frame_sel = *(volatile undefined1 *)src_val;
-    break;
-  case '1':
-    *g_comm_detect = *(volatile undefined1 *)src_val;
-    break;
-  case '2':
-    *DAT_0000b998 = *src_val;
-    break;
-  case '3':
-    *DAT_0000b99c = *src_val;
-    break;
-  case '4':
-    *DAT_0000b9a0 = *src_val;
-    break;
-  case '5':
-    *DAT_0000b9a4 = *src_val;
-    break;
-  case '6':
-    *DAT_0000b9a8 = *src_val;
-    break;
-  case '7':
-    *DAT_0000b9ac = *(volatile undefined1 *)src_val;
-    break;
-  case '8':
-    *DAT_0000b9b0 = *(volatile undefined1 *)src_val;
-    break;
-  case '9':
-    *DAT_0000b9b4 = *(volatile undefined1 *)src_val;
-    break;
-  case ':':
-    *DAT_0000b9b8 = *(volatile undefined1 *)src_val;
-    break;
-  case ';':
-    *g_out_phase = *(volatile undefined1 *)src_val;
-    break;
-  case '<':
-    *g_reg61_remote_en = *src_val;
-    break;
-  case '=':
-    *g_reg62_start_phase = *src_val;
+  /* PID 前导：把所选参数银行 KP/KI 复制到活动槽（字节复制，sel 字节读） */
+  sel = *(volatile uint8_t *)g_cfg_pid_sel;                 /* 0x10001708 */
+  if (sel == 1) {
+    *(volatile uint8_t *)pid_kp2 = *(volatile uint8_t *)0x10001709;
+    *(volatile uint8_t *)pid_ki2 = *(volatile uint8_t *)0x1000170a;
+  }
+  if (sel == 2) {
+    *(volatile uint8_t *)pid_kp2 = *(volatile uint8_t *)0x1000170b;
+    *(volatile uint8_t *)pid_ki2 = *(volatile uint8_t *)0x1000170c;
+  }
+  if (sel == 3) {
+    *(volatile uint8_t *)pid_kp2 = *(volatile uint8_t *)0x1000170d;
+    *(volatile uint8_t *)pid_ki2 = *(volatile uint8_t *)0x1000170e;
+  }
+  if (sel == 4) {
+    *(volatile uint8_t *)pid_kp2 = *(volatile uint8_t *)0x1000170f;
+    *(volatile uint8_t *)pid_ki2 = *(volatile uint8_t *)0x10001710;
+  }
+  idx = (uint8_t)*g_reg_cur_idx;
+  if (idx >= 0x3f) {
+    return 0;                                               /* 守卫：idx>=0x3F 不写 out_val */
+  }
+  switch (idx) {
+  case 0x00: *out_val = (uint32_t)*(volatile uint8_t *)gain_sel; break;        /* 0x162C B */
+  case 0x01: *out_val = *gain_b; break;                                        /* 0x1634 W */
+  case 0x02: *out_val = *gain_a; break;                                        /* 0x1630 W */
+  case 0x03: *out_val = *gain_coef; break;                                     /* 0x1638 W */
+  case 0x04: *out_val = *(volatile uint32_t *)0x10001640; break;               /* 0x1640 W */
+  case 0x05: *out_val = *gain_c; break;                                        /* 0x163C W */
+  case 0x06: *out_val = (uint32_t)*(volatile uint8_t *)startup_div; break;     /* 0x1644 B */
+  case 0x07: *out_val = (uint32_t)*(volatile uint8_t *)stop_div; break;        /* 0x1645 B */
+  case 0x08: *out_val = *llim_angle; break;                                    /* 0x1648 W */
+  case 0x09: *out_val = (uint32_t)*(volatile uint8_t *)0x1000164c; break;      /* B */
+  case 0x0a: *out_val = (uint32_t)*(volatile uint8_t *)0x1000164d; break;      /* B */
+  case 0x0b: *out_val = (uint32_t)*(volatile uint8_t *)eeprom_param_1; break;  /* 0x164E B */
+  case 0x0c: *out_val = *(volatile uint32_t *)0x100016b8; break;               /* W */
+  case 0x0d: *out_val = (uint32_t)*(volatile uint8_t *)0x100016bc; break;      /* B */
+  case 0x0e: *out_val = *(volatile uint32_t *)0x100016c0; break;               /* W */
+  case 0x0f: *out_val = (uint32_t)*(volatile uint8_t *)0x100016c4; break;      /* B */
+  case 0x10: *out_val = *(volatile uint32_t *)0x100016c8; break;               /* W */
+  case 0x11: *out_val = (uint32_t)*(volatile uint8_t *)0x100016cc; break;      /* B */
+  case 0x12: *out_val = *(volatile uint32_t *)0x100016d0; break;               /* W */
+  case 0x13: *out_val = (uint32_t)*(volatile uint8_t *)0x100016d4; break;      /* B */
+  case 0x14: *out_val = (uint32_t)*(volatile uint8_t *)eeprom_param_12; break; /* 0x16D5 B */
+  case 0x15: *out_val = (uint32_t)*(volatile uint8_t *)eeprom_param_13; break; /* 0x16D6 B */
+  case 0x16: *out_val = (uint32_t)*(volatile uint8_t *)g_cfg_pid_sel; break;   /* 0x1708 B */
+  case 0x17: *out_val = (uint32_t)*(volatile uint8_t *)pid_kp2; break;         /* 0x1706 B */
+  case 0x18: *out_val = (uint32_t)*(volatile uint8_t *)pid_ki2; break;         /* 0x1707 B */
+  case 0x19: *out_val = (uint32_t)*(volatile uint8_t *)trig_phase; break;      /* 0x168C B */
+  case 0x1a: case 0x1b: case 0x1c: case 0x1d: case 0x1e: case 0x1f:
+    *out_val = 0; break;                                    /* movs r3,#0; str [out_val] */
+  case 0x20: *out_val = *(volatile uint32_t *)0x100015fc; break;               /* W */
+  case 0x21: *out_val = *(volatile uint32_t *)0x100015f8; break;               /* W */
+  case 0x22: *out_val = *(volatile uint32_t *)0x10001608; break;               /* W */
+  case 0x23: *out_val = *(volatile uint32_t *)0x10001604; break;               /* W */
+  case 0x24: case 0x25:
+    *out_val = 0; break;                                    /* movs r3,#0; str [out_val] */
+  case 0x26: *out_val = (uint32_t)*(volatile uint8_t *)menu_state2; break;     /* 0x1765 B */
+  case 0x27: *out_val = *adc_conv_ch3; break;                                 /* 0x15A8 W */
+  case 0x28: *out_val = *(volatile uint32_t *)0x10001598; break;               /* W */
+  case 0x29: *out_val = *(volatile uint32_t *)0x1000159c; break;               /* W */
+  case 0x2a: *out_val = *(volatile uint32_t *)0x100015a0; break;               /* W */
+  case 0x2b: *out_val = *adc_conv_ch4; break;                                 /* 0x1594 W */
+  case 0x2c: *out_val = *adc_conv_ch5; break;                                 /* 0x1590 W */
+  case 0x2d: *out_val = *(volatile uint32_t *)0x10001728; break;               /* W */
+  case 0x2e: *out_val = (uint32_t)*(volatile uint8_t *)menu_state; break;      /* 0x16F7 B */
+  case 0x2f: *out_val = *comm_baud_idx; break;                                /* 0x16F8 W */
+  case 0x30: *out_val = (uint32_t)*(volatile uint8_t *)comm_div_sel; break;    /* 0x16FC B */
+  case 0x31: *out_val = (uint32_t)*(volatile uint8_t *)comm_rx_flag; break;    /* 0x16FD B */
+  case 0x32: *out_val = *(volatile uint32_t *)0x10001690; break;               /* W */
+  case 0x33: *out_val = *(volatile uint32_t *)0x10001698; break;               /* W */
+  case 0x34: *out_val = *(volatile uint32_t *)0x100016a0; break;               /* W */
+  case 0x35: *out_val = *(volatile uint32_t *)0x100016a8; break;               /* W */
+  case 0x36: *out_val = *(volatile uint32_t *)0x100016b0; break;               /* W */
+  case 0x37: *out_val = (uint32_t)*(volatile uint8_t *)eeprom_param_2; break;  /* 0x164F B */
+  case 0x38: *out_val = (uint32_t)*(volatile uint8_t *)0x10001650; break;      /* B */
+  case 0x39: *out_val = (uint32_t)*(volatile uint8_t *)eeprom_param_3; break;  /* 0x1651 B */
+  case 0x3a: *out_val = (uint32_t)*(volatile uint8_t *)eeprom_adc_cfg; break;  /* 0x1652 B */
+  case 0x3b: *out_val = (uint32_t)*(volatile uint8_t *)eeprom_param_4; break;  /* 0x1653 B */
+  case 0x3c: *out_val = *out_fine; break;                                     /* 0x1654 W */
+  case 0x3d: *out_val = *ulim_angle; break;                                   /* 0x1658 W */
+  case 0x3e: *out_val = *out_div; break;                                      /* 0x2034 W */
+  default: break;                                                             /* idx>=0x3F 已守卫 */
   }
   return 0;
 }
 
 /* =============================================================================
- * modbus_dispatch（0x0000B642，函数体 0xB642-0xE573，约 12049B / 5161 指令）
- * —— Modbus RTU 从站帧解析与分发（写寄存器主处理）
- *
- * ★ 说明：该函数为本固件最大函数之一，C 语言反编译结果超过 MCP 5s 传输上限
- *   （连续 6 次超时），因此改为「反汇编精读还原」：完整反汇编已另存为
- *   evidence/reverse/disassembly/08_modbus_dispatch_asm.txt（5161 条指令），此处给出流程还原、
- *   关键数据区与代表性代码段。寄存器读/写值映射见 modbus_read_reg 与
- *   modbus_write_multi（reg 0x00-0x3F → 0x1000B4B8..0x1000B590；
- *   reg 0x2B-0x3D → 0x1000B984..0x1000B9C4）。
- *
- * 调用关系：crc16(0xAF64)×237、uart3_tx_byte(0xAE0C)×118、
- *   param_sync_live_to_eeprom(0x35F2)×51、i2c_write_reg(0x1E88)×2、
- *   out_relay_p020(0x10588)×2、modbus_write_multi(0xB2E0)×1、modbus_read_reg(0xAF94)×1
- *   （×N 为该函数内对子例程的调用次数）
- *
- * 数据区（0x1000B988 起）：
- *   0x1000B988 从站地址           0x1000B9C8 接收状态（0=空闲 / 1=首字节已收帧未完 / 5=完整帧待处理）
- *   0x1000B9CC/0xD0 计数          0x1000B9D4 接收缓冲区（帧[0..N]）
- *   0x1000B9D8 FIO 池指针         0x1000B9DC UART3 寄存器指针
- *   0x1000B9E0 发送缓冲区         0x1000B9E4 接收帧长度
- *   0x1000B9E8 CRC 计算缓存       0x1000B9EC 接收帧 CRC 两字节缓存
- *   0x1000B9F0 写寄存器 16 位值缓存 0x1000B9F4 控制方式模式值
- *   0x1000B9F8..0x1000BE2x 写分支目标参数变量（每组分支一个）
- * 导出：2026-08-21
+ * 0x0000B050 —— Modbus 写保持寄存器（src_val=值指针、reg_idx=寄存器号&0xFFF）
+ *   无 PID 前导。守卫：(uint8_t)*g_reg_cur_idx >= 0x3E → return 0。
+ *   TBB 分派 idx0-61（62 项）。宽度要点（12p）：
+ *   · B 目标 ldrb value; strb → `*(volatile uint8_t *)PTR = (uint8_t)*src_val`；
+ *   · W 目标 ldr value; str → `*PTR = *src_val`；
+ *   · idx 0x1A-0x1F/0x24-0x25/0x28-0x2D（写）→ 0x1000178C scratch（字写）；
+ *   · idx 0x17/0x18 → 0x170F/0x1710（PID 银行4 KP/KI，≠READ 的活动槽）；
+ *   · idx 0x27 → 0x15A8（adc_conv_ch3，与 READ 相同）。
+ *   返回恒 0。
  * ========================================================================== */
+uint32_t modbus_write_multi(uint32_t *src_val, uint32_t reg_idx)
+{
+  volatile uint32_t *reg_ofs;
 
-/* ---------------------------------------------------------------------------
- * 一、流程还原（伪代码）
- * ---------------------------------------------------------------------------
- * modbus_dispatch(param) {
- *   1) 帧态门控（2026-08-21 复核）：*0xB9C8==1 → 只清 *0xB9CC 计数后 return 0
- *      （首字节已收、帧未完，不解析）；*0xB9C8!=5 → return 0（非完整帧态一律忽略）
- *      状态机：0=空闲 / 1=首字节已收 / 5=完整帧含 CRC（由 UART3 接收侧设置，处理完清 0）
- *      *0xB9D0 = 0；*0xB9CC = 0;
- *
- *   2) 从站地址匹配：帧[0]（=*0xB9D4[0]）对比 *0xB988（本站地址）
- *        不匹配 → FIO4CLR P4.29 置位；*0xB9C8 = 0；
- *                UART3 寄存器 +4 |= 1（清/屏蔽接收）；return 0;
- *        匹配   → 继续
- *
- *   3) 功能码分发：帧[1]
- *        若 != 0x03 且 != 0x06 且 != 0x10：                 // 非法功能
- *          异常响应 [地址, func|0x80, 0x01, CRC16]
- *        否则 → 4)
- *
- *   4) CRC 校验：crc16(帧, 长度-2) → 0xB9E8；
- *        与帧末两字节（0xB9EC）比对
- *        不匹配 → 异常响应 [地址, func|0x80, 0x04, CRC16]    // 异常码4
- *        匹配   → 5)
- *
- *   5) 功能码 0x06（写单寄存器）：
- *        值 = 帧[4]<<8 | 帧[5]；存 0xB9F0
- *        分支匹配寄存器号 = 帧[2]<<8 | 帧[3]：
- *        · 0x1001（控制方式组）：
- *            值 < 3 → 0xB9F4 = 值；param_sync_live_to_eeprom()；
- *                响应 [地址,0x06,0x10,0x01,val_hi,val_lo,CRC16]（8B）
- *            值 ≥ 3 → 异常响应 [地址,0x86,0x03]
- *        · 0x1002（0xB848 分支）：值 < 0x1771(6001) 且 > 9 →
- *            存 0xB9F8；param_sync()；响应帧同上
- *        · 写分支结构（51 个）：寄存器号高字节固定 0x10、低字节 0x01..0x33 递增；
- *          每分支 = 上下限范围校验 → 值存参数槽（0x1000B9F8 起顺序排列）
- *          → param_sync_live_to_eeprom() → 8 字节响应 [地址,0x06,0x10,reg,val_hi,val_lo,CRC]
- *          已确证分支：0x1001=控制方式（值<3）、0x1002（10..6000）、
- *          值越界 → 异常响应 [地址,0x86,0x03]（异常码 3=非法数据值）
- *          全量寄存器号→参数/范围映射见 docs/uart3_protocol.md 与 docs/PROGRESS_2026-08-20.md §4b
- *
- *   6) 功能码 0x10（写多寄存器，0xE19E 区）：
- *        检查地址 0x1000/数量，0xE2D0 调 modbus_write_multi(0xB2E0)；
- *        按数量循环写并计数，完成发响应 [地址,0x10,0x10,数量,CRC16]
- *
- *   7) 功能码 0x03（读保持寄存器，0xE49E 区）：
- *        按起始寄存器循环调 modbus_read_reg(0xAF94) 读值，
- *        组响应帧 [地址,0x03,字节数,数据...,CRC16]，uart3_tx_byte 发送
- *
- *   8) 帧尾（0xE546-0xE573）：
- *        异常/完成路径 → FIO4CLR P4.29 置位、*0xE5A0 = 0、
- *        UART3 +4 |= 1；return 0;
- * }
- * --------------------------------------------------------------------------- */
+  reg_ofs = g_reg_cur_idx;                                  /* 0x10001788 */
+  *g_reg_cur_idx = reg_idx & 0xfff;
+  if ((uint8_t)*reg_ofs >= 0x3e) {
+    return 0;                                               /* 守卫：idx>=0x3E 不写 */
+  }
+  switch ((uint8_t)*reg_ofs) {
+  case 0x00: *(volatile uint8_t *)gain_sel = (uint8_t)*src_val; break;          /* 0x162C B */
+  case 0x01: *gain_b = *src_val; break;                                         /* 0x1634 W */
+  case 0x02: *gain_a = *src_val; break;                                         /* 0x1630 W */
+  case 0x03: *gain_coef = *src_val; break;                                      /* 0x1638 W */
+  case 0x04: *(volatile uint32_t *)0x10001640 = *src_val; break;                /* W */
+  case 0x05: *gain_c = *src_val; break;                                         /* 0x163C W */
+  case 0x06: *(volatile uint8_t *)startup_div = (uint8_t)*src_val; break;       /* 0x1644 B */
+  case 0x07: *(volatile uint8_t *)stop_div = (uint8_t)*src_val; break;          /* 0x1645 B */
+  case 0x08: *llim_angle = *src_val; break;                                     /* 0x1648 W */
+  case 0x09: *(volatile uint8_t *)0x1000164c = (uint8_t)*src_val; break;        /* B */
+  case 0x0a: *(volatile uint8_t *)0x1000164d = (uint8_t)*src_val; break;        /* B */
+  case 0x0b: *(volatile uint8_t *)eeprom_param_1 = (uint8_t)*src_val; break;    /* 0x164E B */
+  case 0x0c: *(volatile uint32_t *)0x100016b8 = *src_val; break;                /* W */
+  case 0x0d: *(volatile uint8_t *)0x100016bc = (uint8_t)*src_val; break;        /* B */
+  case 0x0e: *(volatile uint32_t *)0x100016c0 = *src_val; break;                /* W */
+  case 0x0f: *(volatile uint8_t *)0x100016c4 = (uint8_t)*src_val; break;        /* B */
+  case 0x10: *(volatile uint32_t *)0x100016c8 = *src_val; break;                /* W */
+  case 0x11: *(volatile uint8_t *)0x100016cc = (uint8_t)*src_val; break;        /* B */
+  case 0x12: *(volatile uint32_t *)0x100016d0 = *src_val; break;                /* W */
+  case 0x13: *(volatile uint8_t *)0x100016d4 = (uint8_t)*src_val; break;        /* B */
+  case 0x14: *(volatile uint8_t *)eeprom_param_12 = (uint8_t)*src_val; break;   /* 0x16D5 B */
+  case 0x15: *(volatile uint8_t *)eeprom_param_13 = (uint8_t)*src_val; break;   /* 0x16D6 B */
+  case 0x16: *(volatile uint8_t *)g_cfg_pid_sel = (uint8_t)*src_val; break;     /* 0x1708 B */
+  case 0x17: *(volatile uint8_t *)0x1000170f = (uint8_t)*src_val; break;        /* 银行4 KP B */
+  case 0x18: *(volatile uint8_t *)0x10001710 = (uint8_t)*src_val; break;        /* 银行4 KI B */
+  case 0x19: *(volatile uint8_t *)trig_phase = (uint8_t)*src_val; break;        /* 0x168C B */
+  case 0x1a: case 0x1b: case 0x1c: case 0x1d: case 0x1e: case 0x1f:
+  case 0x24: case 0x25:
+  case 0x28: case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d:
+    *(volatile uint32_t *)0x1000178c = *src_val; break;     /* scratch 字写 */
+  case 0x20: *(volatile uint32_t *)0x100015fc = *src_val; break;                /* W */
+  case 0x21: *(volatile uint32_t *)0x100015f8 = *src_val; break;                /* W */
+  case 0x22: *(volatile uint32_t *)0x10001608 = *src_val; break;                /* W */
+  case 0x23: *(volatile uint32_t *)0x10001604 = *src_val; break;                /* W */
+  case 0x26: *(volatile uint8_t *)menu_state2 = (uint8_t)*src_val; break;       /* 0x1765 B */
+  case 0x27: *adc_conv_ch3 = *src_val; break;                                  /* 0x15A8 W */
+  case 0x2e: *(volatile uint8_t *)menu_state = (uint8_t)*src_val; break;        /* 0x16F7 B */
+  case 0x2f: *comm_baud_idx = *src_val; break;                                 /* 0x16F8 W */
+  case 0x30: *(volatile uint8_t *)comm_div_sel = (uint8_t)*src_val; break;      /* 0x16FC B */
+  case 0x31: *(volatile uint8_t *)comm_rx_flag = (uint8_t)*src_val; break;      /* 0x16FD B */
+  case 0x32: *(volatile uint32_t *)0x10001690 = *src_val; break;                /* W */
+  case 0x33: *(volatile uint32_t *)0x10001698 = *src_val; break;                /* W */
+  case 0x34: *(volatile uint32_t *)0x100016a0 = *src_val; break;                /* W */
+  case 0x35: *(volatile uint32_t *)0x100016a8 = *src_val; break;                /* W */
+  case 0x36: *(volatile uint32_t *)0x100016b0 = *src_val; break;                /* W */
+  case 0x37: *(volatile uint8_t *)eeprom_param_2 = (uint8_t)*src_val; break;    /* 0x164F B */
+  case 0x38: *(volatile uint8_t *)0x10001650 = (uint8_t)*src_val; break;        /* B */
+  case 0x39: *(volatile uint8_t *)eeprom_param_3 = (uint8_t)*src_val; break;    /* 0x1651 B */
+  case 0x3a: *(volatile uint8_t *)eeprom_adc_cfg = (uint8_t)*src_val; break;    /* 0x1652 B */
+  case 0x3b: *(volatile uint8_t *)eeprom_param_4 = (uint8_t)*src_val; break;    /* 0x1653 B */
+  case 0x3c: *out_fine = *src_val; break;                                      /* 0x1654 W */
+  case 0x3d: *ulim_angle = *src_val; break;                                    /* 0x1658 W */
+  default: break;                                                              /* idx>=0x3E 已守卫 */
+  }
+  return 0;
+}
 
-/* ---------------------------------------------------------------------------
- * 二、关键代码段精读（真实反汇编）
- * ---------------------------------------------------------------------------
- * 入口（0xB642）：
- *   push {r4,lr}                      ; r4 = param
- *   ldr r0,[0xB9C8]; ldrb r0,[r0,#0]  ; 接收状态
- *   cmp r0,#1; bne 0xB656
- *   movs r0,#0; ldr r1,[0xB9CC]; str r0,[r1,#0]; pop {r4,pc}   ; 单字节态返回
- *   ldr r0,[0xB9C8]; ldrb r0,[r0,#0]; cmp r0,#5; bne.w 0xE570 ; 非完整帧 → 尾
- *   movs r0,#0; ldr r1,[0xB9D0]; str r0,[r1,#0]                ; 清计数
- *   ldr r1,[0xB9CC]; str r0,[r1,#0]
- *
- * 地址匹配（0xB674）：
- *   ldr r0,[0xB9D4]; ldrb r0,[r0,#0]       ; 帧[0]=从站地址
- *   ldr r1,[0xB988]; ldrb r1,[r1,#0]       ; 本站地址
- *   cmp r0,r1; beq 0xB698                  ; 匹配 → 功能码分发
- *   ldr r0,[0xB9D8]; ldr r0,[r0,#0x3c]; orr r0,r0,#0x20000000
- *   ldr r1,[0xB9D8]; str r0,[r1,#0x3c]     ; FIO4CLR P4.29（错误指示）
- *   movs r0,#0; ldr r1,[0xB9C8]; strb r0,[r1,#0]   ; 清接收状态
- *   ldr r0,[0xB9DC]; ldr r0,[r0,#4]; orr r0,r0,#1; str r0,[r1,#4]  ; UART3 IER
- *
- * 功能码分发（0xB698）：
- *   ldrb r0,[r0,#1]; cmp r0,#3; beq 0xB6E8  ; 0x03 读
- *   cmp r0,#6; beq 0xB6E8                   ; 0x06 写单
- *   cmp r0,#0x10; beq 0xB6E8                ; 0x10 写多
- *   ldrb r0,[r0,#0]                        ; 其他功能码 → 异常响应
- *   ldr r1,[0xB9E0]; strb r0,[r1,#0]        ; TX[0]=地址
- *   ldrb r0,[r0,#1]; adds r0,#0x80; strb r0,[r1,#1]   ; TX[1]=func|0x80
- *   movs r0,#1; strb r0,[r1,#2]             ; TX[2]=异常码 0x01
- *   movs r1,#3; ldr r0,[0xB9E0]; bl 0xAF64  ; crc16(TX,3)
- *
- * CRC 校验（0xB6E8 区）：
- *   ldrb r0,[r0,#0]; subs r0,#2; uxtb r1,r0 ; len-2
- *   ldr r0,[0xB9D4]; bl 0xAF64              ; crc16(帧, len-2)
- *   ldr r1,[0xB9E8]; str r0,[r1,#0]         ; 存计算 CRC
- *   ldrh r0,[r0,#0]; ubfx r1,r0,#8,#8       ; CRC 高字节
- *   ldrb r0,[r0,#0]; subs r0,#1; ldr r2,[0xB9EC]; strb r1,[r2,r0]  ; 比对帧末
- *   ldr r0,[0xB9E8]; ldrb r1,[r0,#0]; ldrb r0,[r0,#0]; subs r0,#2; strb r1,[r2,r0]
- *   ; 两字节比对，不匹配 → beq 跳异常响应 [地址,func|0x80,0x04]
- *
- * 0x06 写单寄存器 - 0x1001 控制方式组（0xB77E）：
- *   ldrb r0,[r0,#1]; cmp r0,#6; bne.w 0xE19E      ; 非 0x06 → 0x10 处理
- *   ldrb r0,[r0,#2]; cmp r0,#0x10; bne 0xB848     ; 非 0x10 高字节 → 下一分支
- *   ldrb r0,[r0,#3]; cmp r0,#1; bne 0xB848        ; 非 0x01 低字节 → 下一分支
- *   ldrb r1,[r0,#5]; ldrb r0,[r0,#4]; add.w r0,r1,r0,lsl#8  ; 值=帧[4..5]
- *   ldr r1,[0xB9F0]; str r0,[r1,#0]               ; 值 → 0xB9F0
- *   cmp r0,#3; bcs 0xB814                         ; 值≥3 → 异常响应 0x86/0x03
- *   ldrb r0,[r0,#0]; ldr r1,[0xB9F4]; strb r0,[r1,#0]   ; 0xB9F4=值
- *   bl 0x35F2                                     ; param_sync_live_to_eeprom()
- *   ; 组装 8 字节响应：[地址,0x06,0x10,0x01,val_hi,val_lo,CRC_lo,CRC_hi]
- *   ldr r0,[0xB988]; ldrb r0,[r0,#0]; ldr r1,[0xB9E0]; strb r0,[r1,#0]
- *   movs r0,#6; strb r0,[r1,#1]; movs r0,#0x10; strb r0,[r1,#2]
- *   movs r0,#1; strb r0,[r1,#3]
- *   ; (0xB9F4 值高低字节拆分) → TX[4],TX[5]
- *   bl 0xAF64 ; crc16(TX,6) → TX[6]；再次 crc16 → TX[7]
- *   movs r0,#8; bl 0xAE0C                     ; uart3_tx_byte 8 字节响应
- *   movs r0,#0; b 0xB654                      ; return 0
- *
- * 通用写分支（0xB848 = 寄存器 0x1002）：
- *   ldrb r0,[r0,#2]; cmp r0,#0x10; bne 0xB900 ; 寄存器高字节匹配
- *   ldrb r0,[r0,#3]; cmp r0,#2; bne 0xB900    ; 低字节
- *   ...值=帧[4..5] → 0xB9F0
- *   cmp r0,#0x1771; bcs 0xB8CC                ; 值≥6001 越界 → 异常
- *   cmp r0,#9; bls 0xB8CC                     ; 值≤9 越界 → 异常
- *   ldr r0,[0xB9F0]; ldr r0,[r0,#0]; ldr r1,[0xB9F8]; str r0,[r1,#0]  ; 存参数
- *   bl 0x35F2                                 ; param_sync() → EEPROM
- *   ; 响应帧同上（值原样回送）
- *
- * 0x10 写多寄存器（0xE19E 起 / 0xE2D0 调用 modbus_write_multi）：
- *   ldrb r0,[r0,#1]; cmp r0,#0x10; bne 0xE29A
- *   ldrb r0,[r0,#2]; cmp r0,#0x10; bne 0xE29C
- *   ldrb r0,[r0,#3]; ldr r1,[0xE38C]; str r0,[r1,#0]    ; 寄存器号
- *   subs r0,#1; ldr r1,[0xE390]; str r0,[r1,#0]         ; 数量-1（循环计数）
- *   ; 校验寄存器号 ∈ [1,0x3E] 否则异常响应 0x90/0x02
- *   ...
- *   0xE2D0: bl 0xB2E0                                    ; modbus_write_multi()
- *   ; 循环写，完成响应 [地址,0x10,0x10,数量,CRC16]
- *
- * 0x03 读保持寄存器（0xE49E 起）：
- *   bl 0xAF94                                    ; modbus_read_reg(参数区, 寄存器号)
- *   ; 读回值高低字节放入 TX[3..N]（0xE584=发送缓冲、0xE594=长度计数、0xE58C=长度）
- *   ; 循环直到读够数量
- *   bl 0xAF64 ; crc16(TX,长度)；两字节 CRC → TX 末尾
- *   movs r0,#长度+2; bl 0xAE0C                   ; 发送
- *   ; 非法范围 → 异常响应 [地址,0x83,0x02,CRC16]
- *
- * 帧尾（0xE546-0xE573）：
- *   bl 0xAE0C                                    ; 异常帧发送
- *   movs r0,#0; b 0xDD5C
- *   0xE54E: ldr r0,[0xE59C]; ldr r0,[r0,#0x3c]; orr r0,r0,#0x20000000  ; FIO4CLR
- *   0xE55A: strb r0,[0xE5A0]; ldr r0,[0xE5A4]; orr r0,[r0,#4],#1      ; UART3 IER
- *   0xE570: movs r0,#0; b 0xDD90                ; 非完整帧直接返回
- * --------------------------------------------------------------------------- */
+/* =============================================================================
+ * modbus_dispatch(0x0000B3B2) —— Modbus RTU 从站帧解析与分发主处理
+ * ★ 完整 C 实现见 src/08_modbus_dispatch.c（12p 重写）。本文件只承载
+ *   uart3_init/uart3_tx_byte/uart3_rx_timeout_monitor/crc16/modbus_read_reg/
+ *   modbus_write_multi 六函数（6p 时代的 dispatch 伪代码注释已随 12p 重写移除，
+ *   权威实现与逐字节核对的流程说明在 08_modbus_dispatch.c 头部）。
+ * ========================================================================== */

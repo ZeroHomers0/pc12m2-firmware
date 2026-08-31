@@ -1,0 +1,21 @@
+# FUN_0000e6a6 entry=0x0000e6a6 body=32
+0000e6a6  cmp      r0, #0
+0000e6a8  ble      #0xe6b8
+ ; jump -> 0x0000e6b8 (FUN_0000e6a6)
+0000e6aa  ldr      r1, [pc, #0x3c]
+ ; ref 0x0000e6e8 -> 0x2009c000
+0000e6ac  ldr      r1, [r1, #0x38]
+0000e6ae  orr      r1, r1, #0x400000
+0000e6b2  ldr      r2, [pc, #0x34]
+ ; ref 0x0000e6e8 -> 0x2009c000
+0000e6b4  str      r1, [r2, #0x38]
+0000e6b6  b        #0xe6c4
+ ; jump -> 0x0000e6c4 (FUN_0000e6a6)
+0000e6b8  ldr      r1, [pc, #0x2c]
+ ; ref 0x0000e6e8 -> 0x2009c000
+0000e6ba  ldr      r1, [r1, #0x3c]
+0000e6bc  orr      r1, r1, #0x400000
+0000e6c0  ldr      r2, [pc, #0x24]
+ ; ref 0x0000e6e8 -> 0x2009c000
+0000e6c2  str      r1, [r2, #0x3c]
+0000e6c4  bx       lr

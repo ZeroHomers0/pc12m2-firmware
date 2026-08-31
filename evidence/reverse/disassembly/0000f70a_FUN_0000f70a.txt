@@ -1,0 +1,40 @@
+# FUN_0000f70a entry=0x0000f70a body=62
+0000f70a  push     {lr}
+0000f70c  ldr      r0, [pc, #0x1f4]
+ ; ref 0x0000f904 -> 0x10001620 (SRAM)  [pool->0x10001620]
+0000f70e  ldrb     r0, [r0]
+0000f710  cmp      r0, #1
+0000f712  bne      #0xf728
+ ; jump -> 0x0000f728 (FUN_0000f70a)
+0000f714  ldr      r0, [pc, #0x214]
+ ; ref 0x0000f92c -> 0x100017d8 (SRAM)  [pool->0x100017d8]
+0000f716  ldr.w    r0, [r0, #0x3e8]
+0000f71a  movs     r1, #0x64
+0000f71c  muls     r0, r1, r0
+0000f71e  ldr      r1, [pc, #0x1d8]
+ ; ref 0x0000f8f8 -> 0x10001fdc (SRAM)  [pool->0x10001fdc]
+0000f720  str      r0, [r1]
+0000f722  movs     r0, #5
+0000f724  ldr      r1, [pc, #0x1e0]
+ ; ref 0x0000f908 -> 0x10001fe0 (SRAM)  [pool->0x10001fe0]
+0000f726  str      r0, [r1]
+0000f728  ldr      r0, [pc, #0x1d8]
+ ; ref 0x0000f904 -> 0x10001620 (SRAM)  [pool->0x10001620]
+0000f72a  ldrb     r0, [r0]
+0000f72c  cbnz     r0, #0xf746
+0000f72e  ldr      r0, [pc, #0x1fc]
+ ; ref 0x0000f92c -> 0x100017d8 (SRAM)  [pool->0x100017d8]
+0000f730  ldr      r0, [r0]
+0000f732  ldr      r1, [pc, #0x1c4]
+ ; ref 0x0000f8f8 -> 0x10001fdc (SRAM)  [pool->0x10001fdc]
+0000f734  str      r0, [r1]
+0000f736  movs     r0, #0
+0000f738  ldr      r1, [pc, #0x1cc]
+ ; ref 0x0000f908 -> 0x10001fe0 (SRAM)  [pool->0x10001fe0]
+0000f73a  str      r0, [r1]
+0000f73c  bl       #0xe6c6
+ ; call -> 0x0000e6c6 (FUN_0000e6c6)
+0000f740  movs     r0, #0
+0000f742  bl       #0xe6a6
+ ; call -> 0x0000e6a6 (FUN_0000e6a6)
+0000f746  pop      {pc}

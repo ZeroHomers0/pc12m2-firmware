@@ -1,0 +1,18 @@
+# FUN_0000e576 entry=0x0000e576 body=34
+0000e576  push     {r4, lr}
+0000e578  movs     r0, #2
+0000e57a  ldr      r1, [pc, #0x174]
+ ; ref 0x0000e6f0 -> 0x40008000 (PERI)  [pool->0x40008000]
+0000e57c  str      r0, [r1, #4]
+0000e57e  movs     r0, #0x18
+0000e580  str      r0, [r1, #0xc]
+0000e582  movw     r0, #0x3e7
+0000e586  str      r0, [r1, #0x18]
+0000e588  movs     r0, #0xff
+0000e58a  str      r0, [r1]
+0000e58c  movs     r0, #3
+0000e58e  str      r0, [r1, #0x14]
+0000e590  movs     r0, #2
+0000e592  bl       #0x10860
+ ; call -> 0x00010860 (FUN_00010860)
+0000e596  pop      {r4, pc}

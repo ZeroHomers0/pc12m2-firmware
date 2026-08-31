@@ -1,0 +1,8 @@
+# FUN_000111cc entry=0x000111cc body=8
+000111cc  ldr      r1, [pc, #4]
+ ; ref 0x000111d4 -> 0x020026 (flash)
+000111ce  movs     r0, #0x18
+000111d0  bkpt     #0xab
+ ; jump -> 0x000000ab (?)
+000111d2  b        #0x111d2
+ ; jump -> 0x000111d2 (FUN_000111cc)

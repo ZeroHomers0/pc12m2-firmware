@@ -1,0 +1,49 @@
+# FUN_00000cec entry=0x00000cec body=88
+00000cec  push  {r3,r4,r5,r6,r7,r8,lr}
+00000cf0  mov  r5, r0
+00000cf2  mov  r7, r1
+00000cf4  mov  r6, r2
+00000cf6  mov  r8, r3
+00000cf8  movs  r4, #0x0
+00000cfa  nop
+00000cfc  b  0x00000d3a
+      ; jump -> 0x00000d3a
+00000cfe  ldrb  r0, [r5,r4]
+00000d00  cbnz  r0, 0x00000d04
+      ; jump -> 0x00000d04
+00000d02  b  0x00000d3e
+      ; jump -> 0x00000d3e
+00000d04  ldrb  r0, [r5,r4]
+00000d06  cmp  r0, #0xa0
+00000d08  ble  0x00000d26
+      ; jump -> 0x00000d26
+00000d0a  adds  r2, r4, #0x1
+00000d0c  str.w  r8, [sp,#0x0]
+      ; ref 0xffffffffffffffe4 (no mem)
+00000d10  ldrb  r1, [r5,r2]
+00000d12  ldrb  r0, [r5,r4]
+00000d14  mov  r3, r6
+00000d16  mov  r2, r7
+00000d18  bl  0x00000bea
+      ; call -> 0x00000bea
+00000d1c  adds  r0, r6, #0x2
+00000d1e  uxtb  r6, r0
+00000d20  adds  r0, r4, #0x1
+00000d22  uxtb  r4, r0
+00000d24  b  0x00000d36
+      ; jump -> 0x00000d36
+00000d26  ldrb  r0, [r5,r4]
+00000d28  mov  r3, r8
+00000d2a  mov  r2, r6
+00000d2c  mov  r1, r7
+00000d2e  bl  0x00000af4
+      ; call -> 0x00000af4
+00000d32  adds  r0, r6, #0x1
+00000d34  uxtb  r6, r0
+00000d36  adds  r0, r4, #0x1
+00000d38  uxtb  r4, r0
+00000d3a  cmp  r4, #0x10
+00000d3c  blt  0x00000cfe
+      ; jump -> 0x00000cfe
+00000d3e  nop
+00000d40  pop.w  {r3,r4,r5,r6,r7,r8,pc}

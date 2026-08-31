@@ -1,0 +1,436 @@
+All confirmed. The disassembly labels 0x10001600 as a word (TICK, reset on run), 0x10001604/0x10001608 as HOUR_TOTAL/MIN_TOTAL words. `bl 0x116c` is the case5A display call (matches 6p `disp_signed_angle`). Now I have everything needed to write the four fragments.\n\n## Deliverable — 12p state_machine (0x4464) case5A / caseC / case14 / case1E\n\n### Important boundary correction\nThe briefing's case1E range (0x9fa6–0xa058) is **wrong**. `0xa058 b 0xa828` is only the `bne`-skip trampoline for `MENU != 0x1e`. The real case1E body runs **0x9fae–0xa826** with its timeout tail at **0xa828–0xa854** (the function's last instruction). 12p case1E is therefore ~0x8ae bytes — **not** smaller than 6p, and it **does** contain the full RUN/STOP state machine (key5/6, scan_run_stop 0x10001727==7/8, 0x1000164e/4d gating, run_en 0x10001765, cfg_word 1/0) — contrary to the task's assumption that RUN/STOP lives only in case1. Note: case14's `return` on the no-fault path skips the timeout tail, and case5A's actual size is 0x1e6 bytes (not 0x5e6).\n\n---\n\n```c\n  /* =====================================================================*/\n  /* ---------- case5A 电流手动平衡 (0x9b44-0x9d2a)，MENU==0x5a ---------- */\n  if (*MENU == 0x5a) {\n    volatile uint8_t  *bal_ang = (volatile uint8_t*)0x1000168c;
+   /* BAL_ANG 平衡角度 (byte) */\n    volatile uint8_t  *bal_eep = (volatile uint8_t*)0x1000168d;
+   /* EEPROM 影子值 (byte) */\n    volatile uint8_t  *cfg     = (volatile uint8_t*)0x10001620;
+   /* cfg_word 运行标志 (byte) */\n    volatile uint8_t  *stat_l  = (volatile uint8_t*)0x100015cc;
+   /* 状态显示锁存 1=停 2=运 (byte) */\n    volatile uint32_t *fault   = (volatile uint32_t*)0x1000161c;
+  /* LATCH_OUT/故障 (word) */\n    volatile uint32_t *timeout = (volatile uint32_t*)0x10001744;
+  /* TIMEOUT (word) */\n    volatile uint8_t  *scr_set = (volatile uint8_t*)0x100015ce;
+   /* 屏内置位 (byte) */\n\n    *scr_set = 1;
+                                     /* 0x9b4c */\n    if (key == 2 || key == 0x16) {                    /* 0x9b52 增 */\n      *timeout = 0;
+\n      (*bal_ang)++;
+\n      if (*bal_ang &gt;
+ 0xc7) *bal_ang = 0xc7;
+           /* 上限 0xc7=199 (0x9b6e) */\n      disp_signed_angle(*bal_ang, 2, 7, 1);
+           /* 0x116c */\n    }
+\n    if (key == 3 || key == 0x21) {                    /* 0x9b84 减 */\n      *timeout = 0;
+\n      if (*bal_ang &lt;
+ 2) *bal_ang = 2;
+                 /* 下限 2 (0x9b96) */\n      (*bal_ang)--;
+\n      disp_signed_angle(*bal_ang, 2, 7, 1);
+           /* 0x116c */\n    }
+\n\n    /* 运行状态行 (0x9bb8)：故障→0x4334；cfg==0→停 0x4340；cfg==1→运 0x4348 */\n    if (*fault != 0) {\n      disp_string((int)0x4334, 3, 0xa, 0);
+            /* 故障 */\n    }
+else {\n      if (*cfg == 0) {\n        if (*stat_l != 1) { *stat_l = 1;
+ disp_string((int)0x4340, 3, 0xa, 0);
+ }
+\n      }
+\n      if (*cfg == 1) {\n        if (*stat_l != 2) { *stat_l = 2;
+ disp_string((int)0x4348, 3, 0xa, 0);
+ }
+\n      }
+\n    }
+\n\n    if (key == 5) { *cfg = 1;
+ *timeout = 0;
+ }
+        /* 0x9c12 启动 */\n    if (key == 6) { *cfg = 0;
+ *timeout = 0;
+ }
+        /* 0x9c68 停机 */\n    run_stop_preset();
+                                /* 0x9c76 */\n\n    if (key == 4) {                                   /* 0x9c7a 保存并返回 */\n      *timeout = 0;
+\n      *MENU = 2;
+                                      /* 0x10001724 */\n      *MENU2 = 8;
+                                     /* 0x10001725 */\n      disp_clear();
+                                   /* 0x942 */\n      disp_string((int)0xa070, 0, 0, 1);
+              /* 标题 @0xa070 */\n      disp_string((int)0xa080, 1, 0, 0);
+              /* 空行 @0xa080 */\n      disp_string((int)0xa080, 2, 0, 0);
+\n      disp_string((int)0xa080, 3, 0, 0);
+\n      if (*bal_ang != *bal_eep) {                     /* 0x9cc4 写 EEPROM reg 0x1c */\n        *bal_eep = *bal_ang;
+\n        i2c_write_reg(*bal_eep, 0x1c);
+                /* 0x1e38：按索引写 EEPROM（6p 同名 i2c_write_reg，briefing 标 0x1e38=disp_by_index，语义以此处为准） */\n      }
+\n      *cfg = 0;
+                                       /* 0x9ce2 */\n      run_stop_preset();
+                              /* 0xf70a */\n      *scr_set = 0;
+                                   /* 0x9cec */\n      return;
+\n    }
+\n\n    /* 超时尾 (0x9cf4，0x3a98=15000) */\n    (*timeout)++;
+\n    if (*timeout &gt;
+= 0x3a98) {\n      *timeout = 0;
+\n      *cfg = 0;
+\n      *MENU = 1;
+\n      disp_splash_screen();
+                           /* 0x40b0 */\n      *scr_set = 0;
+\n    }
+\n    return;
+\n  }
+\n\n  /* =====================================================================*/\n  /* ---------- caseC 运行时间清零 (0x9d2a-0x9dc0)，MENU==0xc ---------- */\n  if (*MENU == 0xc) {\n    volatile uint32_t *timeout = (volatile uint32_t*)0x10001744;
+\n\n    if (key == 4) {                                   /* 0x9d32 返回主菜单 */\n      *MENU = 1;
+\n      disp_splash_screen();
+\n      return;
+\n    }
+\n    if (key == 0x17) {                                /* 0x9d44 统计清零 */\n      *((volatile uint32_t*)0x100015f8) = 0;
+          /* HOUR_NOW   (word) */\n      *((volatile uint32_t*)0x100015fc) = 0;
+          /* MIN_NOW    (word) */\n      *((volatile uint32_t*)0x10001604) = 0;
+          /* HOUR_TOTAL (word) */\n      *((volatile uint32_t*)0x10001608) = 0;
+          /* MIN_TOTAL  (word) */\n      disp_uint5(*((volatile uint32_t*)0x100015f8), 1, 3, 0);
+   /* 0xf3c */\n      disp_uint2(*((volatile uint32_t*)0x100015fc), 1, 0xa, 0);
+ /* 0x1398 */\n      disp_uint5(*((volatile uint32_t*)0x10001604), 3, 3, 0);
+\n      disp_uint2(*((volatile uint32_t*)0x10001608), 3, 0xa, 0);
+\n    }
+\n    /* 超时尾 (0x9d92，0x1388=5000) */\n    (*timeout)++;
+\n    if (*timeout &gt;
+= 0x1388) {\n      *timeout = 0;
+\n      *MENU = 1;
+\n      disp_splash_screen();
+\n    }
+\n    return;
+\n  }
+\n\n  /* =====================================================================*/\n  /* ---------- case14 运行状态监控 (0x9dc0-0x9fa6)，MENU==0x14 ---------- */\n  if (*MENU == 0x14) {\n    volatile uint32_t *timeout3 = (volatile uint32_t*)0x10001758;
+  /* TIMEOUT3 (word) */\n    volatile uint32_t *timeout  = (volatile uint32_t*)0x10001744;
+\n    volatile uint32_t *fault    = (volatile uint32_t*)0x1000161c;
+  /* FAULT/LATCH_OUT (word) */\n\n    if (key == 4) {                                   /* 0x9dc8 返回主菜单 */\n      *MENU = 1;
+\n      disp_splash_screen();
+\n      return;
+\n    }
+\n    (*timeout3)++;
+                                    /* 0x9dda 每 0xfb 次刷新一次状态行 */\n    if (*timeout3 &gt;
+ 0xfa) {\n      *timeout3 = 0;
+\n      disp_string((int)0xa0b0, 0, 4, 0);
+              /* 标题 @0xa0b0 (0x9df6) */\n      if (*fault == 0) {                              /* 0x9dfc */\n        disp_string((int)0xa0c0, 2, 0, 0);
+            /* 正常 @0xa0c0 */\n        return;
+                                       /* 0x9e0e 提前返回（不走超时尾） */\n      }
+\n      /* 各故障位对应状态串 (0x9e12-0x9f74)，均显示在 row2 col0 */\n      if (*fault &amp;
+ 0x4)    disp_string((int)0xa0d4, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x2)    disp_string((int)0xa0d4, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x1)    disp_string((int)0xa0d4, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x8)    disp_string((int)0xa0e8, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x10)   disp_string((int)0xa0fc, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x20)   disp_string((int)0xa110, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x40)   disp_string((int)0xa124, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x80)   disp_string((int)0xa138, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x100)  disp_string((int)0xa14c, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x200)  disp_string((int)0xa160, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x400)  disp_string((int)0xa174, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x800)  disp_string((int)0xa188, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x1000) disp_string((int)0xa19c, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x4000) disp_string((int)0xa1b0, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x8000) disp_string((int)0xa1c4, 2, 0, 0);
+\n      if (*fault &amp;
+ 0x2000) disp_string((int)0xa1d8, 2, 0, 0);
+\n    }
+\n    /* 超时尾 (0x9f78，0x1388=5000) */\n    (*timeout)++;
+\n    if (*timeout &gt;
+= 0x1388) {\n      *timeout = 0;
+\n      *MENU = 1;
+\n      disp_splash_screen();
+\n    }
+\n    return;
+\n  }
+\n```\n\n```c\n  /* =====================================================================*/\n  /* ---------- case1E 运行主界面 (0x9fa6-0xa854)，MENU==0x1e ---------- */\n  /* 注意：bne 0xa058（MENU!=0x1e）→ b 0xa828 复用本 case 超时尾，故本 case\n     实际占 0x9fae-0xa854；含完整 RUN/STOP 状态机（与 case1 同套门控）。 */\n  if (*MENU == 0x1e) {\n    volatile uint8_t  *cfg      = (volatile uint8_t*)0x10001620;
+   /* cfg_word 运行标志 */\n    volatile uint8_t  *run      = (volatile uint8_t*)0x1000175e;
+   /* RUN */\n    volatile uint8_t  *stop     = (volatile uint8_t*)0x1000175f;
+   /* STOP */\n    volatile uint8_t  *run_req  = (volatile uint8_t*)0x1000175d;
+   /* RUN_REQ */\n    volatile uint8_t  *run_en   = (volatile uint8_t*)0x10001765;
+   /* 运行使能标志 */\n    volatile uint8_t  *scan_rs  = (volatile uint8_t*)0x10001727;
+   /* scan_run_stop 结果 (7=启 8=停) */\n    volatile uint8_t  *db       = (volatile uint8_t*)0x1000175c;
+   /* DB_117 去抖结果 */\n    volatile uint8_t  *disp_sel = (volatile uint8_t*)0x1000164d;
+   /* DISP_SEL 0/1/2 */\n    volatile uint8_t  *pair     = (volatile uint8_t*)0x1000164e;
+   /* 配对标志 */\n    volatile uint8_t  *estop    = (volatile uint8_t*)0x1000164f;
+   /* ESTOP */\n    volatile uint8_t  *reset_m  = (volatile uint8_t*)0x10001650;
+   /* RESET_MODE */\n    volatile uint8_t  *reset2   = (volatile uint8_t*)0x10001762;
+   /* RESET2 标志 */\n    volatile uint8_t  *stat_fl  = (volatile uint8_t*)0x10001761;
+   /* 状态显示标志 */\n    volatile uint8_t  *mode_l   = (volatile uint8_t*)0x100015cd;
+   /* 模式显示锁存 */\n    volatile uint8_t  *mode_l2  = (volatile uint8_t*)0x100015cf;
+   /* 模式显示锁存2（RESET_MODE/ESTOP 用） */\n    volatile uint8_t  *stat_l   = (volatile uint8_t*)0x100015cc;
+   /* 状态行锁存 */\n    volatile uint8_t  *ctrlm    = (volatile uint8_t*)0x1000162c;
+   /* CTRL_MODE */\n    volatile uint32_t *idle     = (volatile uint32_t*)0x10001748;
+  /* IDLE */\n    volatile uint32_t *timeout  = (volatile uint32_t*)0x10001744;
+\n    volatile uint32_t *timeout2 = (volatile uint32_t*)0x10001740;
+\n    volatile uint32_t *fault    = (volatile uint32_t*)0x1000161c;
+\n    volatile uint32_t *target   = (volatile uint32_t*)0x100015a8;
+  /* TARGET */\n    volatile uint32_t *vamp     = (volatile uint32_t*)0x100015d0;
+  /* V_AMP 显示副本 */\n    volatile uint32_t *vamp2    = (volatile uint32_t*)0x100015b4;
+  /* V_AMP2 显示副本 */\n    volatile uint32_t *manual   = (volatile uint32_t*)0x100015d8;
+  /* MANUAL 手动幅值 */\n    volatile uint32_t *v5d4     = (volatile uint32_t*)0x100015d4;
+  /* MANUAL 派生显示 */\n    volatile uint32_t *dcalc    = (volatile uint32_t*)0x10001754;
+  /* disp_calc */\n    volatile uint32_t *hsrc     = (volatile uint32_t*)0x10001768;
+  /* 首页值源 */\n    volatile uint32_t *g0       = (volatile uint32_t*)0x10001634;
+  /* 增益 0（V 档） */\n    volatile uint32_t *g1       = (volatile uint32_t*)0x10001630;
+  /* 增益 1（A 档） */\n    volatile uint32_t *dly_out  = (volatile uint32_t*)0x10001614;
+  /* 延时计数外环 */\n    volatile uint32_t *dly_in   = (volatile uint32_t*)0x10001618;
+  /* 延时计数内环 */\n\n    /* key==4 回主菜单 (0x9fb2) */\n    if (key == 4) { *MENU = 1;
+ disp_splash_screen();
+ *timeout = 0;
+ return;
+ }
+\n\n    /* key==1 且停机 → 初始参数屏 (0x9fc4) */\n    if (key == 1 &amp;
+&amp;
+ *cfg == 0) {\n      disp_clear();
+\n      *MENU = 0xa;
+ *MENU2 = 0;
+ *timeout = 0;
+ *timeout2 = 0x3c;
+ *idle = 0;
+\n      disp_string((int)0x4cf4, 1, 0, 0);
+\n      disp_string((int)0x4cf4 + 0x10, 3, 7, 0);
+       /* 0x4d04 */\n      return;
+\n    }
+\n\n    /* IDLE 周期刷新 + 状态/模式行 (0xa00c-0xa2c0) */\n    (*idle)++;
+\n    if (*idle &gt;
+= 0x15e) {\n      *idle = 0;
+\n      disp_uint4(*((volatile uint32_t*)0x10001598), 0, 9, 0);
+  /* 0xe80 */\n      disp_uint4(*((volatile uint32_t*)0x1000159c), 1, 9, 0);
+\n      disp_uint4(*((volatile uint32_t*)0x100015a0), 2, 9, 0);
+\n      if (*fault != 0) {\n        *stat_l = 0;
+\n        disp_string((int)0x4334, 3, 0xa, 0);
+          /* 故障 */\n      }
+else if (*cfg == 0 &amp;
+&amp;
+ *stat_l != 1) {\n        *stat_l = 1;
+\n        disp_string((int)0x4340, 3, 0xa, 0);
+          /* 停机 */\n      }
+\n      if (*ctrlm == 0) {\n        if (*mode_l != 1) { *mode_l = 1;
+ fio1_pin20_ctrl(1);
+ fio1_pin21_ctrl(0);
+ disp_string((int)0x4354, 3, 0, 0);
+ }
+\n      }
+\n      if (*ctrlm == 1) {\n        if (*mode_l != 2) { *mode_l = 2;
+ fio1_pin20_ctrl(0);
+ fio1_pin21_ctrl(1);
+ disp_string((int)0x435c, 3, 0, 0);
+ }
+\n      }
+\n      if (*ctrlm == 2) {\n        if (*mode_l != 3) { *mode_l = 3;
+ fio1_pin20_ctrl(0);
+ fio1_pin21_ctrl(0);
+ disp_string((int)0x4364, 3, 0, 0);
+ }
+\n      }
+\n    }
+\n\n    /* 复位去抖 → 故障停机斜坡 (0xa2c4) */\n    *db = debounce_p117();
+                            /* 0x1aee（12p 引脚未确证，6p 为 P1.17） */\n    if (*fault != 0 &amp;
+&amp;
+ *db == 2 &amp;
+&amp;
+ *reset_m == 0) {\n      *fault = 0;
+ *cfg = 0;
+ *stop = 1;
+ *run = 0;
+\n      disp_string((int)0x4d6c, 3, 0xa, 0);
+\n      /* 延时 0xbb8 × 0x7d0 (0xa302) */\n      *dly_out = 0;
+\n      do { *dly_in = 0;
+ do { (*dly_in)++;
+ }
+while (*dly_in &lt;
+ 0x7d0);
+ wd_feed();
+ (*dly_out)++;
+ }
+while (*dly_out &lt;
+ 0xbb8);
+\n      disp_string((int)0x4d6c + 0x10, 3, 0xa, 0);
+     /* 0x4d7c */\n      *dly_out = 0;
+\n      do { *dly_in = 0;
+ do { (*dly_in)++;
+ }
+while (*dly_in &lt;
+ 0x7d0);
+ wd_feed();
+ (*dly_out)++;
+ }
+while (*dly_out &lt;
+ 0xbb8);
+\n      for (;
+;
+) { }
+                                   /* 0xa392 故障停机后锁定，等看门狗复位 */\n    }
+\n    if (*reset_m == 1) {\n      if (*db != 2 &amp;
+&amp;
+ *mode_l != 1) { *mode_l2 = 1;
+ *ctrlm = 0;
+ fio1_pin20_ctrl(1);
+ fio1_pin21_ctrl(0);
+ disp_string((int)0x4354, 3, 0, 0);
+ }
+\n      if (*db == 2 &amp;
+&amp;
+ *mode_l != 2) { *mode_l2 = 2;
+ *ctrlm = 1;
+ fio1_pin20_ctrl(0);
+ fio1_pin21_ctrl(1);
+ disp_string((int)0x435c, 3, 0, 0);
+ }
+\n    }
+\n    if (*reset_m == 2) { if (*db != 2) *reset2 = 0;
+ if (*db == 2) *reset2 = 1;
+ }
+\n    *db = debounce_p06();
+                             /* 0x1b46 急停去抖（12p 引脚未确证，6p 为 P0.6） */\n\n    /* 急停触发 (0xa42c)：急停被按下 → 停机并锁定 */\n    if (*fault == 0 &amp;
+&amp;
+ *db == 2 &amp;
+&amp;
+ *estop == 0) {\n      *run_req = 1;
+ *cfg = 0;
+ *stop = 1;
+ *run = 0;
+\n      if (*stat_fl == 0) { disp_string((int)0x4340, 3, 0xa, 0);
+ *stat_fl = 1;
+ }
+\n      return;
+\n    }
+\n    if (*estop == 1) {\n      if (*db != 2 &amp;
+&amp;
+ *mode_l != 1) { *mode_l2 = 1;
+ *ctrlm = 0;
+ fio1_pin20_ctrl(1);
+ fio1_pin21_ctrl(0);
+ disp_string((int)0x4354, 3, 0, 0);
+ }
+\n      if (*db == 2 &amp;
+&amp;
+ *mode_l != 2) { *mode_l2 = 2;
+ *ctrlm = 1;
+ fio1_pin20_ctrl(0);
+ fio1_pin21_ctrl(1);
+ disp_string((int)0x435c, 3, 0, 0);
+ }
+\n    }
+\n    if (*estop == 2) { if (*db != 2) *reset2 = 0;
+ if (*db == 2) *reset2 = 1;
+ }
+\n    if (*reset_m != 2 &amp;
+&amp;
+ *estop != 2) *reset2 = 0;
+\n    *scan_rs = scan_run_stop();
+                       /* 0x1976 */\n\n    /* 块A 持续运行 (0xa534)：run_en==1 时强制 RUN */\n    if (*fault == 0 &amp;
+&amp;
+ *run == 0 &amp;
+&amp;
+ *run_en == 1 &amp;
+&amp;
+ *disp_sel == 0) {\n      *run = 1;
+ *stop = 0;
+ *run_req = 0;
+ *cfg = 1;
+ *stat_fl = 0;
+\n      *((volatile uint32_t*)0x10001600) = 0;
+          /* TICK */\n      *((volatile uint32_t*)0x100015fc) = 0;
+          /* MIN_NOW */\n      *((volatile uint32_t*)0x100015f8) = 0;
+          /* HOUR_NOW */\n      disp_string((int)0x4348, 3, 0xa, 0);
+            /* 运行 */\n    }
+\n    /* 块B 持续停机 (0xa584)：run_en==0 时强制 STOP */\n    if (*fault == 0 &amp;
+&amp;
+ *stop == 0 &amp;
+&amp;
+ *run_en == 0 &amp;
+&amp;
+ *disp_sel == 0) {\n      *stop = 1;
+ *run = 0;
+ *cfg = 0;
+\n      disp_string((int)0x4340, 3, 0xa, 0);
+            /* 停机 */\n    }
+\n    if (*cfg == 0 &amp;
+&amp;
+ *disp_sel != 0) *run_en = 0;
+     /* 0xa5ba */\n\n    /* key5/扫描7 启动 (0xa5cc) */\n    if (*fault == 0 &amp;
+&amp;
+ *run == 0) {\n      if (key == 5 || *scan_rs == 7) {\n        if (*pair == 0 || (*scan_rs == 7 &amp;
+&amp;
+ *pair == 1 &amp;
+&amp;
+ *disp_sel != 0)) {\n          *run_en = 1;
+ *run = 1;
+ *stop = 0;
+ *run_req = 0;
+ *cfg = 1;
+ *stat_fl = 0;
+\n          *((volatile uint32_t*)0x10001600) = 0;
+ *((volatile uint32_t*)0x100015fc) = 0;
+ *((volatile uint32_t*)0x100015f8) = 0;
+\n          disp_string((int)0x4348, 3, 0xa, 0);
+\n        }
+\n      }
+\n    }
+\n    /* key6/扫描8 停机 (0xa6a2) */\n    if (*fault == 0 &amp;
+&amp;
+ *stop == 0) {\n      if (key == 6 || *scan_rs == 8) {\n        if (*pair == 0 || (*scan_rs == 8 &amp;
+&amp;
+ *pair == 1 &amp;
+&amp;
+ *disp_sel != 0)) {\n          *run_en = 0;
+ *stop = 1;
+ *run = 0;
+ *cfg = 0;
+\n          disp_string((int)0x4340, 3, 0xa, 0);
+\n        }
+\n      }
+\n    }
+\n\n    /* 幅值/频率计算 (0xa6fa) */\n    if (*disp_sel == 0) {\n      *target = *hsrc;
+                                /* TARGET = 首页值源 */\n      if (*ctrlm == 0) *dcalc = (*hsrc * *g0) / 1000;
+ /* 0x10001634 增益0 */\n      if (*ctrlm == 1) *dcalc = (*hsrc * *g1) / 1000;
+ /* 0x10001630 增益1 */\n      *vamp = *dcalc;
+ *vamp2 = *dcalc;
+\n    }
+\n    if (*disp_sel == 1) *vamp = *vamp2;
+\n    if (*disp_sel == 2) {                             /* 手动幅值 (0xa762) */\n      if (key == 2 || key == 0x16) {\n        (*manual)++;
+\n        if (*manual &gt;
+= 0x3e8) *manual = 0x3e8;
+\n        if (*manual &lt;
+= 0xa) *manual = 0xa;
+\n        disp_fixed_1dec(*manual, 0, 9, 0);
+            /* 0x13ec */\n      }
+\n      if (key == 3 || key == 0x21) {\n        if (*manual &lt;
+= 0xa) *manual = 0x1;
+\n        (*manual)--;
+\n        disp_fixed_1dec(*manual, 0, 9, 0);
+\n      }
+\n      *target = *manual;
+\n      if (*ctrlm == 0) *v5d4 = (*manual * *g0) / 1000;
+\n      if (*ctrlm == 1) *v5d4 = (*manual * *g1) / 1000;
+\n      *vamp = *v5d4;
+ *vamp2 = *v5d4;
+\n    }
+\n\n    /* 超时尾 (0xa828，0x1388=5000；MENU!=0x1e 跳过路径 0xa058 也汇入此尾) */\n    (*timeout)++;
+\n    if (*timeout &gt;
+= 0x1388) {\n      *timeout = 0;
+\n      *MENU = 1;
+\n      disp_splash_screen();
+\n    }
+\n    return;
+\n  }
+\n```\n\n---\n\n## Key facts summary\n\n- **case5A (0x9b44-0x9d2a)**: BAL_ANG = `0x1000168c` (byte), EEPROM shadow `0x1000168d`;
+ save writes EEPROM reg `0x1c` via call `0x1e38` (briefing labels it disp_by_index, but context = 6p `i2c_write_reg(value,0x1c)`);
+ run flag here is cfg_word `0x10001620` (key5→1/key6→0) + `run_stop_preset()`;
+ status line latched by `0x100015cc`;
+ screen bit `0x100015ce`;
+ timeout `0x3a98`;
+ return to `*MENU=2, *MENU2=8`.\n- **caseC (0x9d2a-0x9dc0)**: key==0x17 clears 4 words `0x100015f8`/`fc`/`1604`/`1608` and re-displays (disp_uint5/uint2, rows 1/3, cols 3/0xa);
+ key==4 → home;
+ timeout `0x1388`.\n- **case14 (0x9dc0-0x9fa6)**: title `0xa0b0`, no-fault string `0xa0c0`, 16 fault-bit strings `0xa0d4..0xa1d8` at row2 col0;
+ fault word `0x1000161c`;
+ refresh when TIMEOUT3 `0x10001758` &gt;
+ 0xfa;
+ **no-fault path returns early** (skips timeout tail);
+ fault path → timeout `0x1388`.\n- **case1E (0x9fa6-0xa854, real extent)**: key4→home;
+ key1+stopped→initial-params (MENU=0xa);
+ IDLE `0x10001748` &gt;
+=0x15e → periodic redraw of `0x10001598/9c/a0` + status line + CTRL_MODE relay/mode line;
+ fault-reset debounce (0x1aee) with fault-stop ramp + two 0xbb8×0x7d0 delays + infinite lockout;
+ RESET_MODE 0x10001650 / ESTOP 0x1000164f handling;
+ **full RUN/STOP**: scan_run_stop `0x10001727`==7/8 gated by pair `0x1000164e` + DISP_SEL `0x1000164d`, run_en `0x10001765`, sets `0x1000175e/5f/5d` + cfg_word `0x10001620`;
+ then TARGET/amplitude computation for DISP_SEL 0/1/2 (manual `0x100015d8`, V_AMP `0x100015d0`, V_AMP2 `0x100015b4`);
+ timeout `0x1388`.\n\nRead-width notes: `0x1000161c` is a **word** (fault/LATCH_OUT) but case14's bit-tests in the dump use `ldrb`/`ldrh` for low/mid bits — I normalized to one 32-bit read, which is semantically identical. All other byte/word access follows the dump strictly.

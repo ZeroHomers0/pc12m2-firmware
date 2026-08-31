@@ -1,0 +1,30 @@
+# FUN_0000e62a entry=0x0000e62a body=62
+0000e62a  push     {r4, lr}
+0000e62c  ldr      r0, [pc, #0xd4]
+ ; ref 0x0000e704 -> 0x4002c000 (PERI)  [pool->0x4002c000]
+0000e62e  ldr      r0, [r0, #0x10]
+0000e630  orr      r0, r0, #0x1000000
+0000e634  ldr      r1, [pc, #0xcc]
+ ; ref 0x0000e704 -> 0x4002c000 (PERI)  [pool->0x4002c000]
+0000e636  str      r0, [r1, #0x10]
+0000e638  mov      r0, r1
+0000e63a  ldr      r0, [r0, #0x10]
+0000e63c  bic      r0, r0, #0x2000000
+ ; jump -> 0x02000000 (FUN_000111cc)
+0000e640  str      r0, [r1, #0x10]
+0000e642  ldr      r0, [pc, #0xc4]
+ ; ref 0x0000e708 -> 0x400fc148 (PERI)  [pool->0x400fc148]
+0000e644  ldr      r0, [r0]
+0000e646  orr      r0, r0, #4
+0000e64a  ldr      r1, [pc, #0xac]
+ ; ref 0x0000e6f8 -> 0x400fc000 (PERI)  [pool->0x400fc000]
+0000e64c  str.w    r0, [r1, #0x148]
+0000e650  mov      r0, r1
+0000e652  ldr.w    r0, [r0, #0x14c]
+0000e656  bic      r0, r0, #4
+ ; jump -> 0x00000004 (?)
+0000e65a  str.w    r0, [r1, #0x14c]
+0000e65e  mov.w    r0, #0x14
+0000e662  bl       #0x10860
+ ; call -> 0x00010860 (FUN_00010860)
+0000e666  pop      {r4, pc}

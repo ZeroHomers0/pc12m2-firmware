@@ -1,0 +1,41 @@
+# FUN_0000e5ce entry=0x0000e5ce body=92
+0000e5ce  push     {r4, lr}
+0000e5d0  ldr      r0, [pc, #0x12c]
+ ; ref 0x0000e700 -> 0x400fc140 (PERI)  [pool->0x400fc140]
+0000e5d2  ldr      r0, [r0]
+0000e5d4  orr      r0, r0, #2
+0000e5d8  ldr      r1, [pc, #0x11c]
+ ; ref 0x0000e6f8 -> 0x400fc000 (PERI)  [pool->0x400fc000]
+0000e5da  str.w    r0, [r1, #0x140]
+0000e5de  ldr      r0, [pc, #0x124]
+ ; ref 0x0000e704 -> 0x4002c000 (PERI)  [pool->0x4002c000]
+0000e5e0  ldr      r0, [r0, #0x10]
+0000e5e2  orr      r0, r0, #0x400000
+0000e5e6  ldr      r1, [pc, #0x11c]
+ ; ref 0x0000e704 -> 0x4002c000 (PERI)  [pool->0x4002c000]
+0000e5e8  str      r0, [r1, #0x10]
+0000e5ea  mov      r0, r1
+0000e5ec  ldr      r0, [r0, #0x10]
+0000e5ee  bic      r0, r0, #0x800000
+ ; jump -> 0x00800000 (FUN_000111cc)
+0000e5f2  str      r0, [r1, #0x10]
+0000e5f4  ldr      r0, [pc, #0x100]
+ ; ref 0x0000e6f8 -> 0x400fc000 (PERI)  [pool->0x400fc000]
+0000e5f6  ldr.w    r0, [r0, #0x148]
+0000e5fa  orr      r0, r0, #2
+0000e5fe  ldr      r1, [pc, #0xf8]
+ ; ref 0x0000e6f8 -> 0x400fc000 (PERI)  [pool->0x400fc000]
+0000e600  str.w    r0, [r1, #0x148]
+0000e604  mov      r0, r1
+0000e606  ldr.w    r0, [r0, #0x14c]
+0000e60a  bic      r0, r0, #2
+ ; jump -> 0x00000002 (?)
+0000e60e  str.w    r0, [r1, #0x14c]
+0000e612  mov      r0, r1
+0000e614  ldr.w    r0, [r0, #0x140]
+0000e618  orr      r0, r0, #2
+0000e61c  str.w    r0, [r1, #0x140]
+0000e620  mov.w    r0, #0x13
+0000e624  bl       #0x10860
+ ; call -> 0x00010860 (FUN_00010860)
+0000e628  pop      {r4, pc}

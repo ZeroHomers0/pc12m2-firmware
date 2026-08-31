@@ -1,0 +1,88 @@
+# FUN_00000942 entry=0x00000942 body=158
+00000942  push     {r4, r5, r6, lr}
+00000944  movs     r5, #0
+00000946  movs     r4, #0
+00000948  movs     r6, #0xb8
+0000094a  ldr      r0, [pc, #0x218]
+ ; ref 0x00000b64 -> 0x2009c000
+0000094c  ldr      r0, [r0, #0x38]
+0000094e  orr      r0, r0, #0x4000000
+00000952  ldr      r1, [pc, #0x210]
+ ; ref 0x00000b64 -> 0x2009c000
+00000954  str      r0, [r1, #0x38]
+00000956  mov      r0, r1
+00000958  ldr      r0, [r0, #0x3c]
+0000095a  orr      r0, r0, #0x2000000
+0000095e  str      r0, [r1, #0x3c]
+00000960  movs     r0, #0xa
+00000962  bl       #0x758
+ ; call -> 0x00000758 (FUN_00000758)
+00000966  movs     r0, #0xc0
+00000968  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+0000096c  nop      
+0000096e  b        #0x990
+ ; jump -> 0x00000990 (FUN_00000942)
+00000970  adds     r1, r6, r4
+00000972  uxtb     r0, r1
+00000974  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+00000978  movs     r5, #0
+0000097a  b        #0x988
+ ; jump -> 0x00000988 (FUN_00000942)
+0000097c  movs     r1, #0
+0000097e  mov      r0, r1
+00000980  bl       #0x8a4
+ ; call -> 0x000008a4 (FUN_000008a4)
+00000984  adds     r0, r5, #1
+00000986  uxtb     r5, r0
+00000988  cmp      r5, #0x40
+0000098a  blt      #0x97c
+ ; jump -> 0x0000097c (FUN_00000942)
+0000098c  adds     r0, r4, #1
+0000098e  uxtb     r4, r0
+00000990  cmp      r4, #8
+00000992  blt      #0x970
+ ; jump -> 0x00000970 (FUN_00000942)
+00000994  ldr      r0, [pc, #0x1cc]
+ ; ref 0x00000b64 -> 0x2009c000
+00000996  ldr      r0, [r0, #0x3c]
+00000998  orr      r0, r0, #0x4000000
+0000099c  ldr      r1, [pc, #0x1c4]
+ ; ref 0x00000b64 -> 0x2009c000
+0000099e  str      r0, [r1, #0x3c]
+000009a0  mov      r0, r1
+000009a2  ldr      r0, [r0, #0x38]
+000009a4  orr      r0, r0, #0x2000000
+000009a8  str      r0, [r1, #0x38]
+000009aa  movs     r0, #0xa
+000009ac  bl       #0x758
+ ; call -> 0x00000758 (FUN_00000758)
+000009b0  movs     r0, #0xc0
+000009b2  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+000009b6  movs     r4, #0
+000009b8  b        #0x9da
+ ; jump -> 0x000009da (FUN_00000942)
+000009ba  adds     r1, r6, r4
+000009bc  uxtb     r0, r1
+000009be  bl       #0x8fa
+ ; call -> 0x000008fa (FUN_000008fa)
+000009c2  movs     r5, #0
+000009c4  b        #0x9d2
+ ; jump -> 0x000009d2 (FUN_00000942)
+000009c6  movs     r1, #0
+000009c8  mov      r0, r1
+000009ca  bl       #0x8a4
+ ; call -> 0x000008a4 (FUN_000008a4)
+000009ce  adds     r0, r5, #1
+000009d0  uxtb     r5, r0
+000009d2  cmp      r5, #0x40
+000009d4  blt      #0x9c6
+ ; jump -> 0x000009c6 (FUN_00000942)
+000009d6  adds     r0, r4, #1
+000009d8  uxtb     r4, r0
+000009da  cmp      r4, #8
+000009dc  blt      #0x9ba
+ ; jump -> 0x000009ba (FUN_00000942)
+000009de  pop      {r4, r5, r6, pc}

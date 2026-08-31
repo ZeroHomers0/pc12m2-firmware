@@ -1,0 +1,200 @@
+I have all the data needed. The case7 structure is fully decoded. Note: there are no internal helper subroutines to extract (all drawing calls go to external `disp_string`/`disp_uint4`), so I'll output the complete case7 C fragment directly.
+
+---
+
+**case7 PID 参数设置屏，12p 反汇编 0x8E18–0x97A8 解码结果**
+
+关键结论（与 6p 蓝图的差异）：
+- 12p 的 **PID_MODE = 0x10001708**（byte），显示缓冲 **P=0x10001706 / I=0x10001707**（byte），模式 1-4 的 P/I 槽为 **0x10001709/0a, 0b/0c, 0d/0e, 0f/10**（byte），增益子项为 **0x1000171a-1e**（byte，cl_gain_*）。这些全部以 dump 的 ldrb/strb 目标为准，与 6p 的 0x10001710-18 完全不同。
+- 编辑态标志是 **0x10001726**（byte，case7 中作 MENU3 用，case63 复用为锁标志）。
+- 重绘触发是 `TIMEOUT3(0x10001758)++ == 0xfb`（++ 在共享刷新区 0x92C0，而非 case 头部）；key==1 浏览→置 0xfa、编辑→置 0x1f4；改值/导航后置 0xfa（下一拍++即 0xfb 重绘）。
+- 超时尾常量 **0xc350**（与 6p 一致），回主菜单 `*MENU=1; disp_splash_screen()`。
+
+```c
+  /* =====================================================================*/
+  /* ---------- case7 PID 参数设置 (0x8E18-0x97A8)，MENU==7 ---------- */
+  /* PID 槽：PID_MODE=0x10001708；显示缓冲 P/I=0x10001706/07；
+   * 模式1-4 P/I 槽=0x10001709/0a、0b/0c、0d/0e、0f/10；
+   * 增益子项=0x1000171a-1e。全程 ldrb/strb（byte 宽），勿 word 混用。 */
+  if (*MENU == 7) {
+    volatile uint8_t  *m2   = (volatile uint8_t*)0x10001725; /* 光标/子项 MENU2 */
+    volatile uint8_t  *m3   = (volatile uint8_t*)0x10001726; /* 编辑态标志：0=浏览 1=编辑（case63 复用为锁标志） */
+    volatile uint8_t  *pm   = (volatile uint8_t*)0x10001708; /* PID 模式 1-4 */
+    volatile uint8_t  *pBuf = (volatile uint8_t*)0x10001706; /* P 显示缓冲 */
+    volatile uint8_t  *iBuf = (volatile uint8_t*)0x10001707; /* I 显示缓冲 */
+    volatile uint8_t  *p1   = (volatile uint8_t*)0x10001709; /* 模式1 P 槽 */
+    volatile uint8_t  *i1   = (volatile uint8_t*)0x1000170a; /* 模式1 I 槽 */
+    volatile uint8_t  *p2   = (volatile uint8_t*)0x1000170b; /* 模式2 P 槽 */
+    volatile uint8_t  *i2   = (volatile uint8_t*)0x1000170c; /* 模式2 I 槽 */
+    volatile uint8_t  *p3   = (volatile uint8_t*)0x1000170d; /* 模式3 P 槽 */
+    volatile uint8_t  *i3   = (volatile uint8_t*)0x1000170e; /* 模式3 I 槽 */
+    volatile uint8_t  *p4   = (volatile uint8_t*)0x1000170f; /* 模式4 P 槽 */
+    volatile uint8_t  *i4   = (volatile uint8_t*)0x10001710; /* 模式4 I 槽 */
+    volatile uint8_t  *g1   = (volatile uint8_t*)0x1000171a; /* 增益子项1 */
+    volatile uint8_t  *g2   = (volatile uint8_t*)0x1000171b; /* 增益子项2 */
+    volatile uint8_t  *g3   = (volatile uint8_t*)0x1000171c; /* 增益子项3 */
+    volatile uint8_t  *g4   = (volatile uint8_t*)0x1000171d; /* 增益子项4 */
+    volatile uint8_t  *g5   = (volatile uint8_t*)0x1000171e; /* 增益子项5 */
+    volatile uint32_t *tm   = (volatile uint32_t*)0x10001744; /* TIMEOUT 菜单超时 */
+    volatile uint32_t *tm3  = (volatile uint32_t*)0x10001758; /* TIMEOUT3 页刷新计时 */
+
+    /* key==1 编辑/浏览切换（0x8E20-0x8E5A）：m3 在 0/1 间翻转，随之调整 TIMEOUT3 相位 */
+    if (key == 1) {
+      *tm = 0;
+      (*m3)++;
+      if (*m3 &gt; 1) *m3 = 0;
+      if (*m3 == 0) *tm3 = 0xfa;   /* 浏览：下一拍 ++→0xfb 整页重绘 */
+      if (*m3 == 1) *tm3 = 0x1f4;  /* 编辑：下一拍 ++→&gt;0x1f4 清高亮 */
+    }
+    /* key==4 回主菜单（0x8E5C-0x8F74）：*MENU=2、*MENU2=4、画 case2 页标题、
+     * 当前 PID 模式槽复制到显示缓冲 0x10001706/07 */
+    else if (key == 4) {
+      *tm = 0;
+      *MENU = 2;
+      *m2 = 4;
+      param_sync_live_to_eeprom();
+      disp_clear();
+      disp_string((int)0x5ffc, 0, 0, 1);
+      disp_string((int)0x5ffc + 0x14, 1, 0, 0);
+      disp_string((int)0x5ffc + 0x28, 2, 0, 0);
+      disp_string((int)0x6038, 3, 0, 0);
+      if (*pm == 1) { *pBuf = *p1; *iBuf = *i1; }
+      if (*pm == 2) { *pBuf = *p2; *iBuf = *i2; }
+      if (*pm == 3) { *pBuf = *p3; *iBuf = *i3; }
+      if (*pm == 4) { *pBuf = *p4; *iBuf = *i4; }
+    }
+    /* key==2/3：浏览态(0)且 PIDMODE==4 时切换子项页（0x8F76-0x9088） */
+    if ((key == 2 || key == 3) &amp;&amp; *m3 == 0 &amp;&amp; *pm == 4) {
+      *tm = 0;
+      if (key == 3) { (*m2)++; if (*m2 &gt; 8) *m2 = 8; }
+      if (key == 2) { if (*m2 &gt; 0) (*m2)--; }
+      /* 按 MENU2 区间画 4 行标题（col0，attr0） */
+      if (*m2 &lt; 4) {
+        disp_string((int)0x65e4, 0, 0, 0);
+        disp_string((int)0x65e4 + 0x14, 1, 0, 0);
+        disp_string((int)0x65e4 + 0x28, 2, 0, 0);
+        disp_string((int)0x65e4 + 0x3c, 3, 0, 0);
+      }
+      if (*m2 &gt;= 4 &amp;&amp; *m2 &lt; 8) {
+        disp_string((int)0x9348, 0, 0, 0);
+        disp_string((int)0x935c, 1, 0, 0);
+        disp_string((int)0x9370, 2, 0, 0);
+        disp_string((int)0x9384, 3, 0, 0);
+      }
+      if (*m2 &gt;= 8 &amp;&amp; *m2 &lt; 0xc) {
+        disp_string((int)0x9398, 0, 0, 0);
+        disp_string((int)0x56d8, 1, 0, 0);  /* 空格 */
+        disp_string((int)0x56d8, 2, 0, 0);
+        disp_string((int)0x56d8, 3, 0, 0);
+      }
+      *tm3 = 0xfa;
+    }
+    /* key==2/0x16/3/0x21：编辑态(1)改值（0x908A-0x92BE）。
+     * key==3/0x21 降方向，key==2/0x16 升方向。 */
+    if ((key == 2 || key == 0x16 || key == 3 || key == 0x21) &amp;&amp; *m3 == 1) {
+      if (key == 3 || key == 0x21) {
+        /* 降方向（0x90AA-0x9190） */
+        *tm = 0;
+        if (*m2 == 0) { (*pm)++; if (*pm &gt;= 4) *pm = 4; }               /* 模式号 ++ clamp 4 */
+        if (*m2 == 1 &amp;&amp; *pm == 4) { if (*p4 &gt; 1) (*p4)--; }             /* 模式4 P */
+        if (*m2 == 2 &amp;&amp; *pm == 4) { if (*i4 &gt; 1) (*i4)--; }             /* 模式4 I */
+        if (*m2 == 4) { if (*g1 &gt; 1) (*g1)--; }
+        if (*m2 == 5) { if (*g2 &gt; 1) (*g2)--; }
+        if (*m2 == 6) { if (*g3 &gt; 1) (*g3)--; }
+        if (*m2 == 7) { if (*g4 &gt; 1) (*g4)--; }
+        if (*m2 == 8) { if (*g5 &gt; 1) (*g5)--; }
+      } else {
+        /* 升方向（0x919E-0x92B8） */
+        *tm = 0;
+        if (*m2 == 0) { if (*pm &gt; 1) (*pm)--; }                         /* 模式号 -- min 1 */
+        if (*m2 == 1 &amp;&amp; *pm == 4) { (*p4)++; if (*p4 &gt;= 0x80) *p4 = 0x80; }
+        if (*m2 == 2 &amp;&amp; *pm == 4) { (*i4)++; if (*i4 &gt;= 0x80) *i4 = 0x80; }
+        if (*m2 == 4) { (*g1)++; if (*g1 &gt;= 0xfa) *g1 = 0xfa; }
+        if (*m2 == 5) { (*g2)++; if (*g2 &gt; *g1) *g2 = *g1; }            /* 不超上一项 */
+        if (*m2 == 6) { (*g3)++; if (*g3 &gt;= 0xfa) *g3 = 0xfa; }
+        if (*m2 == 7) { (*g4)++; if (*g4 &gt; *g3) *g4 = *g3; }
+        if (*m2 == 8) { (*g5)++; if (*g5 &gt; *g4) *g5 = *g4; }
+      }
+      *tm3 = 0xfa;  /* 0x92BA 改值后置回，下一拍 ++→0xfb 重绘 */
+    }
+    /* ---------- 刷新区（0x92C0-0x96A8）：TIMEOUT3++ 计到 0xfb 按 MENU2 重绘 ---------- */
+    (*tm3)++;
+    if (*tm3 == 0xfb) {
+      if (*m2 &lt; 4) {
+        /* 模式名 row0 col0xb：MENU2==0 反显(attr1)，否则常显(attr0) */
+        if (*m2 == 0) {
+          if (*pm == 1) disp_string((int)0x6638, 0, 0xb, 1);
+          if (*pm == 2) disp_string((int)0x6648, 0, 0xb, 1);
+          if (*pm == 3) disp_string((int)0x6654, 0, 0xb, 1);
+          if (*pm == 4) disp_string((int)0x6664, 0, 0xb, 1);
+        } else {
+          if (*pm == 1) disp_string((int)0x6638, 0, 0xb, 0);
+          if (*pm == 2) disp_string((int)0x6648, 0, 0xb, 0);
+          if (*pm == 3) disp_string((int)0x6654, 0, 0xb, 0);
+          if (*pm == 4) disp_string((int)0x6664, 0, 0xb, 0);
+        }
+        /* P 值 row1（0x9456-0x9510）：MENU2==1 反显 */
+        if (*m2 == 1) {
+          if (*pm == 1) disp_uint4(*p1, 1, 0xb, 1);
+          if (*pm == 2) disp_uint4(*p2, 1, 0xb, 1);
+          if (*pm == 3) disp_uint4(*p3, 1, 0xb, 1);
+          if (*pm == 4) disp_uint4(*p4, 1, 0xb, 1);
+        } else {
+          if (*pm == 1) disp_uint4(*p1, 1, 0xb, 0);
+          if (*pm == 2) disp_uint4(*p2, 1, 0xb, 0);
+          if (*pm == 3) disp_uint4(*p3, 1, 0xb, 0);
+          if (*pm == 4) disp_uint4(*p4, 1, 0xb, 0);
+        }
+        /* I 值 row2（0x9510-0x95C8）：MENU2==2 反显 */
+        if (*m2 == 2) {
+          if (*pm == 1) disp_uint4(*i1, 2, 0xb, 1);
+          if (*pm == 2) disp_uint4(*i2, 2, 0xb, 1);
+          if (*pm == 3) disp_uint4(*i3, 2, 0xb, 1);
+          if (*pm == 4) disp_uint4(*i4, 2, 0xb, 1);
+        } else {
+          if (*pm == 1) disp_uint4(*i1, 2, 0xb, 0);
+          if (*pm == 2) disp_uint4(*i2, 2, 0xb, 0);
+          if (*pm == 3) disp_uint4(*i3, 2, 0xb, 0);
+          if (*pm == 4) disp_uint4(*i4, 2, 0xb, 0);
+        }
+        /* MENU2&lt;4 仅 mode/P/I 三行；MENU2==3 无值可显（与 6p 一致） */
+      } else if (*m2 &gt;= 4 &amp;&amp; *m2 &lt; 8) {
+        /* 增益子项 row0-3（0x1000171a-1d） */
+        if (*m2 == 4) disp_uint4(*g1, 0, 0xb, 1); else disp_uint4(*g1, 0, 0xb, 0);
+        if (*m2 == 5) disp_uint4(*g2, 1, 0xb, 1); else disp_uint4(*g2, 1, 0xb, 0);
+        if (*m2 == 6) disp_uint4(*g3, 2, 0xb, 1); else disp_uint4(*g3, 2, 0xb, 0);
+        if (*m2 == 7) disp_uint4(*g4, 3, 0xb, 1); else disp_uint4(*g4, 3, 0xb, 0);
+      } else if (*m2 &gt;= 8 &amp;&amp; *m2 &lt; 0xc) {
+        /* 增益子项 row0（0x1000171e） */
+        if (*m2 == 8) disp_uint4(*g5, 0, 0xb, 1); else disp_uint4(*g5, 0, 0xb, 0);
+      }
+    }
+    /* ---------- 超时清高亮（0x96A8-0x977A）：TIMEOUT3&gt;0x1f4 清行；浏览态直接回主界面 ---------- */
+    if (*tm3 &gt; 0x1f4) {
+      *tm3 = 0;
+      if (*m3 == 0) return;               /* b.w 0x4932 回函数返回点 */
+      /* 编辑态：按 MENU2 清当前行（0x5f98 空格串，col0xb） */
+      if (*m2 == 0) disp_string((int)0x5f98, 0, 0xb, 0);
+      if (*m2 == 1) disp_string((int)0x5f98, 1, 0xb, 0);
+      if (*m2 == 2) disp_string((int)0x5f98, 2, 0xb, 0);
+      if (*m2 == 3) disp_string((int)0x5f98, 3, 0xb, 0);
+      if (*m2 == 4) disp_string((int)0x5f98, 0, 0xb, 0);
+      if (*m2 == 5) disp_string((int)0x5f98, 1, 0xb, 0);
+      if (*m2 == 6) disp_string((int)0x5f98, 2, 0xb, 0);
+      if (*m2 == 7) disp_string((int)0x5f98, 3, 0xb, 0);
+      if (*m2 == 8) disp_string((int)0x5f98, 0, 0xb, 0);
+    }
+    /* ---------- 超时尾（0x977A-0x97A6，0xc350=50000） ---------- */
+    (*tm)++;
+    if (*tm &gt;= 0xc350) {
+      *tm = 0;
+      *MENU = 1;
+      disp_splash_screen();
+    }
+    return;
+  }
+```
+
+**辅助函数**：无。case7 区间内无内部 `bl`（所有绘制均走外部 `disp_string` 0xcec / `disp_uint4` 0xe80；键处理收尾调 0x3534、0x942、0x40b0）。若需复用，可将「按 MENU2 画 4 行标题」与「按 PIDMODE 画模式名/P/I」提为静态辅助，但 12p dump 中它们内联出现，未单独成子程序。
+
+**未确证项**：模式名串 0x6638/0x6648/0x6654/0x6664 与标题串 0x65e4 组、0x9348 组、0x9398 组、0x5ffc 组的确切中文内容（dump ref 注释仅给出首 4 字节，含非 ASCII），仅按地址直传。所有数值槽与地址均直接来自 dump 的 ldrb/strb 目标（0x8E18-0x97A8），读宽严格按 dump。

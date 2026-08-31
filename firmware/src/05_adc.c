@@ -24,8 +24,8 @@ void adc_init(void)
 {
   int clk_base;
 
-  clk_base = DAT_00002300;
-  *(volatile uint *)(DAT_00002300 + 4) = *(volatile uint *)(DAT_00002300 + 4) & 0xffc03fff;
+  clk_base = DAT_000022b0;
+  *(volatile uint *)(DAT_000022b0 + 4) = *(volatile uint *)(DAT_000022b0 + 4) & 0xffc03fff;
   *(volatile uint *)(clk_base + 4) = *(volatile uint *)(clk_base + 4) | 0x154000;      /* PCLK ADC=CCLK */
   *(volatile uint *)(clk_base + 0xc) = *(volatile uint *)(clk_base + 0xc) & 0xcfffffff;
   *(volatile uint *)(clk_base + 0xc) = *(volatile uint *)(clk_base + 0xc) | 0x30000000;
@@ -35,8 +35,8 @@ void adc_init(void)
   *(volatile uint *)(clk_base + 0xc) = *(volatile uint *)(clk_base + 0xc) | 0xc0000000;
   *(volatile uint *)(clk_base + 0xc) = *(volatile uint *)(clk_base + 0xc) & 0x3fffffff;
   *(volatile uint *)(clk_base + 0xc) = *(volatile uint *)(clk_base + 0xc) | 0xc0000000;
-  *(volatile uint *)(DAT_00002308 + 0xc4) = *g_pconp | 0x1000;      /* PCONP ADC 上电 */
-  *g_adc = DAT_0000230c;                                 /* AD0CR 初值 */
+  *(volatile uint *)(DAT_000022b8 + 0xc4) = *g_pconp | 0x1000;      /* PCONP ADC 上电 */
+  *g_adc = DAT_000022bc;                                 /* AD0CR 初值 */
   return;
 }
 
@@ -80,8 +80,8 @@ void adc0_scan_channels(void)
   int sample;
   uint32_t sample32;
 
-  avg_idx = DAT_00002314;
-  *DAT_00002314 = *DAT_00002314 + 1;
+  avg_idx = adc_scan_idx;
+  *adc_scan_idx = *adc_scan_idx + 1;
   if (5 < *avg_idx) {
     *avg_idx = 0;
   }
@@ -91,192 +91,192 @@ void adc0_scan_channels(void)
   *val_ptr = *val_ptr | 4;
   adc0_start();
   sample = adc0_wait_done();
-  DAT_00002318[*DAT_00002314] = sample;
+  adc_ch0_raw[*adc_scan_idx] = sample;
   /* —— ch1（SEL=2，IB）—— */
   val_ptr = g_adc;
   *g_adc = *g_adc & 0xffffffc0;
   *val_ptr = *val_ptr | 2;
   adc0_start();
   sample = adc0_wait_done();
-  DAT_0000231c[*DAT_00002314] = sample;
+  adc_ch1_raw[*adc_scan_idx] = sample;
   /* —— ch0（SEL=1，IC）—— */
   val_ptr = g_adc;
   *g_adc = *g_adc & 0xffffffc0;
   *val_ptr = *val_ptr | 1;
   adc0_start();
   sample = adc0_wait_done();
-  DAT_00002320[*DAT_00002314] = sample;
+  adc_ch2_raw[*adc_scan_idx] = sample;
   /* —— ch5（SEL=0x20，Ug 给定）—— */
   val_ptr = g_adc;
   *g_adc = *g_adc & 0xffffffc0;
   *val_ptr = *val_ptr | 0x20;
   adc0_start();
   sample = adc0_wait_done();
-  DAT_00002324[*DAT_00002314] = sample;
+  adc_ch3_raw[*adc_scan_idx] = sample;
   /* —— ch3（SEL=8，IF）—— */
   val_ptr = g_adc;
   *g_adc = *g_adc & 0xffffffc0;
   *val_ptr = *val_ptr | 8;
   adc0_start();
   sample32 = adc0_wait_done();
-  *(volatile undefined4 *)(DAT_00002328 + (uint)*DAT_00002314 * 4) = sample32;
+  *(volatile undefined4 *)(adc_ch4_raw + (uint)*adc_scan_idx * 4) = sample32;
   /* —— ch4（SEL=0x10，Uf）—— */
   val_ptr = g_adc;
   *g_adc = *g_adc & 0xffffffc0;
   *val_ptr = *val_ptr | 0x10;
   adc0_start();
   sample32 = adc0_wait_done();
-  *(volatile undefined4 *)(DAT_0000232c + (uint)*DAT_00002314 * 4) = sample32;
+  *(volatile undefined4 *)(adc_ch5_raw + (uint)*adc_scan_idx * 4) = sample32;
 
   /* —— ch2 平均（每轮转满 5 点计算）—— */
-  avg_idx = DAT_00002330;
-  if (*DAT_00002314 == 0) {
-    *DAT_00002330 = *DAT_00002330 + 1;
+  avg_idx = adc_avg_idx_0;
+  if (*adc_scan_idx == 0) {
+    *adc_avg_idx_0 = *adc_avg_idx_0 + 1;
     if (9 < *avg_idx) {
       *avg_idx = 0;
     }
-    sample = DAT_00002334;
-    *(volatile uint *)(DAT_00002334 + (uint)*DAT_00002330 * 4) =
-         (uint)(*DAT_00002318 + DAT_00002318[1] + DAT_00002318[2] + DAT_00002318[3] +
-               DAT_00002318[4]) / 5;
-    val_ptr = DAT_00002338;
-    *DAT_00002338 = *(volatile uint *)(sample + (uint)*DAT_00002330 * 4);
-    out_ptr = DAT_00002344;
-    *DAT_00002344 = (*DAT_0000233c * *val_ptr * 2) / *DAT_00002340;
-    if ((*g_cfg_word == '\0') && (*out_ptr < 10)) {
+    sample = adc_ch0_buf;
+    *(volatile uint *)(adc_ch0_buf + (uint)*adc_avg_idx_0 * 4) =
+         (uint)(*adc_ch0_raw + adc_ch0_raw[1] + adc_ch0_raw[2] + adc_ch0_raw[3] +
+               adc_ch0_raw[4]) / 5;
+    val_ptr = adc_avg_work;
+    *adc_avg_work = *(volatile uint *)(sample + (uint)*adc_avg_idx_0 * 4);
+    out_ptr = DAT_000022f4;
+    *DAT_000022f4 = (*gain_coef * *val_ptr * 2) / *DAT_000022f0;
+    if ((*cfg_word == '\0') && (*out_ptr < 10)) {
       *out_ptr = 0;
     }
   }
   /* —— ch1 平均（→ reg42 IB）—— */
-  avg_idx = DAT_0000234c;
-  if (*DAT_00002314 == 1) {
-    *DAT_0000234c = *DAT_0000234c + 1;
+  avg_idx = adc_avg_idx_1;
+  if (*adc_scan_idx == 1) {
+    *adc_avg_idx_1 = *adc_avg_idx_1 + 1;
     if (9 < *avg_idx) {
       *avg_idx = 0;
     }
-    sample = DAT_00002350;
-    *(volatile uint *)(DAT_00002350 + (uint)*DAT_0000234c * 4) =
-         (uint)(*DAT_0000231c + DAT_0000231c[1] + DAT_0000231c[2] + DAT_0000231c[3] +
-               DAT_0000231c[4]) / 5;
-    val_ptr = DAT_00002338;
-    *DAT_00002338 = *(volatile uint *)(sample + (uint)*DAT_0000234c * 4);
-    out_ptr = DAT_00002358;
-    *DAT_00002358 = (*DAT_0000233c * *val_ptr * 2) / *DAT_00002354;
-    if ((*g_cfg_word == '\0') && (*out_ptr < 10)) {
+    sample = adc_ch1_buf;
+    *(volatile uint *)(adc_ch1_buf + (uint)*adc_avg_idx_1 * 4) =
+         (uint)(*adc_ch1_raw + adc_ch1_raw[1] + adc_ch1_raw[2] + adc_ch1_raw[3] +
+               adc_ch1_raw[4]) / 5;
+    val_ptr = adc_avg_work;
+    *adc_avg_work = *(volatile uint *)(sample + (uint)*adc_avg_idx_1 * 4);
+    out_ptr = DAT_00002308;
+    *DAT_00002308 = (*gain_coef * *val_ptr * 2) / *DAT_00002304;
+    if ((*cfg_word == '\0') && (*out_ptr < 10)) {
       *out_ptr = 0;
     }
   }
   /* —— ch0 平均（→ reg43 IC）—— */
-  avg_idx = DAT_0000235c;
-  if (*DAT_00002314 == 2) {
-    *DAT_0000235c = *DAT_0000235c + 1;
+  avg_idx = adc_avg_idx_2;
+  if (*adc_scan_idx == 2) {
+    *adc_avg_idx_2 = *adc_avg_idx_2 + 1;
     if (9 < *avg_idx) {
       *avg_idx = 0;
     }
-    sample = DAT_00002360;
-    *(volatile uint *)(DAT_00002360 + (uint)*DAT_0000235c * 4) =
-         (uint)(*DAT_00002320 + DAT_00002320[1] + DAT_00002320[2] + DAT_00002320[3] +
-               DAT_00002320[4]) / 5;
-    val_ptr = DAT_00002338;
-    *DAT_00002338 = *(volatile uint *)(sample + (uint)*DAT_0000235c * 4);
-    *DAT_00002364 = *val_ptr;
-    val_ptr = DAT_0000236c;
-    *DAT_0000236c = (*DAT_0000233c * *DAT_00002338 * 2) / *DAT_00002368;
-    if ((*g_cfg_word == '\0') && (*val_ptr < 10)) {
+    sample = adc_ch2_buf;
+    *(volatile uint *)(adc_ch2_buf + (uint)*adc_avg_idx_2 * 4) =
+         (uint)(*adc_ch2_raw + adc_ch2_raw[1] + adc_ch2_raw[2] + adc_ch2_raw[3] +
+               adc_ch2_raw[4]) / 5;
+    val_ptr = adc_avg_work;
+    *adc_avg_work = *(volatile uint *)(sample + (uint)*adc_avg_idx_2 * 4);
+    *adc_conv_ch2 = *val_ptr;
+    val_ptr = DAT_0000231c;
+    *DAT_0000231c = (*gain_coef * *adc_avg_work * 2) / *DAT_00002318;
+    if ((*cfg_word == '\0') && (*val_ptr < 10)) {
       *val_ptr = 0;
     }
   }
   /* —— ch5 平均（→ reg40 读回源 Ug）—— */
-  avg_idx = DAT_00002370;
-  if (*DAT_00002314 == 3) {
-    *DAT_00002370 = *DAT_00002370 + 1;
+  avg_idx = adc_avg_idx_5;
+  if (*adc_scan_idx == 3) {
+    *adc_avg_idx_5 = *adc_avg_idx_5 + 1;
     if (9 < *avg_idx) {
       *avg_idx = 0;
     }
-    ch5_raw = DAT_00002374;
-    DAT_00002374[*DAT_00002370] =
-         (uint)(*DAT_00002324 + DAT_00002324[1] + DAT_00002324[2] + DAT_00002324[3] +
-               DAT_00002324[4]) / 5;
-    val_ptr = DAT_00002338;
-    *DAT_00002338 =
-         (uint)(*ch5_raw + ch5_raw[1] + DAT_00002374[2] + DAT_00002374[3] + DAT_00002374[4] +
-                DAT_00002374[5] + DAT_00002374[6] + DAT_00002374[7] + DAT_00002374[8] +
-               DAT_00002374[9]) / 10;
-    out_ptr = DAT_00002378;
-    *DAT_00002378 = (*val_ptr * 0x65) / 400;      /* ×101/400 缩放 */
-    if (*DAT_0000237c == '\0') {
+    ch5_raw = adc_ch3_buf;
+    adc_ch3_buf[*adc_avg_idx_5] =
+         (uint)(*adc_ch3_raw + adc_ch3_raw[1] + adc_ch3_raw[2] + adc_ch3_raw[3] +
+               adc_ch3_raw[4]) / 5;
+    val_ptr = adc_avg_work;
+    *adc_avg_work =
+         (uint)(*ch5_raw + ch5_raw[1] + adc_ch3_buf[2] + adc_ch3_buf[3] + adc_ch3_buf[4] +
+                adc_ch3_buf[5] + adc_ch3_buf[6] + adc_ch3_buf[7] + adc_ch3_buf[8] +
+               adc_ch3_buf[9]) / 10;
+    out_ptr = adc_conv_ch3;
+    *adc_conv_ch3 = (*val_ptr * 0x65) / 400;      /* ×101/400 缩放 */
+    if (*eeprom_adc_cfg == '\0') {
       if (1000 < *out_ptr) {
         *out_ptr = 1000;
       }
-      if (*DAT_00002580 < 10) {
-        *DAT_00002580 = 0;
+      if (*DAT_00002530 < 10) {
+        *DAT_00002530 = 0;
       }
     }
-    if (*DAT_00002584 == '\x01') {
-      if (*DAT_00002580 < 0xcd) {
-        *DAT_00002580 = 0;
+    if (*DAT_00002534 == '\x01') {
+      if (*DAT_00002530 < 0xcd) {
+        *DAT_00002530 = 0;
       }
-      val_ptr = DAT_00002580;
-      if (0xcc < *DAT_00002580) {
-        *DAT_00002580 = (*DAT_00002580 - 200) * 5 >> 2;
+      val_ptr = DAT_00002530;
+      if (0xcc < *DAT_00002530) {
+        *DAT_00002530 = (*DAT_00002530 - 200) * 5 >> 2;
         if (1000 < *val_ptr) {
           *val_ptr = 1000;
         }
-        if (*DAT_00002580 < 10) {
-          *DAT_00002580 = 0;
+        if (*DAT_00002530 < 10) {
+          *DAT_00002530 = 0;
         }
       }
-      *DAT_00002588 = (*DAT_00002588 - 800) * 5 >> 2;
+      *DAT_00002538 = (*DAT_00002538 - 800) * 5 >> 2;
     }
-    if (*g_gain_sel == '\0') {
-      *DAT_00002594 = (*g_gain_a * *DAT_00002588) / 0xf78;    /* /3960 */
+    if (*gain_sel == '\0') {
+      *adc_conv_aux2 = (*gain_a * *DAT_00002538) / 0xf78;    /* /3960 */
     }
-    if (*g_gain_sel == '\x01') {
-      *DAT_00002594 = (*g_gain_b * *DAT_00002588) / 0xf78;
+    if (*gain_sel == '\x01') {
+      *adc_conv_aux2 = (*gain_b * *DAT_00002538) / 0xf78;
     }
   }
   /* —— ch3 平均（→ reg44 IF；仅当 0x1000259C==4）—— */
-  avg_idx = DAT_000025a0;
-  if (*DAT_0000259c == '\x04') {
-    *DAT_000025a0 = *DAT_000025a0 + 1;
+  avg_idx = adc_avg_idx_3;
+  if (*DAT_0000254c == '\x04') {
+    *adc_avg_idx_3 = *adc_avg_idx_3 + 1;
     if (9 < *avg_idx) {
       *avg_idx = 0;
     }
-    sample = DAT_000025a8;
-    *(volatile uint *)(DAT_000025a8 + (uint)*DAT_000025a0 * 4) =
-         (uint)(*DAT_000025a4 + DAT_000025a4[1] + DAT_000025a4[2] + DAT_000025a4[3] +
-               DAT_000025a4[4]) / 5;
-    val_ptr = DAT_00002588;
-    *DAT_00002588 = *(volatile uint *)(sample + (uint)*DAT_000025a0 * 4);
-    *DAT_000025ac = (*val_ptr * 0x65) / 400;
-    val_ptr = DAT_00002588;
-    *DAT_00002588 = (*g_gain_b * *DAT_00002588) / *DAT_000025b0;   /* gain_b/reg54 */
-    *DAT_000025b4 = *val_ptr;
-    *DAT_000025b8 = *DAT_00002588;
-    if ((*g_cfg_word == '\0') && (*DAT_000025b4 < 10)) {
-      *DAT_000025b4 = 0;
+    sample = adc_ch4_buf;
+    *(volatile uint *)(adc_ch4_buf + (uint)*adc_avg_idx_3 * 4) =
+         (uint)(*((volatile uint32_t *)DAT_00002554) + ((volatile uint32_t *)DAT_00002554)[1] + ((volatile uint32_t *)DAT_00002554)[2] + ((volatile uint32_t *)DAT_00002554)[3] +
+               ((volatile uint32_t *)DAT_00002554)[4]) / 5;
+    val_ptr = DAT_00002538;
+    *DAT_00002538 = *(volatile uint *)(sample + (uint)*adc_avg_idx_3 * 4);
+    *DAT_0000255c = (*val_ptr * 0x65) / 400;
+    val_ptr = DAT_00002538;
+    *DAT_00002538 = (*gain_b * *DAT_00002538) / *DAT_00002560;   /* gain_b/reg54 */
+    *adc_conv_ch4 = *val_ptr;
+    *adc_conv_aux1 = *DAT_00002538;
+    if ((*cfg_word == '\0') && (*adc_conv_ch4 < 10)) {
+      *adc_conv_ch4 = 0;
     }
   }
   /* —— ch4 平均（→ reg45 Uf；仅当 0x1000259C==5）—— */
-  avg_idx = DAT_000025c0;
-  if (*DAT_0000259c == '\x05') {
-    *DAT_000025c0 = *DAT_000025c0 + 1;
+  avg_idx = adc_avg_idx_4;
+  if (*DAT_0000254c == '\x05') {
+    *adc_avg_idx_4 = *adc_avg_idx_4 + 1;
     if (9 < *avg_idx) {
       *avg_idx = 0;
     }
-    sample = DAT_000025c8;
-    *(volatile uint *)(DAT_000025c8 + (uint)*DAT_000025c0 * 4) =
-         (uint)(*DAT_000025c4 + DAT_000025c4[1] + DAT_000025c4[2] + DAT_000025c4[3] +
-               DAT_000025c4[4]) / 5;
-    val_ptr = DAT_00002588;
-    *DAT_00002588 = *(volatile uint *)(sample + (uint)*DAT_000025c0 * 4);
-    *DAT_000025cc = (*val_ptr * 0x65) / 400;
-    val_ptr = DAT_00002588;
-    *DAT_00002588 = (*g_gain_a * *DAT_00002588) / *DAT_000025d0;   /* gain_a/reg55 */
-    *DAT_000025d4 = *val_ptr;
-    *DAT_000025d8 = *DAT_00002588;
-    if ((*g_cfg_word == '\0') && (*DAT_000025d4 < 10)) {
-      *DAT_000025d4 = 0;
+    sample = adc_ch5_buf;
+    *(volatile uint *)(adc_ch5_buf + (uint)*adc_avg_idx_4 * 4) =
+         (uint)(*((volatile uint32_t *)DAT_00002574) + ((volatile uint32_t *)DAT_00002574)[1] + ((volatile uint32_t *)DAT_00002574)[2] + ((volatile uint32_t *)DAT_00002574)[3] +
+               ((volatile uint32_t *)DAT_00002574)[4]) / 5;
+    val_ptr = DAT_00002538;
+    *DAT_00002538 = *(volatile uint *)(sample + (uint)*adc_avg_idx_4 * 4);
+    *DAT_0000257c = (*val_ptr * 0x65) / 400;
+    val_ptr = DAT_00002538;
+    *DAT_00002538 = (*gain_a * *DAT_00002538) / *DAT_00002580;   /* gain_a/reg55 */
+    *adc_conv_ch5 = *val_ptr;
+    *adc_conv_fb = *DAT_00002538;
+    if ((*cfg_word == '\0') && (*adc_conv_ch5 < 10)) {
+      *adc_conv_ch5 = 0;
     }
   }
   return;

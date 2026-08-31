@@ -1,0 +1,60 @@
+# uart3_isr entry=0x0000ac78 body=92
+0000ac78  push  {lr}
+0000ac7a  movs  r3, #0x0
+0000ac7c  ldr  r0, [0x0000ad90]
+      ; ref 0x0000ad90 -> 0x4009c000
+0000ac7e  ldr  r0, [r0,#0x8]
+0000ac80  and  r3, r0, #0xe
+0000ac84  cmp  r3, #0x4
+0000ac86  bne  0x0000ac8c
+      ; jump -> 0x0000ac8c
+0000ac88  bl  0x0000ac40
+      ; call -> 0x0000ac40
+0000ac8c  cmp  r3, #0x2
+0000ac8e  bne  0x0000acd2
+      ; jump -> 0x0000acd2
+0000ac90  ldr  r0, [0x0000ada4]
+      ; ref 0x0000ada4 -> 0x10001774
+0000ac92  ldrb  r0, [r0,#0x0]
+0000ac94  adds  r0, r0, #0x1
+0000ac96  ldr  r1, [0x0000ada4]
+      ; ref 0x0000ada4 -> 0x10001774
+0000ac98  strb  r0, [r1,#0x0]
+0000ac9a  mov  r0, r1
+0000ac9c  ldrb  r0, [r0,#0x0]
+0000ac9e  ldr  r1, [0x0000ada8]
+      ; ref 0x0000ada8 -> 0x10001773
+0000aca0  ldrb  r1, [r1,#0x0]
+0000aca2  cmp  r0, r1
+0000aca4  bge  0x0000acb4
+      ; jump -> 0x0000acb4
+0000aca6  ldr  r0, [0x0000adac]
+      ; ref 0x0000adac -> 0x10002340
+0000aca8  ldr  r1, [0x0000ada4]
+      ; ref 0x0000ada4 -> 0x10001774
+0000acaa  ldrb  r1, [r1,#0x0]
+0000acac  ldrb  r0, [r0,r1]
+0000acae  ldr  r1, [0x0000ad90]
+      ; ref 0x0000ad90 -> 0x4009c000
+0000acb0  strb  r0, [r1,#0x0]
+0000acb2  b  0x0000acd2
+      ; jump -> 0x0000acd2
+0000acb4  ldr  r0, [0x0000ad7c]
+      ; ref 0x0000ad7c -> 0x2009c000
+0000acb6  ldr  r0, [r0,#0x3c]
+0000acb8  orr  r0, r0, #0x20000000
+0000acbc  ldr  r1, [0x0000ad7c]
+      ; ref 0x0000ad7c -> 0x2009c000
+0000acbe  str  r0, [r1,#0x3c]
+0000acc0  movs  r0, #0x0
+0000acc2  ldr  r1, [0x0000ada0]
+      ; ref 0x0000ada0 -> 0x10001770
+0000acc4  strb  r0, [r1,#0x0]
+0000acc6  ldr  r0, [0x0000ad90]
+      ; ref 0x0000ad90 -> 0x4009c000
+0000acc8  ldr  r0, [r0,#0x4]
+0000acca  orr  r0, r0, #0x1
+0000acce  ldr  r1, [0x0000ad90]
+      ; ref 0x0000ad90 -> 0x4009c000
+0000acd0  str  r0, [r1,#0x4]
+0000acd2  pop  {pc}
