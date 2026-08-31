@@ -15,7 +15,7 @@
  *   DAT_00010878 = FIO 池基址 0x2009C000（uint32_t 标量，偏移互算术正确）：
  *     +0x18 FIO0SET / +0x1c FIO0CLR（P0 口输出：0x200000 = P0.21 RLY2 报警）
  *     +0x38 FIO1SET / +0x3c FIO1CLR（P1 口输出 状态灯）
- * 继电器/指示灯映射（对照 HARDWARE_VERIFICATION_2026-08-20.md，12p 无 P0.20）：
+ * 继电器/指示灯映射（对照 HARDWARE_VERIFICATION_2026-08-31.md，12p 无 P0.20）：
  *   P0.21 = RLY2 报警   P0.22 = RLY1 运行（fio0_pin22_ctrl，见 09_output_stage.c）
  *   P1.20-23 = 状态指示灯；P1.22 = 触发/运行指示（09_output_stage.c fio1_pin22_ctrl）
  * 导出：2026-08-31（12p 重写：地址移位 + 删 6p-only out_relay_p020）

@@ -1,20 +1,27 @@
-# PC12M-2 十二相 SCR 控制板工程（LPC1765FBD100）
+# PC12M-2 十二相 SCR 控制板固件
 
-PC12M-2 是 PC6M-10（六相）的十二相孪生板：MCU 与外围几乎一致，控制程序仅有细微差别
-（触发相数 6→12）。本仓库用于备份、逆向、差异对比与重建该板固件。
+本仓库只维护 PC12M-2 十二相固件。MCU 为 LPC1765FBD100。
 
-## 快速开始
+六相成熟项目只作为只读参考；十二相事实以本项目原始 BIN、十二相反汇编和十二相实测为准。
 
-- AI/维护人员先读 `AGENTS.md`。
-- 全部文档入口见 `DOCUMENTATION_INDEX.md`。
-- 参考项目（六相，已逆向完成）：`D:\code\LPC1765FBD100\decompiled`。
+当前状态：可编译 C 工程已经建立，P5 Unicorn A/B 等价验证进行中；尚未形成可烧写放行基线。
+当前工作区缺少被忽略的 `backup/pc12m2_orig.bin`，找回并核验哈希前禁止擦写。
 
-```bash
-# 合并 ISP 分块备份为完整 bin
-python tools/w8/w8_combine_hex.py
+入口：
 
-# （SWD 版只读备份，需 J-Link 探针）
-python tools/w8/w8_backup_orig.py
+- 项目约束与当前状态：`AGENTS.md`
+- 文档导航：`DOCUMENTATION_INDEX.md`
+- 构建与硬件操作：`操作文档.md`
+- P5 进度：`docs/analysis/P5_VERIFICATION_PROGRESS.md`
+- W8 总控：`docs/w8/W8_TEST_MASTER.md`
+
+```powershell
+# Git Bash 中构建
+cd firmware
+bash build.sh
+
+# 原 BIN 找回后执行
+cd ..
+python test/run_tests.py
+python tools/verification/verify_firmware_equivalence_12.py
 ```
-
-当前状态：项目结构已搭建；原固件备份进行中；尚未逆向与重建固件。

@@ -7,13 +7,13 @@
 # 解析 ldr [pc,#imm] 池槽并标注 `; ref 池槽 -> 值`（格式对齐 DumpAllDisasm12）。
 # 输出到 evidence/reverse/disassembly/functions/{addr}_FUN_{addr}.txt
 import struct, sys, os
-sys.path.insert(0, r'D:\code\LPC1765FBD100\decompiled\.venv\Lib\site-packages')
+from pathlib import Path
 from capstone import *
 from capstone.arm import *
 
-ROOT = r'D:\code\PC12M-2'
-D = open(os.path.join(ROOT, r'backup\pc12m2_orig.bin'), 'rb').read()
-OUT = os.path.join(ROOT, r'evidence\reverse\disassembly\functions')
+ROOT = Path(__file__).resolve().parents[2]
+D = (ROOT / 'backup' / 'pc12m2_orig.bin').read_bytes()
+OUT = ROOT / 'evidence' / 'reverse' / 'disassembly' / 'functions'
 
 md = Cs(CS_ARCH_ARM, CS_MODE_THUMB + CS_MODE_MCLASS)
 md.detail = True
@@ -73,7 +73,7 @@ for addr, name in sorted(ISRS.items()):
         r = ref_of(ins)
         if r:
             lines.append('      ; ref 0x%08x -> 0x%08x' % r)
-    fp = os.path.join(OUT, '%08x_FUN_%08x.txt' % (addr, addr))
+    fp = OUT / ('%08x_FUN_%08x.txt' % (addr, addr))
     with open(fp, 'w', encoding='utf-8') as f:
         f.write('\n'.join(lines) + '\n')
-    print('%08x %s: %d 条指令 -> %s' % (addr, name, len(insns), os.path.basename(fp)))
+    print('%08x %s: %d 条指令 -> %s' % (addr, name, len(insns), fp.name))

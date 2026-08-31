@@ -14,7 +14,7 @@ W8 阶段 0 —— 原固件备份（只读，绝不擦写）
 
 用法：
   python tools/w8/w8_backup_orig.py
-  python tools/w8/w8_backup_orig.py --jlink "D:/software/SEGGER/JLink_V970/JLink.exe" --out backup
+  python tools/w8/w8_backup_orig.py --jlink tools/jlink/JLink.exe --out backup
   python tools/w8/w8_backup_orig.py --device LPC176x          # connect 报错时换设备名
 """
 import argparse
@@ -25,7 +25,7 @@ import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-GOLDEN_BIN = REPO_ROOT / "LPC1765.bin"
+GOLDEN_BIN = REPO_ROOT / "backup" / "pc12m2_orig.bin"
 FLASH_SIZE = 0x40000  # LPC1765 Flash = 256 KiB
 
 
@@ -39,7 +39,7 @@ def sha256(path: Path) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="W8 阶段 0：原固件双备份（只读）")
-    ap.add_argument("--jlink", default=r"D:\software\SEGGER\JLink_V970\JLink.exe",
+    ap.add_argument("--jlink", default=str(REPO_ROOT / "tools" / "jlink" / "JLink.exe"),
                     help="JLink.exe 路径")
     ap.add_argument("--out", default=str(REPO_ROOT / "backup"),
                     help="备份输出目录（默认仓库根 backup/，已 gitignore）")
@@ -50,7 +50,7 @@ def main() -> int:
     jlink = Path(args.jlink)
     if not jlink.exists():
         print(f"[FAIL] 找不到 JLink.exe：{jlink}")
-        print("       请安装 SEGGER J-Link 软件包后用 --jlink 指定。")
+        print("       应使用仓库内 tools/jlink/JLink.exe，或用 --jlink 指定。")
         return 2
 
     out_dir = Path(args.out)
@@ -121,14 +121,14 @@ exit
 
     if GOLDEN_BIN.exists():
         hg = sha256(GOLDEN_BIN)
-        print(f"仓库金标准 LPC1765.bin  SHA-256 = {hg}")
+        print(f"PC12M-2 已归档金标准 SHA-256 = {hg}")
         if h1 == hg:
             print("[OK] 板上原固件与仓库金标准完全一致 —— 逆向对象就是这块板。")
         else:
             print("[!] 重要：板上固件与仓库金标准哈希不一致！")
             print("    说明这块板的固件版本与当前反编译基线不同，需在分析前核对。")
     else:
-        print("[!] 仓库根未见 LPC1765.bin，跳过与金标准比对。")
+        print("[!] backup/pc12m2_orig.bin 尚不存在，跳过与已归档金标准比对。")
 
     print("=" * 70)
     print("下一步：")

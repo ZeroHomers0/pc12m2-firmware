@@ -22,7 +22,7 @@
  * param_sync_live_to_eeprom(0x3534)：live(0x1000162C..) 与 EEPROM 缓存副本(0x1000165C..)
  *   逐参数比对（57 组），不一致则更新 shadow 并写回芯片对应寄存器
  *   （16 位分高低两字节）。方向 live→shadow。
- * 导出：2026-08-30
+ * 十二相整理：2026-08-31
  *
  * 交叉引用：
  *   · 57 组 live↔shadow↔EEPROM 同步全表 → docs/PROGRESS_*.md（12p 参数系统）

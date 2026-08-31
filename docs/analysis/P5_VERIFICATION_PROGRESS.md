@@ -95,8 +95,9 @@ verify_auth / verify_misc` 至「==== 12p A/B 等价性验证：全部 PASS ====
   `_check_funcmap_dir.py`、`extract_data_segments.py`）
 - **test/emulation 整体 22 个**（6p 基座：引用 6p 地址 0x458C/0x25DC/0x35F2/0x108B0…，
   7 个依赖 6p 版 `verify_firmware_equivalence.py`，全部读不存在的根 `LPC1765.bin`）
-- **保留**：`test/support/unicorn_harness.py`（12p `w8_stack_watermark.py` 依赖）、
-  `test/static/*`（12p 源码静态检查，已修复）、`run_tests.py`/README、`apply_consts_12.py`、
+- **当时保留**：`test/support/unicorn_harness.py` 与 `w8_stack_watermark.py`；后续结构审计确认
+  两者仍使用六相栈顶与 SRAM 预置，已于 2026-08-31 删除，避免十二相假 PASS。
+  当前保留 `test/static/*`（12p 源码静态检查）、`run_tests.py`/README、`apply_consts_12.py`、
   `verify_startup.py`/`verify_strpool.py`/`verify_mem_xref.py`/`check_readwidth.py`、`w8_combine_hex.py` 等。
 - `tools/README.md` 重写为 12p 现状。
 

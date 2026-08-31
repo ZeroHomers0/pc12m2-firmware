@@ -27,10 +27,10 @@
  *   组 C(bit16-23)：固定 0x55
  *   （6p 组 A 用 *g_out_fine、组 B 用 *g_out_fine；12p 对应位置为 counter2=0x1000164c）
  *
- * 导出：2026-08-30
+ * 十二相整理：2026-08-31
  *
  * 交叉引用：
- *   · 认证链路/引脚 → CLAUDE.md「硬件事实」、docs/HARDWARE_VERIFICATION_2026-08-20.md
+ *   · 认证链路/引脚 → docs/analysis/HARDWARE_VERIFICATION_2026-08-31.md
  *   · 开机调用序列 → src/01_startup.c（main：…→ auth_verify_loop → wdt_init）
  *   · GPIO2 方向/初值初始化 → src/13_gpio_init.c（gpio2_init）
  * ========================================================================== */

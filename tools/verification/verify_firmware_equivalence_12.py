@@ -11,7 +11,7 @@
 12p SRAM0 布局：data_image 0x10000000..0x10002110、.bss 清至 _estack 0x100029a0。
 比对快照 = SRAM0 全量 0x10000000..0x100029a0 + 0x10003000..0x10003100 暂存区。
 
-用法：cd D:\\code\\PC12M-2 && python tools/verification/verify_firmware_equivalence_12.py
+用法：在 PC12M-2 仓库根目录执行 `python tools/verification/verify_firmware_equivalence_12.py`
 """
 from pathlib import Path
 import re

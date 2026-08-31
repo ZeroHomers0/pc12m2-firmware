@@ -5,7 +5,7 @@
 # 被测对象：firmware/src/08_uart3_modbus.c 的 crc16()（原 flash 0xAF64）
 #
 # 本测试验证的结论（2026-08-23 A/B 差分 + 机器码回放实证）：
-#   1) 固件两张 CRC 表（crc16_hi_tbl/lo_tbl）与原始 LPC1765.bin 的
+#   1) 固件两张 CRC 表（crc16_hi_tbl/lo_tbl）与 PC12M-2 原始固件的
 #      flash 表（0x111D8 / 0x112D8，12p 池槽 0xADCC/0xADD0）**逐字节一致** → S9 悬空表修复正确。
 #   2) 固件 crc16 算法循环 = `while(len != 0)`：处理**全部 len 字节**（标准
 #      Modbus CRC）。原码 0xAF84 `movs r0,r4`(用于 bne 置 Z) → `sub.w r6,r4,#1`
@@ -52,6 +52,10 @@ def crc16_ref(data, length):
     return crc
 
 def main():
+    if not os.path.exists(BIN):
+        print(f"[FAIL] 缺少十二相原始固件：{BIN}")
+        print("       找回文件并核对 BACKUP_RECORD.md 中的 SHA-256 后再运行本测试。")
+        return 1
     hi, lo = load_tables()
     passed = 0; failed = 0
 

@@ -5,7 +5,7 @@
  *
  * 12p（PC12M-2）标识：固件 backup/pc12m2_orig.bin（SHA 2bc60868…bd271bd1）
  *   本模块（output_stage 0xE70C / run_stop_preset 0xF70A）为 9 个真实差异
- *   函数之一（vs 6p 参考工程 D:\code\LPC1765FBD100\decompiled 0xE9AC/0xF9AA），
+ *   函数之一（六相参考入口为 0xE9AC/0xF9AA），
  *   按 12p 反汇编 dump 逐字节重写（池槽→SRAM 映射经 BIN 直读 + globals.c 双验证）。
  *
  * 关键硬件：

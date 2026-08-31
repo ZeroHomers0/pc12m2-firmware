@@ -38,25 +38,44 @@ def globals_symbols(text):
     return out
 
 def extract(src):
-    """返回 [(live_sym, shadow_sym, reg, width)]（16 位 reg 为高字节地址）"""
-    start = src.index('param_sync_live_to_eeprom(void)')
-    tail  = src.index('\n}', start)
-    body  = src[start:tail]
+    """返回 [(live_sym, shadow_sym, reg, width)]（16 位 reg 为高字节地址）。"""
+    start = src.index('void param_sync_live_to_eeprom(void)')
+    open_brace = src.index('{', start)
+    depth = 0
+    tail = None
+    for i in range(open_brace, len(src)):
+        if src[i] == '{':
+            depth += 1
+        elif src[i] == '}':
+            depth -= 1
+            if depth == 0:
+                tail = i
+                break
+    if tail is None:
+        raise AssertionError('param_sync_live_to_eeprom 函数边界未闭合')
+    body = src[open_brace + 1:tail]
     params = []
-    # 先抓 16 位块（其条件是 *LIVE != *(int*)SHADOW）
-    for m in re.finditer(
-            r"if\s*\(\*\s*([A-Za-z0-9_]+)\s*!=\s*\*\(int\s*\*\)([A-Za-z0-9_]+)\)\s*\{"
-            r"[\s\S]*?i2c_write_reg\(\*([A-Za-z0-9_]+)\s*>>\s*8,0x([0-9a-fA-F]+)\)",
-            body):
-        params.append((m.group(1), m.group(2), int(m.group(4),16), 16))
-    # 8 位块（条件 *LIVE != *SHADOW，且写为单字节 i2c_write_reg(*SHADOW, reg)）
-    for m in re.finditer(
-            r"if\s*\(\*\s*([A-Za-z0-9_]+)\s*!=\s*\*([A-Za-z0-9_]+)\)\s*\{"
-            r"[\s\S]*?i2c_write_reg\(\*\s*([A-Za-z0-9_]+)\s*,0x([0-9a-fA-F]+)\)",
-            body):
-        live, shadow = m.group(1), m.group(2)
-        # 跳过已属 16 位的（16 位条件含 *(int*) 不匹配此正则，天然隔离）
-        params.append((live, shadow, int(m.group(4),16), 8))
+    block_re = re.compile(
+        r"if\s*\(\s*\*\(volatile\s+(uint8_t|uint)\s*\*\)([A-Za-z0-9_]+)"
+        r"\s*!=\s*\*\(volatile\s+\1\s*\*\)([A-Za-z0-9_]+)\s*\)\s*\{"
+        r"([\s\S]*?)\n\s*\}")
+    for m in block_re.finditer(body):
+        ctype, live, shadow, block = m.groups()
+        if ctype == 'uint':
+            wr = re.search(
+                r"i2c_write_reg\(\*\(volatile\s+uint\s*\*\)([A-Za-z0-9_]+)"
+                r"\s*>>\s*8,0x([0-9a-fA-F]+)\)", block)
+            width = 16
+        else:
+            wr = re.search(
+                r"i2c_write_reg\(\(char\)\*\(volatile\s+uint8_t\s*\*\)"
+                r"([A-Za-z0-9_]+),0x([0-9a-fA-F]+)\)", block)
+            width = 8
+        if wr is None or wr.group(1) != shadow:
+            raise AssertionError(f'无法解析参数同步块: live={live} shadow={shadow}')
+        params.append((live, shadow, int(wr.group(2), 16), width))
+    if len(params) != 57:
+        raise AssertionError(f'参数同步块应为 57 组，实际提取 {len(params)} 组')
     return params
 
 def main():
@@ -73,7 +92,8 @@ def main():
         else: failed+=1
         print(f"  [{st}] {name}"+(f"  {detail}" if detail else ""))
 
-    print(f"提取参数元组: {len(params)} 条（16位 k | 8位 {len(params)-sum(1 for p in params if p[3]==16)}）")
+    count16 = sum(1 for p in params if p[3] == 16)
+    print(f"提取参数元组: {len(params)} 条（16位 {count16} | 8位 {len(params)-count16}）")
 
     # INV1 符号存在
     allsym = set()

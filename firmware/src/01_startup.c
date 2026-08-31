@@ -1,15 +1,15 @@
 /* =============================================================================
- * LPC1765FBD100 (ST33C 变频电源 / PC6M-10 三相晶闸管移相触发板)
+ * LPC1765FBD100（PC12M-2 十二相晶闸管移相触发板）
  * 反编译源码导出 — 模块 01：IAR 运行时 / 启动 / 系统初始化
  *
  * 工具：Ghidra 反编译（MCP）
- * 固件：LPC1765.bin（NXP LPC1765 / Cortex-M3）
- * 导出：2026-08-20
+ * 固件：backup/pc12m2_orig.bin（NXP LPC1765 / Cortex-M3）
+ * 十二相整理：2026-08-31
  * 说明：反编译原样保留；<...> 内为理解注释。
  *
  * 交叉引用：
- *   · 中断/定时器架构（TIMER0 系统节拍/EINT/向量表）→ docs/PROGRESS_2026-08-20.md §4j
- *   · 启动序列与硬件（LPC1765 / 12MHz 晶振）→ docs/HARDWARE_VERIFICATION_2026-08-20.md §一.1
+ *   · 中断/定时器架构 → evidence/reverse/disassembly/functions/
+ *   · 启动序列与硬件 → docs/analysis/HARDWARE_VERIFICATION_2026-08-31.md
  *   · 认证门控调用 → 11_auth.c（ADuM1201 隔离链路，HARDWARE_VERIFICATION §二.5）
  * ========================================================================== */
 

@@ -1,7 +1,0 @@
-# FUN_00010696 entry=0x00010696 body=10
-00010696  movw  r0, #0xc350
-0001069a  ldr  r1, [0x00010880]
-      ; ref 0x00010880 -> 0x100020ec
-0001069c  str  r0, [r1,#0x0]
-      ; ref 0x100020ec (no mem)
-0001069e  bx  lr

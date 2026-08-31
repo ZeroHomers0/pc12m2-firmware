@@ -1,5 +1,5 @@
 /* =============================================================================
- * LPC1765FBD100 (ST33C 变频电源 / PC6M-10 三相晶闸管移相触发板)
+ * LPC1765FBD100（PC12M-2 十二相晶闸管移相触发板）
  * 反编译源码导出 — 模块 12：闭环 PID（位置式/积分式，三路）
  *
  * closed_loop_integral：位置式 PID 计算，工作区在 0x100020D0 起的 RAM 全局。
@@ -17,10 +17,10 @@
  * 说明：globals 中 DAT_10xxx 已按访问语义分型（ptr_word / value）；
  *       p_pid / p_pid_out 原反编译为 int*，此处按 volatile uint32_t* 用
  *       （消除 "discards volatile" 警告，访问语义不变）。
- * 导出：2026-08-21
+ * 十二相整理：2026-08-31
  *
  * 交叉引用：
- *   · 触发/PID 全图 → docs/PROGRESS_2026-08-20.md、docs/state_machine_analysis.md
+ *   · 触发/PID 证据 → evidence/reverse/disassembly/functions/、docs/analysis/STATE_MACHINE_ANALYSIS.md
  *   · 闭环调用与钳位上下文 → src/09_output_stage.c
  * ========================================================================== */
 #include "inc/types.h"

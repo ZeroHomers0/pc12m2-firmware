@@ -13,11 +13,12 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 ROOT = Path(__file__).resolve().parents[2]
 BINP = ROOT / "backup" / "pc12m2_orig.bin"
-BIN6P = Path(r"D:\code\LPC1765FBD100\decompiled\LPC1765.bin")
+REFERENCE_ROOT = ROOT.parent / "pc6m10-firmware"
+BIN6P = REFERENCE_ROOT / "LPC1765.bin"
 # 完整 6p→12p 池槽映射（Ghidra 完整反汇编版，含第二代码段池槽）
 POOLMAP = ROOT / "tools/_ghidra_proj/_pool_6to12_map_v2.json"
 VARS = ROOT / "tools/_ghidra_proj/_pc12m2_verified_vars.json"
-G6 = Path(r"D:\code\LPC1765FBD100\decompiled\firmware\globals.c")
+G6 = REFERENCE_ROOT / "firmware" / "globals.c"
 
 D = BINP.read_bytes()
 D6 = BIN6P.read_bytes()

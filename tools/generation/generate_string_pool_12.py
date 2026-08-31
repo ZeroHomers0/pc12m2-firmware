@@ -14,10 +14,11 @@ sys.stdout.reconfigure(encoding='utf-8')
 ROOT = Path(__file__).resolve().parents[2]
 BIN12 = (ROOT / "backup" / "pc12m2_orig.bin").read_bytes()
 FLASH_LEN = len(BIN12)
-BIN6 = (Path(r"D:\code\LPC1765FBD100\decompiled") / "LPC1765.bin").read_bytes()
+REFERENCE_ROOT = ROOT.parent / "pc6m10-firmware"
+BIN6 = (REFERENCE_ROOT / "LPC1765.bin").read_bytes()
 
-SCAN_FILES = glob.glob(r"D:\code\LPC1765FBD100\decompiled\firmware\src\*.c") + \
-             [r"D:\code\LPC1765FBD100\decompiled\firmware\stub.c"]
+SCAN_FILES = [str(p) for p in (REFERENCE_ROOT / "firmware" / "src").glob("*.c")] + \
+             [str(REFERENCE_ROOT / "firmware" / "stub.c")]
 SCAN_FILES = [f for f in SCAN_FILES if not f.endswith("strpool.c") and not f.endswith("08_modbus_dispatch.c")]
 
 # ── 1. 6p 实参清单 ─────────────────────────────────────────────

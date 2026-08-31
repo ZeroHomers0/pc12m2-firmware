@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 BIN = ROOT / "backup" / "pc12m2_orig.bin"
 FUNCS = ROOT / "tools" / "_ghidra_proj" / "_pc12m2_functions.txt"
 POOLMAP = ROOT / "tools" / "_ghidra_proj" / "_pc12m2_pool_sram_map.json"
-OUTDIR = ROOT / "evidence" / "reverse" / "disassembly"
+OUTDIR = ROOT / "evidence" / "reverse" / "disassembly" / "raw"
 
 d = BIN.read_bytes()
 poolmap = json.load(open(POOLMAP, encoding="utf-8"))  # "0x<flash_pool>" -> "0x<addr>"
