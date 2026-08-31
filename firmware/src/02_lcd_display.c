@@ -643,14 +643,17 @@ void disp_splash_screen(void)
   return;
 }
 
-/* 0x0000448A —— 静态信息屏（4 行静态文字，如版本信息页） */
+/* 0x000041B4 —— 基本参数主菜单（4 行菜单项；0x448A 非函数起点）
+ *   4 行串 = ADR 计算的实际 flash 地址 0x436C/0x437C/0x438C/0x439C：
+ *   "1.通信参数设置" / "2.保存参数设置" / "3.诊断参数设置" / "4.恢复出厂参数"
+ *   （2026-08-31 修正：原实现误用 literal pool 指针 0x4814/0x4824/0x4834/0x4844 作串地址） */
 void disp_screen_static(void)
 {
   disp_clear();
-  disp_string((int)0x4814,0,0,1);
-  disp_string((int)0x4824,1,0,0);
-  disp_string((int)0x4834,2,0,0);
-  disp_string((int)0x4844,3,0,0);
+  disp_string((int)0x436c,0,0,1);
+  disp_string((int)0x437c,1,0,0);
+  disp_string((int)0x438c,2,0,0);
+  disp_string((int)0x439c,3,0,0);
   return;
 }
 

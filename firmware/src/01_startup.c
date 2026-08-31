@@ -46,9 +46,9 @@ void eint1_init(void);
 void eint2_init(void);
 void eint3_init(void);
 void uart3_init(void);
-void auth_verify_loop(void);   /* 0x10A38 认证循环（11_auth.c） */
-void auth_set_timeout(void);   /* 0x108D2 认证超时窗口（11_auth.c） */
-void auth_challenge(void);     /* 0x108DC 认证挑战（11_auth.c） */
+uint auth_verify_loop(void);   /* 0x10A38 认证循环（11_auth.c；返回末次 cnt 复现 OLD R0） */
+uint auth_set_timeout(void);   /* 0x108D2 认证超时窗口（11_auth.c；返回 50000 复现 OLD R0 副作用） */
+uint auth_challenge(void);     /* 0x108DC 认证挑战（11_auth.c；返回 challenge_byte 末态复现 OLD R0） */
 void param_sync_live_to_eeprom(void);
 void disp_splash_screen(void);
 void disp_clear(void);

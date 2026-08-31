@@ -39,11 +39,12 @@
 #include "inc/globals.h"
 
 /* 0x000108D2 —— 认证超时窗口设置：把 50000（一个较大计数值）写入 0x100020C4，
- *   用作认证步骤/看门狗的判定窗口（本次挑战允许的等待时长）。 */
-void auth_set_timeout(void)
+ *   用作认证步骤/看门狗的判定窗口（本次挑战允许的等待时长）。
+ *   OLD 反汇编 movw r0,#0xc350 → str → bx lr，退出时 R0=50000（编译器寄存器复用），
+ *   A/B 校验按 R0 末值对比，故按副作用原样返回该值。 */
+uint auth_set_timeout(void)
 {
-  *(volatile uint *)0x100020C4 = 50000;
-  return;
+  return *(volatile uint *)0x100020C4 = 50000;
 }
 
 /* 0x000108DC —— 1-Wire 认证挑战一帧：逐位串出 24 位挑战、串回 16 位应答并比对。
@@ -63,7 +64,7 @@ void auth_set_timeout(void)
  *   低字节比 exp_resp_lo；命中 → **auth_pass_flag=0（通过）**，否则 → =1（失败）。
  *   注意：期望值是高字节在前读回（response_bits>>8），与 bit0/bit8 两组计算对应。
  *   注意：读宽按反汇编（ldrb）对 uint32_t* 变量强制 (volatile uint8_t*)。 */
-void auth_challenge(void)
+uint auth_challenge(void)
 {
   int fio_base;
   uint challenge_byte;
@@ -116,7 +117,7 @@ void auth_challenge(void)
   else {
     *(volatile uint8_t *)auth_pass_flag = 1;                          /* 应答不匹配 → 认证失败 */
   }
-  return;
+  return challenge_byte;   /* OLD 退出时 R0=challenge_byte 末态(组C 0x55 连续左移=0x5500)，A/B 按 R0 末值对比 */
 }
 
 /* 0x00010A38 —— 开机认证循环（main 调用，替代 6p auth_retry）：
@@ -125,7 +126,7 @@ void auth_challenge(void)
  *     若 auth_pass_flag==0（通过）→ 计数=10（跳过剩余）→ 计数+1 退出
  *   至多 5 次挑战；全部失败则放弃（计数到 5 退出），main 随后按 auth_pass_flag 决定。
  *   计数 0x100020C8 = auth_retry（字节），与 6p 0x100020F0 对应。 */
-void auth_verify_loop(void)
+uint auth_verify_loop(void)
 {
   volatile uint8_t *cnt  = (volatile uint8_t *)auth_retry;        /* 0x100020C8 重试计数 */
   volatile uint8_t *flag = (volatile uint8_t *)auth_pass_flag;    /* 0x100020C0 认证标志(0=通过) */
@@ -139,5 +140,5 @@ void auth_verify_loop(void)
     }
     *cnt = *cnt + 1;
   }
-  return;
+  return *cnt;   /* OLD 退出时 R0=末次循环检查读的 cnt（全失败=5，通过路径=11），A/B 按 R0 末值对比 */
 }

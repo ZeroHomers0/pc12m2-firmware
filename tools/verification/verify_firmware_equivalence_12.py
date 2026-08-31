@@ -684,7 +684,9 @@ def verify_auth():
         for off in range(0, 0x60, 4):
             uc.mem_write(0x2009C000 + off, struct.pack("<I", 0x13570000 ^ off))
     for name in ("auth_set_timeout", "auth_challenge", "auth_verify_loop"):
-        results = execute_pair(name, (), setup, max_insn=2_000_000)
+        # NEW 延时循环每次迭代指令数多于 OLD，auth_verify_loop 5×24bit 挑战
+        # 需 ~3.5M 条；2M 会在第 3 次挑战中断，故放宽至 8M（非行为差异）
+        results = execute_pair(name, (), setup, max_insn=8_000_000)
         assert results[0][0] == results[1][0], "%s return mismatch" % name
         assert results[0][1] == results[1][1], "%s RAM mismatch" % name
     print("AUTH: PASS funcs=3")
@@ -692,12 +694,33 @@ def verify_auth():
 
 # ── main/参数系统杂项 ─────────────────────────────────────────────────────────
 def verify_misc():
-    # uart3_tx_byte / uart3_rx_timeout_monitor（无参叶函数，SRAM 末态）
+    # uart3_tx_byte / uart3_rx_timeout_monitor / load_config / param_sync_live_to_eeprom：
+    # 无参函数，R0 与 SRAM 末态均有语义（IAR 返回值/副作用），A/B 逐值对比。
     for name in ("uart3_tx_byte", "uart3_rx_timeout_monitor", "load_config",
-                 "param_sync_live_to_eeprom", "disp_screen_static", "disp_screen_calib"):
+                 "param_sync_live_to_eeprom"):
         results = execute_pair(name, (), max_insn=500_000)
         assert results[0][0] == results[1][0], "%s return mismatch" % name
         assert results[0][1] == results[1][1], "%s RAM mismatch" % name
+    # disp_screen_static / disp_screen_calib：void 渲染函数，R0 **非 ABI 语义**。
+    # OLD R0=0x08 是 char8 内层字体循环 `adds r0,r4,#1` 的编译器寄存器残留（7+1=8）；
+    # NEW R0 残留的是 disp_data 返回值——纯编译器代码生成差异，C 源码无法合理复刻。
+    # 等价性按行为校验：GPIO 写迹（真实渲染像素位）+ SRAM 末态。
+    # 需 8M 指令配额：全屏渲染 4 行 GBK 串，500k 会中途截断产生假差异。
+    for name, label in (("disp_screen_static", "DISPLAY_SCREEN_STATIC"),
+                        ("disp_screen_calib", "DISPLAY_SCREEN_CALIB")):
+        traces, states = [], []
+        for is_new, entry in ((False, PAIRS[name][0]), (True, SYMS[name])):
+            uc = machine(is_new)
+            trace = []
+            cb = lambda machine, access, address, size, value, user, t=trace: t.append((address, size, value))
+            uc.hook_add(UC_HOOK_MEM_WRITE, cb, begin=0x2009C000, end=0x2009CFFF)
+            run(uc, entry, max_insn=8_000_000)
+            traces.append(trace)
+            states.append(snapshot(uc))
+        assert _mask_fio1_p23(traces[0]) == _mask_fio1_p23(traces[1]), \
+            "%s GPIO trace mismatch: %d/%d" % (label, len(traces[0]), len(traces[1]))
+        assert states[0] == states[1], "%s SRAM mismatch" % (label,)
+        print("%s: PASS writes=%d" % (label, len(traces[0])))
     print("MISC: PASS funcs=6")
 
 

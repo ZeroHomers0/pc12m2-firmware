@@ -21,8 +21,10 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
   2026-08-31 按用户决定另存根目录副本 `pc12m2_orig.bin` 并提交入库（覆盖原「绝不入库」铁律，
   详见 `backup/BACKUP_RECORD.md`）。擦写板上 Flash 前仍需制作第二物理副本。
 - P0-P4 已完成：十二相函数清单、反汇编、数据镜像、全局映射和可编译 C 工程已建立。
-- P5 Unicorn A/B 等价验证进行中。向量、GPIO、TIMER1 972 例、Modbus 65 读/320 写、
-  闭环与输出级等已通过；当前已知阻塞为 3 个输入消抖函数的计数器槽错位，见
+- P5 Unicorn A/B 等价验证**已全部 PASS**（2026-08-31）：向量、GPIO、TIMER1 972 例、
+  Modbus 65 读/320 写、闭环、输出级、状态机 130 例、显示 106 例+全执行 4 例、
+  去抖、认证、MISC 全过。本次修复：debounce 计数器槽错位、三个认证函数 R0 残留、
+  strpool/显示串地址、void 屏渲染函数改行为校验。详见
   `docs/analysis/P5_VERIFICATION_PROGRESS.md`。
 - 尚未形成可烧写放行基线，十二相 W8 实机验证尚未开始。
 
@@ -80,6 +82,5 @@ python tools/verification/verify_firmware_equivalence_12.py
 ## 下一步
 
 1. 制作原固件 `pc12m2_orig.bin` 的第二物理副本（根目录副本已提交入库）。
-2. 修复 P5 已定位的消抖计数器槽错位。
-3. 构建并跑完十二相 A/B 验证，直到全部 PASS。
-4. 冻结待上板固件哈希后，才进入 `docs/w8/W8_TEST_MASTER.md` 的分级实测。
+2. 冻结待上板固件哈希（`firmware/firmware.bin` SHA-256 与长度记录到文档）。
+3. 冻结后进入 `docs/w8/W8_TEST_MASTER.md` 的分级实测（只接控制电，断开市电/门极/功率负载）。

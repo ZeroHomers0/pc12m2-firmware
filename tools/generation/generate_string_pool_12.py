@@ -14,12 +14,17 @@ sys.stdout.reconfigure(encoding='utf-8')
 ROOT = Path(__file__).resolve().parents[2]
 BIN12 = (ROOT / "backup" / "pc12m2_orig.bin").read_bytes()
 FLASH_LEN = len(BIN12)
-REFERENCE_ROOT = ROOT.parent / "pc6m10-firmware"
+REFERENCE_ROOT = ROOT.parent / "PC6M-10"
 BIN6 = (REFERENCE_ROOT / "LPC1765.bin").read_bytes()
 
 SCAN_FILES = [str(p) for p in (REFERENCE_ROOT / "firmware" / "src").glob("*.c")] + \
              [str(REFERENCE_ROOT / "firmware" / "stub.c")]
 SCAN_FILES = [f for f in SCAN_FILES if not f.endswith("strpool.c") and not f.endswith("08_modbus_dispatch.c")]
+
+# 12p 逆向新增渲染函数（sm4/sm5/sm6 等）里的 disp_string 实参是 **12p 地址**（6p 源没有）。
+# 这些地址须直接并入 addrs12，不再走 6p→12p 内容匹配。
+SCAN_FILES_12 = [str(p) for p in (ROOT / "firmware" / "src").glob("*.c")]
+SCAN_FILES_12 = [f for f in SCAN_FILES_12 if not f.endswith("strpool.c")]
 
 # ── 1. 6p 实参清单 ─────────────────────────────────────────────
 def addrs_from_src():
@@ -41,6 +46,29 @@ def addrs_from_src():
                     base = base + off if n.group(2) == '+' else base - off
                 found.add(base)
     return {a for a in found if 0x400 <= a < len(BIN6)}
+
+def addrs12_from_12p_src():
+    """扫描 12p 源码里 disp_string 第一实参的 **12p 地址**（含 (int) 强转与 +/- 偏移），
+    逆向还原的 sm4/sm5/sm6 等渲染函数用到的单位串/状态串 6p 源没有，直接并入簇表。"""
+    found = set()
+    for fp in SCAN_FILES_12:
+        src = open(fp, "rb").read().decode("utf-8", errors="replace")
+        for line in src.splitlines():
+            for m in re.finditer(r'\bdisp_string\s*\(', line):
+                first = line[m.end():].split(',', 1)[0]
+                if '/*' in first or '//' in first:
+                    continue
+                first = re.sub(r'^\s*\([A-Za-z_][A-Za-z0-9_ *]*\)\s*', '', first)
+                n = re.match(r'0x([0-9a-fA-F]+)\s*(?:([+-])\s*0x([0-9a-fA-F]+))?', first)
+                if not n:
+                    continue
+                base = int(n.group(1), 16)
+                if n.group(2) and n.group(3):
+                    off = int(n.group(3), 16)
+                    base = base + off if n.group(2) == '+' else base - off
+                found.add(base)
+    return {a for a in found if 0x400 <= a < FLASH_LEN}
+
 
 def read_str(data, a, cap=40):
     s = bytearray()
@@ -82,7 +110,8 @@ print("6p 实参: %d -> 12p 匹配: %d  差异串(前4字节定位): %d  缺失:
 for a, c in missing:
     print("  MISSING 6p 0x%04x %s" % (a, c.hex()))
 
-addrs12 = set(map_6to12.values())
+addrs12 = set(map_6to12.values()) | addrs12_from_12p_src()
+extra12 = addrs12_from_12p_src() - set(map_6to12.values())
 
 # ── 3. 聚类 + blob（12p 地址，12p 内容）──────────────────────
 def str_end_12(a, cap=48):
@@ -117,7 +146,9 @@ csrc = []
 csrc.append("/* 自动生成：tools/generation/generate_string_pool_12.py（PC12M-2 数据层）。勿手改。")
 csrc.append(" * GBK 字符串表 blob + 簇表 + strpool_map（key = **12p flash 字符串地址**）。")
 csrc.append(" * 12p 内容含真实差异：'标准模式'@0x071c、'型号:ST36C'@0x6acc（≠6p 标准流程/ST33C）。")
-csrc.append(" * P3 移植已用 _strpool_6to12_map.json 把 disp_string 实参替换为 12p 地址。 */")
+csrc.append(" * P3 移植已用 _strpool_6to12_map.json 把 disp_string 实参替换为 12p 地址；")
+csrc.append(" * 逆向新增渲染函数的单位/状态串（0x7488/0x7490/0x8638/0xa070/0xa080/0xa0b0 等）")
+csrc.append(" * 由 12p 源码扫描并入簇表（2026-08-31 修复 A/B 显示全执行差异）。 */")
 csrc.append("#include <stdint.h>")
 csrc.append("")
 csrc.append("typedef struct { uint32_t base; uint32_t len; const uint8_t *blob; } strpool_cluster_t;")
@@ -155,8 +186,14 @@ json.dump({("0x%04x" % k): ("0x%04x" % v) for k, v in sorted(map_6to12.items())}
           indent=1, sort_keys=True)
 
 # ── 6. 报告 ───────────────────────────────────────────────────
-OUT = ["strpool_12 生成报告", "6p 实参: %d -> 12p 地址: %d  缺失: %d" % (len(addrs6), len(addrs12), len(missing)),
+OUT = ["strpool_12 生成报告",
+       "6p 实参: %d -> 12p 地址: %d  缺失: %d" % (len(addrs6), len(addrs12), len(missing)),
+       "12p 源码补充地址: %d（逆向渲染函数单位/状态串）" % len(extra12),
        "聚类: %d 簇  blob: %d 字节" % (len(records), len(blob)), ""]
+for a in sorted(extra12):
+    c = read_str(BIN12, a)
+    OUT.append("  补充 12p 0x%04X  %r" % (a, c.decode('gbk', errors='replace')))
+OUT.append("")
 for base, ln, off in records:
     OUT.append("  0x%04X  len=%3d  blob+0x%04X  首字节=0x%02X" % (base, ln, off, BIN12[base]))
 OUT.append("")

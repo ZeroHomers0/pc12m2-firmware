@@ -286,27 +286,27 @@ undefined4 debounce_p116(void)
 {
   volatile uint8_t *cnt_p;
 
-  cnt_p = DAT_00001be0;
+  cnt_p = DAT_00001bd8;
   if ((*(volatile uint *)(DAT_00001bbc + 0x34) & 0x10000) == 0) {   /* P1.16 低 */
-    *DAT_00001be0 = 0;
+    *DAT_00001bd8 = 0;
   }
   else {
-    *DAT_00001be0 = *DAT_00001be0 + 1;
+    *DAT_00001bd8 = *DAT_00001bd8 + 1;
     if (0xfa < *cnt_p) {
       *cnt_p = 0xfa;
       return 1;              /* 高沿 */
     }
   }
-  cnt_p = DAT_00001be4;
+  cnt_p = DAT_00001bdc;
   if ((*(volatile uint *)(DAT_00001bbc + 0x34) & 0x10000) == 0) {
-    *DAT_00001be4 = *DAT_00001be4 + 1;
+    *DAT_00001bdc = *DAT_00001bdc + 1;
     if (0xfa < *cnt_p) {
       *cnt_p = 0xfa;
       return 2;              /* 低沿 */
     }
   }
   else {
-    *DAT_00001be4 = 0;
+    *DAT_00001bdc = 0;
   }
   return 0;
 }
@@ -316,8 +316,38 @@ undefined4 debounce_p117(void)
 {
   volatile uint8_t *cnt_p;
 
-  cnt_p = DAT_00001be8;
+  cnt_p = DAT_00001be0;
   if ((*(volatile uint *)(DAT_00001bbc + 0x34) & 0x20000) == 0) {   /* P1.17 低 */
+    *DAT_00001be0 = 0;
+  }
+  else {
+    *DAT_00001be0 = *DAT_00001be0 + 1;
+    if (0x32 < *cnt_p) {
+      *cnt_p = 0x32;
+      return 1;
+    }
+  }
+  cnt_p = DAT_00001be4;
+  if ((*(volatile uint *)(DAT_00001bbc + 0x34) & 0x20000) == 0) {
+    *DAT_00001be4 = *DAT_00001be4 + 1;
+    if (0x32 < *cnt_p) {
+      *cnt_p = 0x32;
+      return 2;
+    }
+  }
+  else {
+    *DAT_00001be4 = 0;
+  }
+  return 0;
+}
+
+/* 0x00001B96 —— P0.6 去抖（急停，阈值 0x32=50） */
+undefined4 debounce_p06(void)
+{
+  volatile uint8_t *cnt_p;
+
+  cnt_p = DAT_00001be8;
+  if ((*(volatile uint *)(DAT_00001bbc + 0x14) & 0x40) == 0) {      /* P0.6 低 */
     *DAT_00001be8 = 0;
   }
   else {
@@ -328,7 +358,7 @@ undefined4 debounce_p117(void)
     }
   }
   cnt_p = DAT_00001bec;
-  if ((*(volatile uint *)(DAT_00001bbc + 0x34) & 0x20000) == 0) {
+  if ((*(volatile uint *)(DAT_00001bbc + 0x14) & 0x40) == 0) {
     *DAT_00001bec = *DAT_00001bec + 1;
     if (0x32 < *cnt_p) {
       *cnt_p = 0x32;
@@ -337,36 +367,6 @@ undefined4 debounce_p117(void)
   }
   else {
     *DAT_00001bec = 0;
-  }
-  return 0;
-}
-
-/* 0x00001B96 —— P0.6 去抖（急停，阈值 0x32=50） */
-undefined4 debounce_p06(void)
-{
-  volatile uint8_t *cnt_p;
-
-  cnt_p = DAT_00001bd8;
-  if ((*(volatile uint *)(DAT_00001bbc + 0x14) & 0x40) == 0) {      /* P0.6 低 */
-    *DAT_00001bd8 = 0;
-  }
-  else {
-    *DAT_00001bd8 = *DAT_00001bd8 + 1;
-    if (0x32 < *cnt_p) {
-      *cnt_p = 0x32;
-      return 1;
-    }
-  }
-  cnt_p = DAT_00001bdc;
-  if ((*(volatile uint *)(DAT_00001bbc + 0x14) & 0x40) == 0) {
-    *DAT_00001bdc = *DAT_00001bdc + 1;
-    if (0x32 < *cnt_p) {
-      *cnt_p = 0x32;
-      return 2;
-    }
-  }
-  else {
-    *DAT_00001bdc = 0;
   }
   return 0;
 }

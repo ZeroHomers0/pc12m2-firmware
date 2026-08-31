@@ -1284,14 +1284,13 @@ void state_machine(int key)
     /* ================= case5 通讯屏 (0x84a2-0x8948)，MENU==5 =================
        4 项（MENU2=0..3）单页。槽：COM_ADDR=0x100016f7(byte)、BAUD_IDX=0x100016f8(word)、
        PARITY=0x100016fc(byte)、COM_CHK=0x100016fd(byte)；波特率表 BAUD_TBL=0x1000179c。
-       编辑态标志复用 0x10001726。注意 (*t3)++ 在 case 开头（区别于其它 case 的尾部++）。 */
+       编辑态标志复用 0x10001726。刷新节流 (*t3)++ 位于 key 处理后的公共尾（OLD 0x8712），
+       再判 ==0xfb 整页重绘（2026-08-31 修正：原实现误置 case 开头致 A/B 差 1）。 */
     if (*MENU == 5) {
         volatile uint8_t  *m2    = (volatile uint8_t*)0x10001725; /* 光标/子项 */
         volatile uint8_t  *menu3 = (volatile uint8_t*)0x10001726; /* 编辑态标志 */
         volatile uint32_t *tout  = (volatile uint32_t*)0x10001744; /* TIMEOUT */
         volatile uint32_t *t3    = (volatile uint32_t*)0x10001758; /* TIMEOUT3 */
-
-        (*t3)++;
 
         /* key==1：编辑态 0<->1 切换（TIMEOUT3=0xfa/0x1f4） */
         if (key == 1) {
@@ -1353,7 +1352,8 @@ void state_machine(int key)
             *t3 = 0xfa;
         }
 
-        /* ---- 刷新节流：TIMEOUT3==0xfb 整页重绘（高亮当前项） ---- */
+        /* ---- 刷新节流：TIMEOUT3++ 后 ==0xfb 整页重绘（高亮当前项） ---- */
+        (*t3)++;
         if (*t3 == 0xfb) { if (*m2 < 4) sm5_draw_page(*m2); }
 
         /* ---- 编辑空闲超时：清空当前项所在行（闪烁）后返回主屏 ---- */

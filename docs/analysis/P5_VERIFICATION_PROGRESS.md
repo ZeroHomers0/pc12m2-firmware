@@ -1,11 +1,11 @@
 # P5 Unicorn A/B 等价性验证 — 进度记录
 
-状态：**进行中**（2026-08-31 暂停点）
+状态：**已完成**（2026-08-31 全部 PASS）
 验证脚本：`tools/verification/verify_firmware_equivalence_12.py`
 复跑：`cd PC12M-2 && python tools/verification/verify_firmware_equivalence_12.py`
 （改源码后先 `cd firmware && bash build.sh` 重建）
 
-## 已 PASS 项（截至暂停点，含 2026-08-31 修复后）
+## 全部 PASS（2026-08-31 最终）
 
 ```
 VECTOR: PASS (SP=0x100029a0, checksum=0, CRP=0xFFFFFFFF)
@@ -27,11 +27,69 @@ MODBUS_REGS: PASS read=65 write=320
 CLOSED_LOOP: PASS integral=6 wrapper=12
 OUTPUT_STAGE_MATRIX: PASS cases=36
 RUN_STOP_PRESET: PASS cfg=2
+STATE_MACHINE_MATRIX: PASS cases=130
+DISPLAY_MATRIX: PASS cases=106
+DISPLAY_FULL_EXEC: PASS cases=4
+DEBOUNCE: PASS cases=9 scan_run_stop=4
+AUTH: PASS funcs=3
+DISPLAY_SCREEN_STATIC: PASS writes=32298
+DISPLAY_SCREEN_CALIB: PASS writes=30505
+MISC: PASS funcs=6
+
+==== 12p A/B 等价性验证：全部 PASS ====
 ```
 
-## 本次会话已完成的修复（P5 内）
+## 本次会话修复记录（自上一暂停点）
 
-### 1. closed_loop 位置式输出槽地址（已修复并 PASS）
+### 1. state_machine debounce 计数器槽错位（已修复）
+- 症状：`state_machine SRAM mismatch (1,0,0,1)`：0x1000157D old=1 new=0、
+  0x1000157F old=0 new=1（两字节相邻）。
+- 根因：`firmware/src/03_input_debounce.c` 三个 debounce 函数计数器 DAT_ 符号
+  **系统性错位 2 字节**（OLD 反汇编金标准 `evidence/reverse/disassembly/functions/00001a96..3.txt`）。
+- 修复对照（OLD 高沿槽 / 低沿槽）：
+
+  | NEW 函数 | OLD 入口 | 修复后高沿槽 | 修复后低沿槽 |
+  |---|---|---|---|
+  | debounce_p116 | 0x1a96 | 0x157C `DAT_00001bd8` | 0x157D `DAT_00001bdc` |
+  | debounce_p117 | 0x1aee | 0x157E `DAT_00001be0` | 0x157F `DAT_00001be4` |
+  | debounce_p06 | 0x1b46 | 0x1580 `DAT_00001be8` | 0x1581 `DAT_00001bec` |
+
+  debounce_p09（0x1a68）用 0x157B `DAT_00001bd4`，本就正确，未改。
+  globals.c 地址映射本身正确（globals.c:58-64），无需改。
+- 验证：修复后 `STATE_MACHINE_MATRIX: PASS cases=130`、`DEBOUNCE: PASS cases=9 scan_run_stop=4`。
+
+### 2. 三个认证函数 R0 残留不一致（源码返回 OLD 残留值）
+- `auth_set_timeout`（0x108D2）：OLD `movw r0,#0xc350` 退出 R0=50000；NEW GCC 用 r2/r3。
+  修复：函数返回该值（`return *(volatile uint*)0x100020C4 = 50000;`）。
+- `auth_challenge`（0x108DC）：OLD 退出 R0=0x5500（challenge_byte 组C 0x55 连续左移末态）；
+  NEW 残留 0x100020C0。修复：返回 challenge_byte。
+- `auth_verify_loop`（0x10A38）：OLD 退出 R0=末次循环检查读的 cnt；NEW 残留 auth_challenge 返回。
+  修复：返回 `*cnt`。
+- 另：NEW 延时循环每迭代指令数多于 OLD，auth_verify_loop 5×24bit 挑战需 ~3.5M 条，
+  2M 会在第 3 次挑战中断（假差异），`verify_auth` 放宽至 `max_insn=8_000_000`。
+
+### 3. 显示串池 / disp_screen_static 地址（已修复）
+- strpool 重新生成：21 clusters / 2699 B，清除无用簇（0x4814 是 literal pool 的
+  SRAM 指针 0x10001608，非字符串）。
+- `disp_screen_static`：注释 0x448A→0x41B4；四个串地址 0x4814/0x4824/0x4834/0x4844
+  （literal pool 指针，错误）→ 0x436c/0x437c/0x438c/0x439c（真实 GBK 串，ADR 计算目标）。
+- 修复后 `DISPLAY_FULL_EXEC: PASS cases=4`、`DISPLAY_MATRIX: PASS cases=106`。
+
+### 4. void 屏渲染函数 R0 非 ABI 语义（改为行为校验）
+- 症状：`disp_screen_calib` 8M 下 OLD R0=0x08、NEW R0=0x00（RAM same=True）。
+- 根因：OLD R0=0x08 是 char8（0xaf4）内层字体循环 `adds r0,r4,#1` 的编译器寄存器残留
+  （7+1=8）；NEW char8（0xb4c）残留的是 disp_data 返回值。纯编译器代码生成差异，
+  C 源码无法合理复刻，追平需复刻 IAR 代码生成。
+- 结论：对 void LCD 渲染函数，R0 非 ABI 语义；正确做法是校验行为等价。
+- 修复：`verify_misc` 对 `disp_screen_static`/`disp_screen_calib` 改为
+  「GPIO 写迹（真实渲染像素位，FIO 池 0x2009C000）+ SRAM 末态」校验，
+  保留 R0+SRAM 校验给 uart3_tx_byte/uart3_rx_timeout_monitor/load_config/
+  param_sync_live_to_eeprom。8M 指令配额（全屏渲染 4 行 GBK 串，500k 会中途截断）。
+- 验证：OLD/NEW 写迹完全一致（32298 / 30505 条），`DISPLAY_SCREEN_STATIC/CALIB: PASS`。
+
+## 更早修复记录（此前会话，保留）
+
+### closed_loop 位置式输出槽地址（已修复并 PASS）
 - 症状：`CLOSED_LOOP` (100,90,2,3) RAM mismatch，0x10002108 old=0x0140 new=0x0000
 - 根因：globals.c `pid_integral` 误指 0x100020F8（累加器 DAT_00011164 地址）。
   OLD 反汇编 0x110C0 铁证：位置式输出写 **0x10002108**（DAT_00011160），
@@ -41,47 +99,13 @@ RUN_STOP_PRESET: PASS cfg=2
   - `firmware/src/09_output_stage.c`：4 处 `*pid_integral = *out_setpoint;` → `*DAT_00011164 = ...`
     （OLD output_stage 0xE9F2/0xEAA8/0xEEA4/0xEF5A 写累加器 0x100020F8）
   - `firmware/src/12_closed_loop.c`：注释 0x10002130/0x10002120 → 0x10002108/0x100020F8
-- 修复后 `CLOSED_LOOP: PASS integral=6 wrapper=12`、`OUTPUT_STAGE_MATRIX: PASS cases=36`
 
-### 2. run_stop_preset R0 残留（验证脚本放宽，已 PASS）
+### run_stop_preset R0 残留（验证脚本放宽，已 PASS）
 - 症状：cfg=1 时 R0 OLD=0x1、NEW=0x64（编译器残留，非契约）
 - 根因：OLD（IAR）在 cfg==1 路径末尾重读 cfg_word 致 R0=1；NEW（GCC）乘法常数
   0x64 残留 R0。调用点 OLD main 0x6B6 `bl 0xF70A` 后立即 `bl 0x238` 覆盖 R0，不消费。
 - 修复：`verify_run_stop_preset` 只断言 SRAM 末态（注释已说明缘由）。
   6p 参考脚本对 run_stop_preset 亦无 R0 断言。
-
-## 当前卡点（未解决）— state_machine debounce 计数器错位
-
-**错误信息**：
-```
-AssertionError: state_machine SRAM mismatch (1, 0, 0, 1): [(268440957, 1, 0), (268440959, 0, 1)]
-```
-即 0x1000157D old=1 new=0、0x1000157F old=0 new=1（两字节相邻）。
-
-**根因定位（已确认）**：`firmware/src/03_input_debounce.c` 中 debounce 计数器
-DAT_ 符号**系统性错位 2 字节**。用 mem-hook 抓写：OLD 写 0x157D（PC=0x1AD2，
-debounce_p116 低沿），NEW 写 0x157F（PC=0x1A68）。
-
-OLD 反汇编金标准（证据文件 `evidence/reverse/disassembly/functions/00001a96..3.txt`）：
-
-| NEW 函数 | OLD 入口 | 高沿槽（OLD） | 低沿槽（OLD） | NEW 源码现用 | 应改用 |
-|---|---|---|---|---|---|
-| debounce_p116 | 0x1a96 | 0x157C `DAT_00001bd8` | 0x157D `DAT_00001bdc` | DAT_00001be0/be4 (0x157E/7F) | **DAT_00001bd8/bdc** |
-| debounce_p117 | 0x1aee | 0x157E `DAT_00001be0` | 0x157F `DAT_00001be4` | DAT_00001be8/bec (0x1580/81) | **DAT_00001be0/be4** |
-| debounce_p06 | 0x1b46 | 0x1580 `DAT_00001be8` | 0x1581 `DAT_00001bec` | DAT_00001bd8/bdc (0x157C/7D) | **DAT_00001be8/bec** |
-
-debounce_p09（0x1a68）用 0x157B `DAT_00001bd4` —— 正确，无需改。
-
-**待改文件**：`firmware/src/03_input_debounce.c`
-- debounce_p116 函数（~line 289-309）：`DAT_00001be0`→`DAT_00001bd8`、`DAT_00001be4`→`DAT_00001bdc`
-- debounce_p117 函数（~line 319-339）：`DAT_00001be8`→`DAT_00001be0`、`DAT_00001bec`→`DAT_00001be4`
-- debounce_p06 函数（~line 349-369）：`DAT_00001bd8`→`DAT_00001be8`、`DAT_00001bdc`→`DAT_00001bec`
-
-globals.c 地址本身无需改（DAT_00001bd8..bec 映射正确，见 globals.c:58-64）。
-
-**验证**：改后重建 + 重跑脚本，应过 `verify_state_machine_matrix`，
-并继续 `verify_display_matrix / verify_display_full_exec / verify_debounce /
-verify_auth / verify_misc` 至「==== 12p A/B 等价性验证：全部 PASS ====」。
 
 ## 2026-08-31 清理 6p 遗留 + 静态测试修复（期间新发现）
 
