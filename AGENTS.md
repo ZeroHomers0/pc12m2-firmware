@@ -69,7 +69,7 @@ tools/                      十二相生成、验证、实机与 J-Link 工具
 cd firmware
 bash build.sh
 
-# 静态测试；当前缺原 BIN 时 CRC 测试会失败
+# 静态测试（CRC 测试需原 BIN，已就位）
 cd ..
 python test/run_tests.py
 
