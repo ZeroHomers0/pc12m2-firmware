@@ -44,7 +44,7 @@ firmware/                   十二相可编译源码工程
 docs/project/               十二相项目状态、应用与数据布局
 docs/analysis/              十二相模块结论与 P5 验证进度
 docs/w8/                    十二相实机验证流程、规范与状态
-evidence/hardware/          十二相硬件资料；当前仅保留共用显示面板资料
+evidence/hardware/          硬件资料；board/display/reports 为六相参考，十二相事实须另行验证
 evidence/reverse/           十二相逆向证据
   disassembly/functions/    带引用注释的逐函数反汇编，当前权威
   disassembly/raw/          十二相原始逐函数导出

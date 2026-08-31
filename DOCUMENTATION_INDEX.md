@@ -40,6 +40,7 @@
 - `evidence/reverse/disassembly/raw/`：十二相原始逐函数导出。
 - `evidence/reverse/notes/`：十二相状态机人工拆解记录。
 - `evidence/reverse/reports/`：十二相生成报告。
-- `evidence/hardware/`：当前仅有显示面板资料；PC12M-2 原理图、BOM 和接线资料待补。
+- `evidence/hardware/`：已按 `board/display/reports` 引入六相参考资料；PC12M-2 自身原理图、BOM 和接线资料仍待补。
 
-六相实验记录、六相原始资料和六相反汇编不在本仓库维护。
+六相实验记录和六相反汇编不在本仓库维护；引入的六相硬件参考资料统一放在
+`evidence/hardware/`，不得直接当作十二相板级事实。
