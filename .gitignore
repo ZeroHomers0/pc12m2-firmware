@@ -20,6 +20,9 @@ firmware/data_image.bin
 # Ghidra 临时分析工程（勿入库，可随时重开）
 tools/_ghidra_proj/
 
+# 烧写工具下载产物（tools/flash/flash_release.sh 生成，可重建）
+release/
+
 # Python
 __pycache__/
 *.pyc

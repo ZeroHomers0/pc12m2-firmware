@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 发布固件到 GitHub Release 需要写权限
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,3 +50,26 @@ jobs:
             firmware/firmware.elf
             firmware/firmware.map
           if-no-files-found: error
+
+      # 生成固件哈希（供下载侧校验，见 tools/flash/flash_release.sh）
+      - name: Compute firmware SHA-256
+        run: sha256sum firmware/firmware.bin | awk '{print $1}' > firmware/firmware.bin.sha256
+
+      # 发布到 GitHub Release（滚动 latest tag）——仅 push 到 main 时，PR 不发布。
+      # 其他电脑可免环境直接用 tools/flash/flash_release.sh 拉取本固件烧写。
+      - name: Publish firmware to Release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          TAG="latest"
+          # 删除旧的 latest release（若存在）后重建，保证指向最新构建
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" \
+            firmware/firmware.bin firmware/firmware.bin.sha256 \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Latest firmware build" \
+            --notes "自动构建固件 PC12M-2。SHA-256: $(cat firmware/firmware.bin.sha256)" \
+            --latest
+          echo "已发布 Release: $GITHUB_REPOSITORY/releases/tag/$TAG"
