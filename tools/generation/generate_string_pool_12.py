@@ -25,7 +25,7 @@ PRODUCT_INFO_OVERRIDES = {
     0x6acc: "型号:PC12M-2",
     0x6ad8: "版本:V2.0",
     0x6ae8: "厂商:XIANPOWER",
-    0x6af8: "电话:029-84205750",
+    0x6af8: "电话:02984205750",
 }
 
 SCAN_FILES = [str(p) for p in (REFERENCE_ROOT / "firmware" / "src").glob("*.c")] + \

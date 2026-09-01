@@ -43,7 +43,7 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
   `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`。
 - 认证已永久放行，12p 源码可稳定运行；尚未冻结烧写基线哈希，W8 分级实测尚未开始。
 - **2026-09-01 产品信息定制**：菜单 8「产品版本信息」屏 4 行文本覆写为
-  型号:PC12M-2 / 版本:V2.0 / 厂商:XIANPOWER / 电话:029-84205750（改
+  型号:PC12M-2 / 版本:V2.0 / 厂商:XIANPOWER / 电话:02984205750（改
   `tools/generation/generate_string_pool_12.py` 的 `PRODUCT_INFO_OVERRIDES` 重新生成
   `strpool.c`，`strpool_map` 前置查表；flash 地址与执行路径不变，A/B 验证全 PASS）。
   详见 `docs/analysis/P5_VERIFICATION_PROGRESS.md`。

@@ -199,24 +199,22 @@ void gpio1_init(void)
 /* 扩展 8×8 字形：X 与 O —— 原厂字库仅 36 字符（map @0x1546 无 X/O），产品信息
  * "厂商:XIANPOWER" 的 X/O 查表未命中会渲染空白（原厂串 SINEP0WER 用数字 0 因此无感）。
  * 本表为对本固件的有意扩展：与原字库同格式（每字 0x10 字节 = 8 列 × 2 页，
- * 列高字节 bit7=行首），disp_render_char8 对 X/O 提前匹配。
- * 字形风格与原字库一致（2026-09-01 实测修正）：字符 7 列（col0-6）× 16 行，
- * 笔画 1px；上页=字符上半部（行0-4），下页=字符下半部（行10-15），行5-9 留空。
- *   'O' 直接复用原字库数字 '0' 的字形（原厂 SINEP0WER 即用 0 代替 O）；
- *   'X' 按 N/M/V 的 1px 斜线风格重绘，交叉点在中间空白区（上页收敛、下页发散）。
+ * 列高字节 bit7=行首），disp_render_char8 对 X 提前匹配。
+ * 字形风格与原字库一致：字符使用 col0-6、有效像素位于行3-13、笔画 1px。
+ * 'O' 直接复用原字库数字 '0'（原厂 SINEP0WER 即用 0 代替 O）。
+ * 'X' 的两条斜线在行8、col3 真实相交；上下页只是 LCD 的 8 行分页，不是字形
+ * 中间留白。此前把行5-9 留空会把 X 画成菱形，已按原字库 N/A/V 的实际行高修正。
  * 注意：这是对原 BIN 的**有意定制偏离**（原 BIN 渲染 X/O 为空白），A/B 快照区
  * 无差异，仅"渲染 X/O 字符"的 GPIO 写迹与 OLD 不同（OLD 不写）。 */
-static const unsigned char ext_char8_xo[0x20] = {
-    /* 'X' 上页（行0-4，两斜线收敛） */ 0x80,0x40,0x20,0x18,0x20,0x40,0x80,0x00,
-    /* 'X' 下页（行10-15，两斜线发散） */ 0x07,0x08,0x10,0x20,0x10,0x08,0x07,0x00,
-    /* 'O' 上页 = 数字'0'（原厂 SINEP0WER 用 0） */ 0xf0,0x08,0x08,0x08,0x08,0x08,0xf0,0x00,
-    /* 'O' 下页 = 数字'0' */ 0x1f,0x20,0x20,0x20,0x20,0x20,0x1f,0x00,
+static const unsigned char ext_char8_x[0x10] = {
+    /* 'X' 上页（行3-7，两斜线收敛） */ 0x08,0x30,0xC0,0x00,0xC0,0x30,0x08,0x00,
+    /* 'X' 下页（行8中心相交，行9-13发散） */ 0x20,0x18,0x06,0x01,0x06,0x18,0x20,0x00,
 };
 
 /* 0x00000AF4（OLD 入口；NEW 0xB50）—— 渲染 8×8 ASCII 字符
  *   查表 0x10001546（DAT_00000b68 指向，0x24 个 8×8 字符映射表）→ 字形表
  *   0x10001306（DAT_00000f70 指向，每字 0x10 字节）
- *   X/O 提前匹配扩展字形表（见 ext_char8_xo），其余查原字库。
+ *   X 匹配扩展字形表（见 ext_char8_x）；O 复用原字库数字 0；其余查原字库。
  *   col<8 → 上半屏（CS1），否则下半屏（CS2，col-8）
  *   row=行，col=列×8+0x40 地址 */
 void disp_render_char8(uint ch,char row,uint col,undefined4 invert)
@@ -228,13 +226,13 @@ void disp_render_char8(uint ch,char row,uint col,undefined4 invert)
 
   fio = DAT_00000b64;
   tbl_idx = 0;
-  if (ch == 0x4f) {                  /* 'O'：原厂字库无 O，走扩展字形表 */
-    tbl_idx = 1;
-    gbase = (uint32_t)ext_char8_xo;
+  if (ch == 0x4f) {                  /* 'O'：直接复用原字库索引0的数字'0' */
+    tbl_idx = 0;
+    gbase = DAT_00000f70;
   }
   else if (ch == 0x58) {             /* 'X'：原厂字库无 X，走扩展字形表 */
     tbl_idx = 0;
-    gbase = (uint32_t)ext_char8_xo;
+    gbase = (uint32_t)ext_char8_x;
   }
   else {
     while( true ) {

@@ -701,13 +701,21 @@ def verify_auth():
 # ── 厂商 X/O 渲染（NEW 有意偏离，非 A/B 等价）──────────────────────────────
 # 原 BIN 字库仅 36 字符（map @0x10001546，无 X(0x58)/O(0x4F)），disp_render_char8
 # 查表未命中直接 return → X/O 渲染空白（厂商 XIANPOWER 缺字；原厂串 SINEP0WER 用
-# 数字 0 因此无感）。NEW 增加 ext_char8_xo（0xCD10）并对 ch==X/O 提前命中、真实
-# 写 LCD（FIO 写迹）。本测试断言这场有意偏离，同时给"字库外字符仍空白"上回归护栏：
+# 数字 0 因此无感）。NEW 增加 ext_char8_x，并让 O 复用原字库数字 0，真实写 LCD
+#（FIO 写迹）。本测试断言这场有意偏离，同时给"字库外字符仍空白"上回归护栏：
 #   · OLD ch='X' → 零 GPIO 写（原厂确实空白，基线证明）
 #   · NEW ch='X'/'O' → 出现 GPIO 写（修复生效）
 #   · NEW ch='Z'(0x5A，字库无) → 零 GPIO 写（空白保留）
 def verify_xo_font():
     old, new = PAIRS["disp_render_char8"]
+
+    # 不只检查“有 GPIO 写”，还固定 X 的实际点阵，防止再次出现能写出但形似菱形的回归。
+    expected_x = bytes((
+        0x08, 0x30, 0xC0, 0x00, 0xC0, 0x30, 0x08, 0x00,
+        0x20, 0x18, 0x06, 0x01, 0x06, 0x18, 0x20, 0x00,
+    ))
+    x_addr = SYMS["ext_char8_x"]
+    assert NEW[x_addr:x_addr + 0x10] == expected_x, "NEW 'X' 点阵内容错误"
 
     def trace_of(is_new, entry, ch):
         uc = machine(is_new)
@@ -725,11 +733,13 @@ def verify_xo_font():
     t_old_x = trace_of(False, old, 0x58)   # OLD 'X' → 原厂空白（零写）
     t_new_x = trace_of(True,  new, 0x58)   # NEW 'X' → 渲染（有写）
     t_new_o = trace_of(True,  new, 0x4F)   # NEW 'O' → 渲染（有写）
+    t_new_0 = trace_of(True,  new, 0x30)   # NEW '0' → O 应与其逐写一致
     t_new_z = trace_of(True,  new, 0x5A)   # NEW 'Z'（字库外）→ 空白（零写）
     assert not t_old_x, "OLD 'X' 竟有 GPIO 写（原厂应空白）"
     assert not t_new_z, "NEW 'Z'（字库外）竟有 GPIO 写（空白被破坏）"
     assert t_new_x, "NEW 'X' 无 GPIO 写（X 扩展字形未生效）"
     assert t_new_o, "NEW 'O' 无 GPIO 写（O 扩展字形未生效）"
+    assert t_new_o == t_new_0, "NEW 'O' 未精确复用原字库数字 '0'"
     print("XO_FONT: PASS old_X=%d写 blank | new_X=%d写 new_O=%d写 new_Z=0写" % (
         len(t_old_x), len(t_new_x), len(t_new_o)))
 
