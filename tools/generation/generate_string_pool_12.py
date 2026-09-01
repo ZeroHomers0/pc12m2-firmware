@@ -17,6 +17,17 @@ FLASH_LEN = len(BIN12)
 REFERENCE_ROOT = ROOT.parent / "PC6M-10"
 BIN6 = (REFERENCE_ROOT / "LPC1765.bin").read_bytes()
 
+# ── 产品信息定制覆写（2026-09-01 用户要求）────────────────────────────
+# case9 产品版本信息屏 4 行文本：地址保持 **12p flash 地址**，strpool_map 前置
+# 查表返回定制串（GBK 字节）。原厂内容：型号:ST36C / 版本:V2.0.2016 /
+# 厂商:SINEP0WER / 电话:18938061832。改这里并重新生成即可。
+PRODUCT_INFO_OVERRIDES = {
+    0x6acc: "型号:PC12M-2",
+    0x6ad8: "版本:V2.0",
+    0x6ae8: "厂商:XIANPOWER",
+    0x6af8: "电话:029-84205750",
+}
+
 SCAN_FILES = [str(p) for p in (REFERENCE_ROOT / "firmware" / "src").glob("*.c")] + \
              [str(REFERENCE_ROOT / "firmware" / "stub.c")]
 SCAN_FILES = [f for f in SCAN_FILES if not f.endswith("strpool.c") and not f.endswith("08_modbus_dispatch.c")]
@@ -148,7 +159,9 @@ csrc.append(" * GBK 字符串表 blob + 簇表 + strpool_map（key = **12p flash
 csrc.append(" * 12p 内容含真实差异：'标准模式'@0x071c、'型号:ST36C'@0x6acc（≠6p 标准流程/ST33C）。")
 csrc.append(" * P3 移植已用 _strpool_6to12_map.json 把 disp_string 实参替换为 12p 地址；")
 csrc.append(" * 逆向新增渲染函数的单位/状态串（0x7488/0x7490/0x8638/0xa070/0xa080/0xa0b0 等）")
-csrc.append(" * 由 12p 源码扫描并入簇表（2026-08-31 修复 A/B 显示全执行差异）。 */")
+csrc.append(" * 由 12p 源码扫描并入簇表（2026-08-31 修复 A/B 显示全执行差异）。")
+csrc.append(" * 产品信息定制（2026-09-01 用户要求）：case9 版本屏 4 行文本覆写为定制内容")
+csrc.append(" * （型号/版本/厂商/电话），地址不变，strpool_map 前置查表；见 PRODUCT_INFO_OVERRIDES。 */")
 csrc.append("#include <stdint.h>")
 csrc.append("")
 csrc.append("typedef struct { uint32_t base; uint32_t len; const uint8_t *blob; } strpool_cluster_t;")
@@ -167,9 +180,40 @@ for base, ln, off in records:
     csrc.append("  {%d, %d, strpool_blob + %d}," % (base, ln, off))
 csrc.append("};")
 csrc.append("")
+
+# ── 产品信息定制覆写段（strpool_map 前置查表）──────────────────
+if PRODUCT_INFO_OVERRIDES:
+    ov_off = {}
+    ovb = bytearray()
+    for a in sorted(PRODUCT_INFO_OVERRIDES):
+        ov_off[a] = len(ovb)
+        ovb += PRODUCT_INFO_OVERRIDES[a].encode("gbk") + b"\x00"
+    csrc.append("/* 产品信息定制覆写（2026-09-01 用户要求）：case9 版本屏 4 行文本（GBK 字节）。")
+    csrc.append(" * 地址保持 12p flash 地址，strpool_map 前置查表返回定制串；")
+    csrc.append(" * 原厂内容仍在原簇 blob 中保留（未使用）。 */")
+    csrc.append("static const uint8_t strpool_override_blob[] =")
+    ovlines = []
+    for a in sorted(PRODUCT_INFO_OVERRIDES):
+        chunk = PRODUCT_INFO_OVERRIDES[a].encode("gbk") + b"\x00"
+        ovlines.append('  "' + "".join("\\x%02x" % b for b in chunk) +
+                       '" /* %s */' % PRODUCT_INFO_OVERRIDES[a])
+    csrc.append("\n".join(ovlines) + ";")
+    csrc.append("")
+    csrc.append("typedef struct { uint32_t addr; uint32_t off; } strpool_override_t;")
+    csrc.append("static const strpool_override_t strpool_override[] = {")
+    csrc.append("  " + ", ".join("{ 0x%04x, %d }" % (a, ov_off[a])
+                                 for a in sorted(PRODUCT_INFO_OVERRIDES)) + "};")
+    csrc.append("")
+    csrc.append("")
+
 csrc.append("uint32_t strpool_map(uint32_t addr)")
 csrc.append("{")
 csrc.append("  uint32_t i;")
+if PRODUCT_INFO_OVERRIDES:
+    csrc.append("  for (i = 0; i < sizeof(strpool_override) / sizeof(strpool_override[0]); i++) {")
+    csrc.append("    if (addr == strpool_override[i].addr)")
+    csrc.append("      return (uint32_t)(strpool_override_blob + strpool_override[i].off);")
+    csrc.append("  }")
 csrc.append("  for (i = 0; i < sizeof(strpool_clusters) / sizeof(strpool_clusters[0]); i++) {")
 csrc.append("    if (addr >= strpool_clusters[i].base && addr < strpool_clusters[i].base + strpool_clusters[i].len)")
 csrc.append("      return (uint32_t)(strpool_clusters[i].blob + (addr - strpool_clusters[i].base));")

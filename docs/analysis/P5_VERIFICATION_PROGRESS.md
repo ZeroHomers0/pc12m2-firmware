@@ -195,3 +195,21 @@ TOTAL 113 PASS / 0 FAIL
   （含 `AUTH: PASS funcs=3`、`STATE_MACHINE_MATRIX: PASS cases=130`），
   `test_extra_coverage_12.py` 113/113 PASS 无回归。
 - 认证放行前，上板运行会在无认证链路（ADuM1201 隔离 1-Wire 总线）时锁机，已永久消除。
+
+## 2026-09-01 产品信息定制（菜单 8.8 产品版本信息屏）
+
+用户要求把 case9 产品版本信息屏（`0x9ab6`，`MENU==9`）4 行文本覆写为：
+型号:PC12M-2 / 版本:V2.0 / 厂商:XIANPOWER / 电话:029-84205750（原厂 ST36C/V2.0.2016/SINEP0WER/18938061832）。
+
+- **实现**：改 `tools/generation/generate_string_pool_12.py` 新增 `PRODUCT_INFO_OVERRIDES`
+  （4 个 12p flash 地址 → GBK 定制串），重新生成 `firmware/src/strpool.c` 得到
+  `strpool_override` 段，`strpool_map` 前置查表返回定制串。
+- **为什么这样做**：strpool blob 是原厂 bin 逐字节复制，0x6acc 位于簇中部，直接改内容会
+  破坏其后 0x6ad8/0x6ae8/0x6af8 的相对偏移；`strpool_map` 是 `disp_string` 的唯一入口
+  （`02_lcd_display.c` 首行调用），前置查表可保持 **flash 地址与执行路径完全不变**，
+  仅替换显示内容。原厂串仍保留于 blob 未使用。
+- **验证**：重建固件 text 63768→63920（+152 = override 段），`test/run_tests.py` 4/4、
+  `verify_firmware_equivalence_12.py` 全 PASS（含 `DISPLAY_MATRIX: cases=106`、
+  `DISPLAY_FULL_EXEC: cases=4`——两套显示验证只覆盖 case3/case4，不碰 case9）、
+  `test_extra_coverage_12.py` 113/113 无回归。新固件 bin 0x00ceec 起含 4 个定制串
+  （override_blob），原厂串仍可搜到（blob 保留，未显示）。
