@@ -25,6 +25,7 @@ param(
   [string]$Tag = "latest",
   [string]$Device = "LPC1765",
   [string]$Bin = "",            # 本地固件路径（替代下载）
+  [string]$Mirror = "",         # 国内镜像前缀（默认空=直连 GitHub），如 https://ghproxy.com/
   [string]$Serial = "",         # J-Link 序列号（多台时）
   [switch]$DryRun               # 只下载+校验，不烧写
 )
@@ -32,10 +33,16 @@ param(
 $ErrorActionPreference = 'Stop'
 $FLASH_SIZE = 0x40000   # LPC1765 = 256 KiB
 
-# ---- 路径（脚本位于 <仓库>/tools/flash/，仓库根 = 上两级） ----
-$Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$JLink = Join-Path $Root "tools\jlink\JLink.exe"
-$Work  = Join-Path $Root "release"
+# ---- 路径 ----
+# 支持两种布局：
+#   A. 独立烧写工具包（Release 里的 zip）：脚本与 jlink\ 同目录
+#   B. 仓库内：脚本位于 <仓库>/tools/flash/，jlink 在 <仓库>/tools/jlink/
+$Root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent   # 仓库布局时 = 仓库根
+$JLink = @(
+  (Join-Path $PSScriptRoot "jlink\JLink.exe"),
+  (Join-Path $Root "tools\jlink\JLink.exe")
+) | Where-Object { Test-Path $_ } | Select-Object -First 1
+$Work = Join-Path (Get-Location) "release"   # 下载/临时产物（随运行目录，可重建）
 New-Item -ItemType Directory -Force -Path $Work | Out-Null
 $BinFile = Join-Path $Work "firmware.bin"
 $ShaFile = Join-Path $Work "firmware.bin.sha256"
@@ -47,8 +54,12 @@ if ($Bin) {
   $BinFile = $Bin
   Write-Host "== 使用本地固件：$BinFile =="
 } else {
-  $BinUrl = "https://github.com/$Repo/releases/download/$Tag/firmware.bin"
-  $ShaUrl = "https://github.com/$Repo/releases/download/$Tag/firmware.bin.sha256"
+  $GhBinUrl = "https://github.com/$Repo/releases/download/$Tag/firmware.bin"
+  $GhShaUrl = "https://github.com/$Repo/releases/download/$Tag/firmware.bin.sha256"
+  # 镜像前缀拼接：<mirror> + <完整 GitHub 地址>（国内访问 GitHub 不稳时使用）
+  $BinUrl = "$Mirror$GhBinUrl"
+  $ShaUrl = "$Mirror$GhShaUrl"
+  if ($Mirror) { Write-Host "== 使用镜像：$Mirror ==" }
   Write-Host "== 下载固件：$BinUrl =="
   try {
     Invoke-WebRequest -Uri $BinUrl -OutFile $BinFile -UseBasicParsing
@@ -92,10 +103,10 @@ if ($BinSize -gt $FLASH_SIZE) {
 if ($DryRun) { Write-Host "== dry-run：仅下载+校验，不烧写。完成。"; exit 0 }
 
 # ---- 3. 检查打包版 J-Link ----
-if (-not (Test-Path $JLink)) { Write-Error "未找到打包版 J-Link: $JLink"; exit 1 }
+if (-not $JLink) { Write-Error "未找到打包版 J-Link（脚本旁 jlink\ 或仓库 tools\jlink\ 均无）"; exit 1 }
 
 # ---- 4. 生成 CommanderScript（基于 操作文档 §3.4 flash.jlink） ----
-$BackupDir = Join-Path $Root "backup"
+$BackupDir = Join-Path (Get-Location) "backup"   # 备份随运行目录（独立包内同样可用）
 New-Item -ItemType Directory -Force -Path $BackupDir | Out-Null
 $Pre   = Join-Path $BackupDir "pre_flash.bin"
 $BinWin = (Resolve-Path $BinFile).Path   # Windows 绝对路径

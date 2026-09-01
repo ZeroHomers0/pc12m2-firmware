@@ -9,6 +9,7 @@
 #   bash tools/flash/flash_release.sh                 # 拉取 latest 并烧写
 #   bash tools/flash/flash_release.sh --tag v1.0      # 指定 tag
 #   bash tools/flash/flash_release.sh --bin x.bin     # 用本地 bin 替代下载
+#   bash tools/flash/flash_release.sh --mirror https://ghproxy.com/  # 国内镜像加速下载
 #   bash tools/flash/flash_release.sh --dry-run       # 只下载+校验，不烧写
 #   bash tools/flash/flash_release.sh --serial <SN>   # 指定 J-Link 序列号（多台时）
 #
@@ -25,6 +26,7 @@ REPO="${GITHUB_REPOSITORY:-ZeroHomers0/pc12m2-firmware}"
 TAG="latest"
 DEVICE="LPC1765"
 FLASH_SIZE=0x40000            # LPC1765 = 256 KiB
+MIRROR=""                     # 国内镜像前缀（默认空=直连 GitHub），如 https://ghproxy.com/
 BIN=""
 DRY_RUN=0
 SERIAL=""
@@ -36,18 +38,27 @@ while [[ $# -gt 0 ]]; do
     --bin)    BIN="$2"; shift 2 ;;
     --device) DEVICE="$2"; shift 2 ;;
     --repo)   REPO="$2"; shift 2 ;;
+    --mirror) MIRROR="$2"; shift 2 ;;
     --serial) SERIAL="$2"; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     -h|--help)
-      sed -n '5,20p' "$0"; exit 0 ;;
+      sed -n '5,24p' "$0"; exit 0 ;;
     *) echo "未知参数: $1"; exit 1 ;;
   esac
 done
 
 # ---- 路径 ----
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"          # 仓库根目录
-JLINK="$ROOT/tools/jlink/JLink.exe"
-WORK="$ROOT/release"                                  # 下载/临时产物目录
+# 支持两种布局：
+#   A. 独立烧写工具包（Release 里的 zip）：脚本与 jlink/ 同目录
+#   B. 仓库内：脚本位于 <仓库>/tools/flash/，jlink 在 <仓库>/tools/jlink/
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"           # 脚本所在目录
+ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"               # 仓库布局时 = 仓库根
+if [[ -f "$SCRIPT_DIR/jlink/JLink.exe" ]]; then
+  JLINK="$SCRIPT_DIR/jlink/JLink.exe"                # 独立包布局
+else
+  JLINK="$ROOT/tools/jlink/JLink.exe"                # 仓库布局
+fi
+WORK="$PWD/release"                                   # 下载/临时产物（随运行目录，可重建）
 mkdir -p "$WORK"
 BIN_FILE="$WORK/firmware.bin"
 SHA_FILE="$WORK/firmware.bin.sha256"
@@ -59,8 +70,12 @@ if [[ -n "$BIN" ]]; then
   BIN_FILE="$BIN"
   echo "== 使用本地固件：$BIN_FILE =="
 else
-  BIN_URL="https://github.com/$REPO/releases/download/$TAG/firmware.bin"
-  SHA_URL="https://github.com/$REPO/releases/download/$TAG/firmware.bin.sha256"
+  GH_BIN_URL="https://github.com/$REPO/releases/download/$TAG/firmware.bin"
+  GH_SHA_URL="https://github.com/$REPO/releases/download/$TAG/firmware.bin.sha256"
+  # 镜像前缀拼接：<mirror> + <完整 GitHub 地址>（国内访问 GitHub 不稳时使用）
+  BIN_URL="${MIRROR}${GH_BIN_URL}"
+  SHA_URL="${MIRROR}${GH_SHA_URL}"
+  [[ -n "$MIRROR" ]] && echo "== 使用镜像：$MIRROR =="
   echo "== 下载固件：$BIN_URL =="
   curl -fL --retry 3 -o "$BIN_FILE" "$BIN_URL"
   curl -fL --retry 3 -o "$SHA_FILE" "$SHA_URL" || { echo "警告: 未取到 sha256（将跳过校验）"; rm -f "$SHA_FILE"; }
@@ -98,7 +113,7 @@ fi
 
 # ---- 4. 生成 CommanderScript（基于 操作文档 §3.4 flash.jlink） ----
 # JLink.exe 是 Windows 程序，路径需转成 Windows 绝对路径；backup 目录确保存在。
-BACKUP_DIR="$ROOT/backup"
+BACKUP_DIR="$PWD/backup"   # 备份随运行目录（独立包内同样可用）
 mkdir -p "$BACKUP_DIR"
 PRE="$BACKUP_DIR/pre_flash.bin"
 BIN_WIN="$(cygpath -w "$BIN_FILE" 2>/dev/null || echo "$BIN_FILE")"
