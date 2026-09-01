@@ -16,6 +16,7 @@
 from pathlib import Path
 import re
 import struct
+import shutil
 import subprocess
 
 from unicorn import Uc, UC_ARCH_ARM, UC_MODE_THUMB, UC_HOOK_CODE, UC_HOOK_MEM_WRITE
@@ -25,9 +26,11 @@ from unicorn.arm_const import (UC_ARM_REG_LR, UC_ARM_REG_SP, UC_ARM_REG_R0,
 
 ROOT = Path(__file__).resolve().parents[2]
 FW = ROOT / "firmware"
-TC = Path(r"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\14.2 rel1\bin")
-NM = TC / "arm-none-eabi-nm.exe"
-OBJDUMP = TC / "arm-none-eabi-objdump.exe"
+# 工具链定位：优先 PATH（CI/Linux 由 arm-none-eabi-gcc-action 注入），
+# 找不到再回退本机 Windows 安装路径（本地开发机）。
+_WIN_TC = Path(r"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\14.2 rel1\bin")
+NM = shutil.which("arm-none-eabi-nm") or str(_WIN_TC / "arm-none-eabi-nm.exe")
+OBJDUMP = shutil.which("arm-none-eabi-objdump") or str(_WIN_TC / "arm-none-eabi-objdump.exe")
 
 SRAM0_END = 0x29A0        # 0x10000000..0x100029a0（12p _estack）
 SCRATCH = 0x10003000      # 0x10003000..0x10003100 暂存（crc/modbus 入出缓冲）
