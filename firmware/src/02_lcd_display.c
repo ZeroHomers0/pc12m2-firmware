@@ -196,8 +196,23 @@ void gpio1_init(void)
 
 /* ==================== 字符渲染 ==================== */
 
-/* 0x00000B44 —— 渲染 8×8 ASCII 字符
- *   查表 0x10000BB8（0x24 个 8×8 字符映射表）→ 字形表 0x10000FC0（每字 0x10 字节）
+/* 扩展 8×8 字形：X 与 O —— 原厂字库仅 36 字符（map @0x1546 无 X/O），产品信息
+ * "厂商:XIANPOWER" 的 X/O 查表未命中会渲染空白（原厂串 SINEP0WER 用数字 0 因此无感）。
+ * 本表为对本固件的有意扩展：与原字库同格式（每字 0x10 字节 = 8 列 × 2 页，
+ * 列高字节 bit7=行首），disp_render_char8 对 X/O 提前匹配。
+ * 注意：这是对原 BIN 的**有意定制偏离**（原 BIN 渲染 X/O 为空白），A/B 快照区
+ * 无差异，仅"渲染 X/O 字符"的 GPIO 写迹与 OLD 不同（OLD 不写）。 */
+static const unsigned char ext_char8_xo[0x20] = {
+    /* 'X' 上页 */ 0xc0,0x30,0x0c,0x03,0x03,0x0c,0x30,0xc0,
+    /* 'X' 下页 */ 0x03,0x0c,0x30,0xc0,0xc0,0x30,0x0c,0x03,
+    /* 'O' 上页 */ 0x3f,0x7f,0xf0,0xf0,0xf0,0xf0,0x7f,0x3f,
+    /* 'O' 下页 */ 0xfc,0xfe,0x0f,0x0f,0x0f,0x0f,0xfe,0xfc,
+};
+
+/* 0x00000AF4（OLD 入口；NEW 0xB50）—— 渲染 8×8 ASCII 字符
+ *   查表 0x10001546（DAT_00000b68 指向，0x24 个 8×8 字符映射表）→ 字形表
+ *   0x10001306（DAT_00000f70 指向，每字 0x10 字节）
+ *   X/O 提前匹配扩展字形表（见 ext_char8_xo），其余查原字库。
  *   col<8 → 上半屏（CS1），否则下半屏（CS2，col-8）
  *   row=行，col=列×8+0x40 地址 */
 void disp_render_char8(uint ch,char row,uint col,undefined4 invert)
@@ -205,15 +220,27 @@ void disp_render_char8(uint ch,char row,uint col,undefined4 invert)
   int fio;
   uint bit_i;
   uint tbl_idx;
+  uint32_t gbase;
 
   fio = DAT_00000b64;
   tbl_idx = 0;
-  while( true ) {
-    if (0x23 < tbl_idx) {
-      return;
+  if (ch == 0x4f) {                  /* 'O'：原厂字库无 O，走扩展字形表 */
+    tbl_idx = 1;
+    gbase = (uint32_t)ext_char8_xo;
+  }
+  else if (ch == 0x58) {             /* 'X'：原厂字库无 X，走扩展字形表 */
+    tbl_idx = 0;
+    gbase = (uint32_t)ext_char8_xo;
+  }
+  else {
+    while( true ) {
+      if (0x23 < tbl_idx) {
+        return;
+      }
+      if (*(volatile byte *)(DAT_00000b68 + tbl_idx) == ch) break;
+      tbl_idx = tbl_idx + 1 & 0xff;
     }
-    if (*(volatile byte *)(DAT_00000b68 + tbl_idx) == ch) break;
-    tbl_idx = tbl_idx + 1 & 0xff;
+    gbase = DAT_00000f70;
   }
   if ((int)col < 8) {
     *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x4000000;
@@ -229,12 +256,12 @@ void disp_render_char8(uint ch,char row,uint col,undefined4 invert)
   disp_cmd(row * '\x02' + -0x48);      /* 页 = 行×2 - 0x48 */
   for (bit_i = 0; bit_i < 8; bit_i = bit_i + 1 & 0xff) {
     disp_cmd(col * 8 + 0x40 + bit_i & 0xff);   /* 列地址 */
-    disp_data(*(volatile undefined1 *)(DAT_00000f70 + tbl_idx * 0x10 + bit_i),invert);
+    disp_data(*(volatile undefined1 *)(gbase + tbl_idx * 0x10 + bit_i),invert);
   }
   disp_cmd(row * '\x02' + -0x47);      /* 下一行 */
   for (bit_i = 0; bit_i < 8; bit_i = bit_i + 1 & 0xff) {
     disp_cmd(col * 8 + 0x40 + bit_i & 0xff);
-    disp_data(*(volatile undefined1 *)(DAT_00000f70 + tbl_idx * 0x10 + bit_i + 8),invert);
+    disp_data(*(volatile undefined1 *)(gbase + tbl_idx * 0x10 + bit_i + 8),invert);
   }
   return;
 }
