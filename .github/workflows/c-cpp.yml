@@ -23,6 +23,10 @@ jobs:
         with:
           release: '14.2.Rel1'
 
+      # 测试依赖（Unicorn 执行级测试需要）
+      - name: Install Python deps
+        run: pip install unicorn
+
       # 先跑静态 + Unicorn 执行级测试（AGENTS.md 要求修改源码后必须 A/B 验证）
       - name: Run tests
         run: python test/run_tests.py
