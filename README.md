@@ -9,8 +9,11 @@
 - 测试覆盖查漏（任务 #4）：额外补 9 组 **113/113 PASS**（`test/emulation/test_extra_coverage_12.py`）。
 - 认证已**永久放行**（任务 #6，`01_startup.c` `main()` 强制 `*lock=0`，`auth_pass_flag==0`=通过）。
 - 6p W8 实机问题复查（任务 #5）完成：12p 无代码级修复需求。
-- 原 BIN `backup/pc12m2_orig.bin` 已就位并核验 SHA-256；尚未冻结烧写基线哈希，
-  十二相 W8 分级实测未开始（只接控制电，断开市电/门极/功率负载）。
+- 产品信息定制 + 厂商 X/O 字形修复 + 电话行宽修正（2026-09-01/02）已完成，A/B 全 PASS。
+- 当前基线：`text 63964 / data 6312 / bss 2192`，`firmware.bin` SHA-256
+  `449A13DB053C5A81632E9C66C6B467723BC995BE56E7BEC79425804BF38663E2`。
+- **实机测试已通过**（2026-09-02，用户直接实机验证）；W8 分级实测流程未按计划执行、已废弃，
+  详见 `AGENTS.md`。
 
 入口：
 
@@ -18,7 +21,7 @@
 - 文档导航：`DOCUMENTATION_INDEX.md`
 - 构建与硬件操作：`操作文档.md`
 - P5 进度与测试覆盖/认证放行：`docs/analysis/P5_VERIFICATION_PROGRESS.md`
-- W8 总控：`docs/w8/W8_TEST_MASTER.md`
+- W8 历史流程档案（分级实测已废弃，实机已直接通过）：`docs/w8/W8_TEST_MASTER.md`
 - 复查结果（6p 侧）：`PC6M-10/docs/analysis/PC12M2_TEST_COVERAGE_REVIEW.md`、
   `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`
 

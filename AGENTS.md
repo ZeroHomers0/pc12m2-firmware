@@ -41,12 +41,14 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
   case3 钳位/闪烁、Modbus 大端、恢复出厂串地址、复位坐标）、3 项原厂设计、12p 独有的
   认证放行/case1/case1E 三分支门控/主屏 LED 错译均已完成。详见 6p 侧
   `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`。
-- 认证已永久放行，12p 源码可稳定运行；尚未冻结烧写基线哈希，W8 分级实测尚未开始。
-- **2026-09-01 产品信息定制**：菜单 8「产品版本信息」屏 4 行文本覆写为
-  型号:PC12M-2 / 版本:V2.0 / 厂商:XIANPOWER / 电话:02984205750（改
-  `tools/generation/generate_string_pool_12.py` 的 `PRODUCT_INFO_OVERRIDES` 重新生成
-  `strpool.c`，`strpool_map` 前置查表；flash 地址与执行路径不变，A/B 验证全 PASS）。
-  详见 `docs/analysis/P5_VERIFICATION_PROGRESS.md`。
+- **2026-09-01/02 后续进度**：产品信息定制（型号/版本/厂商/电话）、厂商 X/O 字形修复与
+  电话行宽修正（`029-84205750`→`02984205750`）均已完成并 A/B 全 PASS，详见
+  `docs/analysis/P5_VERIFICATION_PROGRESS.md`。当前基线 `text 63964 / data 6312 / bss 2192`，
+  `firmware.bin` SHA-256 `449A13DB053C5A81632E9C66C6B467723BC995BE56E7BEC79425804BF38663E2`。
+- **2026-09-02 实机测试通过（用户直接实机验证）**：自编译固件已烧写入板并经用户实机测试通过
+  （含产品信息定制与 X/O 修复后的最终固件）。**W8 分级实测流程未按计划执行、已废弃**——用户
+  未按 W8 分级测试；`docs/w8/` 分级文档保留为历史流程档案，进度以本文件与
+  `DOCUMENTATION_INDEX.md` 为准。实机通过不代表分级波形/带载 100% 量化等价。
 
 ## 必须遵守
 
@@ -101,8 +103,7 @@ python tools/verification/verify_firmware_equivalence_12.py
 
 ## 下一步
 
-1. 冻结待上板固件哈希（`firmware/firmware.bin` SHA-256 与长度记录到文档）。
-2. 冻结后进入 `docs/w8/W8_TEST_MASTER.md` 的分级实测（只接控制电，断开市电/门极/功率负载）。
-3. 上板前先按 `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`「三、实机核对项」核对：
-   SWD 介入路径（P1.30/P1.29 复用，须 connect-under-reset 或 ISP）、板内 `0x2FC` CRP 实读
-   （文件值≠板内值）、12p 触发波形 2-3 判据等。
+**实机测试已通过（2026-09-02），W8 分级实测流程已废弃**，无强制后续步骤。若需发布/量产/
+换板复验：按 `操作文档.md` 重建并烧写，实机冒烟核对 LCD/按键/通信即可；如需补充分级波形量化
+（十二路空载触发、reg44/45 标定、低压/带载），按 `docs/w8/W8_HARDWARE_TEST_2026-08-31.md` 规范
+另行安排，不属于当前收尾基线。上板安全前提（断开市电/门极/功率负载、仅限流控制电）不变。

@@ -1,6 +1,10 @@
 # PC12M-2 文档索引
 
-> 更新日期：2026-08-31。优先级：`AGENTS.md` → 本文 → `docs/project/PROJECT_STATUS.md`。
+> 更新日期：2026-09-02。优先级：`AGENTS.md` → 本文 → `docs/project/PROJECT_STATUS.md`。
+>
+> **2026-09-02 结论**：P5/113 覆盖/认证放行/产品信息定制/X-O 字形修复全部完成，自编译固件已
+> 烧写入板并经用户**直接实机测试通过**。**W8 分级实测流程未按计划执行、已废弃**——用户未按
+> W8 分级测试；`docs/w8/` 分级文档保留为历史流程档案，进度以 `AGENTS.md` 与本文为准。
 
 ## 当前项目
 
@@ -12,6 +16,7 @@
 | 逆向与重建流程 | `docs/analysis/REVERSE_WORKFLOW_2026-08-31.md` |
 | 应用与模块边界 | `docs/project/APPLICATION_GUIDE_2026-08-31.md` |
 | 内存与数据布局 | `docs/project/DATA_SEGMENT_2026-08-31.md` |
+| 发布与免环境烧写工具 | `release/flash-tool-pc12m2.zip`（PowerShell 原生烧写 `tools/` 亦含入口） |
 
 ## 十二相分析
 
@@ -28,11 +33,13 @@
 
 ## 十二相实机验证
 
+> ⚠️ W8 分级实测流程已废弃（用户未按分级测试，实机已直接通过）；下表文档为历史流程档案。
+
 | 主题 | 文档 |
 |---|---|
-| 唯一进度总控 | `docs/w8/W8_TEST_MASTER.md` |
-| 入口与停止线 | `docs/w8/W8_ONBOARDING_2026-08-31.md` |
-| 上板前离线状态 | `docs/w8/W8_PRE_HARDWARE_VALIDATION_2026-08-31.md` |
+| 历史流程档案 | `docs/w8/W8_TEST_MASTER.md` |
+| 历史入口与停止线 | `docs/w8/W8_ONBOARDING_2026-08-31.md` |
+| 上板前离线状态（历史） | `docs/w8/W8_PRE_HARDWARE_VALIDATION_2026-08-31.md` |
 | 硬件执行规范 | `docs/w8/W8_HARDWARE_TEST_2026-08-31.md` |
 | 软件与仪器操作 | `docs/w8/W8_SOFTWARE_OPERATION.md` |
 
