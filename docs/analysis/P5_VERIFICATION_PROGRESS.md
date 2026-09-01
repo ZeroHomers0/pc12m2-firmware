@@ -213,3 +213,26 @@ TOTAL 113 PASS / 0 FAIL
   `DISPLAY_FULL_EXEC: cases=4`——两套显示验证只覆盖 case3/case4，不碰 case9）、
   `test_extra_coverage_12.py` 113/113 无回归。新固件 bin 0x00ceec 起含 4 个定制串
   （override_blob），原厂串仍可搜到（blob 保留，未显示）。
+## 2026-09-01 厂商 X/O 显示修复（问题2，分支 w8-debug-2026-09-01）
+
+产品信息屏"厂商:XIANPOWER"的 **X/O 不显示**（6p 同款问题，见 6p `W8_ISSUE_FIX_2026-08-28.md` 问题2）。
+原厂串是 `SINEP0WER`（数字 0），故原厂从未暴露。
+
+- **根因**：原 BIN 8×8 ASCII 字库仅 36 字符（map @0x10001546 = `0123456789%:. +IVUAWSBP-DCRc,M*FHTEN`，
+  无 X(0x58)/O(0x4F)）。`disp_render_char8`（OLD 入口 0xAF4 / NEW 0xB50）查表未命中直接 return，
+  X/O 渲染空白。
+- **方案（方案C，选它因 A/B 最安全）**：不动 ram_data_image / 字库 / 链接布局。
+  在 `02_lcd_display.c` 新增 `ext_char8_xo[0x20]`（X/O 各 0x10 字节，与原字库同格式：
+  8 列 × 2 页、列高字节 bit7=行首），`disp_render_char8` 对 `ch==0x58/'X'`、`ch==0x4F/'O'` 提前匹配，
+  其余字符仍查原字库（字库外字符保持空白，如 'Z'）。
+- **为什么不在 map 加字符**：map 槽在 0x2000/0x2110 区全是被引用变量，扩展无空位（早前验证）。
+- **验证**（新增 `XO_FONT` 至 A/B 工具，PAIRS 新增 `disp_render_char8` OLD=0xAF4）：
+  - OLD 'X' → **0 次** GPIO 写（原厂确实空白，基线证明）
+  - NEW 'X' → 387 次 GPIO 写、NEW 'O' → 387 次（渲染生效）
+  - NEW 'Z'(0x5A 字库外) → 0 次（空白保留，回归护栏）
+  - A/B 全套 PASS（含 DISPLAY_SCREEN_STATIC 32298 写 / CALIB 30505 写）、
+    `test_extra_coverage_12.py` 113/113、`test/run_tests.py` 4 模块全 PASS。
+- **性质**：对本固件的**有意定制偏离**（原 BIN 渲染 X/O 为空白）；A/B 快照区无差异，
+  仅"渲染 X/O 字符"的 GPIO 写迹与 OLD 不同（OLD 不写）。产品信息屏 case9 本就不在 A/B 矩阵，
+  故矩阵结果不变。
+- 提交：`5a5d575`（firmware/src/02_lcd_display.c + tools/verification/verify_firmware_equivalence_12.py）。
