@@ -11,7 +11,7 @@ import glob
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-orig = (ROOT / "backup" / "pc12m2_orig.bin").read_bytes()
+orig = (ROOT / "pc12m2_orig.bin").read_bytes()
 
 src = (ROOT / "firmware" / "src" / "strpool.c").read_text(encoding="utf-8", errors="ignore")
 

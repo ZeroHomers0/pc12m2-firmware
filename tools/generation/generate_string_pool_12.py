@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(encoding='utf-8')
 ROOT = Path(__file__).resolve().parents[2]
-BIN12 = (ROOT / "backup" / "pc12m2_orig.bin").read_bytes()
+BIN12 = (ROOT / "pc12m2_orig.bin").read_bytes()
 FLASH_LEN = len(BIN12)
 REFERENCE_ROOT = ROOT.parent / "PC6M-10"
 BIN6 = (REFERENCE_ROOT / "LPC1765.bin").read_bytes()

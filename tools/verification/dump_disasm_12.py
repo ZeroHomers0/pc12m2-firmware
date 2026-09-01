@@ -16,7 +16,7 @@ from capstone.arm import ARM_OP_IMM, ARM_OP_MEM
 sys.stdout.reconfigure(encoding='utf-8')
 
 ROOT = Path(__file__).resolve().parents[2]
-BIN = ROOT / "backup" / "pc12m2_orig.bin"
+BIN = ROOT / "pc12m2_orig.bin"
 FUNCS = ROOT / "tools" / "_ghidra_proj" / "_pc12m2_functions.txt"
 POOLMAP = ROOT / "tools" / "_ghidra_proj" / "_pc12m2_pool_sram_map.json"
 OUTDIR = ROOT / "evidence" / "reverse" / "disassembly" / "raw"

@@ -21,7 +21,7 @@
 import sys, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-BIN  = os.path.join(ROOT, 'backup', 'pc12m2_orig.bin')
+BIN  = os.path.join(ROOT, 'pc12m2_orig.bin')
 try:
     sys.stdout.reconfigure(encoding='utf-8')
 except Exception:

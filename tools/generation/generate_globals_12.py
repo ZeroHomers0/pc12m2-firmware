@@ -12,7 +12,7 @@ from collections import defaultdict
 sys.stdout.reconfigure(encoding='utf-8')
 
 ROOT = Path(__file__).resolve().parents[2]
-BINP = ROOT / "backup" / "pc12m2_orig.bin"
+BINP = ROOT / "pc12m2_orig.bin"
 REFERENCE_ROOT = ROOT.parent / "pc6m10-firmware"
 BIN6P = REFERENCE_ROOT / "LPC1765.bin"
 # 完整 6p→12p 池槽映射（Ghidra 完整反汇编版，含第二代码段池槽）

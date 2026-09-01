@@ -12,7 +12,7 @@ from capstone import *
 from capstone.arm import *
 
 ROOT = Path(__file__).resolve().parents[2]
-D = (ROOT / 'backup' / 'pc12m2_orig.bin').read_bytes()
+D = (ROOT / 'pc12m2_orig.bin').read_bytes()
 OUT = ROOT / 'evidence' / 'reverse' / 'disassembly' / 'functions'
 
 md = Cs(CS_ARCH_ARM, CS_MODE_THUMB + CS_MODE_MCLASS)

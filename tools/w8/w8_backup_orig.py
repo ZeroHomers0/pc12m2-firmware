@@ -25,7 +25,7 @@ import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-GOLDEN_BIN = REPO_ROOT / "backup" / "pc12m2_orig.bin"
+GOLDEN_BIN = REPO_ROOT / "pc12m2_orig.bin"
 FLASH_SIZE = 0x40000  # LPC1765 Flash = 256 KiB
 
 
