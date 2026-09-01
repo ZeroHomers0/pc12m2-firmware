@@ -55,7 +55,10 @@ def sections():
 
 SYMS = symbols()
 SECS = sections()
-ORIGINAL = (ROOT / "backup" / "pc12m2_orig.bin").read_bytes()
+# 原始 BIN 金标准：git 实际跟踪的是根目录 pc12m2_orig.bin（backup/*.bin 被 .gitignore
+# 忽略不入库），优先读根目录，找不到再回退 backup/（本地历史布局）。
+_ORIG_CANDIDATES = [ROOT / "pc12m2_orig.bin", ROOT / "backup" / "pc12m2_orig.bin"]
+ORIGINAL = next((p for p in _ORIG_CANDIDATES if p.exists()), _ORIG_CANDIDATES[0]).read_bytes()
 NEW = (FW / "firmware.bin").read_bytes()
 
 # ---- 12p OLD(BIN) 入口（P5 已确认）→ NEW(ELF) 符号名 ----
