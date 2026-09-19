@@ -30,7 +30,7 @@ PRODUCT_INFO_OVERRIDES = {
 
 SCAN_FILES = [str(p) for p in (REFERENCE_ROOT / "firmware" / "src").glob("*.c")] + \
              [str(REFERENCE_ROOT / "firmware" / "stub.c")]
-SCAN_FILES = [f for f in SCAN_FILES if not f.endswith("strpool.c") and not f.endswith("08_modbus_dispatch.c")]
+SCAN_FILES = [f for f in SCAN_FILES if Path(f).exists() and not f.endswith("strpool.c") and not f.endswith("08_modbus_dispatch.c")]
 
 # 12p 逆向新增渲染函数（sm4/sm5/sm6 等）里的 disp_string 实参是 **12p 地址**（6p 源没有）。
 # 这些地址须直接并入 addrs12，不再走 6p→12p 内容匹配。
@@ -56,6 +56,9 @@ def addrs_from_src():
                     off = int(n.group(3), 16)
                     base = base + off if n.group(2) == '+' else base - off
                 found.add(base)
+    header = (REFERENCE_ROOT / "firmware/inc/firmware_display_strings.h").read_text(encoding="utf-8")
+    found.update(int(m.group(1), 16) for m in re.finditer(
+        r"^#define\s+DISPLAY_[A-Z0-9_]+\s+0x([0-9a-fA-F]+)u\s*$", header, re.MULTILINE))
     return {a for a in found if 0x400 <= a < len(BIN6)}
 
 def addrs12_from_12p_src():
@@ -163,6 +166,7 @@ csrc.append(" * 由 12p 源码扫描并入簇表（2026-08-31 修复 A/B 显示�
 csrc.append(" * 产品信息定制（2026-09-01 用户要求）：case9 版本屏 4 行文本覆写为定制内容")
 csrc.append(" * （型号/版本/厂商/电话），地址不变，strpool_map 前置查表；见 PRODUCT_INFO_OVERRIDES。 */")
 csrc.append("#include <stdint.h>")
+csrc.append("#include \"inc/firmware_language.h\"")
 csrc.append("")
 csrc.append("typedef struct { uint32_t base; uint32_t len; const uint8_t *blob; } strpool_cluster_t;")
 csrc.append("")
@@ -209,20 +213,41 @@ if PRODUCT_INFO_OVERRIDES:
 csrc.append("uint32_t strpool_map(uint32_t addr)")
 csrc.append("{")
 csrc.append("  uint32_t i;")
+csrc.append("  uint32_t canonical = addr, mapped = addr;")
+csrc.append("  static const uint8_t menu_language[] = \"\\x31\\x30\\x2e\\xd3\\xef\\xd1\\xd4\\xd1\\xa1\\xd4\\xf1\";")
+csrc.append("  static const uint8_t language_title[] = \"\\xd1\\xa1\\xd4\\xf1\\xd3\\xef\\xd1\\xd4\";")
+csrc.append("  static const uint8_t language_zh[] = \"\\x31\\x2e\\xd6\\xd0\\xce\\xc4\";")
+csrc.append("  static const uint8_t language_en[] = \"2.English\";")
+csrc.append("  if (addr == UI_TEXT_MENU_LANGUAGE) mapped = (uint32_t)menu_language;")
+csrc.append("  else if (addr == UI_TEXT_LANGUAGE_TITLE) mapped = (uint32_t)language_title;")
+csrc.append("  else if (addr == UI_TEXT_LANGUAGE_ZH) mapped = (uint32_t)language_zh;")
+csrc.append("  else if (addr == UI_TEXT_LANGUAGE_EN) mapped = (uint32_t)language_en;")
+for a6, a12 in sorted(map_6to12.items()):
+    csrc.append("  if (addr == 0x%04xu) canonical = 0x%04xu;" % (a12, a6))
 if PRODUCT_INFO_OVERRIDES:
     csrc.append("  for (i = 0; i < sizeof(strpool_override) / sizeof(strpool_override[0]); i++) {")
     csrc.append("    if (addr == strpool_override[i].addr)")
-    csrc.append("      return (uint32_t)(strpool_override_blob + strpool_override[i].off);")
+    csrc.append("      mapped = (uint32_t)(strpool_override_blob + strpool_override[i].off);")
     csrc.append("  }")
 csrc.append("  for (i = 0; i < sizeof(strpool_clusters) / sizeof(strpool_clusters[0]); i++) {")
 csrc.append("    if (addr >= strpool_clusters[i].base && addr < strpool_clusters[i].base + strpool_clusters[i].len)")
-csrc.append("      return (uint32_t)(strpool_clusters[i].blob + (addr - strpool_clusters[i].base));")
+csrc.append("      mapped = (uint32_t)(strpool_clusters[i].blob + (addr - strpool_clusters[i].base));")
 csrc.append("  }")
-csrc.append("  return addr;")
+csrc.append("  return ui_language_translate(canonical, mapped);")
 csrc.append("}")
 csrc.append("")
 
 (ROOT / "firmware/src/strpool.c").write_text("\n".join(csrc), encoding="utf-8")
+
+# 英文表以 6p 原始字符串地址作为稳定 canonical key；12p 构建产物独立保存副本。
+language_source = (REFERENCE_ROOT / "firmware/src/15_language_strings.c").read_text(encoding="utf-8")
+language_source = language_source.replace("MODEL:PC6M-10", "MODEL:PC12M-2")
+language_source = language_source.replace(
+    "  {0xac1c,\"STOP\"},",
+    "  {0xac1c,\"STOP\"},{0x0710,\"CPU ERROR\"},{0x4334,\"FAULT\"},"
+    "{0x6a8c,\"OUTPUT VOLT 50%\"},{0x6a98,\"VALUE:\"},"
+    "{0xa070,\"9.CURR BALANCE\"},{0xa080,\"              \"},{0xa0b0,\"FAULT STATUS\"},")
+(ROOT / "firmware/src/15_language_strings.c").write_text(language_source, encoding="utf-8")
 
 # ── 5. 映射 JSON（P3 替换实参用）──────────────────────────────
 json.dump({("0x%04x" % k): ("0x%04x" % v) for k, v in sorted(map_6to12.items())},

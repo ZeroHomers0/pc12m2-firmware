@@ -30,6 +30,7 @@
  *   - prelude 运行统计仅两层（MIN→HOUR 进位，无 6p 第三层）。
  * ========================================================================== */
 #include "inc/types.h"
+#include "inc/firmware_language.h"
 #include "inc/globals.h"
 
 /* ---- 依赖函数前向声明（签名与定义模块核实一致；形参名语义化，无行为影响） ---- */
@@ -864,7 +865,7 @@ void state_machine(int key)
         /* key==2(DOWN)/3(UP) 光标导航 @0x5e38，clamp 0..8（12p 有 9 项） */
         if (key == 2 || key == 3) {
             *to = 0;
-            if (key == 3) { (*m2)++; if (*m2 > 8) *m2 = 8; } /* UP */
+            if (key == 3) { (*m2)++; if (*m2 > 9) *m2 = 9; } /* UP */
             if (key == 2) { if (*m2 > 0) (*m2)--; }          /* DOWN */
             if (*m2 < 4) { /* 页1 选项0-3 */
                 disp_string(0x5fac, 0, 0, 0); disp_string(0x5fc0, 1, 0, 0);
@@ -874,9 +875,9 @@ void state_machine(int key)
                 disp_string(0x5ffc, 0, 0, 0); disp_string(0x6010, 1, 0, 0);
                 disp_string(0x6024, 2, 0, 0); disp_string(0x6038, 3, 0, 0);
             }
-            if (*m2 >= 8 && *m2 < 0xc) { /* 页3 仅选项8，行1-3擦除 */
+            if (*m2 >= 8 && *m2 < 0xc) { /* 页3 选项8-9 */
                 disp_string(0x604c, 0, 0, 0);
-                disp_string(0x56d8, 1, 0, 0); disp_string(0x56d8, 2, 0, 0);
+                disp_string(UI_TEXT_MENU_LANGUAGE, 1, 0, 0); disp_string(0x56d8, 2, 0, 0);
                 disp_string(0x56d8, 3, 0, 0);
             }
             /* 高亮当前项 @0x6060 */
@@ -889,6 +890,7 @@ void state_machine(int key)
             if (*m2 == 6) disp_string(0x6024, 2, 0, 1);
             if (*m2 == 7) disp_string(0x6038, 3, 0, 1);
             if (*m2 == 8) disp_string(0x604c, 0, 0, 1);
+            if (*m2 == 9) disp_string(UI_TEXT_MENU_LANGUAGE, 1, 0, 1);
         }
 
         /* key==1 确认：TIMEOUT 清零、0x10001726(=MENU3 编辑态/锁标志)清零后分发 @0x6120 */
@@ -975,11 +977,38 @@ void state_machine(int key)
                 disp_signed_angle(*BAL_ANG, 2, 7, 1); /* BAL_ANG；0x116c */
                 disp_string(0x6aa4, 3, 0, 0);
             }
+            if (*m2 == 9) {
+                *menu = 0x0d; *m2 = ui_language_get(); disp_clear();
+                disp_string(UI_TEXT_LANGUAGE_TITLE, 0, 0, 0);
+                disp_string(UI_TEXT_LANGUAGE_ZH, 1, 0, *m2 == UI_LANGUAGE_CHINESE);
+                disp_string(UI_TEXT_LANGUAGE_EN, 2, 0, *m2 == UI_LANGUAGE_ENGLISH);
+            }
         }
 
         /* 超时尾 @0x6810：TIMEOUT 每帧累加，≥0x1388 回主屏 */
         (*to)++;
         if (*to >= 0x1388) { *to = 0; *menu = 1; disp_splash_screen(); }
+        return;
+    }
+
+    /* ================= caseD 语言选择，MENU==0x0d ================= */
+    if (*MENU == 0x0d) {
+        volatile uint8_t *m2 = (volatile uint8_t*)0x10001725;
+        volatile uint32_t *to = (volatile uint32_t*)0x10001744;
+        if (key == 2 || key == 3) {
+            *m2 = (*m2 == UI_LANGUAGE_CHINESE) ? UI_LANGUAGE_ENGLISH : UI_LANGUAGE_CHINESE;
+            *to = 0;
+            disp_string(UI_TEXT_LANGUAGE_ZH, 1, 0, *m2 == UI_LANGUAGE_CHINESE);
+            disp_string(UI_TEXT_LANGUAGE_EN, 2, 0, *m2 == UI_LANGUAGE_ENGLISH);
+        }
+        if (key == 1) ui_language_save(*m2);
+        if (key == 1 || key == 4) {
+            *MENU = 2; *m2 = 9; disp_clear();
+            disp_string(0x604c, 0, 0, 0);
+            disp_string(UI_TEXT_MENU_LANGUAGE, 1, 0, 1);
+            return;
+        }
+        if (++(*to) >= 0x1388) { *to = 0; *MENU = 1; disp_splash_screen(); }
         return;
     }
 
@@ -1401,6 +1430,7 @@ void state_machine(int key)
             disp_string(0x8a98, 1, 0, 0); sm6_delay_loop();
             disp_string(0x8ea8, 1, 0, 0); sm6_delay_loop();
             disp_string(0x8eb8, 1, 0, 0); sm6_delay_loop();
+            ui_language_save(UI_LANGUAGE_CHINESE);
             i2c_write_reg(0, 5);
             i2c_write_reg(0, 6);
             for (;;) { } /* 0x8b80 死等 */
@@ -1427,6 +1457,7 @@ void state_machine(int key)
             disp_string(0x8ee0, 1, 0, 0); sm6_delay_loop();
             disp_string(0x8ea8, 1, 0, 0); sm6_delay_loop();
             disp_string(0x8eb8, 1, 0, 0); sm6_delay_loop();
+            ui_language_save(UI_LANGUAGE_CHINESE);
             i2c_write_reg(0, 5);
             i2c_write_reg(0, 6);
             i2c_write_reg(0, 7);

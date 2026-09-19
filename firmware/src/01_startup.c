@@ -27,6 +27,7 @@
  *   lpc1765.ld 等价替代）+ MMIO 符号换 reg.h 宏 + 跨模块函数前向声明。
  * ========================================================================== */
 #include "inc/types.h"
+#include "inc/firmware_language.h"
 #include "inc/reg.h"
 #include "inc/globals.h"
 #include <stdbool.h>
@@ -255,6 +256,7 @@ void main(void)
   i2c_gpio_init();              /* bl 0x1BF0 */
   adc_init();                   /* bl 0x1EB4 */
   load_config();                /* bl 0x258C */
+  ui_language_load();
   pin_config();                 /* bl 0xE308 */
   gpio2_init();                 /* bl 0x10888 */
   timer1_init();                /* bl 0xE576 */
