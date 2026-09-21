@@ -18,6 +18,17 @@ assert used_glyphs <= original_glyphs | extended_glyphs, \
 assert 'ext_char8_map[] = "/GJKLQY"' in (ROOT / "firmware/src/02_lcd_display.c").read_text(encoding="utf-8")
 assert '"INPUT:        %"' in LANG and '"OUTPUT:       V"' in LANG and '"CURRENT:      A"' in LANG
 assert LANG.count('" PASS: ------"') == 2
+assert 'UI_TEXT_MENU_LANGUAGE,"10.LANGUAGE     "' in LANG, "language menu must erase all 16 columns"
+for address in (0x4814, 0x4824, 0x4834, 0x4844, 0x6488, 0x649c, 0x64b0, 0x64c4,
+                0x64d8, 0x64ec, 0x6500, 0x6514, 0x6528):
+    assert len(entry_map[address]) == 16, f"menu row must erase all columns: {address:#x}"
+assert re.search(r'menu_language\[\].*\\xf1 {5}"',
+                 (ROOT / "firmware/src/strpool.c").read_text(encoding="utf-8")), \
+    "Chinese language menu must erase trailing pixels from the previous page"
+display_source = (ROOT / "firmware/src/02_lcd_display.c").read_text(encoding="utf-8")
+for gbk_pair in ("{0xd3,0xef}", "{0xd1,0xd4}", "{0xd1,0xa1}", "{0xd4,0xf1}", "{0xce,0xc4}"):
+    assert gbk_pair in display_source, f"missing language UI glyph: {gbk_pair}"
+assert "gbase + tbl_idx * 0x20" in display_source
 for address in (0x6018, 0x6020, 0x6028, 0x6030, 0x6038, 0x6040, 0x6048, 0x6050,
                 0x6058, 0x6060, 0x6594, 0x659c, 0x65a4, 0x6af8, 0x6b08, 0x6b14,
                 0x6b24, 0x7998, 0x79a0, 0x79a8, 0x79b4, 0x79bc):

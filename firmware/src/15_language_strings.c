@@ -10,7 +10,7 @@ static const EnglishText english_texts[] = {
   {0x0778,"OUT VOLT 50%"},{0x0784,"VALUE:"},{0x0790,"STATUS: STOP"},
   {0x4370,"INPUT:        %"},{0x4384,"OUTPUT:       V"},{0x4398,"CURRENT:      A"},{0x43ac,"    MODE:"},
   {0x47dc,"FAULT"},{0x47e8,"RUN"},{0x47f0,"STOP"},{0x47fc,"CONST VOLT"},{0x4804,"CONST CURR"},{0x480c,"OPEN LOOP"},
-  {0x4814,"1.BASIC SET"},{0x4824,"2.PROTECT SET"},{0x4834,"3.COMM SET"},{0x4844,"4.FACTORY RESET"},
+  {0x4814,"1.BASIC SET     "},{0x4824,"2.PROTECT SET   "},{0x4834,"3.COMM SET      "},{0x4844,"4.FACTORY RESET "},
   {0x4854,"1.U CURR:"},{0x4868,"2.V CURR:"},{0x487c,"3.W CURR:"},{0x4890,"4.OUT CURR:"},
   {0x4d58,"1.CUR RUN TIME"},{0x4d6c,"  60000H30M"},{0x4d80,"2.TOTAL RUN TIME"},{0x4d9c," PASS: ------"},
   {0x4dac,"60 S"},{0x4db4,"  INITIAL SET"},{0x4dc8," PASS: ------"},{0x522c,"RESET"},{0x523c,"RSTART"},{0x56dc,"PWD ERROR"},
@@ -18,8 +18,8 @@ static const EnglishText english_texts[] = {
   {0x5b68,"9.INPUT:"},{0x5b7c,"10.CTRL:"},{0x5b90,"11.START:"},{0x5ba4,"                "},
   {0x6018,"ESTOP"},{0x6020,"EXT"},{0x6028,"LIMIT"},{0x6030,"RESET"},{0x6038,"OFF"},{0x6040,"ON"},
   {0x6048,"ANA"},{0x6050,"DIG"},{0x6058,"FULL"},{0x6060,"HALF"},{0x6474,"     "},{0x647c,"   "},
-  {0x6488,"1.BASIC SET"},{0x649c,"2.PROTECT SET"},{0x64b0,"3.COMM SET"},{0x64c4,"4.FACTORY RESET"},
-  {0x64d8,"5.PID SET"},{0x64ec,"6.PHASE CALIB"},{0x6500,"7.RUN TIME"},{0x6514,"8.PRODUCT INFO"},{0x6528,"9.CURR BALANCE"},
+  {0x6488,"1.BASIC SET     "},{0x649c,"2.PROTECT SET   "},{0x64b0,"3.COMM SET      "},{0x64c4,"4.FACTORY RESET "},
+  {0x64d8,"5.PID SET       "},{0x64ec,"6.PHASE CALIB   "},{0x6500,"7.RUN TIME      "},{0x6514,"8.PRODUCT INFO  "},{0x6528,"9.CURR BALANCE  "},
   {0x6540,"1.RUN MODE:"},{0x6554,"2.V RNG:       V"},{0x6568,"3.I RNG:       A"},{0x657c,"4.CT RAT:      A"},
   {0x6594,"VOLT"},{0x659c,"CURR"},{0x65a4,"OPEN"},
   {0x65bc,"1.OV V:        V"},{0x65d0,"2.OV T:        S"},{0x65e4,"3.UN V:        V"},{0x65f8,"4.UN T:        S"},
@@ -42,7 +42,7 @@ static const EnglishText english_texts[] = {
   {0xa5cc,"  PHASE ORDER"},{0xa5e0,"PHASE IMBALANCE"},{0xa5f4,"  IF OVERCURR"},{0xa608,"  CT OVERCURR"},
   {0xa61c,"  FEEDBACK ERR"},{0xa630,"  BATTERY REV"},{0xa644,"  OVERHEAT"},{0xa658,"  COMM ERROR"},{0xa66c,"  FREQ ERROR"},
   {0xac1c,"STOP"},{0x0710,"CPU ERROR"},{0x4334,"FAULT"},{0x6a8c,"OUTPUT VOLT 50%"},{0x6a98,"VALUE:"},{0xa070,"9.CURR BALANCE"},{0xa080,"              "},{0xa0b0,"FAULT STATUS"},
-  {UI_TEXT_MENU_LANGUAGE,"10.LANGUAGE"},{UI_TEXT_LANGUAGE_TITLE,"SELECT LANGUAGE"},
+  {UI_TEXT_MENU_LANGUAGE,"10.LANGUAGE     "},{UI_TEXT_LANGUAGE_TITLE,"SELECT LANGUAGE"},
   {UI_TEXT_LANGUAGE_ZH,"1.CHINESE"},{UI_TEXT_LANGUAGE_EN,"2.ENGLISH"}
 };
 
