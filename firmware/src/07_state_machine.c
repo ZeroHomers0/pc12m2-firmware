@@ -1875,7 +1875,11 @@ void state_machine(int key)
         (*timeout3)++;
         if (*timeout3 > 0xfa) {
             *timeout3 = 0;
-            disp_string(0xa0b0, 0, 2, 0); /* 标题 */
+            /* English title is 12 half-width columns; the Chinese title is
+             * four full-width glyphs.  Center each title independently so
+             * both align with the corresponding fault text. */
+            disp_string(0xa0b0, 0,
+                        ui_language_get() == UI_LANGUAGE_ENGLISH ? 2 : 4, 0);
             if (*FAULT == 0) {
                 disp_string(0xa0c0, 2, 0, 0); /* 正常 */
                 return; /* 0x9e0e 提前返回（不走超时尾） */

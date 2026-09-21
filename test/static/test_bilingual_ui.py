@@ -59,7 +59,8 @@ for source_path in (ROOT / "firmware/src").glob("*.c"):
             assert col + len(entry_map[address]) == 16, \
                 f"right-side field must repaint through column 15: {source_path.name} {address_text} col={col} text={entry_map[address]!r}"
 assert "ui_language_load();" in START
-assert "disp_string(0xa0b0, 0, 2, 0)" in STATE
+assert "ui_language_get() == UI_LANGUAGE_ENGLISH ? 2 : 4" in STATE
+assert "disp_render_char16_odd" in (ROOT / "firmware/src/02_lcd_display.c").read_text(encoding="utf-8")
 assert "sm4_draw_page(0);" in STATE
 assert "if (addr == 0x7488u) canonical = 0x7974u;" in STRPOOL
 assert "if (addr == 0x7490u) canonical = 0x7980u;" in STRPOOL

@@ -302,6 +302,49 @@ glyph_found:
 /* 0x00000C3A —— 渲染 16×16 汉字（GB 双字节）
  *   查表 0x10000FC4（0x8F 个汉字，每字 2 字节码）→ 字形 0x10000FCC（每字 0x20 字节）
  *   行占 2 页（上半字 + 下半字） */
+/* A GBK glyph normally starts on an even 8-pixel LCD column.  The language
+ * menu is intentionally written as "10.语言选择", so the first Chinese glyph
+ * starts at column 3.  Rounding that column down overwrites the period and
+ * leaves the following physical column outside disp_string()'s clear range.
+ * Write odd-column glyphs at their real pixel address, splitting at the two
+ * controller halves when necessary. */
+static void disp_render_char16_odd(uint32_t gbase,uint32_t tbl_idx,
+                                   char row,int col,undefined4 invert)
+{
+  int fio;
+  uint32_t page;
+  uint32_t bit_i;
+  uint32_t pixel_col;
+  uint32_t chip;
+  uint32_t active_chip;
+
+  fio = DAT_00000f78;
+  for (page = 0; page < 2; ++page) {
+    active_chip = 2;
+    for (bit_i = 0; bit_i < 0x10; ++bit_i) {
+      pixel_col = ((uint32_t)col * 8U) + bit_i;
+      chip = (pixel_col < 0x40U) ? 0U : 1U;
+      if (chip != active_chip) {
+        if (chip == 0U) {
+          *(volatile uint *)(DAT_00000b64 + 0x3c) = *(volatile uint *)(DAT_00000b64 + 0x3c) | 0x4000000;
+          *(volatile uint *)(fio + 0x38) = *(volatile uint *)(fio + 0x38) | 0x2000000;
+        }
+        else {
+          *(volatile uint *)(DAT_00000b64 + 0x38) = *(volatile uint *)(DAT_00000b64 + 0x38) | 0x4000000;
+          *(volatile uint *)(fio + 0x3c) = *(volatile uint *)(fio + 0x3c) | 0x2000000;
+        }
+        Delay(10);
+        disp_cmd(0xc0);
+        disp_cmd(row * 2 + -0x48 + page);
+        active_chip = chip;
+      }
+      disp_cmd((pixel_col & 0x3fU) + 0x40U);
+      disp_data(*(volatile undefined1 *)(gbase + tbl_idx * 0x20U +
+                                        page * 0x10U + bit_i), invert);
+    }
+  }
+}
+
 void disp_render_char16(uint gb_hi,uint gb_lo,char row,int col,undefined4 invert)
 {
   int fio;
@@ -330,6 +373,10 @@ void disp_render_char16(uint gb_hi,uint gb_lo,char row,int col,undefined4 invert
   }
   gbase = DAT_00000f7c;
 glyph16_found:
+  if ((col & 1) != 0) {
+    disp_render_char16_odd(gbase, tbl_idx, row, col, invert);
+    return;
+  }
   if (col2 < 4) {
     *(volatile uint *)(DAT_00000f78 + 0x3c) = *(volatile uint *)(DAT_00000f78 + 0x3c) | 0x4000000;
     *(volatile uint *)(fio + 0x38) = *(volatile uint *)(fio + 0x38) | 0x2000000;
