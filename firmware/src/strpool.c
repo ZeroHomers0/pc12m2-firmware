@@ -143,7 +143,7 @@ uint32_t strpool_map(uint32_t addr)
   static const uint8_t menu_language[] = "\x31\x30\x2e\xd3\xef\xd1\xd4\xd1\xa1\xd4\xf1";
   static const uint8_t language_title[] = "\xd1\xa1\xd4\xf1\xd3\xef\xd1\xd4";
   static const uint8_t language_zh[] = "\x31\x2e\xd6\xd0\xce\xc4";
-  static const uint8_t language_en[] = "2.English";
+  static const uint8_t language_en[] = "2.ENGLISH";
   if (addr == UI_TEXT_MENU_LANGUAGE) mapped = (uint32_t)menu_language;
   else if (addr == UI_TEXT_LANGUAGE_TITLE) mapped = (uint32_t)language_title;
   else if (addr == UI_TEXT_LANGUAGE_ZH) mapped = (uint32_t)language_zh;
