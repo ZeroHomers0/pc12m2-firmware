@@ -1875,7 +1875,7 @@ void state_machine(int key)
         (*timeout3)++;
         if (*timeout3 > 0xfa) {
             *timeout3 = 0;
-            disp_string(0xa0b0, 0, 4, 0); /* 标题 */
+            disp_string(0xa0b0, 0, 2, 0); /* 标题 */
             if (*FAULT == 0) {
                 disp_string(0xa0c0, 2, 0, 0); /* 正常 */
                 return; /* 0x9e0e 提前返回（不走超时尾） */

@@ -214,7 +214,7 @@ csrc.append("uint32_t strpool_map(uint32_t addr)")
 csrc.append("{")
 csrc.append("  uint32_t i;")
 csrc.append("  uint32_t canonical = addr, mapped = addr;")
-csrc.append("  static const uint8_t menu_language[] = \"\\x31\\x30\\xd3\\xef\\xd1\\xd4\\xd1\\xa1\\xd4\\xf1      \";")
+csrc.append("  static const uint8_t menu_language[] = \"\\x31\\x30\\x2e\\xd3\\xef\\xd1\\xd4\\xd1\\xa1\\xd4\\xf1     \";")
 csrc.append("  static const uint8_t language_title[] = \"\\xd1\\xa1\\xd4\\xf1\\xd3\\xef\\xd1\\xd4\";")
 csrc.append("  static const uint8_t language_zh[] = \"\\x31\\x2e\\xd6\\xd0\\xce\\xc4\";")
 csrc.append("  static const uint8_t language_en[] = \"2.ENGLISH\";")
@@ -224,6 +224,11 @@ csrc.append("  else if (addr == UI_TEXT_LANGUAGE_ZH) mapped = (uint32_t)language
 csrc.append("  else if (addr == UI_TEXT_LANGUAGE_EN) mapped = (uint32_t)language_en;")
 for a6, a12 in sorted(map_6to12.items()):
     csrc.append("  if (addr == 0x%04xu) canonical = 0x%04xu;" % (a12, a6))
+# 12p's value renderers use these three unit addresses directly; map them to
+# the shared canonical English unit strings before language translation.
+csrc.append("  if (addr == 0x7488u) canonical = 0x7974u;")
+csrc.append("  if (addr == 0x7490u) canonical = 0x7980u;")
+csrc.append("  if (addr == 0x8638u) canonical = 0x86e0u;")
 if PRODUCT_INFO_OVERRIDES:
     csrc.append("  for (i = 0; i < sizeof(strpool_override) / sizeof(strpool_override[0]); i++) {")
     csrc.append("    if (addr == strpool_override[i].addr)")
@@ -243,8 +248,8 @@ csrc.append("")
 language_source = (REFERENCE_ROOT / "firmware/src/15_language_strings.c").read_text(encoding="utf-8")
 language_source = language_source.replace("MODEL:PC6M-10", "MODEL:PC12M-2")
 language_source = language_source.replace(
-    "  {0xac1c,\"STOP\"},",
-    "  {0xac1c,\"STOP\"},{0x0710,\"CPU ERROR\"},{0x4334,\"FAULT\"},"
+    "  {0xac1c,\"STOP  \"},",
+    "  {0xac1c,\"STOP  \"},{0x0710,\"CPU ERROR\"},{0x4334,\"FAULT \"},{0x4340,\"STOP  \"},{0x4348,\"RUN   \"},"
     "{0x6a8c,\"OUTPUT VOLT 50%\"},{0x6a98,\"VALUE:\"},"
     "{0xa070,\"9.CURR BALANCE\"},{0xa080,\"              \"},{0xa0b0,\"FAULT STATUS\"},")
 (ROOT / "firmware/src/15_language_strings.c").write_text(language_source, encoding="utf-8")

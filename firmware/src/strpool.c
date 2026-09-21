@@ -140,7 +140,7 @@ uint32_t strpool_map(uint32_t addr)
 {
   uint32_t i;
   uint32_t canonical = addr, mapped = addr;
-  static const uint8_t menu_language[] = "\x31\x30\xd3\xef\xd1\xd4\xd1\xa1\xd4\xf1      ";
+  static const uint8_t menu_language[] = "\x31\x30\x2e\xd3\xef\xd1\xd4\xd1\xa1\xd4\xf1     ";
   static const uint8_t language_title[] = "\xd1\xa1\xd4\xf1\xd3\xef\xd1\xd4";
   static const uint8_t language_zh[] = "\x31\x2e\xd6\xd0\xce\xc4";
   static const uint8_t language_en[] = "2.ENGLISH";
@@ -306,6 +306,9 @@ uint32_t strpool_map(uint32_t addr)
   if (addr == 0xa1c4u) canonical = 0xa658u;
   if (addr == 0xa1d8u) canonical = 0xa66cu;
   if (addr == 0x074au) canonical = 0xac1cu;
+  if (addr == 0x7488u) canonical = 0x7974u;
+  if (addr == 0x7490u) canonical = 0x7980u;
+  if (addr == 0x8638u) canonical = 0x86e0u;
   for (i = 0; i < sizeof(strpool_override) / sizeof(strpool_override[0]); i++) {
     if (addr == strpool_override[i].addr)
       mapped = (uint32_t)(strpool_override_blob + strpool_override[i].off);
