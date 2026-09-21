@@ -31,6 +31,7 @@
  * ========================================================================== */
 #include "inc/types.h"
 #include "inc/firmware_language.h"
+
 #include "inc/globals.h"
 
 /* ---- 依赖函数前向声明（签名与定义模块核实一致；形参名语义化，无行为影响） ---- */
@@ -46,6 +47,13 @@ void disp_signed_angle(int angle, uint32_t row, int col, uint32_t attr);
 void disp_offset(uint offset, uint32_t row, int col, uint32_t attr);
 void disp_uint2(uint value, uint32_t row, int col, uint32_t attr);
 void disp_fixed_1dec(uint value, uint32_t row, int col, uint32_t attr);
+
+/* 数字绘制函数会主动擦除 col=0xf，以消除短值残留；这些页面的行标题把
+ * 单位放在同一列，因此数值绘制后必须补回单位。ASCII 单位在中英文界面相同。 */
+static void draw_unit_second(uint32_t row)
+{
+    disp_render_char8('S', row, 0xf, 0);
+}
 void disp_splash_screen(void);                            /* 02_lcd_display.c */
 void disp_screen_static(void);
 void disp_screen_calib(void);
@@ -184,9 +192,9 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
             else if (*b2c == 1) { disp_string((int)0x64d8, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(1); }
             else { disp_string((int)0x64e0, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(0); }
             break;
-        case 1: disp_uint4(*w34, row, 0xb, attr); break;
-        case 2: disp_uint4(*w30, row, 0xb, attr); break;
-        case 3: disp_uint4(*w38, row, 0xb, attr); break;
+        case 1: disp_uint4(*w34, row, 0xb, attr); disp_string(0x7488, row, 0xf, 0); break;
+        case 2: disp_uint4(*w30, row, 0xb, attr); disp_string(0x7490, row, 0xf, 0); break;
+        case 3: disp_uint4(*w38, row, 0xb, attr); disp_string(0x7490, row, 0xf, 0); break;
         case 4: /* 限位：item1>=item4 时显示值+V 单位(0x7488="V")，否则 0x5f54 */
             if (*w34 >= *w40) { disp_uint4(*w40, row, 0xb, attr); disp_string((int)0x7488, row, 0xf, 0); }
             else disp_string((int)0x5f54, row, 0xb, attr);
@@ -195,9 +203,9 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
             if (*w30 >= *w3c) { disp_uint4(*w3c, row, 0xb, attr); disp_string((int)0x7490, row, 0xf, 0); }
             else disp_string((int)0x5f54, row, 0xb, attr);
             break;
-        case 6: disp_uint4(*b44, row, 0xb, attr); break;
-        case 7: disp_uint4(*b45, row, 0xb, attr); break;
-        case 8: disp_number3(*b48, row, 0xb, attr); break;
+        case 6: disp_uint4(*b44, row, 0xb, attr); draw_unit_second(row); break;
+        case 7: disp_uint4(*b45, row, 0xb, attr); draw_unit_second(row); break;
+        case 8: disp_number3(*b48, row, 0xb, attr); draw_unit_second(row); break;
         case 9: disp_signed_angle(*b4c, row, 0xb, attr); break; /* 0x116c */
         case 10:
             if (*b4d == 0) disp_string((int)0x78ac, row, 0xb, attr);
@@ -263,22 +271,22 @@ static void sm4_draw_value(uint32_t it, uint32_t row, uint32_t attr)
             if (*w_b8) { disp_uint4(*w_b8, row, 0xb, attr); disp_string(0x7488, row, 0xf, 0); }
             else disp_string(0x5f54, row, 0xb, attr);
             break;
-        case 1: disp_uint4(*b_bc, row, 0xb, attr); break;
+        case 1: disp_uint4(*b_bc, row, 0xb, attr); draw_unit_second(row); break;
         case 2:
             if (*w_c0) { disp_uint4(*w_c0, row, 0xb, attr); disp_string(0x7488, row, 0xf, 0); }
             else disp_string(0x5f54, row, 0xb, attr);
             break;
-        case 3: disp_uint4(*b_c4, row, 0xb, attr); break;
+        case 3: disp_uint4(*b_c4, row, 0xb, attr); draw_unit_second(row); break;
         case 4:
             if (*w_c8) { disp_uint4(*w_c8, row, 0xb, attr); disp_string(0x7490, row, 0xf, 0); }
             else disp_string(0x5f54, row, 0xb, attr);
             break;
-        case 5: disp_uint4(*b_cc, row, 0xb, attr); break;
+        case 5: disp_uint4(*b_cc, row, 0xb, attr); draw_unit_second(row); break;
         case 6:
             if (*w_d0) { disp_uint4(*w_d0, row, 0xb, attr); disp_string(0x7490, row, 0xf, 0); }
             else disp_string(0x5f54, row, 0xb, attr);
             break;
-        case 7: disp_uint4(*b_d4, row, 0xb, attr); break;
+        case 7: disp_uint4(*b_d4, row, 0xb, attr); draw_unit_second(row); break;
         case 8:
             if (*b_d5) disp_string(0x65d4, row, 0xb, attr);
             else disp_string(0x5f54, row, 0xb, attr);
@@ -901,12 +909,7 @@ void state_machine(int key)
                 *menu = 3; *m2 = 0;
                 disp_string(0x647c, 0, 0, 0); disp_string(0x6490, 1, 0, 0);
                 disp_string(0x64a4, 2, 0, 0); disp_string(0x64b8, 3, 0, 0);
-                if (*CTRL_MODE == 0) { disp_string(0x64d0, 0, 0xb, 1); fio1_pin20_ctrl(1); fio1_pin21_ctrl(0); }
-                if (*CTRL_MODE == 1) { disp_string(0x64d8, 0, 0xb, 1); fio1_pin20_ctrl(0); fio1_pin21_ctrl(1); }
-                if (*CTRL_MODE == 2) { disp_string(0x64e0, 0, 0xb, 1); fio1_pin20_ctrl(0); fio1_pin21_ctrl(0); }
-                disp_uint4(*GAIN0, 1, 0xb, 0);
-                disp_uint4(*GAIN1, 2, 0xb, 0);
-                disp_uint4(*GAIN_COEF, 3, 0xb, 0);
+                sm3_draw_page(0);
                 *TIMEOUT3 = 0xfa;
             }
             if (*m2 == 1) { /* 选项1 → case4 保护参数 @0x620a */
@@ -1291,13 +1294,13 @@ void state_machine(int key)
             if (*m26 == 0) return; /* 查看态：本帧提前返回 */
             switch (*m25) {
                 case 0: disp_string((*w_b8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); if (*w_b8) { disp_string(0x7488, 0, 0xf, 0); } break;
-                case 1: disp_string(0x7d8c, 1, 0xb, 0); break;
+                case 1: disp_string(0x7d8c, 1, 0xb, 0); draw_unit_second(1); break;
                 case 2: disp_string((*w_c0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); if (*w_c0) { disp_string(0x7488, 2, 0xf, 0); } break;
-                case 3: disp_string(0x7d8c, 3, 0xb, 0); break;
+                case 3: disp_string(0x7d8c, 3, 0xb, 0); draw_unit_second(3); break;
                 case 4: disp_string((*w_c8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); if (*w_c8) { disp_string(0x7490, 0, 0xf, 0); } break;
-                case 5: disp_string(0x7d8c, 1, 0xb, 0); break;
+                case 5: disp_string(0x7d8c, 1, 0xb, 0); draw_unit_second(1); break;
                 case 6: disp_string((*w_d0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); if (*w_d0) { disp_string(0x7490, 2, 0xf, 0); } break;
-                case 7: disp_string(0x7d8c, 3, 0xb, 0); break;
+                case 7: disp_string(0x7d8c, 3, 0xb, 0); draw_unit_second(3); break;
                 case 8: disp_string(0x5f98, 0, 0xb, 0); break;
                 case 9: disp_string(0x5f98, 1, 0xb, 0); if (*b_d6 >= 0xa) { disp_string(0x8638, 1, 0xf, 0); } break;
             }
