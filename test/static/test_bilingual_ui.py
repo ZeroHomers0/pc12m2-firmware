@@ -43,6 +43,21 @@ for address in (0x6554, 0x6568, 0x657c, 0x65bc, 0x65d0, 0x65e4, 0x65f8,
         f"numeric field at columns 11..14 is not reserved: {address:#x}"
 for address in (0x0710, 0x4334, 0x6A8C, 0x6A98, 0xA070, 0xA0B0):
     assert f"0x{address:04x}" in LANG.lower(), f"12p-only text 0x{address:04x} is untranslated"
+# Automatically cover every translated literal used as a right-side field.
+# Such fields must reach column 15 so shorter values cannot leave stale pixels
+# or stale inverse-video spaces behind.
+canonical_map = {int(raw, 16): int(canonical, 16) for raw, canonical in re.findall(
+    r'if \(addr == 0x([0-9a-fA-F]+)u\) canonical = 0x([0-9a-fA-F]+)u;', STRPOOL)}
+for source_path in (ROOT / "firmware/src").glob("*.c"):
+    source = source_path.read_text(encoding="utf-8", errors="ignore")
+    for address_text, col_text in re.findall(
+            r'disp_string\(\s*(0x[0-9a-fA-F]+),\s*[^,]+,\s*(0x[0-9a-fA-F]+|\d+)', source):
+        raw_address = int(address_text, 16)
+        address = canonical_map.get(raw_address, raw_address)
+        col = int(col_text, 0)
+        if address in entry_map and col >= 10:
+            assert col + len(entry_map[address]) == 16, \
+                f"right-side field must repaint through column 15: {source_path.name} {address_text} col={col} text={entry_map[address]!r}"
 assert "ui_language_load();" in START
 assert "EEPROM_UI_LANGUAGE = 0xff" in (ROOT / "firmware/inc/firmware_language.h").read_text(encoding="utf-8")
 assert "*m2 > 9" in STATE and "*MENU == 0x0d" in STATE
