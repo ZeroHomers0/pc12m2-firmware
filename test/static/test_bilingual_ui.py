@@ -22,9 +22,9 @@ assert 'UI_TEXT_MENU_LANGUAGE,"10.LANGUAGE     "' in LANG, "language menu must e
 for address in (0x4814, 0x4824, 0x4834, 0x4844, 0x6488, 0x649c, 0x64b0, 0x64c4,
                 0x64d8, 0x64ec, 0x6500, 0x6514, 0x6528):
     assert len(entry_map[address]) == 16, f"menu row must erase all columns: {address:#x}"
-assert re.search(r'menu_language\[\].*\\xf1 {5}"',
+assert re.search(r'menu_language\[\].*\\x2e\\x20.*\\xf1 {4}"',
                  (ROOT / "firmware/src/strpool.c").read_text(encoding="utf-8")), \
-    "Chinese language menu must erase trailing pixels from the previous page"
+    "Chinese language menu must align GBK glyphs and erase the whole row"
 display_source = (ROOT / "firmware/src/02_lcd_display.c").read_text(encoding="utf-8")
 for gbk_pair in ("{0xd3,0xef}", "{0xd1,0xd4}", "{0xd1,0xa1}", "{0xd4,0xf1}", "{0xce,0xc4}"):
     assert gbk_pair in display_source, f"missing language UI glyph: {gbk_pair}"
