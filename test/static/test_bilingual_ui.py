@@ -60,6 +60,7 @@ for source_path in (ROOT / "firmware/src").glob("*.c"):
                 f"right-side field must repaint through column 15: {source_path.name} {address_text} col={col} text={entry_map[address]!r}"
 assert "ui_language_load();" in START
 assert "disp_string(0xa0b0, 0, 2, 0)" in STATE
+assert "sm4_draw_page(0);" in STATE
 assert "if (addr == 0x7488u) canonical = 0x7974u;" in STRPOOL
 assert "if (addr == 0x7490u) canonical = 0x7980u;" in STRPOOL
 assert "if (addr == 0x8638u) canonical = 0x86e0u;" in STRPOOL

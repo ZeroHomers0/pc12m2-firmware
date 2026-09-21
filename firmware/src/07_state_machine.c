@@ -913,10 +913,7 @@ void state_machine(int key)
                 *menu = 4; *m2 = 0;
                 disp_string(0x64f8, 0, 0, 0); disp_string(0x650c, 1, 0, 0);
                 disp_string(0x6520, 2, 0, 0); disp_string(0x6534, 3, 0, 0);
-                disp_uint4(*(volatile uint32_t*)0x100016b8, 0, 0xb, 1);
-                disp_uint4(*(volatile uint8_t*)0x100016bc, 1, 0xb, 0);
-                disp_uint4(*(volatile uint32_t*)0x100016c0, 2, 0xb, 0);
-                disp_uint4(*(volatile uint8_t*)0x100016c4, 3, 0xb, 0);
+                sm4_draw_page(0);
                 *TIMEOUT3 = 0xfa;
             }
             if (*m2 == 2) { /* 选项2 → case5 通讯设置 @0x6290 */

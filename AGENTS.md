@@ -43,8 +43,8 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
   `PC6M-10/docs/analysis/PC12M2_W8_ISSUES_REVIEW.md`。
 - **2026-09-01/02 后续进度**：产品信息定制（型号/版本/厂商/电话）、厂商 X/O 字形修复与
   电话行宽修正（`029-84205750`→`02984205750`）均已完成并 A/B 全 PASS，详见
-  `docs/analysis/P5_VERIFICATION_PROGRESS.md`。当前基线 `text 70532 / data 6312 / bss 2196`，
-  `firmware.bin` SHA-256 `D51CE81B098A495BCAF7C0672CFD058BA5419B8099DF64D883B857603253BB54`。
+  `docs/analysis/P5_VERIFICATION_PROGRESS.md`。当前基线 `text 70584 / data 6312 / bss 2196`，
+  `firmware.bin` SHA-256 `E4A06BD689374D974A2C82CBA49499726BBD2A51DC8BBB6DAF9FB93C2AC1037F`。
 - **2026-09-19 中英文界面**：主设置菜单新增第 10 项语言选择，完整可见文字支持中文/英文；
   语言保存于 EEPROM `0xFF`，空白或非法值默认中文，恢复出厂恢复中文。英文字符串生成与测试
   强制限制为 128×64 LCD 的每行 16 个字符以内。
