@@ -22,19 +22,20 @@ assert 'UI_TEXT_MENU_LANGUAGE,"10.LANGUAGE     "' in LANG, "language menu must e
 for address in (0x4814, 0x4824, 0x4834, 0x4844, 0x6488, 0x649c, 0x64b0, 0x64c4,
                 0x64d8, 0x64ec, 0x6500, 0x6514, 0x6528):
     assert len(entry_map[address]) == 16, f"menu row must erase all columns: {address:#x}"
-assert re.search(r'menu_language\[\].*\\x2e\\x20.*\\xf1 {4}"',
+assert re.search(r'menu_language\[\].*\\x31\\x30\\xd3.*\\xf1 {6}"',
                  (ROOT / "firmware/src/strpool.c").read_text(encoding="utf-8")), \
     "Chinese language menu must align GBK glyphs and erase the whole row"
 display_source = (ROOT / "firmware/src/02_lcd_display.c").read_text(encoding="utf-8")
 for gbk_pair in ("{0xd3,0xef}", "{0xd1,0xd4}", "{0xd1,0xa1}", "{0xd4,0xf1}", "{0xce,0xc4}"):
     assert gbk_pair in display_source, f"missing language UI glyph: {gbk_pair}"
 assert "gbase + tbl_idx * 0x20" in display_source
+assert display_source.count("if (col == 0xb)") >= 4, "variable-width numeric fields must clear through column 15"
 for address in (0x6018, 0x6020, 0x6028, 0x6030, 0x6038, 0x6040, 0x6048, 0x6050,
                 0x6058, 0x6060, 0x6594, 0x659c, 0x65a4, 0x6af8, 0x6b08, 0x6b14,
                 0x6b24, 0x7998, 0x79a0, 0x79a8, 0x79b4, 0x79bc):
-    assert len(entry_map[address]) <= 5, f"value at LCD column 11 overflows: {address:#x}"
+    assert len(entry_map[address]) == 5, f"value at LCD column 11 must repaint all 5 columns: {address:#x}"
 for address in (0x47dc, 0x47e8, 0x47f0, 0x8f6c, 0x8f78, 0x8f88, 0x8f9c):
-    assert len(entry_map[address]) <= 6, f"status at LCD column 10 overflows: {address:#x}"
+    assert len(entry_map[address]) == 6, f"status at LCD column 10 must repaint all 6 columns: {address:#x}"
 for address in (0x6554, 0x6568, 0x657c, 0x65bc, 0x65d0, 0x65e4, 0x65f8,
                 0x6fe4, 0x6ff8, 0x700c, 0x7020, 0x7e10, 0x7e24, 0x7e38,
                 0x7e4c, 0x7e74):

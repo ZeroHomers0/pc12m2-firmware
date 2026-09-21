@@ -140,7 +140,7 @@ uint32_t strpool_map(uint32_t addr)
 {
   uint32_t i;
   uint32_t canonical = addr, mapped = addr;
-  static const uint8_t menu_language[] = "\x31\x30\x2e\x20\xd3\xef\xd1\xd4\xd1\xa1\xd4\xf1    ";
+  static const uint8_t menu_language[] = "\x31\x30\xd3\xef\xd1\xd4\xd1\xa1\xd4\xf1      ";
   static const uint8_t language_title[] = "\xd1\xa1\xd4\xf1\xd3\xef\xd1\xd4";
   static const uint8_t language_zh[] = "\x31\x2e\xd6\xd0\xce\xc4";
   static const uint8_t language_en[] = "2.ENGLISH";
