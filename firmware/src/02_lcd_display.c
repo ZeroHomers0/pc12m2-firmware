@@ -362,24 +362,27 @@ extern uint32_t strpool_map(uint32_t addr);
 void disp_string(int str_addr,undefined4 row,uint col,undefined4 invert)
 {
   uint i;
+  uint end_col = col;
   undefined4 invert_tmp;   /* Ghidra 死存储伪影：仅赋值未读，保留（invert 实参直接下发） */
 
   str_addr = (int)strpool_map((uint32_t)str_addr);
   invert_tmp = invert;     /* 死存储，无逻辑影响 */
-  for (i = 0; (i < 0x10 && (*(volatile char *)(str_addr + i) != '\0')); i = i + 1 & 0xff)
+  /* GBK characters consume two bytes and two LCD columns; bound by columns. */
+  for (i = 0; (i < 0x20 && end_col < 0x10 && (*(volatile char *)(str_addr + i) != '\0')); i = i + 1 & 0xff)
   {
     if (*(volatile byte *)(str_addr + i) < 0xa1) {
-      disp_render_char8(*(volatile undefined1 *)(str_addr + i),row,col,invert);
-      col = col + 1;
+      disp_render_char8(*(volatile undefined1 *)(str_addr + i),row,end_col,invert);
+      end_col = end_col + 1;
     }
     else {
+      if (end_col > 0xe || *(volatile uint8_t *)(str_addr + i + 1) == '\0') break;
       invert_tmp = invert;
       disp_render_char16(*(volatile undefined1 *)(str_addr + i),*(volatile undefined1 *)(str_addr + i + 1),
-                         row,col,invert);
-      col = col + 2;
+                         row,end_col,invert);
+      end_col = end_col + 2;
       i = i + 1 & 0xff;
     }
-    col = col & 0xff;
+    end_col = end_col & 0xff;
   }
   return;
 }

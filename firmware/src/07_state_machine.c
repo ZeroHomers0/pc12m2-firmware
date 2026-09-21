@@ -1290,16 +1290,16 @@ void state_machine(int key)
             *t58 = 0;
             if (*m26 == 0) return; /* 查看态：本帧提前返回 */
             switch (*m25) {
-                case 0: disp_string((*w_b8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); break;
+                case 0: disp_string((*w_b8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); if (*w_b8) { disp_string(0x7488, 0, 0xf, 0); } break;
                 case 1: disp_string(0x7d8c, 1, 0xb, 0); break;
-                case 2: disp_string((*w_c0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); break;
+                case 2: disp_string((*w_c0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); if (*w_c0) { disp_string(0x7488, 2, 0xf, 0); } break;
                 case 3: disp_string(0x7d8c, 3, 0xb, 0); break;
-                case 4: disp_string((*w_c8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); break;
+                case 4: disp_string((*w_c8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); if (*w_c8) { disp_string(0x7490, 0, 0xf, 0); } break;
                 case 5: disp_string(0x7d8c, 1, 0xb, 0); break;
-                case 6: disp_string((*w_d0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); break;
+                case 6: disp_string((*w_d0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); if (*w_d0) { disp_string(0x7490, 2, 0xf, 0); } break;
                 case 7: disp_string(0x7d8c, 3, 0xb, 0); break;
                 case 8: disp_string(0x5f98, 0, 0xb, 0); break;
-                case 9: disp_string(0x5f98, 1, 0xb, 0); break;
+                case 9: disp_string(0x5f98, 1, 0xb, 0); if (*b_d6 >= 0xa) { disp_string(0x8638, 1, 0xf, 0); } break;
             }
         }
         (*t44)++;
