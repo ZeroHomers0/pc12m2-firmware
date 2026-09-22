@@ -875,6 +875,8 @@ void state_machine(int key)
             *to = 0;
             if (key == 3) { (*m2)++; if (*m2 > 9) *m2 = 9; } /* UP */
             if (key == 2) { if (*m2 > 0) (*m2)--; }          /* DOWN */
+            /* 每次导航先清除整屏，避免较短菜单项或空白占位串留下上一页末列像素。 */
+            disp_clear();
             if (*m2 < 4) { /* 页1 选项0-3 */
                 disp_string(0x5fac, 0, 0, 0); disp_string(0x5fc0, 1, 0, 0);
                 disp_string(0x5fd4, 2, 0, 0); disp_string(0x5fe8, 3, 0, 0);
@@ -1817,9 +1819,9 @@ void state_machine(int key)
             *timeout = 0;
             *MENU = 2; *MENU2 = 8;
             disp_clear();
-            disp_string(0xa070, 0, 0, 1);
-            disp_string(0xa080, 1, 0, 0); disp_string(0xa080, 2, 0, 0);
-            disp_string(0xa080, 3, 0, 0);
+            disp_string(0x604c, 0, 0, 1);
+            disp_string(UI_TEXT_MENU_LANGUAGE, 1, 0, 0);
+            disp_string(0x56d8, 2, 0, 0); disp_string(0x56d8, 3, 0, 0);
             if (*bal_ang != *bal_eep) { /* 写 EEPROM reg 0x1c */
                 *bal_eep = *bal_ang;
                 i2c_write_reg(*bal_eep, 0x1c);

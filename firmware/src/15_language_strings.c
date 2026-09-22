@@ -8,7 +8,7 @@ typedef struct { uint32_t address; const char *text; } EnglishText;
 static const EnglishText english_texts[] = {
   {0x0754,"FAULT STATUS"},{0x0760,"CALIB. ERROR"},{0x076c,"CALIBRATION"},
   {0x0778,"OUT VOLT 50%"},{0x0784,"VALUE:"},{0x0790,"STATUS: STOP"},
-  {0x4370,"INPUT:        %"},{0x4384,"OUTPUT:       V"},{0x4398,"CURRENT:      A"},{0x43ac,"    MODE:"},
+  {0x4370,"INPUT:        % "},{0x4384,"OUTPUT:       V "},{0x4398,"CURRENT:      A "},{0x43ac,"    MODE:"},
   {0x47dc,"FAULT "},{0x47e8,"RUN   "},{0x47f0,"STOP  "},{0x47fc,"CONST VOLT"},{0x4804,"CONST CURR"},{0x480c,"OPEN LOOP"},
   {0x4814,"1.BASIC SET     "},{0x4824,"2.PROTECT SET   "},{0x4834,"3.COMM SET      "},{0x4844,"4.FACTORY RESET "},
   {0x4854,"1.U CURR:"},{0x4868,"2.V CURR:"},{0x487c,"3.W CURR:"},{0x4890,"4.OUT CURR:"},

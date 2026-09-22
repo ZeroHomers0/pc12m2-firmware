@@ -16,9 +16,16 @@ used_glyphs = set("".join(entries))
 assert used_glyphs <= original_glyphs | extended_glyphs, \
     f"English LCD text uses unsupported glyphs: {sorted(used_glyphs - original_glyphs - extended_glyphs)}"
 assert 'ext_char8_map[] = "/GJKLQY"' in (ROOT / "firmware/src/02_lcd_display.c").read_text(encoding="utf-8")
-assert '"INPUT:        %"' in LANG and '"OUTPUT:       V"' in LANG and '"CURRENT:      A"' in LANG
+for address in (0x4370, 0x4384, 0x4398):
+    assert len(entry_map[address]) == 16, \
+        f"main status row must repaint through column 15: {address:#x}"
 assert LANG.count('" PASS: ------"') == 2
 assert 'UI_TEXT_MENU_LANGUAGE,"10.LANGUAGE     "' in LANG, "language menu must erase all 16 columns"
+assert "/* 每次导航先清除整屏" in STATE and "disp_clear();\n            if (*m2 < 4)" in STATE, \
+    "main-menu navigation must clear stale pixels before repainting a page"
+manual_return = re.search(r"if \(\*MENU == 0x5a\).*?if \(key == 4\).*?return;", STATE, re.S)
+assert manual_return and "disp_string(UI_TEXT_MENU_LANGUAGE, 1, 0, 0);" in manual_return.group(0), \
+    "returning from item 9 must repaint item 10 on the third menu page"
 for address in (0x4814, 0x4824, 0x4834, 0x4844, 0x6488, 0x649c, 0x64b0, 0x64c4,
                 0x64d8, 0x64ec, 0x6500, 0x6514, 0x6528):
     assert len(entry_map[address]) == 16, f"menu row must erase all columns: {address:#x}"
