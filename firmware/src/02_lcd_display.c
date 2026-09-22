@@ -489,10 +489,8 @@ void disp_number3(int val,undefined4 row,int col,undefined4 invert)
     disp_digit((val / 10) % 10 & 0xff,row,col + 1U & 0xff,invert);
   }
   disp_digit(val % 10 & 0xff,row,col + 2U & 0xff,invert);
-  if (col == 0xb) {
-    disp_render_char8(0x20,row,0xe,invert);
-    disp_render_char8(0x20,row,0xf,invert);
-  }
+  /* 参数值域为 col 11..14；三位数需显式擦除未使用的末列。col 15 留给单位。 */
+  if (col == 0xb) disp_render_char8(0x20,row,0xe,invert);
   return;
 }
 
@@ -518,7 +516,6 @@ void disp_uint4(uint val,undefined4 row,int col,undefined4 invert)
     disp_digit((val / 10) % 10,row,col + 2U & 0xff,invert);
   }
   disp_digit(val % 10,row,col + 3U & 0xff,invert);
-  if (col == 0xb) disp_render_char8(0x20,row,0xf,invert);
   return;
 }
 
@@ -623,10 +620,8 @@ void disp_signed_angle(int angle,undefined4 row,int col,undefined4 invert)
     }
     disp_digit(mag % 10,row,col + 2U & 0xff,invert);
   }
-  if (col == 0xb) {
-    disp_render_char8(0x20,row,0xe,invert);
-    disp_render_char8(0x20,row,0xf,invert);
-  }
+  /* 与三位数共用四列值域，末列必须擦除；单位列不属于数值域。 */
+  if (col == 0xb) disp_render_char8(0x20,row,0xe,invert);
   return;
 }
 
@@ -672,7 +667,6 @@ void disp_offset(uint offset,undefined4 row,int col,undefined4 invert)
     }
     disp_digit(offset % 10,row,col + 3U & 0xff,invert);
   }
-  if (col == 0xb) disp_render_char8(0x20,row,0xf,invert);
   return;
 }
 

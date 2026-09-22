@@ -48,12 +48,13 @@ void disp_offset(uint offset, uint32_t row, int col, uint32_t attr);
 void disp_uint2(uint value, uint32_t row, int col, uint32_t attr);
 void disp_fixed_1dec(uint value, uint32_t row, int col, uint32_t attr);
 
-/* 数字绘制函数会主动擦除 col=0xf，以消除短值残留；这些页面的行标题把
- * 单位放在同一列，因此数值绘制后必须补回单位。ASCII 单位在中英文界面相同。 */
+/* S 单位在原厂显示序列中是独立字形调用，并非行标签的一部分。数值函数不得
+ * 擦除 col=0xf；这里仅复用原厂的单位绘制契约。 */
 static void draw_unit_second(uint32_t row)
 {
     disp_render_char8('S', row, 0xf, 0);
 }
+
 void disp_splash_screen(void);                            /* 02_lcd_display.c */
 void disp_screen_static(void);
 void disp_screen_calib(void);
@@ -1295,16 +1296,16 @@ void state_machine(int key)
             *t58 = 0;
             if (*m26 == 0) return; /* 查看态：本帧提前返回 */
             switch (*m25) {
-                case 0: disp_string((*w_b8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); if (*w_b8) { disp_string(0x7488, 0, 0xf, 0); } break;
-                case 1: disp_string(0x7d8c, 1, 0xb, 0); draw_unit_second(1); break;
-                case 2: disp_string((*w_c0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); if (*w_c0) { disp_string(0x7488, 2, 0xf, 0); } break;
-                case 3: disp_string(0x7d8c, 3, 0xb, 0); draw_unit_second(3); break;
-                case 4: disp_string((*w_c8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); if (*w_c8) { disp_string(0x7490, 0, 0xf, 0); } break;
-                case 5: disp_string(0x7d8c, 1, 0xb, 0); draw_unit_second(1); break;
-                case 6: disp_string((*w_d0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); if (*w_d0) { disp_string(0x7490, 2, 0xf, 0); } break;
-                case 7: disp_string(0x7d8c, 3, 0xb, 0); draw_unit_second(3); break;
+                case 0: disp_string((*w_b8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); break;
+                case 1: disp_string(0x7d8c, 1, 0xb, 0); break;
+                case 2: disp_string((*w_c0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); break;
+                case 3: disp_string(0x7d8c, 3, 0xb, 0); break;
+                case 4: disp_string((*w_c8 != 0) ? 0x7d8c : 0x5f98, 0, 0xb, 0); break;
+                case 5: disp_string(0x7d8c, 1, 0xb, 0); break;
+                case 6: disp_string((*w_d0 != 0) ? 0x7d8c : 0x5f98, 2, 0xb, 0); break;
+                case 7: disp_string(0x7d8c, 3, 0xb, 0); break;
                 case 8: disp_string(0x5f98, 0, 0xb, 0); break;
-                case 9: disp_string(0x5f98, 1, 0xb, 0); if (*b_d6 >= 0xa) { disp_string(0x8638, 1, 0xf, 0); } break;
+                case 9: disp_string(0x5f98, 1, 0xb, 0); break;
             }
         }
         (*t44)++;

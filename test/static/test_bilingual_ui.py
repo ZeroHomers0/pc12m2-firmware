@@ -26,6 +26,7 @@ assert "/* 每次导航先清除整屏" in STATE and "disp_clear();\n           
 manual_return = re.search(r"if \(\*MENU == 0x5a\).*?if \(key == 4\).*?return;", STATE, re.S)
 assert manual_return and "disp_string(UI_TEXT_MENU_LANGUAGE, 1, 0, 0);" in manual_return.group(0), \
     "returning from item 9 must repaint item 10 on the third menu page"
+assert "S 单位在原厂显示序列中" in STATE
 for address in (0x4814, 0x4824, 0x4834, 0x4844, 0x6488, 0x649c, 0x64b0, 0x64c4,
                 0x64d8, 0x64ec, 0x6500, 0x6514, 0x6528):
     assert len(entry_map[address]) == 16, f"menu row must erase all columns: {address:#x}"
@@ -36,7 +37,11 @@ display_source = (ROOT / "firmware/src/02_lcd_display.c").read_text(encoding="ut
 for gbk_pair in ("{0xd3,0xef}", "{0xd1,0xd4}", "{0xd1,0xa1}", "{0xd4,0xf1}", "{0xce,0xc4}"):
     assert gbk_pair in display_source, f"missing language UI glyph: {gbk_pair}"
 assert "gbase + tbl_idx * 0x20" in display_source
-assert display_source.count("if (col == 0xb)") >= 4, "variable-width numeric fields must clear through column 15"
+assert display_source.count("if (col == 0xb)") == 2, \
+    "only three-column numeric fields should clear the unused value column"
+assert "col 15 留给单位" in display_source
+assert "disp_render_char16_odd" in display_source, \
+    "12P 10.语言选择 starts Chinese glyphs on an odd column and needs the split renderer"
 for address in (0x6018, 0x6020, 0x6028, 0x6030, 0x6038, 0x6040, 0x6048, 0x6050,
                 0x6058, 0x6060, 0x6594, 0x659c, 0x65a4, 0x6af8, 0x6b08, 0x6b14,
                 0x6b24, 0x7998, 0x79a0, 0x79a8, 0x79b4, 0x79bc):
