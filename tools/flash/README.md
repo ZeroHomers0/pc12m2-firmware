@@ -17,7 +17,8 @@
 ## 使用方法（Windows）
 
 解压本 zip 后，直接双击 `flash_release.bat` 即可烧写。窗口会在完成或报错后暂停，
-按任意键关闭。
+按任意键关闭。烧写前会自动检查 J-Link USB 驱动；未安装时会弹出 Windows UAC，
+获得管理员权限后直接运行包内官方驱动安装器。
 
 也可在 PowerShell / CMD 中执行：
 
@@ -32,7 +33,7 @@ powershell -ExecutionPolicy Bypass -File flash_release.ps1
 |---|---|
 | `-Bin x.bin` | 指定其他本地固件文件 |
 | `-Serial <SN>` | 多台 J-Link 时指定序列号 |
-| `-DryRun` | 只下载 + 校验，不烧写 |
+| `-DryRun` | 只校验本地固件，不连接设备、不烧写 |
 
 ### Git Bash 版
 
@@ -42,13 +43,16 @@ bash flash_release.sh [--bin x.bin] [--dry-run]
 
 ## 烧写流程
 
-脚本按以下标准序列执行（擦除前自动备份当前 Flash）：
+脚本使用两阶段安全门。第一阶段只连接、检查 VTref/CRP 并生成带时间戳的完整备份；
+只有备份大小和 CRP 校验通过，才会启动第二阶段擦除：
 
 ```
-connect → savebin 备份 → CRP 检查 → erase → loadbin → verifybin → 复位运行
+connect → VTref/CRP 检查 → savebin 完整备份 → 安全门 → erase → loadbin → verifybin → 关键地址读回 → 复位运行
 ```
 
-成功标志：`verifybin` 输出 `Verify successful`（板上内容与固件完全一致）。
+成功标志：`verifybin` 输出 `Verify successful`（板上内容与固件完全一致）。备份保存在
+`backup/`，预检和烧写日志保存在 `release/`，文件名均含时间戳。
+烧写日志还会记录中断向量表、CRP 字和 `0x6B78` 起的产品版本信息区原始数据。
 
 ## 硬件前置（重要）
 
@@ -58,7 +62,8 @@ connect → savebin 备份 → CRP 检查 → erase → loadbin → verifybin �
 
 ## 首次插 J-Link 未被识别
 
-运行一次 `jlink\USBDriver\InstDrivers.exe` 安装 USB 驱动即可。
+双击烧写时脚本会自动检查并安装。如自动安装失败，可手动运行
+`jlink\USBDriver\InstDrivers.exe`。
 
 ## 排查
 

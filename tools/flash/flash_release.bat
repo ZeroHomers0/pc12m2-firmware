@@ -10,8 +10,10 @@ set "FLASH_EXIT_CODE=%ERRORLEVEL%"
 
 echo.
 if "%FLASH_EXIT_CODE%"=="0" (
+  color 2F
   echo Flash tool finished successfully.
 ) else (
+  color 4F
   echo Flash tool failed with exit code %FLASH_EXIT_CODE%.
 )
 echo Press any key to close this window...

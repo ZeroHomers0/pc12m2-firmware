@@ -1,146 +1,32 @@
 #!/usr/bin/env bash
-# =============================================================================
-# tools/flash/flash_release.sh — 从当前目录 release 取固件并 SWD 烧写
-#
-# 目的：让其他电脑无需安装任何编译环境（arm-none-eabi-gcc / Python / Unicorn），
-#       只需拉取本仓库（自带免安装打包版 J-Link），即可把 CI 构建好的固件烧进板子。
-#
-# 用法（在仓库根目录的 Git Bash 中执行）：
-#   bash tools/flash/flash_release.sh                 # 使用 ./release/firmware.bin
-#   bash tools/flash/flash_release.sh --bin x.bin     # 指定其他本地 bin
-#   bash tools/flash/flash_release.sh --dry-run       # 只下载+校验，不烧写
-#   bash tools/flash/flash_release.sh --serial <SN>   # 指定 J-Link 序列号（多台时）
-#
-# 依赖：Git Bash（自带 curl / sha256sum）。J-Link 用仓库打包版 tools/jlink/JLink.exe，
-#       无需安装。首次插 J-Link 未被识别时，先跑 tools/jlink/USBDriver/InstDrivers.exe。
-#
-# 烧写序列与 操作文档.md §3.4 一致：connect → 备份 → CRP 检查 → erase →
-# loadbin → verifybin → 复位运行。铁律：erase 前自动 savebin 备份当前 Flash。
-# =============================================================================
+# Git Bash 入口：统一调用 PowerShell 主实现，保证两阶段备份/CRP 安全门一致。
 set -euo pipefail
 
-# ---- 仓库与设备（可按需改） ----
-DEVICE="LPC1765"
-FLASH_SIZE=0x40000            # LPC1765 = 256 KiB
-BIN=""
-DRY_RUN=0
-SERIAL=""
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PS_SCRIPT="$SCRIPT_DIR/flash_release.ps1"
+[[ -f "$PS_SCRIPT" ]] || { echo "错误: 未找到 $PS_SCRIPT" >&2; exit 1; }
+command -v powershell.exe >/dev/null 2>&1 || { echo "错误: 未找到 Windows PowerShell。" >&2; exit 1; }
 
-# ---- 解析参数 ----
+PS_ARGS=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --bin)    BIN="$2"; shift 2 ;;
-    --device) DEVICE="$2"; shift 2 ;;
-    --serial) SERIAL="$2"; shift 2 ;;
-    --dry-run) DRY_RUN=1; shift ;;
+    --bin)
+      [[ $# -ge 2 ]] || { echo "错误: --bin 需要路径" >&2; exit 1; }
+      BIN_WIN="$(cygpath -w "$2" 2>/dev/null || printf '%s' "$2")"
+      PS_ARGS+=("-Bin" "$BIN_WIN"); shift 2 ;;
+    --device)
+      [[ $# -ge 2 ]] || { echo "错误: --device 需要型号" >&2; exit 1; }
+      PS_ARGS+=("-Device" "$2"); shift 2 ;;
+    --serial)
+      [[ $# -ge 2 ]] || { echo "错误: --serial 需要序列号" >&2; exit 1; }
+      PS_ARGS+=("-Serial" "$2"); shift 2 ;;
+    --dry-run) PS_ARGS+=("-DryRun"); shift ;;
     -h|--help)
-      sed -n '5,24p' "$0"; exit 0 ;;
-    *) echo "未知参数: $1"; exit 1 ;;
+      echo "用法: bash flash_release.sh [--bin x.bin] [--device LPC1765] [--serial SN] [--dry-run]"
+      exit 0 ;;
+    *) echo "错误: 未知参数 $1" >&2; exit 1 ;;
   esac
 done
 
-# ---- 路径 ----
-# 支持两种布局：
-#   A. 独立烧写工具包（Release 里的 zip）：脚本与 jlink/ 同目录
-#   B. 仓库内：脚本位于 <仓库>/tools/flash/，jlink 在 <仓库>/tools/jlink/
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"           # 脚本所在目录
-ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"               # 仓库布局时 = 仓库根
-if [[ -f "$SCRIPT_DIR/jlink/JLink.exe" ]]; then
-  JLINK="$SCRIPT_DIR/jlink/JLink.exe"                # 独立包布局
-else
-  JLINK="$ROOT/tools/jlink/JLink.exe"                # 仓库布局
-fi
-WORK="$PWD/release"                                   # 固件与临时产物（相对于当前目录）
-mkdir -p "$WORK"
-BIN_FILE="$WORK/firmware.bin"
-SHA_FILE="$WORK/firmware.bin.sha256"
-
-echo "== 设备：$DEVICE =="
-
-# ---- 1. 从本地取固件 ----
-if [[ -n "$BIN" ]]; then
-  BIN_FILE="$BIN"
-  echo "== 使用本地固件：$BIN_FILE =="
-else
-  echo "== 使用当前目录固件：$BIN_FILE =="
-fi
-
-[[ -f "$BIN_FILE" ]] || { echo "错误: 固件文件不存在: $BIN_FILE"; exit 1; }
-BIN_SIZE=$(stat -c%s "$BIN_FILE")
-echo "固件: $BIN_FILE ($BIN_SIZE B)"
-
-# ---- 2. 校验 SHA-256 ----
-if [[ -f "$SHA_FILE" ]]; then
-  EXPECT=$(awk '{print $1}' "$SHA_FILE")
-  ACTUAL=$(sha256sum "$BIN_FILE" | awk '{print $1}')
-  echo "期望 SHA-256: $EXPECT"
-  echo "实际 SHA-256: $ACTUAL"
-  if [[ "$EXPECT" != "$ACTUAL" ]]; then
-    echo "错误: SHA-256 不匹配，固件可能损坏，已中止。" >&2
-    exit 1
-  fi
-  echo "== SHA-256 校验通过 =="
-else
-  echo "警告: 无 sha256 参考文件，跳过哈希校验。"
-fi
-
-# 尺寸合理性检查（flash 容量内）
-if (( BIN_SIZE > FLASH_SIZE )); then
-  echo "错误: 固件尺寸 $BIN_SIZE B 超过 Flash 容量 $FLASH_SIZE B。" >&2
-  exit 1
-fi
-
-[[ "$DRY_RUN" -eq 1 ]] && { echo "== dry-run：仅校验，不烧写。完成。"; exit 0; }
-
-# ---- 3. 检查打包版 J-Link ----
-[[ -f "$JLINK" ]] || { echo "错误: 未找到打包版 J-Link: $JLINK"; exit 1; }
-
-# ---- 4. 生成 CommanderScript（基于 操作文档 §3.4 flash.jlink） ----
-# JLink.exe 是 Windows 程序，路径需转成 Windows 绝对路径；backup 目录确保存在。
-BACKUP_DIR="$PWD/backup"   # 备份随运行目录（独立包内同样可用）
-mkdir -p "$BACKUP_DIR"
-PRE="$BACKUP_DIR/pre_flash.bin"
-BIN_WIN="$(cygpath -w "$BIN_FILE" 2>/dev/null || echo "$BIN_FILE")"
-PRE_WIN="$(cygpath -w "$PRE" 2>/dev/null || echo "$PRE")"
-
-SCRIPT="$WORK/flash_release.jlink"
-LOG="$WORK/jlink_flash.log"
-{
-  echo "si SWD"
-  echo "speed 100"
-  [[ -n "$SERIAL" ]] && echo "SelectEmuBySN $SERIAL"
-  echo "device $DEVICE"
-  echo "connect"
-  echo "savebin \"$PRE_WIN\", 0x0, $FLASH_SIZE"
-  echo "mem32 0x000002FC, 1"
-  echo "erase"
-  echo "loadbin \"$BIN_WIN\", 0x0"
-  echo "verifybin \"$BIN_WIN\", 0x0"
-  echo "SetRESET"
-  echo "sleep 200"
-  echo "ClrRESET"
-  echo "sleep 500"
-  echo "exit"
-} > "$SCRIPT"
-
-echo "== 生成 CommanderScript: $SCRIPT =="
-echo "== 调用打包版 J-Link 烧写（擦除前自动备份至 $PRE） =="
-
-# ---- 5. 执行烧写 ----
-set +e
-"$JLINK" -CommanderScript "$SCRIPT" 2>&1 | tee "$LOG"
-rc=${PIPESTATUS[0]}
-set -e
-if (( rc != 0 )) || grep -Eqi '(\*+[[:space:]]*Error:|^Error:|^Syntax:)' "$LOG" || ! grep -Fq 'Verify successful' "$LOG" || [[ ! -f "$PRE" ]] || (( $(stat -c%s "$PRE") != FLASH_SIZE )); then
-  echo "错误: J-Link 烧写失败 (rc=$rc)。" >&2
-  echo "日志: $LOG（必须完成备份且出现 Verify successful）" >&2
-  echo "排查：①四根主信号线(SWDIO/SWCLK/VTref/GND)接触是否良好；" >&2
-  echo "      ②固件复用 SWD 脚连不上 → 需 connect-under-reset（见 操作文档.md §3.2）；" >&2
-  echo "      ③首次插 J-Link 未识别 → 跑 tools/jlink/USBDriver/InstDrivers.exe 装驱动。" >&2
-  (( rc == 0 )) && rc=1
-  exit "$rc"
-fi
-
-echo "== 烧写完成 =="
-echo "  校验：verifybin 应输出 Verify successful（板上内容与固件完全一致）。"
-echo "  完成后请物理断电再上电（J-Link 驱动复位可能悬挂 SWD）。"
+cd "$SCRIPT_DIR"
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File "$PS_SCRIPT" "${PS_ARGS[@]}"
