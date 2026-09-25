@@ -8,6 +8,7 @@
 #
 # zip 布局（解压后即用，脚本已支持"jlink 在脚本旁"的独立包布局）：
 #   flash-tool/
+#     flash_release.bat        # Windows 双击启动器
 #     flash_release.ps1        # Windows PowerShell 版
 #     flash_release.sh         # Git Bash 版
 #     README.md                # 独立包使用说明
@@ -52,7 +53,11 @@ def main():
     zip_path = out_dir / f"{args.name}.zip"
 
     # 校验关键文件存在
-    scripts = [FLASH_DIR / "flash_release.ps1", FLASH_DIR / "flash_release.sh"]
+    scripts = [
+        FLASH_DIR / "flash_release.bat",
+        FLASH_DIR / "flash_release.ps1",
+        FLASH_DIR / "flash_release.sh",
+    ]
     jlink_exe = JLINK_DIR / "JLink.exe"
     for p in scripts + [jlink_exe, README, FIRMWARE_BIN]:
         if not p.exists():

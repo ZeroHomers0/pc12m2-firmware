@@ -7,15 +7,19 @@
 
 | 文件 | 说明 |
 |---|---|
+| `flash_release.bat` | Windows 双击启动器，自动调用 PowerShell 烧写脚本 |
 | `flash_release.ps1` | Windows PowerShell 版烧写脚本（Windows 10/11 自带 PowerShell） |
 | `flash_release.sh` | Git Bash 版烧写脚本（需 Git for Windows） |
 | `release/firmware.bin` | 打包时的最新固件 |
 | `release/firmware.bin.sha256` | 固件 SHA-256 校验值 |
 | `jlink/` | 免安装打包版 J-Link（`JLink.exe` + DLL + USB 驱动） |
 
-## 使用方法（Windows，推荐 .ps1）
+## 使用方法（Windows）
 
-解压本 zip 后，在解压目录打开 PowerShell / CMD，执行：
+解压本 zip 后，直接双击 `flash_release.bat` 即可烧写。窗口会在完成或报错后暂停，
+按任意键关闭。
+
+也可在 PowerShell / CMD 中执行：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File flash_release.ps1
