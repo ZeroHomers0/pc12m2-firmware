@@ -9,6 +9,8 @@
 |---|---|
 | `flash_release.ps1` | Windows PowerShell 版烧写脚本（Windows 10/11 自带 PowerShell） |
 | `flash_release.sh` | Git Bash 版烧写脚本（需 Git for Windows） |
+| `release/firmware.bin` | 打包时的最新固件 |
+| `release/firmware.bin.sha256` | 固件 SHA-256 校验值 |
 | `jlink/` | 免安装打包版 J-Link（`JLink.exe` + DLL + USB 驱动） |
 
 ## 使用方法（Windows，推荐 .ps1）
@@ -19,7 +21,7 @@
 powershell -ExecutionPolicy Bypass -File flash_release.ps1
 ```
 
-默认从运行命令时的当前目录读取 `release/firmware.bin`，如果存在
+包内已含有打包时的最新固件。默认从运行命令时的当前目录读取 `release/firmware.bin`，如果存在
 `release/firmware.bin.sha256` 则先校验哈希，全程不会从 GitHub 下载。常用参数：
 
 | 参数 | 说明 |

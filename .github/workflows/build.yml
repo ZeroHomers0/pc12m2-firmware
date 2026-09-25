@@ -55,7 +55,7 @@ jobs:
       - name: Compute firmware SHA-256
         run: sha256sum firmware/firmware.bin | awk '{print $1}' > firmware/firmware.bin.sha256
 
-      # 打包独立烧写工具 zip（烧写脚本 + 免安装 J-Link），其他电脑解压即用、免环境
+      # 打包独立烧写工具 zip（最新固件 + 烧写脚本 + 免安装 J-Link），解压即用
       - name: Package flash tool zip
         run: python tools/flash/package_flash_tool.py --name flash-tool-pc12m2
 

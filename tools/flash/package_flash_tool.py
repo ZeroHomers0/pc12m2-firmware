@@ -11,6 +11,9 @@
 #     flash_release.ps1        # Windows PowerShell 版
 #     flash_release.sh         # Git Bash 版
 #     README.md                # 独立包使用说明
+#     release/                 # 当次构建的最新固件
+#       firmware.bin
+#       firmware.bin.sha256
 #     jlink/                   # 免安装打包版 J-Link（JLink.exe + DLL + 驱动）
 #       JLink.exe
 #       JLinkARM.dll
@@ -23,7 +26,7 @@
 # 默认输出：<仓库>/release/flash-tool-<设备>.zip
 # =============================================================================
 import argparse
-import os
+import hashlib
 import sys
 import zipfile
 from pathlib import Path
@@ -32,6 +35,7 @@ ROOT = Path(__file__).resolve().parents[2]          # 仓库根
 JLINK_DIR = ROOT / "tools" / "jlink"
 FLASH_DIR = ROOT / "tools" / "flash"
 README = FLASH_DIR / "README.md"
+FIRMWARE_BIN = ROOT / "firmware" / "firmware.bin"
 DEFAULT_NAME = "flash-tool"
 
 
@@ -50,7 +54,7 @@ def main():
     # 校验关键文件存在
     scripts = [FLASH_DIR / "flash_release.ps1", FLASH_DIR / "flash_release.sh"]
     jlink_exe = JLINK_DIR / "JLink.exe"
-    for p in scripts + [jlink_exe, README]:
+    for p in scripts + [jlink_exe, README, FIRMWARE_BIN]:
         if not p.exists():
             print(f"错误: 缺少 {p}", file=sys.stderr)
             sys.exit(1)
@@ -65,6 +69,14 @@ def main():
             arc = f"{pkg_root}/{src.name}"
             zf.write(src, arc)
             added += 1
+        # 把当次构建的固件与现算 SHA-256 放入包内，解压后可直接离线烧写
+        firmware_arc = f"{pkg_root}/release/firmware.bin"
+        zf.write(FIRMWARE_BIN, firmware_arc)
+        added += 1
+        digest = hashlib.sha256(FIRMWARE_BIN.read_bytes()).hexdigest()
+        zf.writestr(f"{pkg_root}/release/firmware.bin.sha256",
+                    f"{digest}  firmware.bin\n")
+        added += 1
         # 整个 tools/jlink 目录递归打包
         for f in sorted(JLINK_DIR.rglob("*")):
             if f.is_file():
