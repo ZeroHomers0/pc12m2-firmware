@@ -475,7 +475,7 @@ void output_stage(void)
           *adc_conv_fb = *adc_conv_aux1;
         }
         if (*pid_target_set >= *adc_conv_fb && *gain_a >= *gain_c &&
-            *pid_state == 1 && *gain_b < *gain_a) {
+            *pid_state == 1 && *gain_b >= *gain_a) {
           *pid_active = 1;
           if (*(volatile uint8_t *)startup_state != 1) {
             *(volatile uint8_t *)startup_state = 1;
@@ -624,7 +624,7 @@ void output_stage(void)
           *adc_conv_aux1 = *adc_conv_fb;
         }
         if (*pid_target_set >= *adc_conv_aux1 && *gain_b >= *DAT_0000f470 &&
-            *pid_state == 1 && *gain_a < *gain_b) {
+            *pid_state == 1 && *gain_a >= *gain_b) {
           *pid_active = 1;
           if (*(volatile uint8_t *)startup_state != 1) {
             *(volatile uint8_t *)startup_state = 1;
