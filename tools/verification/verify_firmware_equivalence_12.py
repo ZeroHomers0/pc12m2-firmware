@@ -432,6 +432,67 @@ def verify_output_stage_matrix():
     print("OUTPUT_STAGE_MATRIX: PASS cases=%d" % cases)
 
 
+def verify_constant_current_voltage_limit():
+    """运行态恒流限压：覆盖实机 338V/2025A、限压60V、限流1500A。"""
+    cases = 0
+    for pid_state in (0, 1, 2):
+        for voltage in (59, 60, 61, 90):
+            for current in (0, 1, 500, 1499, 1500, 1501, 2025):
+                states = []
+                for is_new, entry in ((False, PAIRS["output_stage"][0]),
+                                      (True, SYMS["output_stage"])):
+                    uc = machine(is_new)
+                    _seed_output_stage(uc, 1, 1, 5, 0, 100, current, voltage)
+                    for address, value in (
+                            (0x10001634, 338),   # 电压量程
+                            (0x10001630, 2025),  # 电流量程
+                            (0x10001640, 60),    # 电压限制
+                            (0x1000163C, 1500),  # 电流限制
+                            (0x100015B8, voltage),
+                            (0x100015BC, current),
+                            (0x10002000, pid_state),
+                            (0x100015D0, 1000)):
+                        uc.mem_write(address, struct.pack("<I", value))
+                    run(uc, entry, max_insn=2_000_000)
+                    states.append(snapshot(uc))
+                label = (pid_state, voltage, current)
+                assert states[0] == states[1], \
+                    "constant-current voltage-limit SRAM mismatch %r" % (label,)
+                cases += 1
+    print("CONSTANT_CURRENT_VOLTAGE_LIMIT: PASS cases=%d" % cases)
+
+
+def verify_constant_voltage_current_limit():
+    """运行态恒压限流：覆盖量程大小关系、阈值边界和三个 PID 状态。"""
+    cases = 0
+    for pid_state in (0, 1, 2):
+        for voltage_range, current_range in ((338, 2025), (1000, 1000), (2025, 338)):
+            for voltage in (59, 60, 61, 337, 338, 339):
+                for current in (1499, 1500, 1501):
+                    states = []
+                    for is_new, entry in ((False, PAIRS["output_stage"][0]),
+                                          (True, SYMS["output_stage"])):
+                        uc = machine(is_new)
+                        _seed_output_stage(uc, 1, 0, 5, 0, 100, current, voltage)
+                        for address, value in (
+                                (0x10001634, voltage_range),
+                                (0x10001630, current_range),
+                                (0x10001640, 60),
+                                (0x1000163C, 1500),
+                                (0x100015B8, voltage),
+                                (0x100015BC, current),
+                                (0x10002000, pid_state),
+                                (0x100015D0, voltage_range)):
+                            uc.mem_write(address, struct.pack("<I", value))
+                        run(uc, entry, max_insn=2_000_000)
+                        states.append(snapshot(uc))
+                    label = (pid_state, voltage_range, current_range, voltage, current)
+                    assert states[0] == states[1], \
+                        "constant-voltage current-limit SRAM mismatch %r" % (label,)
+                    cases += 1
+    print("CONSTANT_VOLTAGE_CURRENT_LIMIT: PASS cases=%d" % cases)
+
+
 def verify_run_stop_preset():
     for cfg in (0, 1):
         def setup(uc, c=cfg):
@@ -811,6 +872,8 @@ if __name__ == "__main__":
     verify_modbus_regs()
     verify_closed_loop()
     verify_output_stage_matrix()
+    verify_constant_current_voltage_limit()
+    verify_constant_voltage_current_limit()
     verify_run_stop_preset()
     verify_state_machine_matrix()
     verify_display_matrix()
