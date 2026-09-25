@@ -131,10 +131,19 @@ $RunStamp = Get-Date -Format "yyyyMMdd_HHmmss_fff"
 $BackupDir = Join-Path (Get-Location) "backup"
 New-Item -ItemType Directory -Force -Path $BackupDir | Out-Null
 $Pre = Join-Path $BackupDir "pre_flash_$RunStamp.bin"
-$BinWin = (Resolve-Path $BinFile).Path
-$PreWin = [System.IO.Path]::GetFullPath($Pre)
-$PreflightScript = Join-Path $Work "preflight_$RunStamp.jlink"
-$FlashScript = Join-Path $Work "flash_$RunStamp.jlink"
+$StageRoot = Join-Path ([System.IO.Path]::GetTempPath()) "pc_flash_$RunStamp"
+if ($StageRoot -cmatch '[^\x00-\x7F]') {
+  Write-Error "系统临时目录包含非 ASCII 字符，J-Link 无法安全使用: $StageRoot"
+  exit 1
+}
+New-Item -ItemType Directory -Force -Path $StageRoot | Out-Null
+$StagedBin = Join-Path $StageRoot "firmware.bin"
+$StagedPre = Join-Path $StageRoot "pre_flash.bin"
+Copy-Item -LiteralPath $BinFile -Destination $StagedBin -Force
+$BinWin = [System.IO.Path]::GetFullPath($StagedBin)
+$PreWin = [System.IO.Path]::GetFullPath($StagedPre)
+$PreflightScript = Join-Path $StageRoot "preflight.jlink"
+$FlashScript = Join-Path $StageRoot "flash.jlink"
 $PreflightLog = Join-Path $Work "preflight_$RunStamp.log"
 $FlashLog = Join-Path $Work "flash_$RunStamp.log"
 
@@ -164,8 +173,12 @@ try {
   Write-Host "== 阶段 1/2：连接、VTref 检查、备份与 CRP 校验 =="
   Invoke-JLinkPhase $PreflightScript $PreflightLog
 
-  if (-not (Test-Path $Pre) -or (Get-Item $Pre).Length -ne $FLASH_SIZE) {
+  if (-not (Test-Path $StagedPre) -or (Get-Item $StagedPre).Length -ne $FLASH_SIZE) {
     throw "备份未生成或尺寸不是 $FLASH_SIZE B；为保护原固件，禁止擦除"
+  }
+  Copy-Item -LiteralPath $StagedPre -Destination $Pre -Force
+  if (-not (Test-Path $Pre) -or (Get-Item $Pre).Length -ne $FLASH_SIZE) {
+    throw "无法将完整备份保存到 $Pre；禁止擦除"
   }
   $PreflightText = Get-Content $PreflightLog -Raw
   $CrpMatch = [regex]::Match($PreflightText, '(?im)(?:0x)?0*2FC\s*=\s*(?:0x)?([0-9A-F]{8})')
@@ -202,12 +215,14 @@ try {
     throw "J-Link 未报告 Verify successful（见 $FlashLog）"
   }
 } catch {
+  Remove-Item -LiteralPath $StageRoot -Recurse -Force -ErrorAction SilentlyContinue
   Write-Host "错误: J-Link 安全检查或烧写失败: $($_.Exception.Message)" -ForegroundColor Red
   Write-Host "如连接了多台 J-Link，请用 -Serial <SN> 指定序列号。"
   Write-Host "请检查 SWDIO/SWCLK/VTref/GND、目标板供电及日志。"
   exit 1
 }
 
+Remove-Item -LiteralPath $StageRoot -Recurse -Force -ErrorAction SilentlyContinue
 Write-Host "== 烧写完成 ==" -ForegroundColor Green
 Write-Host "  固件 SHA-256: $Actual"
 Write-Host "  烧写前备份: $Pre"
