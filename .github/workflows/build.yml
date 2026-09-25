@@ -51,7 +51,7 @@ jobs:
             firmware/firmware.map
           if-no-files-found: error
 
-      # 生成固件哈希（供下载侧校验，见 tools/flash/flash_release.sh）
+      # 生成固件哈希（供本地 release 目录中的固件校验）
       - name: Compute firmware SHA-256
         run: sha256sum firmware/firmware.bin | awk '{print $1}' > firmware/firmware.bin.sha256
 
@@ -60,7 +60,7 @@ jobs:
         run: python tools/flash/package_flash_tool.py --name flash-tool-pc12m2
 
       # 发布到 GitHub Release（滚动 latest tag）——仅 push 到 main 时，PR 不发布。
-      # 其他电脑可免环境直接用 tools/flash/flash_release.sh 拉取本固件烧写。
+      # 其他电脑将固件放到当前目录 release/ 后，可用打包工具离线烧写。
       - name: Publish firmware to Release
         if: github.event_name == 'push'
         env:

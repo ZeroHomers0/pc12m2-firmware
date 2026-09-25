@@ -1,5 +1,5 @@
 ﻿# =============================================================================
-# tools/flash/flash_release.ps1 — 从 GitHub Release 拉取已构建固件并 SWD 烧写（Windows 原生版）
+# tools/flash/flash_release.ps1 — 从当前目录 release 取固件并 SWD 烧写（Windows 原生版）
 #
 # 目的：让其他电脑无需安装任何编译环境（arm-none-eabi-gcc / Python / Unicorn / Git Bash），
 #       只需 PowerShell（Windows 10/11 自带）+ 本仓库（自带免安装打包版 J-Link），
@@ -7,12 +7,11 @@
 #
 # 用法（PowerShell / CMD 中执行，仓库根目录下）：
 #   powershell -ExecutionPolicy Bypass -File tools\flash\flash_release.ps1
-#   powershell -ExecutionPolicy Bypass -File tools\flash\flash_release.ps1 -Tag v1.0
 #   powershell -ExecutionPolicy Bypass -File tools\flash\flash_release.ps1 -Bin x.bin
 #   powershell -ExecutionPolicy Bypass -File tools\flash\flash_release.ps1 -DryRun
 #   powershell -ExecutionPolicy Bypass -File tools\flash\flash_release.ps1 -Serial <SN>
 #
-# 依赖：Windows PowerShell 5.1+（内置 Invoke-WebRequest / Get-FileHash）。J-Link 用仓库
+# 依赖：Windows PowerShell 5.1+（内置 Get-FileHash）。J-Link 用仓库
 #       打包版 tools\jlink\JLink.exe，无需安装。首次插 J-Link 未被识别时，先跑
 #       tools\jlink\USBDriver\InstDrivers.exe。
 #
@@ -21,11 +20,8 @@
 # =============================================================================
 [CmdletBinding()]
 param(
-  [string]$Repo = "ZeroHomers0/pc12m2-firmware",
-  [string]$Tag = "latest",
   [string]$Device = "LPC1765",
-  [string]$Bin = "",            # 本地固件路径（替代下载）
-  [string]$Mirror = "",         # 国内镜像前缀（默认空=直连 GitHub），如 https://ghproxy.com/
+  [string]$Bin = "",            # 本地固件路径（默认 .\release\firmware.bin）
   [string]$Serial = "",         # J-Link 序列号（多台时）
   [switch]$DryRun               # 只下载+校验，不烧写
 )
@@ -42,37 +38,19 @@ $JLink = @(
   (Join-Path $PSScriptRoot "jlink\JLink.exe"),
   (Join-Path $Root "tools\jlink\JLink.exe")
 ) | Where-Object { Test-Path $_ } | Select-Object -First 1
-$Work = Join-Path (Get-Location) "release"   # 下载/临时产物（随运行目录，可重建）
+$Work = Join-Path (Get-Location) "release"   # 固件与临时产物（相对于当前目录）
 New-Item -ItemType Directory -Force -Path $Work | Out-Null
 $BinFile = Join-Path $Work "firmware.bin"
 $ShaFile = Join-Path $Work "firmware.bin.sha256"
 
-Write-Host "== 目标：$Repo @ tag=$Tag，设备 $Device =="
+Write-Host "== 设备：$Device =="
 
-# ---- 1. 获取固件（本地 bin 或从 Release 下载） ----
+# ---- 1. 从本地取固件 ----
 if ($Bin) {
   $BinFile = $Bin
   Write-Host "== 使用本地固件：$BinFile =="
 } else {
-  $GhBinUrl = "https://github.com/$Repo/releases/download/$Tag/firmware.bin"
-  $GhShaUrl = "https://github.com/$Repo/releases/download/$Tag/firmware.bin.sha256"
-  # 镜像前缀拼接：<mirror> + <完整 GitHub 地址>（国内访问 GitHub 不稳时使用）
-  $BinUrl = "$Mirror$GhBinUrl"
-  $ShaUrl = "$Mirror$GhShaUrl"
-  if ($Mirror) { Write-Host "== 使用镜像：$Mirror ==" }
-  Write-Host "== 下载固件：$BinUrl =="
-  try {
-    Invoke-WebRequest -Uri $BinUrl -OutFile $BinFile -UseBasicParsing
-  } catch {
-    Write-Error "下载固件失败: $($_.Exception.Message)"
-    exit 1
-  }
-  try {
-    Invoke-WebRequest -Uri $ShaUrl -OutFile $ShaFile -UseBasicParsing
-  } catch {
-    Write-Host "警告: 未取到 sha256（将跳过校验）"
-    Remove-Item -Force $ShaFile -ErrorAction SilentlyContinue
-  }
+  Write-Host "== 使用当前目录固件：$BinFile =="
 }
 
 if (-not (Test-Path $BinFile)) { Write-Error "固件文件不存在: $BinFile"; exit 1 }
@@ -100,7 +78,7 @@ if ($BinSize -gt $FLASH_SIZE) {
   exit 1
 }
 
-if ($DryRun) { Write-Host "== dry-run：仅下载+校验，不烧写。完成。"; exit 0 }
+if ($DryRun) { Write-Host "== dry-run：仅校验，不烧写。完成。"; exit 0 }
 
 # ---- 3. 检查打包版 J-Link ----
 if (-not $JLink) { Write-Error "未找到打包版 J-Link（脚本旁 jlink\ 或仓库 tools\jlink\ 均无）"; exit 1 }
@@ -110,7 +88,7 @@ $BackupDir = Join-Path (Get-Location) "backup"   # 备份随运行目录（独�
 New-Item -ItemType Directory -Force -Path $BackupDir | Out-Null
 $Pre   = Join-Path $BackupDir "pre_flash.bin"
 $BinWin = (Resolve-Path $BinFile).Path   # Windows 绝对路径
-$PreWin = (Resolve-Path $Pre).Path
+$PreWin = [System.IO.Path]::GetFullPath($Pre)  # 输出文件尚未生成，不能用 Resolve-Path
 $Script = Join-Path $Work "flash_release.jlink"
 
 $lines = @(

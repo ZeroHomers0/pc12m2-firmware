@@ -19,21 +19,19 @@
 powershell -ExecutionPolicy Bypass -File flash_release.ps1
 ```
 
-默认拉取最新构建（`latest`）并烧写。常用参数：
+默认从运行命令时的当前目录读取 `release/firmware.bin`，如果存在
+`release/firmware.bin.sha256` 则先校验哈希，全程不会从 GitHub 下载。常用参数：
 
 | 参数 | 说明 |
 |---|---|
-| `-Tag v1.0` | 指定版本 tag（默认 `latest`） |
-| `-Bin x.bin` | 用本地固件文件（不联网下载） |
-| `-Repo 用户/仓库` | 指定固件所在仓库 |
-| `-Mirror https://ghproxy.com/` | 国内镜像加速下载（访问 GitHub 不稳时用） |
+| `-Bin x.bin` | 指定其他本地固件文件 |
 | `-Serial <SN>` | 多台 J-Link 时指定序列号 |
 | `-DryRun` | 只下载 + 校验，不烧写 |
 
 ### Git Bash 版
 
 ```bash
-bash flash_release.sh [--tag v1.0] [--bin x.bin] [--mirror https://ghproxy.com/] [--dry-run]
+bash flash_release.sh [--bin x.bin] [--dry-run]
 ```
 
 ## 烧写流程

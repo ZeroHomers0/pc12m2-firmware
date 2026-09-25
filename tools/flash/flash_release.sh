@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 # =============================================================================
-# tools/flash/flash_release.sh — 从 GitHub Release 拉取已构建固件并 SWD 烧写
+# tools/flash/flash_release.sh — 从当前目录 release 取固件并 SWD 烧写
 #
 # 目的：让其他电脑无需安装任何编译环境（arm-none-eabi-gcc / Python / Unicorn），
 #       只需拉取本仓库（自带免安装打包版 J-Link），即可把 CI 构建好的固件烧进板子。
 #
 # 用法（在仓库根目录的 Git Bash 中执行）：
-#   bash tools/flash/flash_release.sh                 # 拉取 latest 并烧写
-#   bash tools/flash/flash_release.sh --tag v1.0      # 指定 tag
-#   bash tools/flash/flash_release.sh --bin x.bin     # 用本地 bin 替代下载
-#   bash tools/flash/flash_release.sh --mirror https://ghproxy.com/  # 国内镜像加速下载
+#   bash tools/flash/flash_release.sh                 # 使用 ./release/firmware.bin
+#   bash tools/flash/flash_release.sh --bin x.bin     # 指定其他本地 bin
 #   bash tools/flash/flash_release.sh --dry-run       # 只下载+校验，不烧写
 #   bash tools/flash/flash_release.sh --serial <SN>   # 指定 J-Link 序列号（多台时）
 #
@@ -22,11 +20,8 @@
 set -euo pipefail
 
 # ---- 仓库与设备（可按需改） ----
-REPO="${GITHUB_REPOSITORY:-ZeroHomers0/pc12m2-firmware}"
-TAG="latest"
 DEVICE="LPC1765"
 FLASH_SIZE=0x40000            # LPC1765 = 256 KiB
-MIRROR=""                     # 国内镜像前缀（默认空=直连 GitHub），如 https://ghproxy.com/
 BIN=""
 DRY_RUN=0
 SERIAL=""
@@ -34,11 +29,8 @@ SERIAL=""
 # ---- 解析参数 ----
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --tag)    TAG="$2"; shift 2 ;;
     --bin)    BIN="$2"; shift 2 ;;
     --device) DEVICE="$2"; shift 2 ;;
-    --repo)   REPO="$2"; shift 2 ;;
-    --mirror) MIRROR="$2"; shift 2 ;;
     --serial) SERIAL="$2"; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     -h|--help)
@@ -58,27 +50,19 @@ if [[ -f "$SCRIPT_DIR/jlink/JLink.exe" ]]; then
 else
   JLINK="$ROOT/tools/jlink/JLink.exe"                # 仓库布局
 fi
-WORK="$PWD/release"                                   # 下载/临时产物（随运行目录，可重建）
+WORK="$PWD/release"                                   # 固件与临时产物（相对于当前目录）
 mkdir -p "$WORK"
 BIN_FILE="$WORK/firmware.bin"
 SHA_FILE="$WORK/firmware.bin.sha256"
 
-echo "== 目标：$REPO @ tag=$TAG，设备 $DEVICE =="
+echo "== 设备：$DEVICE =="
 
-# ---- 1. 获取固件（本地 bin 或从 Release 下载） ----
+# ---- 1. 从本地取固件 ----
 if [[ -n "$BIN" ]]; then
   BIN_FILE="$BIN"
   echo "== 使用本地固件：$BIN_FILE =="
 else
-  GH_BIN_URL="https://github.com/$REPO/releases/download/$TAG/firmware.bin"
-  GH_SHA_URL="https://github.com/$REPO/releases/download/$TAG/firmware.bin.sha256"
-  # 镜像前缀拼接：<mirror> + <完整 GitHub 地址>（国内访问 GitHub 不稳时使用）
-  BIN_URL="${MIRROR}${GH_BIN_URL}"
-  SHA_URL="${MIRROR}${GH_SHA_URL}"
-  [[ -n "$MIRROR" ]] && echo "== 使用镜像：$MIRROR =="
-  echo "== 下载固件：$BIN_URL =="
-  curl -fL --retry 3 -o "$BIN_FILE" "$BIN_URL"
-  curl -fL --retry 3 -o "$SHA_FILE" "$SHA_URL" || { echo "警告: 未取到 sha256（将跳过校验）"; rm -f "$SHA_FILE"; }
+  echo "== 使用当前目录固件：$BIN_FILE =="
 fi
 
 [[ -f "$BIN_FILE" ]] || { echo "错误: 固件文件不存在: $BIN_FILE"; exit 1; }
@@ -106,7 +90,7 @@ if (( BIN_SIZE > FLASH_SIZE )); then
   exit 1
 fi
 
-[[ "$DRY_RUN" -eq 1 ]] && { echo "== dry-run：仅下载+校验，不烧写。完成。"; exit 0; }
+[[ "$DRY_RUN" -eq 1 ]] && { echo "== dry-run：仅校验，不烧写。完成。"; exit 0; }
 
 # ---- 3. 检查打包版 J-Link ----
 [[ -f "$JLINK" ]] || { echo "错误: 未找到打包版 J-Link: $JLINK"; exit 1; }
