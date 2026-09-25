@@ -90,6 +90,7 @@ $Pre   = Join-Path $BackupDir "pre_flash.bin"
 $BinWin = (Resolve-Path $BinFile).Path   # Windows 绝对路径
 $PreWin = [System.IO.Path]::GetFullPath($Pre)  # 输出文件尚未生成，不能用 Resolve-Path
 $Script = Join-Path $Work "flash_release.jlink"
+$Log = Join-Path $Work "jlink_flash.log"
 
 $lines = @(
   "si SWD",
@@ -99,16 +100,14 @@ if ($Serial) { $lines += "SelectEmuBySN $Serial" }
 $lines += @(
   "device $Device",
   "connect",
-  "savebin $PreWin, 0x0, $FLASH_SIZE   ; 烧前自动备份当前 Flash（铁律：不备份不擦除）",
-  "mem32 0x000002FC, 1                   ; 板上 CRP 字，应为 0xFFFFFFFF（无保护）",
+  "savebin `"$PreWin`", 0x0, $FLASH_SIZE",
+  "mem32 0x000002FC, 1",
   "erase",
-  "loadbin $BinWin, 0x0",
-  "verifybin $BinWin, 0x0               ; 全镜像读回校验",
+  "loadbin `"$BinWin`", 0x0",
+  "verifybin `"$BinWin`", 0x0",
   "SetRESET",
   "sleep 200",
   "ClrRESET",
-  "sleep 200",
-  "go",
   "sleep 500",
   "exit"
 )
@@ -119,8 +118,18 @@ Write-Host "== 调用打包版 J-Link 烧写（擦除前自动备份至 $Pre） 
 
 # ---- 5. 执行烧写 ----
 try {
-  & $JLink -CommanderScript $Script
-  if ($LASTEXITCODE -ne 0) { throw "J-Link 退出码 $LASTEXITCODE" }
+  & $JLink -CommanderScript $Script 2>&1 | Tee-Object -FilePath $Log
+  $JLinkExitCode = $LASTEXITCODE
+  if ($JLinkExitCode -ne 0) { throw "J-Link 退出码 $JLinkExitCode" }
+  if (Select-String -Path $Log -Pattern '(?i)(\*+\s*Error:|^Error:|^Syntax:)' -Quiet) {
+    throw "J-Link 日志中包含错误（见 $Log）"
+  }
+  if (-not (Select-String -Path $Log -SimpleMatch "Verify successful" -Quiet)) {
+    throw "J-Link 未报告 Verify successful（见 $Log）"
+  }
+  if (-not (Test-Path $Pre) -or (Get-Item $Pre).Length -ne $FLASH_SIZE) {
+    throw "烧写前备份未成功生成：$Pre"
+  }
 } catch {
   Write-Host "错误: J-Link 烧写失败: $($_.Exception.Message)" -ForegroundColor Red
   Write-Host "排查：①四根主信号线(SWDIO/SWCLK/VTref/GND)接触是否良好；"

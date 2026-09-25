@@ -84,7 +84,8 @@ def main():
         added += 1
         # 整个 tools/jlink 目录递归打包
         for f in sorted(JLINK_DIR.rglob("*")):
-            if f.is_file():
+            # 实机检查可能在此生成 *_temp.jlink，不应混入发布包
+            if f.is_file() and not f.name.endswith("_temp.jlink"):
                 rel = f.relative_to(JLINK_DIR)
                 arc = f"{pkg_root}/jlink/{rel.as_posix()}"
                 zf.write(f, arc)

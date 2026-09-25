@@ -104,22 +104,21 @@ BIN_WIN="$(cygpath -w "$BIN_FILE" 2>/dev/null || echo "$BIN_FILE")"
 PRE_WIN="$(cygpath -w "$PRE" 2>/dev/null || echo "$PRE")"
 
 SCRIPT="$WORK/flash_release.jlink"
+LOG="$WORK/jlink_flash.log"
 {
   echo "si SWD"
   echo "speed 100"
   [[ -n "$SERIAL" ]] && echo "SelectEmuBySN $SERIAL"
   echo "device $DEVICE"
   echo "connect"
-  echo "savebin $PRE_WIN, 0x0, $FLASH_SIZE   ; 烧前自动备份当前 Flash（铁律：不备份不擦除）"
-  echo "mem32 0x000002FC, 1                   ; 板上 CRP 字，应为 0xFFFFFFFF（无保护）"
+  echo "savebin \"$PRE_WIN\", 0x0, $FLASH_SIZE"
+  echo "mem32 0x000002FC, 1"
   echo "erase"
-  echo "loadbin $BIN_WIN, 0x0"
-  echo "verifybin $BIN_WIN, 0x0               ; 全镜像读回校验"
+  echo "loadbin \"$BIN_WIN\", 0x0"
+  echo "verifybin \"$BIN_WIN\", 0x0"
   echo "SetRESET"
   echo "sleep 200"
   echo "ClrRESET"
-  echo "sleep 200"
-  echo "go"
   echo "sleep 500"
   echo "exit"
 } > "$SCRIPT"
@@ -128,14 +127,19 @@ echo "== 生成 CommanderScript: $SCRIPT =="
 echo "== 调用打包版 J-Link 烧写（擦除前自动备份至 $PRE） =="
 
 # ---- 5. 执行烧写 ----
-"$JLINK" -CommanderScript "$SCRIPT" || {
-  rc=$?
+set +e
+"$JLINK" -CommanderScript "$SCRIPT" 2>&1 | tee "$LOG"
+rc=${PIPESTATUS[0]}
+set -e
+if (( rc != 0 )) || grep -Eqi '(\*+[[:space:]]*Error:|^Error:|^Syntax:)' "$LOG" || ! grep -Fq 'Verify successful' "$LOG" || [[ ! -f "$PRE" ]] || (( $(stat -c%s "$PRE") != FLASH_SIZE )); then
   echo "错误: J-Link 烧写失败 (rc=$rc)。" >&2
+  echo "日志: $LOG（必须完成备份且出现 Verify successful）" >&2
   echo "排查：①四根主信号线(SWDIO/SWCLK/VTref/GND)接触是否良好；" >&2
   echo "      ②固件复用 SWD 脚连不上 → 需 connect-under-reset（见 操作文档.md §3.2）；" >&2
   echo "      ③首次插 J-Link 未识别 → 跑 tools/jlink/USBDriver/InstDrivers.exe 装驱动。" >&2
-  exit $rc
-}
+  (( rc == 0 )) && rc=1
+  exit "$rc"
+fi
 
 echo "== 烧写完成 =="
 echo "  校验：verifybin 应输出 Verify successful（板上内容与固件完全一致）。"
