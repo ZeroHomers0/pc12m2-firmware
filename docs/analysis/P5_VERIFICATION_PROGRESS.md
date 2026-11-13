@@ -199,7 +199,7 @@ TOTAL 113 PASS / 0 FAIL
 ## 2026-09-01 产品信息定制（菜单 8.8 产品版本信息屏）
 
 用户要求把 case9 产品版本信息屏（`0x9ab6`，`MENU==9`）4 行文本覆写为：
-型号:PC12M-2 / 版本:V2.0 / 厂商:XIANPOWER / 电话:02984205750（原厂 ST36C/V2.0.2016/SINEP0WER/18938061832）。
+型号:PC12M-2 / 版本:V2.0 / 厂商:XIANPOWER / 电话:02984205750（原厂 原厂十二相型号（略）/V2.0.2016/SINEP0WER/18938061832）。
 
 - **实现**：改 `tools/generation/generate_string_pool_12.py` 新增 `PRODUCT_INFO_OVERRIDES`
   （4 个 12p flash 地址 → GBK 定制串），重新生成 `firmware/src/strpool.c` 得到

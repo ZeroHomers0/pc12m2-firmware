@@ -351,7 +351,8 @@ void state_machine(int key)
        EINT2/EINT3/ADC 缺失检测（每 0x64 周期）。 */
     (*LCD_TOUT)++;
     if (key > 0) { *LCD_TOUT = 0; lcd_ctrl_line(1); }
-    if (*LCD_TOUT > 0x1388) { *LCD_TOUT = 0; lcd_ctrl_line(0); }
+    /* 用户定制：10000拍×约2ms，背光无操作约20秒关闭。 */
+    if (*LCD_TOUT > 10000u) { *LCD_TOUT = 0; lcd_ctrl_line(0); }
 
     if (debounce_p09() == 1) {
         if (*HOUR_TOTAL != *HOUR_TOTAL_SH) {

@@ -3,7 +3,7 @@
 # 对标 6p generate_string_pool.py。12p 关键差异：
 #   * P3 移植沿用 6p 源码，disp_string 第一实参仍是 **6p flash 字符串地址**；
 #     但 12p 重新编译后字符串内容/位置变了（验证：156/158 内容相同，
-#     "标准流程"→"标准模式" @0x071c、"型号:ST33C"→"型号:ST36C" @0x6acc 为真实差异）。
+#     "标准流程"→"标准模式" @0x071c、"型号:原厂六相型号（略）"→"型号:原厂十二相型号（略）" @0x6acc 为真实差异）。
 #   * 因此：从 6p 源码扫描实参清单 → 逐串在 12p BIN 匹配内容 → 得 12p 地址 → 12p blob。
 #   * strpool_map 的 key = **12p 地址**；P3 移植时用 _strpool_6to12_map.json 把实参替换成 12p 地址。
 # 输出：firmware/src/strpool.c + _strpool_6to12_map.json + evidence/reverse/reports/_strpool_report_12.txt
@@ -19,7 +19,7 @@ BIN6 = (REFERENCE_ROOT / "LPC1765.bin").read_bytes()
 
 # ── 产品信息定制覆写（2026-09-01 用户要求）────────────────────────────
 # case9 产品版本信息屏 4 行文本：地址保持 **12p flash 地址**，strpool_map 前置
-# 查表返回定制串（GBK 字节）。原厂内容：型号:ST36C / 版本:V2.0.2016 /
+# 查表返回定制串（GBK 字节）。原厂内容：型号:原厂十二相型号（略） / 版本:V2.0.2016 /
 # 厂商:SINEP0WER / 电话:18938061832。改这里并重新生成即可。
 PRODUCT_INFO_OVERRIDES = {
     0x6acc: "型号:PC12M-2",
@@ -28,9 +28,21 @@ PRODUCT_INFO_OVERRIDES = {
     0x6af8: "电话:02984205750",
 }
 
+# 菜单地址均由本仓 pc12m2_orig.bin 确认，不能沿用六相地址。
+MENU_TEXT_OVERRIDES = {
+    0x6b78: "9.αmin限制:   度",
+    0x6c04: "16αmax限制:   度",
+    0x56c4: "11αmax限制:   度",
+    0x6b8c: "10主从移相:   度",
+    0x6a80: "相位补偿",
+    0x78ac: " 远程",
+    0x78bc: " 面板",
+}
+STRING_OVERRIDES = {**PRODUCT_INFO_OVERRIDES, **MENU_TEXT_OVERRIDES}
+
 SCAN_FILES = [str(p) for p in (REFERENCE_ROOT / "firmware" / "src").glob("*.c")] + \
              [str(REFERENCE_ROOT / "firmware" / "stub.c")]
-SCAN_FILES = [f for f in SCAN_FILES if not f.endswith("strpool.c") and not f.endswith("08_modbus_dispatch.c")]
+SCAN_FILES = [f for f in SCAN_FILES if Path(f).is_file() and not f.endswith("strpool.c") and not f.endswith("08_modbus_dispatch.c")]
 
 # 12p 逆向新增渲染函数（sm4/sm5/sm6 等）里的 disp_string 实参是 **12p 地址**（6p 源没有）。
 # 这些地址须直接并入 addrs12，不再走 6p→12p 内容匹配。
@@ -56,6 +68,12 @@ def addrs_from_src():
                     off = int(n.group(3), 16)
                     base = base + off if n.group(2) == '+' else base - off
                 found.add(base)
+    # 六相已将文字地址集中到语义头文件，扫描该表避免丢失映射证据。
+    header = REFERENCE_ROOT / "firmware/inc/firmware_display_strings.h"
+    if header.exists():
+        found.update(int(m.group(1),16) for m in re.finditer(
+            r"^#define\s+DISPLAY_[A-Z0-9_]+\s+0x([0-9a-fA-F]+)u\s*$",
+            header.read_text(encoding="utf-8"), re.MULTILINE))
     return {a for a in found if 0x400 <= a < len(BIN6)}
 
 def addrs12_from_12p_src():
@@ -105,7 +123,7 @@ for a6 in addrs6:
     if pos >= 0:
         map_6to12[a6] = pos
         continue
-    # 内容有差异：用前 4 字节定位 12p 位置（已知差异串：标准流程/型号:ST33C）
+    # 内容有差异：用前 4 字节定位 12p 位置（已知差异串：标准流程/型号:原厂六相型号（略））
     pfx = c[:4]
     if pfx and len(pfx) == 4:
         pos = BIN12.find(pfx)
@@ -156,12 +174,12 @@ for lo, hi in clusters:
 csrc = []
 csrc.append("/* 自动生成：tools/generation/generate_string_pool_12.py（PC12M-2 数据层）。勿手改。")
 csrc.append(" * GBK 字符串表 blob + 簇表 + strpool_map（key = **12p flash 字符串地址**）。")
-csrc.append(" * 12p 内容含真实差异：'标准模式'@0x071c、'型号:ST36C'@0x6acc（≠6p 标准流程/ST33C）。")
+csrc.append(" * 12p 内容含真实差异：'标准模式'@0x071c、'型号:原厂十二相型号（略）'@0x6acc（≠6p 标准流程/原厂六相型号（略））。")
 csrc.append(" * P3 移植已用 _strpool_6to12_map.json 把 disp_string 实参替换为 12p 地址；")
 csrc.append(" * 逆向新增渲染函数的单位/状态串（0x7488/0x7490/0x8638/0xa070/0xa080/0xa0b0 等）")
 csrc.append(" * 由 12p 源码扫描并入簇表（2026-08-31 修复 A/B 显示全执行差异）。")
 csrc.append(" * 产品信息定制（2026-09-01 用户要求）：case9 版本屏 4 行文本覆写为定制内容")
-csrc.append(" * （型号/版本/厂商/电话），地址不变，strpool_map 前置查表；见 PRODUCT_INFO_OVERRIDES。 */")
+csrc.append(" * （型号/版本/厂商/电话），地址不变，strpool_map 前置查表；见 STRING_OVERRIDES。 */")
 csrc.append("#include <stdint.h>")
 csrc.append("")
 csrc.append("typedef struct { uint32_t base; uint32_t len; const uint8_t *blob; } strpool_cluster_t;")
@@ -182,34 +200,34 @@ csrc.append("};")
 csrc.append("")
 
 # ── 产品信息定制覆写段（strpool_map 前置查表）──────────────────
-if PRODUCT_INFO_OVERRIDES:
+if STRING_OVERRIDES:
     ov_off = {}
     ovb = bytearray()
-    for a in sorted(PRODUCT_INFO_OVERRIDES):
+    for a in sorted(STRING_OVERRIDES):
         ov_off[a] = len(ovb)
-        ovb += PRODUCT_INFO_OVERRIDES[a].encode("gbk") + b"\x00"
-    csrc.append("/* 产品信息定制覆写（2026-09-01 用户要求）：case9 版本屏 4 行文本（GBK 字节）。")
+        ovb += STRING_OVERRIDES[a].encode("gbk") + b"\x00"
+    csrc.append("/* 产品信息定制覆写（2026-09-01 用户要求）：产品信息及菜单文本（GBK 字节）。")
     csrc.append(" * 地址保持 12p flash 地址，strpool_map 前置查表返回定制串；")
     csrc.append(" * 原厂内容仍在原簇 blob 中保留（未使用）。 */")
     csrc.append("static const uint8_t strpool_override_blob[] =")
     ovlines = []
-    for a in sorted(PRODUCT_INFO_OVERRIDES):
-        chunk = PRODUCT_INFO_OVERRIDES[a].encode("gbk") + b"\x00"
+    for a in sorted(STRING_OVERRIDES):
+        chunk = STRING_OVERRIDES[a].encode("gbk") + b"\x00"
         ovlines.append('  "' + "".join("\\x%02x" % b for b in chunk) +
-                       '" /* %s */' % PRODUCT_INFO_OVERRIDES[a])
+                       '" /* %s */' % STRING_OVERRIDES[a])
     csrc.append("\n".join(ovlines) + ";")
     csrc.append("")
     csrc.append("typedef struct { uint32_t addr; uint32_t off; } strpool_override_t;")
     csrc.append("static const strpool_override_t strpool_override[] = {")
     csrc.append("  " + ", ".join("{ 0x%04x, %d }" % (a, ov_off[a])
-                                 for a in sorted(PRODUCT_INFO_OVERRIDES)) + "};")
+                                 for a in sorted(STRING_OVERRIDES)) + "};")
     csrc.append("")
     csrc.append("")
 
 csrc.append("uint32_t strpool_map(uint32_t addr)")
 csrc.append("{")
 csrc.append("  uint32_t i;")
-if PRODUCT_INFO_OVERRIDES:
+if STRING_OVERRIDES:
     csrc.append("  for (i = 0; i < sizeof(strpool_override) / sizeof(strpool_override[0]); i++) {")
     csrc.append("    if (addr == strpool_override[i].addr)")
     csrc.append("      return (uint32_t)(strpool_override_blob + strpool_override[i].off);")
@@ -225,6 +243,7 @@ csrc.append("")
 (ROOT / "firmware/src/strpool.c").write_text("\n".join(csrc), encoding="utf-8")
 
 # ── 5. 映射 JSON（P3 替换实参用）──────────────────────────────
+(ROOT / "tools/_ghidra_proj").mkdir(parents=True, exist_ok=True)
 json.dump({("0x%04x" % k): ("0x%04x" % v) for k, v in sorted(map_6to12.items())},
           open(ROOT / "tools/_ghidra_proj/_strpool_6to12_map.json", "w", encoding="utf-8"),
           indent=1, sort_keys=True)

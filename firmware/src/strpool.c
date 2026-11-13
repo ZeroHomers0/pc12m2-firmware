@@ -1,11 +1,11 @@
 /* 自动生成：tools/generation/generate_string_pool_12.py（PC12M-2 数据层）。勿手改。
  * GBK 字符串表 blob + 簇表 + strpool_map（key = **12p flash 字符串地址**）。
- * 12p 内容含真实差异：'标准模式'@0x071c、'型号:ST36C'@0x6acc（≠6p 标准流程/ST33C）。
+ * 12p 内容含真实差异：'标准模式'@0x071c、'型号:原厂十二相型号（略）'@0x6acc（≠6p 标准流程/原厂六相型号（略））。
  * P3 移植已用 _strpool_6to12_map.json 把 disp_string 实参替换为 12p 地址；
  * 逆向新增渲染函数的单位/状态串（0x7488/0x7490/0x8638/0xa070/0xa080/0xa0b0 等）
  * 由 12p 源码扫描并入簇表（2026-08-31 修复 A/B 显示全执行差异）。
  * 产品信息定制（2026-09-01 用户要求）：case9 版本屏 4 行文本覆写为定制内容
- * （型号/版本/厂商/电话），地址不变，strpool_map 前置查表；见 PRODUCT_INFO_OVERRIDES。 */
+ * （型号/版本/厂商/电话），地址不变，strpool_map 前置查表；见 STRING_OVERRIDES。 */
 #include <stdint.h>
 
 typedef struct { uint32_t base; uint32_t len; const uint8_t *blob; } strpool_cluster_t;
@@ -121,18 +121,25 @@ static const strpool_cluster_t strpool_clusters[] = {
   {41072, 377, strpool_blob + 2322},
 };
 
-/* 产品信息定制覆写（2026-09-01 用户要求）：case9 版本屏 4 行文本（GBK 字节）。
+/* 产品信息定制覆写（2026-09-01 用户要求）：产品信息及菜单文本（GBK 字节）。
  * 地址保持 12p flash 地址，strpool_map 前置查表返回定制串；
  * 原厂内容仍在原簇 blob 中保留（未使用）。 */
 static const uint8_t strpool_override_blob[] =
+  "\x31\x31\xa6\xc1\x6d\x61\x78\xcf\xde\xd6\xc6\x3a\x20\x20\x20\xb6\xc8\x00" /* 11αmax限制:   度 */
+  "\xcf\xe0\xce\xbb\xb2\xb9\xb3\xa5\x00" /* 相位补偿 */
   "\xd0\xcd\xba\xc5\x3a\x50\x43\x31\x32\x4d\x2d\x32\x00" /* 型号:PC12M-2 */
   "\xb0\xe6\xb1\xbe\x3a\x56\x32\x2e\x30\x00" /* 版本:V2.0 */
   "\xb3\xa7\xc9\xcc\x3a\x58\x49\x41\x4e\x50\x4f\x57\x45\x52\x00" /* 厂商:XIANPOWER */
-  "\xb5\xe7\xbb\xb0\x3a\x30\x32\x39\x38\x34\x32\x30\x35\x37\x35\x30\x00" /* 电话:02984205750 */;
+  "\xb5\xe7\xbb\xb0\x3a\x30\x32\x39\x38\x34\x32\x30\x35\x37\x35\x30\x00" /* 电话:02984205750 */
+  "\x39\x2e\xa6\xc1\x6d\x69\x6e\xcf\xde\xd6\xc6\x3a\x20\x20\x20\xb6\xc8\x00" /* 9.αmin限制:   度 */
+  "\x31\x30\xd6\xf7\xb4\xd3\xd2\xc6\xcf\xe0\x3a\x20\x20\x20\xb6\xc8\x00" /* 10主从移相:   度 */
+  "\x31\x36\xa6\xc1\x6d\x61\x78\xcf\xde\xd6\xc6\x3a\x20\x20\x20\xb6\xc8\x00" /* 16αmax限制:   度 */
+  "\x20\xd4\xb6\xb3\xcc\x00" /*  远程 */
+  "\x20\xc3\xe6\xb0\xe5\x00" /*  面板 */;
 
 typedef struct { uint32_t addr; uint32_t off; } strpool_override_t;
 static const strpool_override_t strpool_override[] = {
-  { 0x6acc, 0 }, { 0x6ad8, 13 }, { 0x6ae8, 23 }, { 0x6af8, 38 }};
+  { 0x56c4, 0 }, { 0x6a80, 18 }, { 0x6acc, 27 }, { 0x6ad8, 40 }, { 0x6ae8, 50 }, { 0x6af8, 65 }, { 0x6b78, 82 }, { 0x6b8c, 100 }, { 0x6c04, 117 }, { 0x78ac, 135 }, { 0x78bc, 141 }};
 
 
 uint32_t strpool_map(uint32_t addr)
