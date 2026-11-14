@@ -52,7 +52,9 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
 
 - **2026-11-13 菜单与背光同步**（用户明确授权同时修改六相、十二相）：菜单改为αmin限制/αmax限制（min/max为下标）、主从移相、相位补偿；控制方式选项改为远程/本地/面板。字形集中在 `02_lcd_display.c`，α全高等比例，α+紧凑下标总宽仍32像素。仅背光无操作阈值改为10000拍（约20秒），其它菜单超时不变。
 - 十二相地址由本仓原BIN核实；生成入口 `tools/generation/generate_string_pool_12.py` 的 `MENU_TEXT_OVERRIDES`，兼容六相语义字符串头文件及缺省stub文件；产品型号保持PC12M-2。旧型号/误称仅清理活动文本，原BIN和evidence原始证据保留。
-- 当前构建：`text 64652 / data 6312 / bss 2192`，SHA-256 `30D1A0C54F80DC9490FC14413D6B5A061E8634F131478B9AB7235ABA0FE8B5CA`；本次尚未烧写/实机确认。菜单专项与背光28例、回归4/4（含113例扩展覆盖）、十二相原BIN完整A/B全部通过；日志见 `evidence/reverse/reports/menu_backlight_*_2026-11-13.log`。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
+- 当前构建：`text 64740 / data 6312 / bss 2192`，SHA-256 `8CF36CDC075CAE353072340106841AC65A7A6E63A3D53752CA8AA31061EA634E`；本次尚未烧写/实机确认。菜单专项与背光28例、回归4/4（含113例扩展覆盖）、十二相原BIN完整A/B全部通过；日志见 `evidence/reverse/reports/menu_backlight_*_2026-11-13.log`。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
+
+- **2026-11-14 菜单标题调整**：在 `firmware-menu-display-2026-11-13` 分支将相位补偿改为同步校准，集中字库新增同/步字形。菜单与背光专项、十二相原BIN完整A/B验证全部通过（`evidence/reverse/reports/menu_sync_calibration_ab_2026-11-14.log`）；本次未烧写。
 
 ## 必须遵守
 

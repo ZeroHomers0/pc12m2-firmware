@@ -6,7 +6,7 @@ from unicorn.arm_const import UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2, UC_AR
 
 EXPECTED = {0x6b78: "9.αmin限制:   度", 0x6c04: "16αmax限制:   度",
             0x56c4: "11αmax限制:   度", 0x6b8c: "10主从移相:   度",
-            0x6a80: "相位补偿", 0x78ac: " 远程", 0x78bc: " 面板", 0x78b4: " 本地"}
+            0x6a80: "同步校准", 0x78ac: " 远程", 0x78bc: " 面板", 0x78b4: " 本地"}
 
 def render(new, addr, invert=0):
     uc = V.machine(new)
