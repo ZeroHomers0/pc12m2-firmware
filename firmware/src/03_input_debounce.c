@@ -4,6 +4,7 @@
  * ========================================================================== */
 #include "inc/types.h"
 #include "inc/reg.h"
+#include "inc/input_events.h"
 #include "inc/globals.h"
 
 /* 0x00001528 —— 输入引脚方向配置（置输入模式；12p）
@@ -206,7 +207,7 @@ undefined1 scan_run_stop(void)
       *DAT_00001bc8 = *DAT_00001bc8 + 1;
       if (*cnt_p == 0x32) {
         *cnt_p = 0x32;
-        return 7;              /* RUN */
+        return TERMINAL_EVENT_START;              /* RUN */
       }
       if (0x32 < *DAT_00001bc8) {
         *DAT_00001bc8 = 0x32;
@@ -224,7 +225,7 @@ undefined1 scan_run_stop(void)
       *DAT_00001bcc = *DAT_00001bcc + 1;
       if (*cnt_p == 0x32) {
         *cnt_p = 0x32;
-        return 8;              /* STOP */
+        return TERMINAL_EVENT_STOP;              /* STOP */
       }
       if (0x32 < *DAT_00001bcc) {
         *DAT_00001bcc = 0x32;
@@ -238,7 +239,7 @@ undefined1 scan_run_stop(void)
       *DAT_00001bc8 = *DAT_00001bc8 + 1;
       if (0x31 < *cnt_p) {
         *cnt_p = 0x32;
-        *DAT_00001bd0 = 7;
+        *DAT_00001bd0 = TERMINAL_EVENT_START;
       }
     }
     else {
@@ -252,7 +253,7 @@ undefined1 scan_run_stop(void)
       *DAT_00001bcc = *DAT_00001bcc + 1;
       if (0x31 < *cnt_p) {
         *cnt_p = 0x32;
-        *DAT_00001bd0 = 8;
+        *DAT_00001bd0 = TERMINAL_EVENT_STOP;
       }
     }
     evt = *DAT_00001bd0;

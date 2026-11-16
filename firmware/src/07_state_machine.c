@@ -1,3 +1,4 @@
+#include "inc/input_events.h"
 /* =============================================================================
  * 07_state_machine.c — state_machine(0x4464) C 级还原（12 相 PC12M-2）
  * 目标B W1b：替换 firmware/stub.c 占位。依据 evidence/reverse/disassembly/
@@ -562,8 +563,8 @@ void state_machine(int key)
 
         /* ---- key5/扫描7 启动 (0x4f54) ---- */
         if (*FAULT == 0 && *RUN == 0) {
-            if (key == 5 || *SCAN_RS == 7) {
-                if (*PAIR_MODE == 0 || (*SCAN_RS == 7 && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
+            if (key == 5 || *SCAN_RS == TERMINAL_EVENT_START) {
+                if (*PAIR_MODE == 0 || (*SCAN_RS == TERMINAL_EVENT_START && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
                     *RUN_EN = 1; *RUN = 1; *STOP = 0; *RUN_REQ = 0; *CFG = 1; *STAT_FL = 0;
                     *TICK = 0; *MIN_NOW = 0; *HOUR_NOW = 0;
                     disp_string(0x4348, 3, 0xa, 0);
@@ -572,8 +573,8 @@ void state_machine(int key)
         }
         /* ---- key6/扫描8 停机 (0x4fc2) ---- */
         if (*FAULT == 0 && *STOP == 0) {
-            if (key == 6 || *SCAN_RS == 8) {
-                if (*PAIR_MODE == 0 || (*SCAN_RS == 8 && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
+            if (key == 6 || *SCAN_RS == TERMINAL_EVENT_STOP) {
+                if (*PAIR_MODE == 0 || (*SCAN_RS == TERMINAL_EVENT_STOP && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
                     *RUN_EN = 0; *STOP = 1; *RUN = 0; *CFG = 0;
                     disp_string(0x4340, 3, 0xa, 0);
                 }
@@ -1987,8 +1988,8 @@ void state_machine(int key)
 
         /* ---- key5/扫描7 启动 (0xa5cc) ---- */
         if (*FAULT == 0 && *RUN == 0) {
-            if (key == 5 || *SCAN_RS == 7) {
-                if (*PAIR_MODE == 0 || (*SCAN_RS == 7 && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
+            if (key == 5 || *SCAN_RS == TERMINAL_EVENT_START) {
+                if (*PAIR_MODE == 0 || (*SCAN_RS == TERMINAL_EVENT_START && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
                     *RUN_EN = 1; *RUN = 1; *STOP = 0; *RUN_REQ = 0; *CFG = 1; *STAT_FL = 0;
                     *TICK = 0; *MIN_NOW = 0; *HOUR_NOW = 0;
                     disp_string(0x4348, 3, 0xa, 0);
@@ -1997,8 +1998,8 @@ void state_machine(int key)
         }
         /* ---- key6/扫描8 停机 (0xa6a2) ---- */
         if (*FAULT == 0 && *STOP == 0) {
-            if (key == 6 || *SCAN_RS == 8) {
-                if (*PAIR_MODE == 0 || (*SCAN_RS == 8 && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
+            if (key == 6 || *SCAN_RS == TERMINAL_EVENT_STOP) {
+                if (*PAIR_MODE == 0 || (*SCAN_RS == TERMINAL_EVENT_STOP && *PAIR_MODE == 1 && *DISP_SEL != 0)) {
                     *RUN_EN = 0; *STOP = 1; *RUN = 0; *CFG = 0;
                     disp_string(0x4340, 3, 0xa, 0);
                 }

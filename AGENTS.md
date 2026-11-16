@@ -56,6 +56,8 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
 
 - **2026-11-14 菜单标题调整**：在 `firmware-menu-display-2026-11-13` 分支将相位补偿改为同步校准，集中字库新增同/步字形。菜单与背光专项、十二相原BIN完整A/B验证全部通过（`evidence/reverse/reports/menu_sync_calibration_ab_2026-11-14.log`）；本次未烧写。
 
+- **2026-11-16 端子事件契约与回归增强**：本仓扫描原本已正确返回7/8，无六相点动5/6混用错误；新增 `firmware/inc/input_events.h` 并在扫描和状态机共用端子事件名。新增 `test/emulation/test_terminal_event_contract.py`：1176例扫描、88例去抖均与本仓原BIN一致；完整原BIN A/B及全量回归5/5（含113例扩展覆盖）通过，日志见 `evidence/reverse/reports/terminal_event_*_2026-11-16.log`；固件哈希保持 `8CF36CDC075CAE353072340106841AC65A7A6E63A3D53752CA8AA31061EA634E`。保留原版本地＋自锁门控，本次未烧写。
+
 ## 必须遵守
 
 - 全程中文交流。
