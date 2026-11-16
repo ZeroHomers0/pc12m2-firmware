@@ -325,8 +325,8 @@ static void sm5_draw_value(uint32_t it, uint32_t attr)
             else if (*PARITY == 3) disp_string(0x8a64, 2, 0xa, attr); /* '1 ST0P'；原 0x87CC cmp #3;bne 越界不画 */
             break;
         case 3: /* 通讯校验 COM_CHK (byte) */
-            if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, attr);  /* 原 0x8840/0x8852 cmp #1 */
-            else disp_string(0x5f54, 3, 0xb, attr);
+            if (*COM_CHK == 0) disp_string(0x5f54, 3, 0xb, attr);  /* 原 0x8840 cbnz：0 画关闭 */
+            else if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, attr);  /* 原 0x8852 cmp #1：1 画开启，越界不画 */
             break;
     }
 }
@@ -928,8 +928,8 @@ void state_machine(int key)
                 if (*PARITY == 0) disp_string(0x65b8, 2, 0xa, 0);
                 if (*PARITY == 1) disp_string(0x65c0, 2, 0xa, 0);
                 if (*PARITY == 2) disp_string(0x65c8, 2, 0xa, 0);
-                if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, 0);  /* 原 0x632C/0x6340 */
-                else disp_string(0x5f54, 3, 0xb, 0);
+                if (*COM_CHK == 0) disp_string(0x5f54, 3, 0xb, 0);  /* 原 0x632C cbnz */
+                else if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, 0);  /* 原 0x6340 cmp #1 */
                 *TIMEOUT3 = 0xfa;
             }
             if (*m2 == 3) { /* 选项3 → case6 密码 @0x635e */
