@@ -683,6 +683,19 @@ def verify_display_full_exec():
         for is_new, entry in ((False, PAIRS["state_machine"][0]),
                               (True, SYMS["state_machine"])):
             uc = machine(is_new)
+            # 此矩阵比较原厂文字的完整渲染行为。共享选项已授权改名，
+            # NEW仅在本用例映射回原厂串；真实定制串/新增字形由verify_menu_text验证。
+            if is_new:
+                def original_option_text(m, address, size, user):
+                    addr = m.reg_read(UC_ARM_REG_R0)
+                    if addr in (0x5b34, 0x5b3c):
+                        end = ORIGINAL.index(b"\0", addr)
+                        m.mem_write(0x10006000, ORIGINAL[addr:end + 1])
+                        m.reg_write(UC_ARM_REG_R0, 0x10006000)
+                        m.reg_write(UC_ARM_REG_PC, m.reg_read(UC_ARM_REG_LR))
+                uc.hook_add(UC_HOOK_CODE, original_option_text,
+                            begin=SYMS["strpool_map"], end=SYMS["strpool_map"] + 1)
+
             uc.mem_write(0x10001724, bytes((menu, menu2, menu3)))
             uc.mem_write(0x10001758, struct.pack("<I", t3))
             _seed_display_items(uc)

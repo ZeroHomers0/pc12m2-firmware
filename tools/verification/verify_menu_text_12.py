@@ -8,6 +8,8 @@ EXPECTED = {0x6b78: "9.αmin限制:   度", 0x6c04: "16αmax限制:   度",
             0x56c4: "11αmax限制:   度", 0x6b8c: "10主从移相:   度",
             0x6a80: "同步校准", 0x78ac: " 远程", 0x78bc: " 面板", 0x78b4: " 本地"}
 
+EXPECTED.update({23348: ' 模选', 23356: ' 解限', 30920: ' 瞬动', 30928: ' 保持', 24592: '6.同步参数校准  ', 24652: '9.手动均流      ', 41072: '9.手动均流    ', 27404: '参数设置'})
+
 def render(new, addr, invert=0):
     uc = V.machine(new)
     glyphs, data = [], []
@@ -54,6 +56,6 @@ def main():
                         assert not any(data[start:start+8]), "subscript must be below row 8"
                         assert any(data[start+8:start+16])
             if addr==0x78b4: assert (old,old_data)==(new,data)
-    print("MENU_TEXT: PASS 8 labels x normal/inverse; no missing glyphs; subscript and unit columns verified")
+    print("MENU_TEXT: PASS 16 labels x normal/inverse; no missing glyphs; subscript and unit columns verified")
 
 if __name__=="__main__": main()
