@@ -435,7 +435,7 @@ void output_stage(void)
           if (*DAT_0000efe4 > 50) {
             *DAT_0000efe4 = 0;
             *pid_state = 2;
-            *adc_conv_fb = *adc_conv_fb;    /* 原固件自写回（保持忠实） */
+            *adc_conv_fb = *adc_conv_fb;    /* 原固件自写回（保持忠实） */  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
             *(volatile uint8_t *)startup_state = 0;
           }
         }
@@ -447,7 +447,7 @@ void output_stage(void)
           if (*pid_feedback > 10) {
             *pid_feedback = 0;
             *pid_state = 0;
-            *adc_conv_fb = *adc_conv_fb;
+            *adc_conv_fb = *adc_conv_fb;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
             *(volatile uint8_t *)startup_state = 0;
           }
         }
@@ -458,7 +458,7 @@ void output_stage(void)
           if (*startup_timer > 0x1770) {
             *startup_timer = 0x1770;
           }
-          *adc_conv_fb = *adc_conv_fb;
+          *adc_conv_fb = *adc_conv_fb;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
           *(volatile uint8_t *)startup_state = 0;
         }
         /* ⑤⑥⑦ 闭环动作（ACTION_path1） */
@@ -583,7 +583,7 @@ void output_stage(void)
           if (*DAT_0000efe4 > 50) {
             *DAT_0000efe4 = 0;
             *pid_state = 2;
-            *adc_conv_aux1 = *adc_conv_aux1;
+            *adc_conv_aux1 = *adc_conv_aux1;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
             *(volatile uint8_t *)startup_state = 0;
           }
         }
@@ -595,7 +595,7 @@ void output_stage(void)
           if (*pid_feedback > 10) {
             *pid_feedback = 0;
             *pid_state = 0;
-            *adc_conv_aux1 = *adc_conv_aux1;
+            *adc_conv_aux1 = *adc_conv_aux1;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
             *(volatile uint8_t *)startup_state = 0;
           }
         }
@@ -607,7 +607,7 @@ void output_stage(void)
           if (*startup_timer > 0x1770) {
             *startup_timer = 0x1770;
           }
-          *adc_conv_aux1 = *adc_conv_aux1;
+          *adc_conv_aux1 = *adc_conv_aux1;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
           *(volatile uint8_t *)startup_state = 0;
         }
         /* ⑤⑥⑦ 闭环动作（ACTION_path2：pid_target_set=阈值、aux1=fb） */
@@ -924,8 +924,8 @@ void EINT3_IRQHandler(void)
         *(volatile uint32_t *)trigger_accum = 0;
         *(volatile uint32_t *)trigger_angle = 0;
         *(volatile uint32_t *)out_setpoint = 0;
+        fio0_pin22_ctrl(0);            /* 原 0xF860/0xF8CC 先 P2.22(FIO0) 后 P2.22(FIO1) */
         fio1_pin22_ctrl(0);
-        fio0_pin22_ctrl(0);
         *(volatile uint32_t *)input_locked = 0;
         *(volatile uint8_t *)ramp_phase = 0;
         *(volatile uint32_t *)out_param = *(volatile uint32_t *)out_param | 0x2000;
@@ -945,8 +945,8 @@ void EINT3_IRQHandler(void)
         *(volatile uint32_t *)trigger_accum = 0;
         *(volatile uint32_t *)trigger_angle = 0;
         *(volatile uint32_t *)out_setpoint = 0;
+        fio0_pin22_ctrl(0);            /* 原 0xF860/0xF8CC 先 P2.22(FIO0) 后 P2.22(FIO1) */
         fio1_pin22_ctrl(0);
-        fio0_pin22_ctrl(0);
         *(volatile uint32_t *)input_locked = 0;
         *(volatile uint8_t *)ramp_phase = 0;
         *(volatile uint32_t *)out_param = *(volatile uint32_t *)out_param | 0x2000;

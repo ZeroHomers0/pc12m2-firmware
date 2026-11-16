@@ -33,3 +33,7 @@ test/emulation/*.log
 # 系统
 Thumbs.db
 .DS_Store
+
+# 本地差分探针/临时脚本（不进库）
+/tmp/
+

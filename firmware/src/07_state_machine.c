@@ -182,7 +182,7 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
         case 0:
             if (*b2c == 0) { disp_string((int)0x64d0, row, 0xb, attr); fio1_pin20_ctrl(1); fio1_pin21_ctrl(0); }
             else if (*b2c == 1) { disp_string((int)0x64d8, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(1); }
-            else { disp_string((int)0x64e0, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(0); }
+            else if (*b2c == 2) { disp_string((int)0x64e0, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(0); }  /* 原 0x71FE cmp #2;bne → 越界不画 */
             break;
         case 1: disp_uint4(*w34, row, 0xb, attr); break;
         case 2: disp_uint4(*w30, row, 0xb, attr); break;
@@ -202,7 +202,7 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
         case 10:
             if (*b4d == 0) disp_string((int)0x78ac, row, 0xb, attr);
             else if (*b4d == 1) disp_string((int)0x78b4, row, 0xb, attr);
-            else disp_string((int)0x78bc, row, 0xb, attr);
+            else if (*b4d == 2) disp_string((int)0x78bc, row, 0xb, attr);  /* 原 0x7506 */
             break;
         case 11:
             if (*b4e == 0) disp_string((int)0x78c8, row, 0xb, attr);
@@ -211,7 +211,7 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
         case 12:
             if (*b4f == 0) disp_string((int)0x5b2c, row, 0xb, attr);
             else if (*b4f == 1) disp_string((int)0x5b34, row, 0xb, attr);
-            else disp_string((int)0x5b3c, row, 0xb, attr);
+            else if (*b4f == 2) disp_string((int)0x5b3c, row, 0xb, attr);  /* 原 0x75E6 */
             break;
         case 13:
             if (*b51 == 0) disp_string((int)0x5f54, row, 0xb, attr);
@@ -322,10 +322,10 @@ static void sm5_draw_value(uint32_t it, uint32_t attr)
             if (*PARITY == 0) disp_string(0x65b8, 2, 0xa, attr);
             else if (*PARITY == 1) disp_string(0x65c0, 2, 0xa, attr);
             else if (*PARITY == 2) disp_string(0x65c8, 2, 0xa, attr);
-            else disp_string(0x8a64, 2, 0xa, attr); /* '1 ST0P' */
+            else if (*PARITY == 3) disp_string(0x8a64, 2, 0xa, attr); /* '1 ST0P'；原 0x87CC cmp #3;bne 越界不画 */
             break;
         case 3: /* 通讯校验 COM_CHK (byte) */
-            if (*COM_CHK) disp_string(0x65d4, 3, 0xb, attr);
+            if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, attr);  /* 原 0x8840/0x8852 cmp #1 */
             else disp_string(0x5f54, 3, 0xb, attr);
             break;
     }
@@ -807,11 +807,11 @@ void state_machine(int key)
                 /* item5=0x1000164f row1：0→0x5b2c、1→0x5b34、2→0x5b3c */
                 if (*(volatile uint8_t*)0x1000164f == 0) disp_string(0x5b2c, 1, 0xb, (*m25 == 5) ? 1 : 0);
                 else if (*(volatile uint8_t*)0x1000164f == 1) disp_string(0x5b34, 1, 0xb, (*m25 == 5) ? 1 : 0);
-                else disp_string(0x5b3c, 1, 0xb, (*m25 == 5) ? 1 : 0);
+                else if (*(volatile uint8_t*)0x1000164f == 2) disp_string(0x5b3c, 1, 0xb, (*m25 == 5) ? 1 : 0);  /* 原 0x5A7E/0x5A90/0x5AA8 */
                 /* item6=0x10001650 row2：0→0x5f48、1→0x5b34、2→0x5b3c */
                 if (*(volatile uint8_t*)0x10001650 == 0) disp_string(0x5f48, 2, 0xb, (*m25 == 6) ? 1 : 0);
                 else if (*(volatile uint8_t*)0x10001650 == 1) disp_string(0x5b34, 2, 0xb, (*m25 == 6) ? 1 : 0);
-                else disp_string(0x5b3c, 2, 0xb, (*m25 == 6) ? 1 : 0);
+                else if (*(volatile uint8_t*)0x10001650 == 2) disp_string(0x5b3c, 2, 0xb, (*m25 == 6) ? 1 : 0);  /* 原 0x5B54/0x5B66/0x5B7C */
                 /* item7=0x10001651 row3：0→0x5f54、非0→0x5f5c */
                 if (*(volatile uint8_t*)0x10001651 == 0) disp_string(0x5f54, 3, 0xb, (*m25 == 7) ? 1 : 0);
                 else disp_string(0x5f5c, 3, 0xb, (*m25 == 7) ? 1 : 0);
@@ -928,8 +928,8 @@ void state_machine(int key)
                 if (*PARITY == 0) disp_string(0x65b8, 2, 0xa, 0);
                 if (*PARITY == 1) disp_string(0x65c0, 2, 0xa, 0);
                 if (*PARITY == 2) disp_string(0x65c8, 2, 0xa, 0);
-                if (*COM_CHK == 0) disp_string(0x5f54, 3, 0xb, 0);
-                else disp_string(0x65d4, 3, 0xb, 0);
+                if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, 0);  /* 原 0x632C/0x6340 */
+                else disp_string(0x5f54, 3, 0xb, 0);
                 *TIMEOUT3 = 0xfa;
             }
             if (*m2 == 3) { /* 选项3 → case6 密码 @0x635e */
@@ -1215,7 +1215,7 @@ void state_machine(int key)
                 disp_string(0x7d30, 0, 0, 0); disp_string(0x7d44, 1, 0, 0);
                 disp_string(0x7d58, 2, 0, 0); disp_string(0x7d6c, 3, 0, 0);
             }
-            else {
+            else if (*m25 < 0xc) { /* 原 0x7AC6/0x7ACE：只有 8 <= 项号 < 12 才画第 3 页 */
                 disp_string(0x7d80, 0, 0, 0); disp_string(0x7d94, 1, 0, 0);
                 disp_string(0x56d8, 2, 0, 0); disp_string(0x56d8, 3, 0, 0);
             }
@@ -1641,7 +1641,7 @@ void state_machine(int key)
         volatile uint8_t  *scr_set  = (volatile uint8_t*)0x100015ce;
 
         *scr_set = 1; /* 屏内置位 @0x97b0 */
-        /* 相位偏移 增（key3/0x21 上限 0x2b0）/ 减（key2/0x16 下限 0x45） */
+        /* 相位偏移 增（key3 上限 0x2b0）/ 减（key2 先钳 0x45 再 -1，实际下限 0x44） */
         if (key == 3 || key == 0x21) {
             *TIMEOUT = 0;
             (*PHASE_OFF)++;
@@ -1761,7 +1761,7 @@ void state_machine(int key)
             if (*bal_ang > 0xc7) *bal_ang = 0xc7;
             disp_signed_angle(*bal_ang, 2, 7, 1); /* 0x116c */
         }
-        if (key == 3 || key == 0x21) { /* 减：下限 2 */
+        if (key == 3 || key == 0x21) { /* 减：先钳 2 再 -1，实际下限 1 */
             *timeout = 0;
             if (*bal_ang < 2) *bal_ang = 2;
             (*bal_ang)--;
@@ -1880,8 +1880,7 @@ void state_machine(int key)
        急停、块A/块B、key5/key6、幅值块）。块尾不加 return，直接落入共享超时尾
        (0xa828-0xa854)：(*TIMEOUT)++; >=0x1388 回主屏。 */
     if (*MENU == 0x1e) {
-        volatile uint32_t *t2  = (volatile uint32_t*)0x10001740; /* TIMEOUT2 */
-        volatile uint32_t *t3  = (volatile uint32_t*)0x10001758; /* TIMEOUT3 */
+        volatile uint32_t *t2  = (volatile uint32_t*)0x10001740; /* TIMEOUT2（TIMEOUT3 0x10001758 在本页未被访问） */
 
         /* key==4 回主菜单 (0x9fb2) */
         if (key == 4) { *MENU = 1; disp_splash_screen(); *TIMEOUT = 0; return; }
@@ -2032,13 +2031,14 @@ void state_machine(int key)
             *V_AMP = *V5D4; *V_AMP2 = *V5D4;
         }
 
-        /* ---- 共享超时尾 (0xa828-0xa854)：case1E 块尾不加 return 直接落入 ---- */
-        (*TIMEOUT)++;
-        if (*TIMEOUT >= 0x1388) {
-            *TIMEOUT = 0;
-            *MENU = 1;
-            disp_splash_screen();
-        }
-        return;
+    }
+
+    /* ---- 共享超时尾 (0xa828-0xa854)：合法屏号走各自块尾、非法屏号 0xA058 `b 0xa828`
+     *      也落到这里（原 BIN 0x9FAA 比较后的 `bne 0xa058`），故必须放在 case1E 的 if 之外 ---- */
+    (*TIMEOUT)++;
+    if (*TIMEOUT >= 0x1388) {
+        *TIMEOUT = 0;
+        *MENU = 1;
+        disp_splash_screen();
     }
 }

@@ -289,7 +289,7 @@ void main(void)
     disp_string(0x728,1,2,0);   /* "输出电压"（第 1 行 col2） */
     disp_string(0x734,2,2,0);   /* "参数: "（第 2 行 col2） */
     disp_offset(*out_freq_adj,2,7,1);   /* bl 0x1260：电压值显示 */
-    disp_string(0x740,0,3,0);   /* "工作状态"（第 0 行 col3） */
+    disp_string(0x740,3,0,0);   /* "工作状态"（原 0x68A：r1=3 行、r2=0 列） */
     for (;;) {                  /* 0x698 联锁死循环 */
       if (*tick == 1) {
         *tick = 0;

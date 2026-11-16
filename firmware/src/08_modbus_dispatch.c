@@ -154,9 +154,11 @@ void modbus_dispatch(void)
     return;
   }
 
-  /* 3) 功能码分发：非 0x03/0x06/0x10 → 异常 0x01（0xB408-0xB456） */
+  /* 3) 功能码分发：非 0x03/0x06/0x10 → 异常 0x01（0xB408-0xB456）
+   *    原 BIN 0xB42C 为 `adds r0,#0x80`（加法，非 ORR）：func>=0x80 时按 8 位截断回绕
+   *    （0x83→0x03、0xFF→0x7F）；0xB4C2 的 CRC 异常帧同样是加法。 */
   if (frame[1] != 0x03 && frame[1] != 0x06 && frame[1] != 0x10) {
-    modbus_send_exception((uint8_t)(frame[1] | 0x80), 0x01);
+    modbus_send_exception((uint8_t)(frame[1] + 0x80), 0x01);
     return;
   }
 
@@ -167,7 +169,7 @@ void modbus_dispatch(void)
   CRCCOPY[len - 1] = (uint8_t)(crc >> 8);          /* buf_data_1[len-1] = crc 高 */
   CRCCOPY[len - 2] = (uint8_t)crc;                 /* buf_data_1[len-2] = crc 低 */
   if (CRCCOPY[len - 1] != frame[len - 1] || CRCCOPY[len - 2] != frame[len - 2]) {
-    modbus_send_exception((uint8_t)(frame[1] | 0x80), 0x04);
+    modbus_send_exception((uint8_t)(frame[1] + 0x80), 0x04);
     return;
   }
 

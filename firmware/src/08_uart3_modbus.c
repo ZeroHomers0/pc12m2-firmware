@@ -182,7 +182,7 @@ void uart3_rx_timeout_monitor(void)
   volatile uint8_t *tx_cnt = (volatile uint8_t *)comm_tx_count;  /* 0x10001771 */
   volatile uint8_t *rx_flag = (volatile uint8_t *)comm_rx_flag;  /* 0x100016FD */
 
-  if ((int8_t)*rx_flag > 0) {                             /* 接收进行中（有符号） */
+  if (*rx_flag != 0) {                                    /* 原厂 ldrb 零扩展后 >0，即非 0 */
     *comm_quiet_timer = *comm_quiet_timer + 1;
     if (*comm_quiet_timer > 0x7530) {                     /* 帧超时 */
       *comm_quiet_timer = 0;

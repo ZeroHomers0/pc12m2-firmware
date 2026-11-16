@@ -38,6 +38,7 @@
 | Modbus | `docs/analysis/UART3_PROTOCOL.md` |
 | 菜单状态机 | `docs/analysis/STATE_MACHINE_ANALYSIS.md` |
 | 菜单参数 | `docs/analysis/MENU_PARAMETER_MAPPING.md` |
+| 第三轮逐模块精读差异与修复（2026-11-17） | `docs/analysis/PC12M2_AUDIT_FIXES_2026-11-17.md` |
 
 ## 十二相实机验证
 
