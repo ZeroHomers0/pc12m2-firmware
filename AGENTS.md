@@ -66,7 +66,7 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
   `disp_string(0x740,3,0,0)` 行列纠正；case4 第 3 页限 `8 <= 项号 < 0xc`（原 0x7AC6/0x7ACE）；
   8 处枚举越界 `else` 改独立相等判断；EINT3 停机复位改 fio0 先于 fio1。
   验证：显示调用序列 152/152、全屏显示 3860/3860、状态终态 232/232、EEPROM 34/34、
-  Modbus 边界 36/36 与随机 600/600、输出级随机 250/250、回归 5/5、原 BIN A/B 全 PASS。
+  Modbus 边界 36/36 与随机 600/600、输出级随机 250/250、回归 6/6（含新增 test/emulation/test_exception_func_code_12.py 13/13）、原 BIN A/B 全 PASS。
   反向结论：`09_output_stage.c` 六处同址自写是原 BIN 真实行为，不得改成 6p 的跨槽复制。
   记录见 `docs/analysis/PC12M2_AUDIT_FIXES_2026-11-17.md`。未烧写、未上机。
 
