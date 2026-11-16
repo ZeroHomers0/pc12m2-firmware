@@ -52,7 +52,7 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
 
 - **2026-11-13 菜单与背光同步**（用户明确授权同时修改六相、十二相）：菜单改为αmin限制/αmax限制（min/max为下标）、主从移相、相位补偿；控制方式选项改为远程/本地/面板。字形集中在 `02_lcd_display.c`，α全高等比例，α+紧凑下标总宽仍32像素。仅背光无操作阈值改为10000拍（约20秒），其它菜单超时不变。
 - 十二相地址由本仓原BIN核实；生成入口 `tools/generation/generate_string_pool_12.py` 的 `MENU_TEXT_OVERRIDES`，兼容六相语义字符串头文件及缺省stub文件；产品型号保持PC12M-2。旧型号/误称仅清理活动文本，原BIN和evidence原始证据保留。
-- 当前构建：`text 65120 / data 6312 / bss 2192`，`firmware.bin` 71992 B，SHA-256 `16D02C7268FFAAD0F93545721852293F63D67E44890EA1C1CD614954FFABFCBB`（2026-11-17 第三轮逐模块精读修复后）；本次尚未烧写/实机确认。菜单专项与背光28例、回归4/4（含113例扩展覆盖）、十二相原BIN完整A/B全部通过；日志见 `evidence/reverse/reports/menu_backlight_*_2026-11-13.log`。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
+- 当前构建：`text 65156 / data 6312 / bss 2192`，`firmware.bin` 72028 B，SHA-256 `EA2920F11856CDF9810E6B3C0D17427DE429FD4630DB3B6762BC94B1E9E728D2`（2026-11-17 第三轮逐模块精读修复后）；本次尚未烧写/实机确认。菜单专项与背光28例、回归4/4（含113例扩展覆盖）、十二相原BIN完整A/B全部通过；日志见 `evidence/reverse/reports/menu_backlight_*_2026-11-13.log`。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
 
 - **2026-11-14 菜单标题调整**：在 `firmware-menu-display-2026-11-13` 分支将相位补偿改为同步校准，集中字库新增同/步字形。菜单与背光专项、十二相原BIN完整A/B验证全部通过（`evidence/reverse/reports/menu_sync_calibration_ab_2026-11-14.log`）；本次未烧写。
 
@@ -69,6 +69,8 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
   Modbus 边界 36/36 与随机 600/600、输出级随机 250/250、回归 6/6（含新增 test/emulation/test_exception_func_code_12.py 13/13）、原 BIN A/B 全 PASS。
   反向结论：`09_output_stage.c` 六处同址自写是原 BIN 真实行为，不得改成 6p 的跨槽复制。
   记录见 `docs/analysis/PC12M2_AUDIT_FIXES_2026-11-17.md`。未烧写、未上机。
+
+- **2026-11-17 通信校验越界绘制修复**：用户实测指出通信校验 2/3 等越界值原版不绘制选项。原 BIN 0x8840 `cbnz`（==0 画关闭）/0x8852 `cmp #1; bne`（==1 画开启）、入口块 0x632C/0x6340 同理；12p 源码两处 `if/else` 已改为相等判断。新增 `test/emulation/test_enum_range_12.py`（22 例）。同时发现并修正了显示探针的空跑缺陷：12p 页面只在 `*TIMEOUT3 == 0xFB` 时整页重绘，旧探针预置 0 导致两版都不绘制，此前 152/152、3860/3860、1970/1970 多为「双方空序列」比较；现按 0xFA 预置重跑，`tmp/probe_disp12_full.py` 逐屏重验（屏号 3 已 340/340，其余后台进行）。验证：枚举越界 22/22、COM_CHK/PARITY 专项 30/30、原 BIN A/B 全 PASS、回归 6/6。提交 `384f251`。未烧写。
 
 ## 必须遵守
 

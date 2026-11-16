@@ -40,6 +40,8 @@
 | 菜单参数 | `docs/analysis/MENU_PARAMETER_MAPPING.md` |
 | 第三轮逐模块精读差异与修复（2026-11-17） | `docs/analysis/PC12M2_AUDIT_FIXES_2026-11-17.md` |
 
+- **2026-11-17 通信校验越界绘制**：按原 BIN 0x8840/0x8852、0x632C/0x6340 把通信校验的 if/else 改为相等判断（`test/emulation/test_enum_range_12.py` 22/22）；同时修正显示探针 TIMEOUT3 预置值导致的空跑比较，按 0xFA 重跑逐屏显示矩阵。构建 text 65156、SHA `EA2920F1…9E728D2`；未烧写。
+
 ## 十二相实机验证
 
 > ⚠️ W8 分级实测流程已废弃（用户未按分级测试，实机已直接通过）；下表文档为历史流程档案。
