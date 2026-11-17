@@ -1,0 +1,7 @@
+{
+  "project": "PC12M-2",
+  "cases": 52,
+  "status": "PASS",
+  "FIOCLR_read_assumption": 0,
+  "NVIC_grouping": 0
+}

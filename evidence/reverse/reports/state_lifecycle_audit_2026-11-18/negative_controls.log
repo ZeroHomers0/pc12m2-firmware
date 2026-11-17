@@ -1,0 +1,2 @@
+RUNNER_HOOK_LIFETIME normal_100_calls+timeout_2+exception_2 no_leaked_callbacks PASS
+LIFECYCLE_NEGATIVE_CONTROLS old_runner_leak+missing_WDT_write DETECTED; restored_baseline PASS

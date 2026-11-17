@@ -1,0 +1,2 @@
+PID_RANGE_TABLE_CONTRACT cases=1272 all_range_thresholds+source_selection+wrapper_wrap PASS
+PID_BRANCH_EXTENSION {'candidate_branches': 1983, 'both': 1506, 'one': 418, 'unhit': 59} => {'candidate_branches': 1983, 'both': 1512, 'one': 412, 'unhit': 59} matrix_exit 0

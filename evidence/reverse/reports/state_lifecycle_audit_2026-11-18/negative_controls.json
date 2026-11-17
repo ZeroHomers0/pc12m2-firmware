@@ -1,0 +1,6 @@
+{
+  "project": "PC12M-2",
+  "HEAD_runner_leak_detected": true,
+  "missing_watchdog_feed_detected_at_expected_self_loop": true,
+  "restored_baseline_pass": true
+}

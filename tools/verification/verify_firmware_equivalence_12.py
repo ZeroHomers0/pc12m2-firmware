@@ -130,14 +130,18 @@ def run(uc, entry, writes=None, max_insn=2_000_000):
     def stop_at_return(machine, address, size, user):
         if address == STOP:
             machine.emu_stop()
-    uc.hook_add(UC_HOOK_CODE, stop_at_return)
-    if writes is not None:
-        uc.hook_add(UC_HOOK_MEM_WRITE,
-                    lambda machine, access, address, size, value, user: writes.append((address, size, value)),
-                    begin=0x2009C000, end=0x2009CFFF)
-    uc.emu_start(entry | 1, 0, count=max_insn)
-    assert uc.reg_read(UC_ARM_REG_PC) == STOP, (
-        f"execution incomplete: entry=0x{entry:x}, pc=0x{uc.reg_read(UC_ARM_REG_PC):x}, budget={max_insn}")
+    handles = [uc.hook_add(UC_HOOK_CODE, stop_at_return, begin=STOP, end=STOP)]
+    try:
+        if writes is not None:
+            handles.append(uc.hook_add(UC_HOOK_MEM_WRITE,
+                        lambda machine, access, address, size, value, user: writes.append((address, size, value)),
+                        begin=0x2009C000, end=0x2009CFFF))
+        uc.emu_start(entry | 1, 0, count=max_insn)
+        assert uc.reg_read(UC_ARM_REG_PC) == STOP, (
+            f"execution incomplete: entry=0x{entry:x}, pc=0x{uc.reg_read(UC_ARM_REG_PC):x}, budget={max_insn}")
+    finally:
+        for handle in reversed(handles):
+            uc.hook_del(handle)
 
 
 def snapshot(uc):

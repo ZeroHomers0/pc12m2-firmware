@@ -1,0 +1,9 @@
+{
+  "project": "PC12M-2",
+  "chains": 108,
+  "persistent_frames": 28728,
+  "reset_cases": 72,
+  "status": "PASS",
+  "original_sha256": "2bc608683992ad6db2d3cb75129bf57ea37d6d681d7c2c0a132e064ebd271bd1",
+  "firmware_sha256": "0832cc36133114d16be760a66e8e52438baaa7262090ce8c9df823c7ce37018b"
+}

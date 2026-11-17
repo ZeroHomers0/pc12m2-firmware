@@ -7,7 +7,7 @@ import ast,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 rows=[]
-for directory in ('test','tools/verification'):
+for directory in ('test','tools/verification','tools/audit'):
     for p in sorted((ROOT/directory).rglob('*.py')):
         if '__pycache__' in p.parts:continue
         src=p.read_text(encoding='utf-8',errors='replace')
@@ -23,10 +23,12 @@ for directory in ('test','tools/verification'):
                     elif 'REG_R0' in reg:kind='RETURN_OR_INPUT_R0'
             elif isinstance(node,ast.FunctionDef) and ('mask' in node.name or 'skip' in node.name):kind='MASK_OR_SKIP_HELPER'
             if kind:
-                rows.append({'source':str(p.relative_to(ROOT)).replace('\\','/'),'line':node.lineno,'mechanism':kind,
+                rows.append({'id':f'I{len(rows)+1:04d}','source':str(p.relative_to(ROOT)).replace('\\','/'),'line':node.lineno,'mechanism':kind,
+                             'review_status':'REVIEW_REQUIRED',
                              'expression':ast.unparse(node)[:500] if not isinstance(node,ast.FunctionDef) else node.name})
 from collections import Counter
 out={'project':ROOT.name,'summary':dict(Counter(r['mechanism'] for r in rows)),
+     'scope':['test','tools/verification','tools/audit'],
      'status':'MECHANISM_INVENTORY_NOT_AUTOMATIC_APPROVAL','entries':rows}
 (ROOT/'tmp/test_intervention_inventory.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
 print(ROOT.name,'INTERVENTION_INVENTORY',len(rows),out['summary'])

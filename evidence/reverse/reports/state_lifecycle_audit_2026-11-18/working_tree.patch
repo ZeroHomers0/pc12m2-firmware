@@ -1,0 +1,112 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index c14e4f3..4823894 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -1,5 +1,7 @@
+ # AGENTS.md — PC12M-2 十二相 SCR 控制板（LPC1765FBD100）
+ 
++- **2026-11-18 状态机/故障复位第五批**：新增108条连续启停链（28728拍）、72例故障复位/禁用（启用者两段3000轮及6000份AA/55喂狗后确切自跳）、64组运行统计/落盘、320组缺相恢复及1248拍模式切换；受控SET/CLR/W1C/NVIC模型下52组真实ISR调度通过。修复公共运行器临时钩子泄漏，旧运行器及缺失喂狗写序注入均被检出。回归40/40、完整原BIN A/B、菜单/背光专项通过；未发现新业务差异，业务源码/BIN未变。报告docs/analysis/STATE_LIFECYCLE_AUDIT_2026-11-18.md，证据evidence/reverse/reports/state_lifecycle_audit_2026-11-18/。全程序分支、逐条干预契约、FIOCLR读行为及更广中断交错仍保留，S0–S7未整体关闭；未烧写/实机。
++
+ > 本文件是 AI 接手 PC12M-2 项目的唯一权威上下文。文档导航见 `DOCUMENTATION_INDEX.md`。
+ 
+ ## 项目定位
+diff --git a/DOCUMENTATION_INDEX.md b/DOCUMENTATION_INDEX.md
+index 77ce298..072781a 100644
+--- a/DOCUMENTATION_INDEX.md
++++ b/DOCUMENTATION_INDEX.md
+@@ -1,5 +1,7 @@
+ # PC12M-2 文档索引
+ 
++> **2026-11-18 状态机/故障复位第五批**：[连续启停、复位喂狗与受控外设模型](docs/analysis/STATE_LIFECYCLE_AUDIT_2026-11-18.md)。108链28728拍、72例故障复位/禁用、运行统计/同步恢复与52组ISR调度；回归40/40、完整原BIN A/B及定制专项通过，业务源码/BIN未变，未烧写；全方案仍有未关闭项。
++
+ > 更新日期：2026-11-16。优先级：`AGENTS.md` → 本文 → `docs/project/PROJECT_STATUS.md`。
+ >
+ > **2026-09-02 结论**：P5/113 覆盖/认证放行/产品信息定制/X-O 字形修复全部完成，自编译固件已
+diff --git a/tools/audit/branch_cfg_classification.py b/tools/audit/branch_cfg_classification.py
+index 6bc7ac6..3f4a3e2 100644
+--- a/tools/audit/branch_cfg_classification.py
++++ b/tools/audit/branch_cfg_classification.py
+@@ -3,14 +3,15 @@
+ OUTSIDE_RESOLVED_CFG不等于证明不可达；含未解析间接跳转的函数保留待确认。
+ 本工具不依据缺少动态命中擅自删除源码或分支。
+ """
+-import json,re
++import json,re,sys
+ from pathlib import Path
+ from capstone import Cs,CS_ARCH_ARM,CS_MODE_THUMB
+ from capstone.arm import ARM_OP_IMM
+ ROOT=Path(__file__).resolve().parents[2]
+ is12=(ROOT/'pc12m2_orig.bin').exists()
+ binary=(ROOT/('pc12m2_orig.bin' if is12 else 'LPC1765.bin')).read_bytes()
+-inventory=json.loads((ROOT/'tmp/software_branch_inventory.json').read_text(encoding='utf-8'))
++input_path=ROOT/sys.argv[1] if len(sys.argv)>1 else ROOT/'tmp/software_branch_inventory.json'
++inventory=json.loads(input_path.read_text(encoding='utf-8'))
+ cs=Cs(CS_ARCH_ARM,CS_MODE_THUMB);cs.detail=True
+ cache={};metadata={}
+ def cfg(file):
+@@ -64,5 +65,6 @@ for addr,b in inventory['branches'].items():
+     counts[status]=counts.get(status,0)+1
+     if status.endswith('MISSING_OUTCOME'):pending.append({'address':addr,**b,'status':status,'cfg_unresolved':unresolved})
+ out={'project':ROOT.name,'summary':counts,'pending':pending,'cfg_functions':{f:{'instructions':len(r),'unresolved':u} for f,(r,u) in cache.items()}}
+-(ROOT/'tmp/branch_cfg_classification.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
++output_path=ROOT/('tmp/pid_branch_cfg_classification.json' if input_path.stem.startswith('pid_') else 'tmp/menu_branch_cfg_classification.json') if len(sys.argv)>1 else ROOT/'tmp/branch_cfg_classification.json'
++output_path.write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+ print(ROOT.name,'BRANCH_CFG_CLASSIFICATION',counts)
+diff --git a/tools/audit/test_intervention_inventory.py b/tools/audit/test_intervention_inventory.py
+index 0d41af4..9959390 100644
+--- a/tools/audit/test_intervention_inventory.py
++++ b/tools/audit/test_intervention_inventory.py
+@@ -7,7 +7,7 @@ import ast,json,sys
+ from pathlib import Path
+ ROOT=Path(__file__).resolve().parents[2]
+ rows=[]
+-for directory in ('test','tools/verification'):
++for directory in ('test','tools/verification','tools/audit'):
+     for p in sorted((ROOT/directory).rglob('*.py')):
+         if '__pycache__' in p.parts:continue
+         src=p.read_text(encoding='utf-8',errors='replace')
+@@ -23,10 +23,12 @@ for directory in ('test','tools/verification'):
+                     elif 'REG_R0' in reg:kind='RETURN_OR_INPUT_R0'
+             elif isinstance(node,ast.FunctionDef) and ('mask' in node.name or 'skip' in node.name):kind='MASK_OR_SKIP_HELPER'
+             if kind:
+-                rows.append({'source':str(p.relative_to(ROOT)).replace('\\','/'),'line':node.lineno,'mechanism':kind,
++                rows.append({'id':f'I{len(rows)+1:04d}','source':str(p.relative_to(ROOT)).replace('\\','/'),'line':node.lineno,'mechanism':kind,
++                             'review_status':'REVIEW_REQUIRED',
+                              'expression':ast.unparse(node)[:500] if not isinstance(node,ast.FunctionDef) else node.name})
+ from collections import Counter
+ out={'project':ROOT.name,'summary':dict(Counter(r['mechanism'] for r in rows)),
++     'scope':['test','tools/verification','tools/audit'],
+      'status':'MECHANISM_INVENTORY_NOT_AUTOMATIC_APPROVAL','entries':rows}
+ (ROOT/'tmp/test_intervention_inventory.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+ print(ROOT.name,'INTERVENTION_INVENTORY',len(rows),out['summary'])
+diff --git a/tools/verification/verify_firmware_equivalence_12.py b/tools/verification/verify_firmware_equivalence_12.py
+index 3eccc3b..c26fce5 100644
+--- a/tools/verification/verify_firmware_equivalence_12.py
++++ b/tools/verification/verify_firmware_equivalence_12.py
+@@ -130,14 +130,18 @@ def run(uc, entry, writes=None, max_insn=2_000_000):
+     def stop_at_return(machine, address, size, user):
+         if address == STOP:
+             machine.emu_stop()
+-    uc.hook_add(UC_HOOK_CODE, stop_at_return)
+-    if writes is not None:
+-        uc.hook_add(UC_HOOK_MEM_WRITE,
+-                    lambda machine, access, address, size, value, user: writes.append((address, size, value)),
+-                    begin=0x2009C000, end=0x2009CFFF)
+-    uc.emu_start(entry | 1, 0, count=max_insn)
+-    assert uc.reg_read(UC_ARM_REG_PC) == STOP, (
+-        f"execution incomplete: entry=0x{entry:x}, pc=0x{uc.reg_read(UC_ARM_REG_PC):x}, budget={max_insn}")
++    handles = [uc.hook_add(UC_HOOK_CODE, stop_at_return, begin=STOP, end=STOP)]
++    try:
++        if writes is not None:
++            handles.append(uc.hook_add(UC_HOOK_MEM_WRITE,
++                        lambda machine, access, address, size, value, user: writes.append((address, size, value)),
++                        begin=0x2009C000, end=0x2009CFFF))
++        uc.emu_start(entry | 1, 0, count=max_insn)
++        assert uc.reg_read(UC_ARM_REG_PC) == STOP, (
++            f"execution incomplete: entry=0x{entry:x}, pc=0x{uc.reg_read(UC_ARM_REG_PC):x}, budget={max_insn}")
++    finally:
++        for handle in reversed(handles):
++            uc.hook_del(handle)
+ 
+ 
+ def snapshot(uc):

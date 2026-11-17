@@ -3,14 +3,15 @@
 OUTSIDE_RESOLVED_CFG不等于证明不可达；含未解析间接跳转的函数保留待确认。
 本工具不依据缺少动态命中擅自删除源码或分支。
 """
-import json,re
+import json,re,sys
 from pathlib import Path
 from capstone import Cs,CS_ARCH_ARM,CS_MODE_THUMB
 from capstone.arm import ARM_OP_IMM
 ROOT=Path(__file__).resolve().parents[2]
 is12=(ROOT/'pc12m2_orig.bin').exists()
 binary=(ROOT/('pc12m2_orig.bin' if is12 else 'LPC1765.bin')).read_bytes()
-inventory=json.loads((ROOT/'tmp/software_branch_inventory.json').read_text(encoding='utf-8'))
+input_path=ROOT/sys.argv[1] if len(sys.argv)>1 else ROOT/'tmp/software_branch_inventory.json'
+inventory=json.loads(input_path.read_text(encoding='utf-8'))
 cs=Cs(CS_ARCH_ARM,CS_MODE_THUMB);cs.detail=True
 cache={};metadata={}
 def cfg(file):
@@ -64,5 +65,6 @@ for addr,b in inventory['branches'].items():
     counts[status]=counts.get(status,0)+1
     if status.endswith('MISSING_OUTCOME'):pending.append({'address':addr,**b,'status':status,'cfg_unresolved':unresolved})
 out={'project':ROOT.name,'summary':counts,'pending':pending,'cfg_functions':{f:{'instructions':len(r),'unresolved':u} for f,(r,u) in cache.items()}}
-(ROOT/'tmp/branch_cfg_classification.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+output_path=ROOT/('tmp/pid_branch_cfg_classification.json' if input_path.stem.startswith('pid_') else 'tmp/menu_branch_cfg_classification.json') if len(sys.argv)>1 else ROOT/'tmp/branch_cfg_classification.json'
+output_path.write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
 print(ROOT.name,'BRANCH_CFG_CLASSIFICATION',counts)
