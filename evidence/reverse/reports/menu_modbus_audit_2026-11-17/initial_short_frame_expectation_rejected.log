@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\modbus_short_frame_underflow.py", line 41, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\modbus_short_frame_underflow.py", line 37, in main
+    rows=[observe(False),observe(True)]
+          ~~~~~~~^^^^^^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\modbus_short_frame_underflow.py", line 30, in observe
+    else:raise AssertionError(('未到达预期模型越界，禁止以预算截断代替',new,hex(u.reg_read(UC_ARM_REG_PC))))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('未到达预期模型越界，禁止以预算截断代替', False, '0xab9c')

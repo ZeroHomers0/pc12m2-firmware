@@ -1,0 +1,47 @@
+{
+  "project": "PC12M-2",
+  "cases": [
+    {
+      "variant": "original",
+      "status": "NORMAL_RETURN_CRC_ERROR_RESPONSE",
+      "crc_arguments": [
+        [
+          268444280,
+          255
+        ],
+        [
+          268444480,
+          3
+        ],
+        [
+          268444480,
+          3
+        ]
+      ],
+      "input_data_reads": 255,
+      "response": [
+        "01830440f3"
+      ],
+      "sram_sha256": "7e4aafdb97097ea1e65fcd81cd43f4603e11b7c185f444a791a155e7d193b942"
+    },
+    {
+      "variant": "new",
+      "status": "NORMAL_RETURN_CRC_ERROR_RESPONSE",
+      "crc_arguments": [
+        [
+          268444280,
+          65535
+        ],
+        [
+          268444480,
+          3
+        ]
+      ],
+      "input_data_reads": 255,
+      "response": [
+        "01830440f3"
+      ],
+      "sram_sha256": "7e4aafdb97097ea1e65fcd81cd43f4603e11b7c185f444a791a155e7d193b942"
+    }
+  ]
+}

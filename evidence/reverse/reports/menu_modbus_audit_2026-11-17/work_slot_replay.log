@@ -1,0 +1,1 @@
+MODBUS_WORK_SLOT_REPLAY cases=60 nonzero_sentinels+CRC_copy_256bytes+cross_frame_SRAM PASS

@@ -1,0 +1,1 @@
+SHORT_FRAME_DIAGNOSTIC original/new actual_CRC_reads=255 normal_return+CRC_error_response+full_SRAM PASS; no_65535byte_read

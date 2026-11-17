@@ -1,0 +1,19 @@
+MENU_SCREEN_DONE 0x0 cases 816 failures 0
+MENU_SCREEN_DONE 0x1 cases 1632 failures 0
+MENU_SCREEN_DONE 0x2 cases 2448 failures 0
+MENU_SCREEN_DONE 0x3 cases 3264 failures 0
+MENU_SCREEN_DONE 0x4 cases 4080 failures 0
+MENU_SCREEN_DONE 0x5 cases 4896 failures 0
+MENU_SCREEN_DONE 0x6 cases 5712 failures 0
+MENU_SCREEN_DONE 0x7 cases 6528 failures 0
+MENU_SCREEN_DONE 0x8 cases 7344 failures 0
+MENU_SCREEN_DONE 0x9 cases 8160 failures 0
+MENU_SCREEN_DONE 0xa cases 8976 failures 0
+MENU_SCREEN_DONE 0xb cases 9792 failures 0
+MENU_SCREEN_DONE 0xc cases 10608 failures 0
+MENU_SCREEN_DONE 0x14 cases 11424 failures 0
+MENU_SCREEN_DONE 0x1e cases 12240 failures 0
+MENU_SCREEN_DONE 0x5a cases 13056 failures 0
+MENU_SCREEN_DONE 0x62 cases 13872 failures 0
+MENU_SCREEN_DONE 0x63 cases 14688 failures 0
+MENU_COMPLETE_MATRIX 14688 nonempty 7096 delay 272 failures 0
