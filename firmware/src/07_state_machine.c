@@ -1130,7 +1130,11 @@ void state_machine(int key)
         if (*TIMEOUT3 > 0x1f4) {
             *TIMEOUT3 = 0;
             if (*MENU3 == 0) return; /* 查看态：本帧提前返回，跳过 TIMEOUT++ */
-            switch (it) {
+            /* 项号必须在此处重新读取 *MENU2，不能用入口缓存的 it：
+             * key==4 分支刚把 *MENU2 清 0（见上 0x6886 段），原机本块 15 处
+             * 判断各自 `ldr [0x78a0]=0x10001725; ldrb`（0x771a/0x772e/…），
+             * 故该帧擦的是第 0 行；沿用旧 it 会擦错行。 */
+            switch (*MENU2) {
                 case 0:  disp_string(0x5f98, 0, 0xb, 0); break;
                 case 1:  disp_string(0x6bac, 1, 0xb, 0); break;
                 case 2:  disp_string(0x6bac, 2, 0xb, 0); break;
