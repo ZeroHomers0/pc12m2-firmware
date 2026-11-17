@@ -136,6 +136,8 @@ def run(uc, entry, writes=None, max_insn=2_000_000):
                     lambda machine, access, address, size, value, user: writes.append((address, size, value)),
                     begin=0x2009C000, end=0x2009CFFF)
     uc.emu_start(entry | 1, 0, count=max_insn)
+    assert uc.reg_read(UC_ARM_REG_PC) == STOP, (
+        f"execution incomplete: entry=0x{entry:x}, pc=0x{uc.reg_read(UC_ARM_REG_PC):x}, budget={max_insn}")
 
 
 def snapshot(uc):
@@ -821,12 +823,27 @@ def verify_xo_font():
 # ── main/参数系统杂项 ─────────────────────────────────────────────────────────
 def verify_misc():
     # uart3_tx_byte / uart3_rx_timeout_monitor / load_config / param_sync_live_to_eeprom：
-    # 无参函数，R0 与 SRAM 末态均有语义（IAR 返回值/副作用），A/B 逐值对比。
+    # 四个接口为void，比较实际副作用，不比较编译器留下的R0。
+    # UART发送需要THRE就绪；配置加载只跳过纯空转写周期等待，I2C读写本体仍执行。
     for name in ("uart3_tx_byte", "uart3_rx_timeout_monitor", "load_config",
                  "param_sync_live_to_eeprom"):
-        results = execute_pair(name, (), max_insn=500_000)
-        assert results[0][0] == results[1][0], "%s return mismatch" % name
-        assert results[0][1] == results[1][1], "%s RAM mismatch" % name
+        states, peripherals = [], []
+        for is_new, entry in ((False, PAIRS[name][0]), (True, SYMS[name])):
+            uc = machine(is_new)
+            if name == "uart3_tx_byte":
+                uc.mem_write(0x4009C014, struct.pack("<I", 0x20))
+            if name == "load_config":
+                delay = SYMS["i2c_delay"] if is_new else 0x1C32
+                def skip_wait(m, address, size, user):
+                    m.reg_write(UC_ARM_REG_PC, m.reg_read(UC_ARM_REG_LR))
+                uc.hook_add(UC_HOOK_CODE, skip_wait, begin=delay, end=delay + 1)
+            run(uc, entry, max_insn=4_000_000)
+            states.append(snapshot(uc))
+            peripherals.append(bytes(uc.mem_read(0x2009C000, 0x1000)) +
+                               bytes(uc.mem_read(0x4009C000, 0x1000)))
+        assert states[0] == states[1], "%s RAM mismatch" % name
+        assert peripherals[0] == peripherals[1], "%s peripheral mismatch" % name
+        print("MISC_COMPLETED: PASS %s" % name)
     # disp_screen_static / disp_screen_calib：void 渲染函数，R0 **非 ABI 语义**。
     # OLD R0=0x08 是 char8 内层字体循环 `adds r0,r4,#1` 的编译器寄存器残留（7+1=8）；
     # NEW R0 残留的是 disp_data 返回值——纯编译器代码生成差异，C 源码无法合理复刻。

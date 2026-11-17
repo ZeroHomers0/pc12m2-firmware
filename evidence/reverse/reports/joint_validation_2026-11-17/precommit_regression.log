@@ -1,0 +1,6 @@
+
+=== test_emulation_test_execution_completion ===
+EXECUTION_COMPLETION: PASS loop/return + original/ELF UART blocked/ready
+[run_tests] test_emulation_test_execution_completion: OK
+
+[run_tests] 模块通过 1/1

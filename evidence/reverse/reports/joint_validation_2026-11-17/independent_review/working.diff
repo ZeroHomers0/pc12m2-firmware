@@ -1,0 +1,251 @@
+diff --git a/firmware/src/01_startup.c b/firmware/src/01_startup.c
+index efb8817..6a1749d 100644
+--- a/firmware/src/01_startup.c
++++ b/firmware/src/01_startup.c
+@@ -289,7 +289,7 @@ void main(void)
+     disp_string(0x728,1,2,0);   /* "输出电压"（第 1 行 col2） */
+     disp_string(0x734,2,2,0);   /* "参数: "（第 2 行 col2） */
+     disp_offset(*out_freq_adj,2,7,1);   /* bl 0x1260：电压值显示 */
+-    disp_string(0x740,0,3,0);   /* "工作状态"（第 0 行 col3） */
++    disp_string(0x740,3,0,0);   /* "工作状态"（原 0x68A：r1=3 行、r2=0 列） */
+     for (;;) {                  /* 0x698 联锁死循环 */
+       if (*tick == 1) {
+         *tick = 0;
+diff --git a/firmware/src/07_state_machine.c b/firmware/src/07_state_machine.c
+index dfe9ed2..41417eb 100644
+--- a/firmware/src/07_state_machine.c
++++ b/firmware/src/07_state_machine.c
+@@ -182,7 +182,7 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
+         case 0:
+             if (*b2c == 0) { disp_string((int)0x64d0, row, 0xb, attr); fio1_pin20_ctrl(1); fio1_pin21_ctrl(0); }
+             else if (*b2c == 1) { disp_string((int)0x64d8, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(1); }
+-            else { disp_string((int)0x64e0, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(0); }
++            else if (*b2c == 2) { disp_string((int)0x64e0, row, 0xb, attr); fio1_pin20_ctrl(0); fio1_pin21_ctrl(0); }  /* 原 0x71FE cmp #2;bne → 越界不画 */
+             break;
+         case 1: disp_uint4(*w34, row, 0xb, attr); break;
+         case 2: disp_uint4(*w30, row, 0xb, attr); break;
+@@ -202,7 +202,7 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
+         case 10:
+             if (*b4d == 0) disp_string((int)0x78ac, row, 0xb, attr);
+             else if (*b4d == 1) disp_string((int)0x78b4, row, 0xb, attr);
+-            else disp_string((int)0x78bc, row, 0xb, attr);
++            else if (*b4d == 2) disp_string((int)0x78bc, row, 0xb, attr);  /* 原 0x7506 */
+             break;
+         case 11:
+             if (*b4e == 0) disp_string((int)0x78c8, row, 0xb, attr);
+@@ -211,7 +211,7 @@ static void sm3_draw_item(uint32_t it, uint32_t row, uint32_t attr)
+         case 12:
+             if (*b4f == 0) disp_string((int)0x5b2c, row, 0xb, attr);
+             else if (*b4f == 1) disp_string((int)0x5b34, row, 0xb, attr);
+-            else disp_string((int)0x5b3c, row, 0xb, attr);
++            else if (*b4f == 2) disp_string((int)0x5b3c, row, 0xb, attr);  /* 原 0x75E6 */
+             break;
+         case 13:
+             if (*b51 == 0) disp_string((int)0x5f54, row, 0xb, attr);
+@@ -322,10 +322,10 @@ static void sm5_draw_value(uint32_t it, uint32_t attr)
+             if (*PARITY == 0) disp_string(0x65b8, 2, 0xa, attr);
+             else if (*PARITY == 1) disp_string(0x65c0, 2, 0xa, attr);
+             else if (*PARITY == 2) disp_string(0x65c8, 2, 0xa, attr);
+-            else disp_string(0x8a64, 2, 0xa, attr); /* '1 ST0P' */
++            else if (*PARITY == 3) disp_string(0x8a64, 2, 0xa, attr); /* '1 ST0P'；原 0x87CC cmp #3;bne 越界不画 */
+             break;
+         case 3: /* 通讯校验 COM_CHK (byte) */
+-            if (*COM_CHK) disp_string(0x65d4, 3, 0xb, attr);
++            if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, attr);  /* 原 0x8840/0x8852 cmp #1 */
+             else disp_string(0x5f54, 3, 0xb, attr);
+             break;
+     }
+@@ -807,11 +807,11 @@ void state_machine(int key)
+                 /* item5=0x1000164f row1：0→0x5b2c、1→0x5b34、2→0x5b3c */
+                 if (*(volatile uint8_t*)0x1000164f == 0) disp_string(0x5b2c, 1, 0xb, (*m25 == 5) ? 1 : 0);
+                 else if (*(volatile uint8_t*)0x1000164f == 1) disp_string(0x5b34, 1, 0xb, (*m25 == 5) ? 1 : 0);
+-                else disp_string(0x5b3c, 1, 0xb, (*m25 == 5) ? 1 : 0);
++                else if (*(volatile uint8_t*)0x1000164f == 2) disp_string(0x5b3c, 1, 0xb, (*m25 == 5) ? 1 : 0);  /* 原 0x5A7E/0x5A90/0x5AA8 */
+                 /* item6=0x10001650 row2：0→0x5f48、1→0x5b34、2→0x5b3c */
+                 if (*(volatile uint8_t*)0x10001650 == 0) disp_string(0x5f48, 2, 0xb, (*m25 == 6) ? 1 : 0);
+                 else if (*(volatile uint8_t*)0x10001650 == 1) disp_string(0x5b34, 2, 0xb, (*m25 == 6) ? 1 : 0);
+-                else disp_string(0x5b3c, 2, 0xb, (*m25 == 6) ? 1 : 0);
++                else if (*(volatile uint8_t*)0x10001650 == 2) disp_string(0x5b3c, 2, 0xb, (*m25 == 6) ? 1 : 0);  /* 原 0x5B54/0x5B66/0x5B7C */
+                 /* item7=0x10001651 row3：0→0x5f54、非0→0x5f5c */
+                 if (*(volatile uint8_t*)0x10001651 == 0) disp_string(0x5f54, 3, 0xb, (*m25 == 7) ? 1 : 0);
+                 else disp_string(0x5f5c, 3, 0xb, (*m25 == 7) ? 1 : 0);
+@@ -928,8 +928,8 @@ void state_machine(int key)
+                 if (*PARITY == 0) disp_string(0x65b8, 2, 0xa, 0);
+                 if (*PARITY == 1) disp_string(0x65c0, 2, 0xa, 0);
+                 if (*PARITY == 2) disp_string(0x65c8, 2, 0xa, 0);
+-                if (*COM_CHK == 0) disp_string(0x5f54, 3, 0xb, 0);
+-                else disp_string(0x65d4, 3, 0xb, 0);
++                if (*COM_CHK == 1) disp_string(0x65d4, 3, 0xb, 0);  /* 原 0x632C/0x6340 */
++                else disp_string(0x5f54, 3, 0xb, 0);
+                 *TIMEOUT3 = 0xfa;
+             }
+             if (*m2 == 3) { /* 选项3 → case6 密码 @0x635e */
+@@ -1641,7 +1641,7 @@ void state_machine(int key)
+         volatile uint8_t  *scr_set  = (volatile uint8_t*)0x100015ce;
+ 
+         *scr_set = 1; /* 屏内置位 @0x97b0 */
+-        /* 相位偏移 增（key3/0x21 上限 0x2b0）/ 减（key2/0x16 下限 0x45） */
++        /* 相位偏移 增（key3 上限 0x2b0）/ 减（key2 先钳 0x45 再 -1，实际下限 0x44） */
+         if (key == 3 || key == 0x21) {
+             *TIMEOUT = 0;
+             (*PHASE_OFF)++;
+@@ -1761,7 +1761,7 @@ void state_machine(int key)
+             if (*bal_ang > 0xc7) *bal_ang = 0xc7;
+             disp_signed_angle(*bal_ang, 2, 7, 1); /* 0x116c */
+         }
+-        if (key == 3 || key == 0x21) { /* 减：下限 2 */
++        if (key == 3 || key == 0x21) { /* 减：先钳 2 再 -1，实际下限 1 */
+             *timeout = 0;
+             if (*bal_ang < 2) *bal_ang = 2;
+             (*bal_ang)--;
+@@ -1880,8 +1880,7 @@ void state_machine(int key)
+        急停、块A/块B、key5/key6、幅值块）。块尾不加 return，直接落入共享超时尾
+        (0xa828-0xa854)：(*TIMEOUT)++; >=0x1388 回主屏。 */
+     if (*MENU == 0x1e) {
+-        volatile uint32_t *t2  = (volatile uint32_t*)0x10001740; /* TIMEOUT2 */
+-        volatile uint32_t *t3  = (volatile uint32_t*)0x10001758; /* TIMEOUT3 */
++        volatile uint32_t *t2  = (volatile uint32_t*)0x10001740; /* TIMEOUT2（TIMEOUT3 0x10001758 在本页未被访问） */
+ 
+         /* key==4 回主菜单 (0x9fb2) */
+         if (key == 4) { *MENU = 1; disp_splash_screen(); *TIMEOUT = 0; return; }
+@@ -2032,13 +2031,14 @@ void state_machine(int key)
+             *V_AMP = *V5D4; *V_AMP2 = *V5D4;
+         }
+ 
+-        /* ---- 共享超时尾 (0xa828-0xa854)：case1E 块尾不加 return 直接落入 ---- */
+-        (*TIMEOUT)++;
+-        if (*TIMEOUT >= 0x1388) {
+-            *TIMEOUT = 0;
+-            *MENU = 1;
+-            disp_splash_screen();
+-        }
+-        return;
++    }
++
++    /* ---- 共享超时尾 (0xa828-0xa854)：合法屏号走各自块尾、非法屏号 0xA058 `b 0xa828`
++     *      也落到这里（原 BIN 0x9FAA 比较后的 `bne 0xa058`），故必须放在 case1E 的 if 之外 ---- */
++    (*TIMEOUT)++;
++    if (*TIMEOUT >= 0x1388) {
++        *TIMEOUT = 0;
++        *MENU = 1;
++        disp_splash_screen();
+     }
+ }
+diff --git a/firmware/src/08_modbus_dispatch.c b/firmware/src/08_modbus_dispatch.c
+index a886cf2..7fb1ab4 100644
+--- a/firmware/src/08_modbus_dispatch.c
++++ b/firmware/src/08_modbus_dispatch.c
+@@ -154,9 +154,11 @@ void modbus_dispatch(void)
+     return;
+   }
+ 
+-  /* 3) 功能码分发：非 0x03/0x06/0x10 → 异常 0x01（0xB408-0xB456） */
++  /* 3) 功能码分发：非 0x03/0x06/0x10 → 异常 0x01（0xB408-0xB456）
++   *    原 BIN 0xB42C 为 `adds r0,#0x80`（加法，非 ORR）：func>=0x80 时按 8 位截断回绕
++   *    （0x83→0x03、0xFF→0x7F）；0xB4C2 的 CRC 异常帧同样是加法。 */
+   if (frame[1] != 0x03 && frame[1] != 0x06 && frame[1] != 0x10) {
+-    modbus_send_exception((uint8_t)(frame[1] | 0x80), 0x01);
++    modbus_send_exception((uint8_t)(frame[1] + 0x80), 0x01);
+     return;
+   }
+ 
+@@ -167,7 +169,7 @@ void modbus_dispatch(void)
+   CRCCOPY[len - 1] = (uint8_t)(crc >> 8);          /* buf_data_1[len-1] = crc 高 */
+   CRCCOPY[len - 2] = (uint8_t)crc;                 /* buf_data_1[len-2] = crc 低 */
+   if (CRCCOPY[len - 1] != frame[len - 1] || CRCCOPY[len - 2] != frame[len - 2]) {
+-    modbus_send_exception((uint8_t)(frame[1] | 0x80), 0x04);
++    modbus_send_exception((uint8_t)(frame[1] + 0x80), 0x04);
+     return;
+   }
+ 
+diff --git a/firmware/src/08_uart3_modbus.c b/firmware/src/08_uart3_modbus.c
+index 08e28a8..689703b 100644
+--- a/firmware/src/08_uart3_modbus.c
++++ b/firmware/src/08_uart3_modbus.c
+@@ -182,7 +182,7 @@ void uart3_rx_timeout_monitor(void)
+   volatile uint8_t *tx_cnt = (volatile uint8_t *)comm_tx_count;  /* 0x10001771 */
+   volatile uint8_t *rx_flag = (volatile uint8_t *)comm_rx_flag;  /* 0x100016FD */
+ 
+-  if ((int8_t)*rx_flag > 0) {                             /* 接收进行中（有符号） */
++  if (*rx_flag != 0) {                                    /* 原厂 ldrb 零扩展后 >0，即非 0 */
+     *comm_quiet_timer = *comm_quiet_timer + 1;
+     if (*comm_quiet_timer > 0x7530) {                     /* 帧超时 */
+       *comm_quiet_timer = 0;
+diff --git a/firmware/src/09_output_stage.c b/firmware/src/09_output_stage.c
+index 93027fa..bfc5a0b 100644
+--- a/firmware/src/09_output_stage.c
++++ b/firmware/src/09_output_stage.c
+@@ -435,7 +435,7 @@ void output_stage(void)
+           if (*DAT_0000efe4 > 50) {
+             *DAT_0000efe4 = 0;
+             *pid_state = 2;
+-            *adc_conv_fb = *adc_conv_fb;    /* 原固件自写回（保持忠实） */
++            *adc_conv_fb = *adc_conv_fb;    /* 原固件自写回（保持忠实） */  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
+             *(volatile uint8_t *)startup_state = 0;
+           }
+         }
+@@ -447,7 +447,7 @@ void output_stage(void)
+           if (*pid_feedback > 10) {
+             *pid_feedback = 0;
+             *pid_state = 0;
+-            *adc_conv_fb = *adc_conv_fb;
++            *adc_conv_fb = *adc_conv_fb;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
+             *(volatile uint8_t *)startup_state = 0;
+           }
+         }
+@@ -458,7 +458,7 @@ void output_stage(void)
+           if (*startup_timer > 0x1770) {
+             *startup_timer = 0x1770;
+           }
+-          *adc_conv_fb = *adc_conv_fb;
++          *adc_conv_fb = *adc_conv_fb;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
+           *(volatile uint8_t *)startup_state = 0;
+         }
+         /* ⑤⑥⑦ 闭环动作（ACTION_path1） */
+@@ -583,7 +583,7 @@ void output_stage(void)
+           if (*DAT_0000efe4 > 50) {
+             *DAT_0000efe4 = 0;
+             *pid_state = 2;
+-            *adc_conv_aux1 = *adc_conv_aux1;
++            *adc_conv_aux1 = *adc_conv_aux1;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
+             *(volatile uint8_t *)startup_state = 0;
+           }
+         }
+@@ -595,7 +595,7 @@ void output_stage(void)
+           if (*pid_feedback > 10) {
+             *pid_feedback = 0;
+             *pid_state = 0;
+-            *adc_conv_aux1 = *adc_conv_aux1;
++            *adc_conv_aux1 = *adc_conv_aux1;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
+             *(volatile uint8_t *)startup_state = 0;
+           }
+         }
+@@ -607,7 +607,7 @@ void output_stage(void)
+           if (*startup_timer > 0x1770) {
+             *startup_timer = 0x1770;
+           }
+-          *adc_conv_aux1 = *adc_conv_aux1;
++          *adc_conv_aux1 = *adc_conv_aux1;  /* 原 BIN 即对同一地址自写（0xEC20/0xEC5C/0xECAE、0xF0B8/0xF0F4/0xF146），勿改成跨槽复制 */
+           *(volatile uint8_t *)startup_state = 0;
+         }
+         /* ⑤⑥⑦ 闭环动作（ACTION_path2：pid_target_set=阈值、aux1=fb） */
+@@ -924,8 +924,8 @@ void EINT3_IRQHandler(void)
+         *(volatile uint32_t *)trigger_accum = 0;
+         *(volatile uint32_t *)trigger_angle = 0;
+         *(volatile uint32_t *)out_setpoint = 0;
++        fio0_pin22_ctrl(0);            /* 原 0xF860/0xF8CC 先 P2.22(FIO0) 后 P2.22(FIO1) */
+         fio1_pin22_ctrl(0);
+-        fio0_pin22_ctrl(0);
+         *(volatile uint32_t *)input_locked = 0;
+         *(volatile uint8_t *)ramp_phase = 0;
+         *(volatile uint32_t *)out_param = *(volatile uint32_t *)out_param | 0x2000;
+@@ -945,8 +945,8 @@ void EINT3_IRQHandler(void)
+         *(volatile uint32_t *)trigger_accum = 0;
+         *(volatile uint32_t *)trigger_angle = 0;
+         *(volatile uint32_t *)out_setpoint = 0;
++        fio0_pin22_ctrl(0);            /* 原 0xF860/0xF8CC 先 P2.22(FIO0) 后 P2.22(FIO1) */
+         fio1_pin22_ctrl(0);
+-        fio0_pin22_ctrl(0);
+         *(volatile uint32_t *)input_locked = 0;
+         *(volatile uint8_t *)ramp_phase = 0;
+         *(volatile uint32_t *)out_param = *(volatile uint32_t *)out_param | 0x2000;

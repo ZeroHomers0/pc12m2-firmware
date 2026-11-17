@@ -1,0 +1,10 @@
+{
+  "base_commit": "2093690814f658b87ce4dfb4fc832d5aeab39116",
+  "sha256": {
+    "pc12m2_orig.bin": "2bc608683992ad6db2d3cb75129bf57ea37d6d681d7c2c0a132e064ebd271bd1",
+    "firmware/firmware.bin": "ea2920f11856cdf9810e6b3c0d17427de429fd4630db3b6762bc94b1e9e728d2",
+    "firmware/src/07_state_machine.c": "fd401212528d80095f31e196af887504ebd1ac28cde24f197bafdc2520eb507d",
+    "tools/verification/verify_firmware_equivalence_12.py": "ce4be7d0cd556156ba50955bb0f4848ba8a8397fa434b70a14d0e6a65a32cdeb",
+    "test/emulation/test_execution_completion.py": "61f225aa55789f66153129239c28a9b84f5a6e34c7e8404c93cd45f012de93cf"
+  }
+}

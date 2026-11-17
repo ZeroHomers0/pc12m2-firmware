@@ -1,0 +1,7 @@
+{
+  "01_startup.c": "7b27b6ea538498c4568cf2de535211e7a6f34862edd1045f482d0acfdbfef175",
+  "07_state_machine.c": "86a2f5077c35637ccdb7472123e7056e11ccc7492e72ca7673ab48d202ad8cea",
+  "08_modbus_dispatch.c": "913e88d2ebd50c16cdbc7ba2660921b0c22d88d9fdf2041a68870adfa2030684",
+  "08_uart3_modbus.c": "722f7087181bd9a0c42de3d8a93f0c8781dc58b65a74d7e1a3c2d5b1dd4e61e0",
+  "09_output_stage.c": "c7f4420e85b6d127e7b172792326bceff422a6ce6d1ca4511727d1f738ded2a5"
+}

@@ -1,0 +1,16 @@
+uart3_tx_byte ready False new False pc 0xab9e returned False
+uart3_tx_byte ready False new True pc 0x98f2 returned False
+uart3_tx_byte ready True new False pc 0x3ff00 returned True
+uart3_tx_byte ready True new True pc 0x3ff00 returned True
+uart3_rx_timeout_monitor ready False new False pc 0x3ff00 returned True
+uart3_rx_timeout_monitor ready False new True pc 0x3ff00 returned True
+uart3_rx_timeout_monitor ready True new False pc 0x3ff00 returned True
+uart3_rx_timeout_monitor ready True new True pc 0x3ff00 returned True
+load_config ready False new False pc 0x1c4c returned False
+load_config ready False new True pc 0x1cf6 returned False
+load_config ready True new False pc 0x1c4c returned False
+load_config ready True new True pc 0x1cf6 returned False
+param_sync_live_to_eeprom ready False new False pc 0x3ff00 returned True
+param_sync_live_to_eeprom ready False new True pc 0x3ff00 returned True
+param_sync_live_to_eeprom ready True new False pc 0x3ff00 returned True
+param_sync_live_to_eeprom ready True new True pc 0x3ff00 returned True

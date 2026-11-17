@@ -1,0 +1,10 @@
+{
+  "current": {
+    "protocol_total": 256,
+    "protocol_bad": [],
+    "monitor_total": 768,
+    "monitor_bad": [],
+    "state_total": 132,
+    "state_bad": []
+  }
+}

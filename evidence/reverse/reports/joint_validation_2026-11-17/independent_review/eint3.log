@@ -1,0 +1,6 @@
+ADDRESSES {'phase_cnt': 268443609, 'debounce_count': 268443610, 'freq_hz': 268443608, 'hold_count': 268443804, 'cfg_word': 268441120, 'input_locked': 268443616, 'out_param': 268441116}
+working 50 OLD [('0x2009c01c', 4194304), ('0x2009c03c', 4194304)] NEW [('0x2009c01c', 4194304), ('0x2009c03c', 4194304)] SRAM_MATCH True
+working 60 OLD [('0x2009c01c', 4194304), ('0x2009c03c', 4194304)] NEW [('0x2009c01c', 4194304), ('0x2009c03c', 4194304)] SRAM_MATCH True
+ADDRESSES {'phase_cnt': 268443609, 'debounce_count': 268443610, 'freq_hz': 268443608, 'hold_count': 268443804, 'cfg_word': 268441120, 'input_locked': 268443616, 'out_param': 268441116}
+before 50 OLD [('0x2009c01c', 4194304), ('0x2009c03c', 4194304)] NEW [('0x2009c03c', 4194304), ('0x2009c01c', 4194304)] SRAM_MATCH True
+before 60 OLD [('0x2009c01c', 4194304), ('0x2009c03c', 4194304)] NEW [('0x2009c03c', 4194304), ('0x2009c01c', 4194304)] SRAM_MATCH True
