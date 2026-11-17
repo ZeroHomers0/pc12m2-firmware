@@ -1,0 +1,4 @@
+modbus index complete {'modbus_read_reg': 1024, 'modbus_write_multi': 1024}
+PID complete {'modbus_read_reg': 1024, 'modbus_write_multi': 1024, 'closed_loop_integral': 1800}
+output complete {'modbus_read_reg': 1024, 'modbus_write_multi': 1024, 'closed_loop_integral': 1800, 'output_stage': 1800}
+{"root": "D:\\code\\LPC1765FBD100\\PC12M-2", "counts": {"modbus_read_reg": 1024, "modbus_write_multi": 1024, "closed_loop_integral": 1800, "output_stage": 1800}, "failures": [], "unicorn": "2.1.4", "original_sha256": "2bc608683992ad6db2d3cb75129bf57ea37d6d681d7c2c0a132e064ebd271bd1", "firmware_sha256": "97b571705b6159b0c8ff732f7b9b5b0db86d4ccb58af0765f9013190c578a475", "script_sha256": "c3f9e2a679efee58c9242f076d4a15a5046670e239162ce891831088713a0f57"}

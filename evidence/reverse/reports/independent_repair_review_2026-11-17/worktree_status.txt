@@ -1,0 +1,9 @@
+ M AGENTS.md
+ M DOCUMENTATION_INDEX.md
+ M firmware/src/12_closed_loop.c
+ M tools/verification/verify_firmware_equivalence_12.py
+?? docs/analysis/INDEPENDENT_REPAIR_REVIEW_2026-11-17.md
+?? evidence/reverse/reports/independent_repair_review_2026-11-17/
+?? test/emulation/test_output_persistent_replay.py
+?? test/emulation/test_pid_signed_boundaries.py
+?? tools/audit/

@@ -1,0 +1,35 @@
+== 编译 ==
+  src/01_startup.c
+  src/02_lcd_display.c
+  src/03_input_debounce.c
+  src/04_i2c.c
+  src/05_adc.c
+  src/06_param_system.c
+  src/07_state_machine.c
+src/07_state_machine.c: In function 'state_machine':
+src/07_state_machine.c:1143:26: warning: this 'else' clause does not guard... [-Wmisleading-indentation]
+ 1143 |                          else disp_string(0x5f98, 0, 0xb, 0); break;
+      |                          ^~~~
+src/07_state_machine.c:1143:63: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'else'
+ 1143 |                          else disp_string(0x5f98, 0, 0xb, 0); break;
+      |                                                               ^~~~~
+src/07_state_machine.c:1145:26: warning: this 'else' clause does not guard... [-Wmisleading-indentation]
+ 1145 |                          else disp_string(0x5f98, 1, 0xb, 0); break;
+      |                          ^~~~
+src/07_state_machine.c:1145:63: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'else'
+ 1145 |                          else disp_string(0x5f98, 1, 0xb, 0); break;
+      |                                                               ^~~~~
+  src/08_modbus_dispatch.c
+  src/08_uart3_modbus.c
+  src/09_output_stage.c
+  src/10_relay_led.c
+  src/11_auth.c
+  src/12_closed_loop.c
+  src/13_gpio_init.c
+  src/crc16_table.c
+  src/strpool.c
+== 链接 ==
+== 产物 ==
+   text	   data	    bss	    dec	    hex	filename
+  65168	   6312	   2192	  73672	  11fc8	firmware.elf
+OK: firmware.elf / firmware.hex / firmware.bin

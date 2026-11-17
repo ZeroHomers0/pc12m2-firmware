@@ -207,6 +207,7 @@ def verify_relay_direct():
                 uc.hook_add(UC_HOOK_MEM_WRITE, cb, begin=0x2009C000, end=0x2009CFFF)
                 uc.reg_write(UC_ARM_REG_R0, level)
                 uc.emu_start(entry | 1, STOP, count=500)
+                assert uc.reg_read(UC_ARM_REG_PC) == STOP, f"relay execution incomplete: {name}"
                 traces.append(trace)
             assert traces[0] == traces[1], "relay A/B mismatch %s(level=%d)" % (name, level)
     print("RELAY_DIRECT: PASS funcs=4 levels=2")

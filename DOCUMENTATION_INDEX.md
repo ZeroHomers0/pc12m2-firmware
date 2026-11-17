@@ -77,3 +77,5 @@
 ## 差异消除实施方案（2026-11-17）
 
 [PC6M／PC12M 固件逻辑差异消除与缺陷修复实施方案](docs/project/FIRMWARE_EQUIVALENCE_REMEDIATION_PLAN_2026-11-17.md)：以证据修正行为和验证失真，保留认证放行与已授权定制，不以删除代码或证据完成任务。该文件为实施设计，仅做代码/模拟验证，不包含实机验证或烧写，不代表已完成全量验收。
+
+- [双项目近期修复独立复核](docs/analysis/INDEPENDENT_REPAIR_REVIEW_2026-11-17.md)

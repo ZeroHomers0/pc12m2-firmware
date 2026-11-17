@@ -1,0 +1,2 @@
+OUTPUT_PERSISTENT_REPLAY channel=0 ticks=240 actual_pid_calls=20 PASS
+OUTPUT_PERSISTENT_REPLAY channel=1 ticks=240 actual_pid_calls=20 PASS

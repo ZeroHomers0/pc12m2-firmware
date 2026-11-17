@@ -48,28 +48,30 @@ int closed_loop_integral(int setpoint,int feedback,uint32_t coef_a,uint32_t coef
   *DAT_00010eb0 = *DAT_00010eb8;           /* 上次误差滚动 */
   *DAT_00010eb8 = *pid_target - *pid_actual;   /* 当前误差 */
   p_pid = pid_err_abs;                    /* p_pid → 误差值寄存器 0x10002118 */
-  if (*pid_actual <= *pid_target) {
+  /* 原 BIN 0x10ADE/0x10B40 使用 BLT/BGE：给定/反馈及死区比较均为有符号；
+   * 差值仍用 uint32_t 运算保留原机 32 位回绕。 */
+  if ((int32_t)*pid_actual <= (int32_t)*pid_target) {
     *pid_err_abs = *pid_target - *pid_actual; /* 误差（正值路径） */
-    if ((int)(uint)*g_cl_thresh_hi <= *p_pid) {     /* 误差 ≥ 死区上界 */
+    if ((int32_t)*g_cl_thresh_hi <= (int32_t)*p_pid) {     /* 误差 ≥ 死区上界 */
       *pid_gain_sel = (uint)*g_cl_gain_big;
     }
-    if ((*pid_err_abs < (int)(uint)*g_cl_thresh_hi) && ((int)(uint)*g_cl_thresh_lo < *pid_err_abs)) {
+    if (((int32_t)*pid_err_abs < (int32_t)*g_cl_thresh_hi) && ((int32_t)*g_cl_thresh_lo < (int32_t)*pid_err_abs)) {
       *pid_gain_sel = (uint)*g_cl_gain_mid;         /* 死区上界内 */
     }
-    if (*pid_err_abs <= (int)(uint)*g_cl_thresh_lo) {
+    if ((int32_t)*pid_err_abs <= (int32_t)*g_cl_thresh_lo) {
       *pid_gain_sel = (uint)*g_cl_gain_small;         /* 误差 ≤ 死区下界 */
     }
   }
   p_pid = pid_err_abs;                    /* p_pid → 误差值寄存器（负值路径） */
-  if (*pid_target < *pid_actual) {
+  if ((int32_t)*pid_target < (int32_t)*pid_actual) {
     *pid_err_abs = *pid_actual - *pid_target; /* 误差（负值路径，绝对值） */
-    if ((int)(uint)*g_cl_thresh_hi <= *p_pid) {
+    if ((int32_t)*g_cl_thresh_hi <= (int32_t)*p_pid) {
       *pid_gain_sel = (uint)*g_cl_gain_big;
     }
-    if ((*pid_err_abs < (int)(uint)*g_cl_thresh_hi) && ((int)(uint)*g_cl_thresh_lo < *pid_err_abs)) {
+    if (((int32_t)*pid_err_abs < (int32_t)*g_cl_thresh_hi) && ((int32_t)*g_cl_thresh_lo < (int32_t)*pid_err_abs)) {
       *pid_gain_sel = (uint)*g_cl_gain_mid;
     }
-    if (*pid_err_abs <= (int)(uint)*g_cl_thresh_lo) {
+    if ((int32_t)*pid_err_abs <= (int32_t)*g_cl_thresh_lo) {
       *pid_gain_sel = (uint)*g_cl_gain_small;
     }
   }
