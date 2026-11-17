@@ -39,8 +39,11 @@
 | 菜单状态机 | `docs/analysis/STATE_MACHINE_ANALYSIS.md` |
 | 菜单参数 | `docs/analysis/MENU_PARAMETER_MAPPING.md` |
 | 第三轮逐模块精读差异与修复（2026-11-17） | `docs/analysis/PC12M2_AUDIT_FIXES_2026-11-17.md` |
+| 快速复核：立即数差分与覆盖门禁（2026-11-17） | `docs/analysis/PC12M2_FAST_REVIEW_2026-11-17.md` |
 
 - **2026-11-17 通信校验越界绘制**：按原 BIN 0x8840/0x8852、0x632C/0x6340 把通信校验的 if/else 改为相等判断（`test/emulation/test_enum_range_12.py` 22/22）；同时修正显示探针 TIMEOUT3 预置值导致的空跑比较，按 0xFA 重跑逐屏显示矩阵。构建 text 65156、SHA `EA2920F1…9E728D2`；未烧写。
+
+- **2026-11-17 快速复核**：比较类立即数差集 54 条全部定性为等价改写或数据区误判，未发现新行为差异；覆盖门禁发现原机 6 处跨槽反馈复制原有矩阵仅命中 2 处，已新增 `test/emulation/test_feedback_copy_12.py` 补齐至 6/6（回归 8/8→9/9）。详见 `docs/analysis/PC12M2_FAST_REVIEW_2026-11-17.md`。未改业务源码、未烧写。
 
 ## 十二相实机验证
 
@@ -64,3 +67,9 @@
 
 六相实验记录和六相反汇编不在本仓库维护；引入的六相硬件参考资料统一放在
 `evidence/hardware/`，不得直接当作十二相板级事实。
+
+- [2026-11-17 最新提交联合复核与执行完成门禁](docs/analysis/JOINT_VALIDATION_2026-11-17.md)
+
+## 差异消除实施方案（2026-11-17）
+
+[PC6M／PC12M 固件逻辑差异消除与缺陷修复实施方案](docs/project/FIRMWARE_EQUIVALENCE_REMEDIATION_PLAN_2026-11-17.md)：以证据修正行为和验证失真，保留认证放行与已授权定制，不以删除代码或证据完成任务。该文件为实施设计，仅做代码/模拟验证，不包含实机验证或烧写，不代表已完成全量验收。
