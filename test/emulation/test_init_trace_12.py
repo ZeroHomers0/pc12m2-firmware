@@ -48,7 +48,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 sys.path.insert(0, os.path.join(ROOT, "tools", "verification"))
 
 from unicorn import UC_HOOK_CODE, UC_HOOK_MEM_WRITE  # noqa: E402
-from unicorn.arm_const import UC_ARM_REG_LR, UC_ARM_REG_PC, UC_ARM_REG_R0  # noqa: E402
+from unicorn.arm_const import (UC_ARM_REG_LR, UC_ARM_REG_PC, UC_ARM_REG_R0,  # noqa: E402
+                              UC_ARM_REG_SP)
 import verify_firmware_equivalence_12 as V  # noqa: E402
 
 # 辅助函数：原机入口 -> 新 ELF 符号名。执行时直接返回到调用点（PC <- LR），
@@ -58,12 +59,21 @@ SKIP_OLD = {0x758: "Delay", 0x8FA: "disp_cmd", 0x942: "disp_clear",
 SKIP_NEW_NAMES = tuple(SKIP_OLD.values())
 
 # 新 ELF 用全局指针槽间接取 FIO 基址（原机用立即数池直取），需预置成真实值
+# long_delay 是 6000 × 1000 双层空转（原机 0x598：内层 0x5AA 计 [sp,#0]、
+# 外层 0x5BE movw #6000），实跑超 3000 万指令。新旧 ELF 的内外层栈偏移正好相反
+# （新 ELF 内层 0x6FA 计 [sp,#4]、外层 0x6DE 计 [sp,#0]），故按 is_new 分开。
+LONG_DELAY_OLD = 0x598
+LONG_DELAY_INNER_BODY = {False: 0x5AA, True: 0x6FA}
+LONG_DELAY_INNER_OFF = {False: 0, True: 4}
+LONG_DELAY_INNER_END = 999
+
 FIO_PTR_SLOT = 0x2007D810
 FIO_BASE = 0x2009C000
 
 # (原机入口, 新 ELF 符号, 名称, 入参)
 TARGETS = (
     (0x0440, "SystemInit", "SystemInit", ()),
+    (LONG_DELAY_OLD, "long_delay", "long_delay", ()),
     (0x0248, "timer0_init", "timer0_init", ()),
     (0xE576, "timer1_init", "timer1_init", ()),
     (0xE598, "timer2_init", "timer2_init", ()),
@@ -155,7 +165,21 @@ def _observe(is_new, entry, args, hw_model, max_insn=3_000_000):
     skip = _skip_set(is_new)
     pokes = []
 
+    is_long = entry in (LONG_DELAY_OLD, V.SYMS.get("long_delay"))
+    inner_body = LONG_DELAY_INNER_BODY[is_new]
+    inner_off = LONG_DELAY_INNER_OFF[is_new]
+
+    # long_delay 只空转、不写任何外设或 SRAM，唯一可观察量就是「外层跑了几轮」。
+    # 不把迭代次数本身纳入比较，把 6000 改成 5999 也抓不到（实测会漏）。
+    long_iters = [0]
+
     def code_hook(m, address, size, user):
+        if is_long and address == inner_body:
+            long_iters[0] += 1
+            # 内层计数器直接置到终值，内层只再跑一轮退出，外层仍真实跑满 6000 次
+            sp = m.reg_read(UC_ARM_REG_SP)
+            m.mem_write(sp + inner_off, struct.pack("<I", LONG_DELAY_INNER_END))
+            return
         if address in skip:
             m.reg_write(UC_ARM_REG_PC, m.reg_read(UC_ARM_REG_LR))
 
@@ -177,6 +201,9 @@ def _observe(is_new, entry, args, hw_model, max_insn=3_000_000):
     except AssertionError:
         finished = False
     final = [bytes(uc.mem_read(base, size)) for base, size in PAGES]
+    if is_long:
+        # 用一条伪写迹承载迭代次数，让它参与既有的写序列相等比较
+        pokes.append((0xFFFFFFF0, 4, long_iters[0]))
     return finished, pokes, final
 
 
@@ -234,7 +261,21 @@ def _observe_sram(is_new, entry, arg, presets, max_insn=3_000_000):
     uc.reg_write(UC_ARM_REG_R0, arg)
     skip = _skip_set(is_new)
 
+    is_long = entry in (LONG_DELAY_OLD, V.SYMS.get("long_delay"))
+    inner_body = LONG_DELAY_INNER_BODY[is_new]
+    inner_off = LONG_DELAY_INNER_OFF[is_new]
+
+    # long_delay 只空转、不写任何外设或 SRAM，唯一可观察量就是「外层跑了几轮」。
+    # 不把迭代次数本身纳入比较，把 6000 改成 5999 也抓不到（实测会漏）。
+    long_iters = [0]
+
     def code_hook(m, address, size, user):
+        if is_long and address == inner_body:
+            long_iters[0] += 1
+            # 内层计数器直接置到终值，内层只再跑一轮退出，外层仍真实跑满 6000 次
+            sp = m.reg_read(UC_ARM_REG_SP)
+            m.mem_write(sp + inner_off, struct.pack("<I", LONG_DELAY_INNER_END))
+            return
         if address in skip:
             m.reg_write(UC_ARM_REG_PC, m.reg_read(UC_ARM_REG_LR))
 
