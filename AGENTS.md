@@ -52,7 +52,7 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
 
 - **2026-11-13 菜单与背光同步**（用户明确授权同时修改六相、十二相）：菜单改为αmin限制/αmax限制（min/max为下标）、主从移相、相位补偿；控制方式选项改为远程/本地/面板。字形集中在 `02_lcd_display.c`，α全高等比例，α+紧凑下标总宽仍32像素。仅背光无操作阈值改为10000拍（约20秒），其它菜单超时不变。
 - 十二相地址由本仓原BIN核实；生成入口 `tools/generation/generate_string_pool_12.py` 的 `MENU_TEXT_OVERRIDES`，兼容六相语义字符串头文件及缺省stub文件；产品型号保持PC12M-2。旧型号/误称仅清理活动文本，原BIN和evidence原始证据保留。
-- 当前构建：`text 65168 / data 6312 / bss 2192`，`firmware.bin` 72040 B，SHA-256 `0832CC36133114D16BE760A66E8E52438BAAA7262090CE8C9DF823C7CE37018B`（2026-11-17 软件复核修正main的EINT初始化顺序后）；本次尚未烧写/实机确认。当前回归29/29、原BIN A/B、菜单和背光专项证据见 `evidence/reverse/reports/software_revalidation_2026-11-17/`；模块数以同批最终报告为准。历史状态机14688例记录见下方对应日期条目。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
+- 当前构建：`text 65168 / data 6312 / bss 2192`，`firmware.bin` 72040 B，SHA-256 `0832CC36133114D16BE760A66E8E52438BAAA7262090CE8C9DF823C7CE37018B`（2026-11-17 软件复核修正main的EINT初始化顺序后）；本次尚未烧写/实机确认。当前回归31/31、原BIN A/B、菜单和背光专项证据见 `evidence/reverse/reports/software_revalidation_2026-11-17/`；模块数以同批最终报告为准。历史状态机14688例记录见下方对应日期条目。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
 
 - **2026-11-14 菜单标题调整**：在 `firmware-menu-display-2026-11-13` 分支将相位补偿改为同步校准，集中字库新增同/步字形。菜单与背光专项、十二相原BIN完整A/B验证全部通过（`evidence/reverse/reports/menu_sync_calibration_ab_2026-11-14.log`）；本次未烧写。
 
@@ -144,3 +144,5 @@ python tools/verification/verify_firmware_equivalence_12.py
 另行安排，不属于当前收尾基线。上板安全前提（断开市电/门极/功率负载、仅限流控制电）不变。
 
 - **2026-11-17 软件复核第二批**：真实main调用链确认原BIN 0x600/0x604/0x608为EINT1→EINT2→EINT3，修复源码1→3→2及错误注释，保留修复前有效失败。新增复位链、264拍主循环、持久EEPROM/断电恢复、I2C位级、UART连续帧、轮询等待、TIMER1全字节、失锁恢复、8个ISR抢占窗口、10份密码延时与缺陷注入验证，完整原BIN A/B通过。条件分支候选1983个，双出口908、单出口626、未命中449，不代表全部可达路径等价或方案S0–S7全部验收。详见 `docs/analysis/SOFTWARE_REVALIDATION_2026-11-17.md`；未烧写/实机，本批提交号以Git历史为准。
+
+- **2026-11-17 输出/保护复核第三批**：新增输出级边界11494例（5378例实际进入PID）、284条每条5帧的连续故障封锁/输入恢复/再启动拒绝链。原输出级150个条件分支累计双出口67→150，全部实际命中。未发现新业务差异，业务源码与固件哈希不变；当前回归31/31，完整原BIN A/B证据见 `evidence/reverse/reports/output_protection_audit_2026-11-17/`。报告 `docs/analysis/OUTPUT_PROTECTION_AUDIT_2026-11-17.md` 明确150/150不代表全程序/全参数等价，状态机、通信和外设模型缺口继续保留；未烧写/实机。

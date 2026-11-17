@@ -1,0 +1,1 @@
+PROTECTION_SHUTDOWN_CHAIN scenarios=284 five_persistent_frames_each actual_safety_writes+fault_latch+restart_rejected PASS
