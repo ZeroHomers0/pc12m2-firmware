@@ -56,6 +56,9 @@ SCAN_FILES = [f for f in SCAN_FILES if Path(f).is_file() and not f.endswith("str
 # 12p 逆向新增渲染函数（sm4/sm5/sm6 等）里的 disp_string 实参是 **12p 地址**（6p 源没有）。
 # 这些地址须直接并入 addrs12，不再走 6p→12p 内容匹配。
 SCAN_FILES_12 = [str(p) for p in (ROOT / "firmware" / "src").glob("*.c")]
+# 12p 把 freq_adjust_sync 从 src 迁到了 firmware/stub.c，其 disp_string(0xa98c)
+# 也必须进池，否则 strpool_map 未命中该地址，会把新 ELF 的代码字节当字符串渲染。
+SCAN_FILES_12 += [str(ROOT / "firmware" / "stub.c")]
 SCAN_FILES_12 = [f for f in SCAN_FILES_12 if not f.endswith("strpool.c")]
 
 # ── 1. 6p 实参清单 ─────────────────────────────────────────────
