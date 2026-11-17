@@ -1,0 +1,1 @@
+BACKLIGHT_TIMEOUT: PASS old=5000/new=10000 ticks; boundary and key reset 28 cases

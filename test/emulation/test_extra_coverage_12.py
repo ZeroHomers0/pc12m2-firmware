@@ -336,7 +336,7 @@ def _dispatch_run(is_new, frame, slave=0x01, gain_b=0x56):
         txb = bytes(uc.mem_read(TXBUF, max(n, 0)))
         return ("OK", n, txb, snapshot(uc), tuple(i2c_writes))
     except UcError as ex:
-        return ("UC_ERR", ex.errno)
+        raise AssertionError(f'通信执行发生未解释的模拟异常，禁止将双方异常判为等价：{ex.errno}') from ex
 
 
 def test_modbus_dispatch():

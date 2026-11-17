@@ -1,0 +1,9 @@
+MAIN_CALL_DIFF 14 eint2_init eint3_init
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_main_software_chain.py", line 104, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_main_software_chain.py", line 101, in main
+    assert a==b,('main������',[(i,len(x),len(y)) for i,(x,y) in enumerate(zip(a,b)) if x!=y])
+           ^^^^
+AssertionError: ('main������', [(0, 533, 533)])

@@ -1,0 +1,2 @@
+MUTATION_DETECTED i2c_write_byte 0x1d9a imm 8 -> 7 PASS
+MUTATION_DETECTED TIMER1_IRQHandler 0xbdca imm 54 -> 55 PASS

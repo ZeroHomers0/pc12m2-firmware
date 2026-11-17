@@ -223,11 +223,11 @@ void stub_ret(void)
  * 启动序列（对应反汇编 0x5CC..0x620 调用序）：
  *   SystemInit → pin_config → gpio1_init → long_delay → timer0_init →
  *   gpio_inputs_dir_init → i2c_gpio_init → adc_init → load_config → pin_config →
- *   gpio2_init → timer1_init → timer2_init → eint1_init → eint3_init → eint2_init →
+ *   gpio2_init → timer1_init → timer2_init → eint1_init → eint2_init → eint3_init →
  *   uart3_init → long_delay → disp_splash_screen → auth_verify_loop → wdt_init(200)
  * 差异（vs 6p 0x5cc）：
  *   · 无 gpio0_input_init / read_input_p02（12p 无对应函数，见 P3 DELETE）
- *   · EINT 使能顺序：eint1 → eint3 → eint2（6p 为 eint1,eint2,eint3）
+ *   · EINT 使能顺序：eint1 → eint2 → eint3（原0x600/0x604/0x608；与6p相同）
  *   · 认证改为 auth_verify_loop(0x10A38)：循环调 0x108D2/0x108DC 直至
  *     auth_pass_flag(0x100020C0)==0 通过或重试计数(0x100020C8)>=5；
  *     **0=通过、非 0=未通过**（与 6p 0x10000750 反逻辑）
@@ -260,8 +260,8 @@ void main(void)
   timer1_init();                /* bl 0xE576 */
   timer2_init();                /* bl 0xE598 */
   eint1_init();                 /* bl 0xE5CE */
-  eint3_init();                 /* bl 0xE62A */
-  eint2_init();                 /* bl 0xE668 */
+  eint2_init();                 /* 原 BIN 0x604 bl 0xE62A：EINT2/IRQ20 */
+  eint3_init();                 /* 原 BIN 0x608 bl 0xE668：EINT3/IRQ21 */
   uart3_init();                 /* bl 0xA994 */
   long_delay();                 /* bl 0x598 */
   disp_splash_screen();         /* bl 0x40B0 */

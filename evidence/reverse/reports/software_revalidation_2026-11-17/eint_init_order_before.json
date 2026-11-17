@@ -1,0 +1,9 @@
+{
+  "source_sha256": "7b27b6ea538498c4568cf2de535211e7a6f34862edd1045f482d0acfdbfef175",
+  "firmware_sha256": "97b571705b6159b0c8ff732f7b9b5b0db86d4ccb58af0765f9013190c578a475",
+  "baseline_head": "f42475c161a74aefe1332d36b3549564c9197947",
+  "original_call_sites": [
+    "0x604 BL 0xE62A (EINT2/IRQ20)",
+    "0x608 BL 0xE668 (EINT3/IRQ21)"
+  ]
+}

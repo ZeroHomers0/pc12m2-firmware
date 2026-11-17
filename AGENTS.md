@@ -52,7 +52,7 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
 
 - **2026-11-13 菜单与背光同步**（用户明确授权同时修改六相、十二相）：菜单改为αmin限制/αmax限制（min/max为下标）、主从移相、相位补偿；控制方式选项改为远程/本地/面板。字形集中在 `02_lcd_display.c`，α全高等比例，α+紧凑下标总宽仍32像素。仅背光无操作阈值改为10000拍（约20秒），其它菜单超时不变。
 - 十二相地址由本仓原BIN核实；生成入口 `tools/generation/generate_string_pool_12.py` 的 `MENU_TEXT_OVERRIDES`，兼容六相语义字符串头文件及缺省stub文件；产品型号保持PC12M-2。旧型号/误称仅清理活动文本，原BIN和evidence原始证据保留。
-- 当前构建：`text 65168 / data 6312 / bss 2192`，`firmware.bin` 72040 B，SHA-256 `97B571705B6159B0C8FF732F7B9B5B0DB86D4CCB58AF0765F9013190C578A475`（2026-11-17 独立复核PID有符号比较修复后）；本次尚未烧写/实机确认。当前回归14/14、十二相原BIN完整A/B、菜单16项正反显与背光28例通过；本轮日志见 `evidence/reverse/reports/independent_repair_review_2026-11-17/`。历史状态机14688例记录见下方对应日期条目。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
+- 当前构建：`text 65168 / data 6312 / bss 2192`，`firmware.bin` 72040 B，SHA-256 `0832CC36133114D16BE760A66E8E52438BAAA7262090CE8C9DF823C7CE37018B`（2026-11-17 软件复核修正main的EINT初始化顺序后）；本次尚未烧写/实机确认。当前回归29/29、原BIN A/B、菜单和背光专项证据见 `evidence/reverse/reports/software_revalidation_2026-11-17/`；模块数以同批最终报告为准。历史状态机14688例记录见下方对应日期条目。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
 
 - **2026-11-14 菜单标题调整**：在 `firmware-menu-display-2026-11-13` 分支将相位补偿改为同步校准，集中字库新增同/步字形。菜单与背光专项、十二相原BIN完整A/B验证全部通过（`evidence/reverse/reports/menu_sync_calibration_ab_2026-11-14.log`）；本次未烧写。
 
@@ -142,3 +142,5 @@ python tools/verification/verify_firmware_equivalence_12.py
 换板复验：按 `操作文档.md` 重建并烧写，实机冒烟核对 LCD/按键/通信即可；如需补充分级波形量化
 （十二路空载触发、reg44/45 标定、低压/带载），按 `docs/w8/W8_HARDWARE_TEST_2026-08-31.md` 规范
 另行安排，不属于当前收尾基线。上板安全前提（断开市电/门极/功率负载、仅限流控制电）不变。
+
+- **2026-11-17 软件复核第二批**：真实main调用链确认原BIN 0x600/0x604/0x608为EINT1→EINT2→EINT3，修复源码1→3→2及错误注释，保留修复前有效失败。新增复位链、264拍主循环、持久EEPROM/断电恢复、I2C位级、UART连续帧、轮询等待、TIMER1全字节、失锁恢复、8个ISR抢占窗口、10份密码延时与缺陷注入验证，完整原BIN A/B通过。条件分支候选1983个，双出口908、单出口626、未命中449，不代表全部可达路径等价或方案S0–S7全部验收。详见 `docs/analysis/SOFTWARE_REVALIDATION_2026-11-17.md`；未烧写/实机，本批提交号以Git历史为准。

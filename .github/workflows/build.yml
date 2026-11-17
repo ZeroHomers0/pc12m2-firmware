@@ -28,7 +28,7 @@ jobs:
 
       # 测试依赖（Unicorn 执行级测试需要）
       - name: Install Python deps
-        run: pip install unicorn
+        run: pip install unicorn "capstone>=5,<6"
 
       # 构建固件：产物 firmware.elf / firmware.hex / firmware.bin / firmware.map
       # 必须先构建——Unicorn 测试加载 firmware.elf、verify 模块 import 时读 firmware.bin。

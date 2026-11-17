@@ -1,0 +1,23 @@
+
+=== test_emulation_test_contract_mutation_detection ===
+MUTATION_DETECTED i2c_write_byte 0x1d9a imm 8 -> 7 PASS
+MUTATION_DETECTED TIMER1_IRQHandler 0xbdca imm 54 -> 55 PASS
+[run_tests] test_emulation_test_contract_mutation_detection: OK
+
+=== test_emulation_test_i2c_bit_contract ===
+I2C_BIT_CONTRACT cases=768 ACK/NACK+all256values+GPIO_STR_trace PASS
+[run_tests] test_emulation_test_i2c_bit_contract: OK
+
+=== test_emulation_test_interrupt_preemption_contract ===
+INTERRUPT_PREEMPTION cases=8 shared-store before/after real-ISR context-save/restore PASS
+[run_tests] test_emulation_test_interrupt_preemption_contract: OK
+
+=== test_emulation_test_sync_phase_contract ===
+SYNC_PHASE_CONTRACT cases=2976 phase-byte+state/frequency/scale bounds + 2x70-event loss/recovery PASS
+[run_tests] test_emulation_test_sync_phase_contract: OK
+
+=== test_emulation_test_timer1_byte_domain ===
+TIMER1_BYTE_DOMAIN cases=9216 full-scan-byte+frequency/mode/counter-bounds+STR-trace PASS
+[run_tests] test_emulation_test_timer1_byte_domain: OK
+
+[run_tests] 模块通过 5/5
