@@ -1,0 +1,13 @@
+
+=== test_emulation_test_execution_completion ===
+EXECUTION_COMPLETION: PASS loop/return + original/ELF UART blocked/ready
+[run_tests] test_emulation_test_execution_completion: OK
+
+=== test_emulation_test_terminal_event_contract ===
+unrelated-checkout-name SCAN_RUN_STOP 1176 mismatches 0 examples []
+unrelated-checkout-name DEBOUNCE 88 mismatches 0
+[run_tests] test_emulation_test_terminal_event_contract: OK
+
+[run_tests] 模块通过 2/2
+LOADED_IMAGE_ATTESTATION {'original_BIN': 1268, 'current_BIN': 1266, 'current_ELF_sections': 0} exit 0
+ARBITRARY_CHECKOUT_NAME actual_original_current_AB PASS

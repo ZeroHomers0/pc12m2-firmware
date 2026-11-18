@@ -2,7 +2,7 @@
 def main():
     import sys,struct,itertools
     from pathlib import Path
-    root=Path(__file__).resolve().parents[2];is12=root.name=='PC12M-2';sys.path.insert(0,str(root/'tools/verification'))
+    root=Path(__file__).resolve().parents[2];is12=(root/'pc12m2_orig.bin').exists();sys.path.insert(0,str(root/'tools/verification'))
     V=__import__('verify_firmware_equivalence_12' if is12 else 'verify_firmware_equivalence')
     modeaddr=0x1000164e if is12 else 0x10001656
     old=0x1976 if is12 else 0x19c6

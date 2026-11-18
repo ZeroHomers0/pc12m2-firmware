@@ -1,0 +1,22 @@
+{
+  "project": "PC12M-2",
+  "head_before_fix": "8b116d03d0e3c8cea992363ca9e8657a14b50aab",
+  "first_12_ci_run": 44228951012,
+  "test_status": "PASS under arbitrary checkout name",
+  "business_firmware_changed": false,
+  "hardware_actions": false,
+  "payload_sha256": {
+    "test/emulation/test_execution_completion.py": "e01ac806dd5e3a5d3fba1f7425007bec4e204cc5d27053f9f1ece5692cb58bea",
+    "test/emulation/test_terminal_event_contract.py": "6017c78330cd268a4fff100111baf010db22abc27efca61e85bafa6db012a899",
+    "docs/analysis/CI_CHECKOUT_PORTABILITY_2026-11-18.md": "a16d0794451a804d2081692a2a99286a4da648048aa6aa1380bdfcf64a4a10d0",
+    "AGENTS.md": "d21421cefcd1a09ab6e613564751142692ef20a950a74313d0bd851657a4c840",
+    "DOCUMENTATION_INDEX.md": "4ca45ae1a5f3446f6ce48df7a25ea6df03faf1c7c9de84fad03bc0d2f7d771a8"
+  },
+  "evidence_sha256": {
+    ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+    "checkout_portability.log": "e3bb85aa1114fba928eae8d16a8dd0f515889dd75e4519a0e2304aa4617cfda7",
+    "checkout_portability_loaded_images.json": "0303e299c7a3d5e1b9e5fd8b78de39bc6a41a4b79e4bfb9393376e51584fe39f",
+    "pc12_first_ci_failure.zip": "98bb918c7b415c54ca4d98d036c6793f75638c4deb85948fc5eb662841d7709a",
+    "pc12_first_ci_job.log": "f60066333c876ac7616748c560d921565a680c85044f3b06ebccb5e4b21e0e5c"
+  }
+}

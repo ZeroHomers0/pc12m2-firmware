@@ -3,7 +3,8 @@ import sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools/verification'))
-V = __import__('verify_firmware_equivalence_12' if ROOT.name == 'PC12M-2' else 'verify_firmware_equivalence')
+IS12 = (ROOT / 'pc12m2_orig.bin').exists()
+V = __import__('verify_firmware_equivalence_12' if IS12 else 'verify_firmware_equivalence')
 
 def expect_incomplete(uc, entry, budget):
     try:
@@ -21,7 +22,7 @@ def main():
     u.mem_write(0x3FE00, b'\x70\x47')
     V.run(u, 0x3FE00, max_insn=32)
     for new in (False, True):
-        entry = V.SYMS['uart3_tx_byte'] if new else (0xAB7C if ROOT.name == 'PC12M-2' else 0xAE0C)
+        entry = V.SYMS['uart3_tx_byte'] if new else (0xAB7C if IS12 else 0xAE0C)
         u = V.machine(new)
         u.mem_write(0x4009C014, b'\0'*4)
         expect_incomplete(u, entry, 2000)
