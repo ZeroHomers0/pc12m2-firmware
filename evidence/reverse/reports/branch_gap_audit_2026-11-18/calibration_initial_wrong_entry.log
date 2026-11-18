@@ -1,0 +1,20 @@
+BRANCH_GAP_BATCH {'candidate_branches': 1983, 'both': 1746, 'one': 191, 'unhit': 46} => {'candidate_branches': 1983, 'both': 1820, 'one': 145, 'unhit': 18} exit 1
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 53, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 39, in main
+    assert importlib.import_module(name).main()==0,name
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\calibration_state_gap_probe.py", line 61, in main
+    compare(('frequency',spec),frequency(False,*spec),frequency(True,*spec));count+=1
+                               ~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\calibration_state_gap_probe.py", line 29, in frequency
+    V.run(u,V.SYMS['freq_adjust_sync'] if new else (0xa994 if IS12 else 0xab48),max_insn=300000)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\verification\verify_firmware_equivalence_12.py", line 139, in run
+    uc.emu_start(entry | 1, 0, count=max_insn)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\software\Python\Python313\Lib\site-packages\unicorn\unicorn_py3\unicorn.py", line 766, in emu_start
+    raise UcError(status)
+unicorn.unicorn_py3.unicorn.UcError: Invalid memory read (UC_ERR_READ_UNMAPPED)

@@ -1,0 +1,7 @@
+FINAL_GATE build_repeat PASS
+FINAL_GATE menu_custom PASS
+FINAL_GATE backlight_custom PASS
+FINAL_GATE startup_adaptation PASS
+FINAL_GATE bounds_auth_before_fix PASS
+FINAL_GATE five_negative_controls PASS
+FINAL_GATE updated_regression PASS

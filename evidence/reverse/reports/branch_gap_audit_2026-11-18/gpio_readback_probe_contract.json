@@ -1,0 +1,13 @@
+{
+  "project": "PC12M-2",
+  "schedules": 156,
+  "original_GPIO_reads": 1494,
+  "leaf_cases": 18,
+  "readback_probes": [
+    0,
+    4294967295,
+    1520786085
+  ],
+  "hardware_WO_read_behavior_proven": false,
+  "status": "PASS"
+}

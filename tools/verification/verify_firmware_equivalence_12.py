@@ -683,7 +683,7 @@ def _mask_fio1_p23(trace):
 
 
 def verify_display_full_exec():
-    """真实执行 disp_*（strpool_map + 字符渲染），比对 GPIO 写迹 + SRAM。"""
+    """真实执行disp_*；全位CODE GPIO写迹与SRAM严格比较，不使用历史位掩码。"""
     for menu, menu2, menu3, t3 in ((0x63, 5, 1, 0xfa), (0x63, 0xa, 1, 0x1f4),
                                    (0x04, 0, 1, 0x1f4), (0x04, 5, 1, 0xfa)):
         traces, states = [], []
@@ -706,14 +706,17 @@ def verify_display_full_exec():
             uc.mem_write(0x10001724, bytes((menu, menu2, menu3)))
             uc.mem_write(0x10001758, struct.pack("<I", t3))
             _seed_display_items(uc)
-            trace = []
-            cb = lambda machine, access, address, size, value, user, t=trace: t.append((address, size, value))
-            uc.hook_add(UC_HOOK_MEM_WRITE, cb, begin=0x2009C000, end=0x2009CFFF)
+            # 全位CODE写迹，不安装会影响FIO执行的MEM_WRITE钩子，不mask P1.23。
+            import sys
+            sys.path.insert(0, str(ROOT / "test/support"))
+            from mmio_code_trace import StoreTrace
+            observer = StoreTrace(uc, ((0x2009C000, 0x2009C100),))
+            trace = observer.events
             run(uc, entry, max_insn=4_000_000)
             traces.append(trace)
             states.append(snapshot(uc))
         label = (hex(menu), menu2, menu3, hex(t3))
-        assert _mask_fio1_p23(traces[0]) == _mask_fio1_p23(traces[1]), \
+        assert traces[0] == traces[1], \
             "disp full-exec GPIO mismatch %r: %d vs %d" % (label, len(traces[0]), len(traces[1]))
         assert states[0] == states[1], "disp full-exec SRAM mismatch %r" % (label,)
     print("DISPLAY_FULL_EXEC: PASS cases=4")
@@ -859,13 +862,16 @@ def verify_misc():
         traces, states = [], []
         for is_new, entry in ((False, PAIRS[name][0]), (True, SYMS[name])):
             uc = machine(is_new)
-            trace = []
-            cb = lambda machine, access, address, size, value, user, t=trace: t.append((address, size, value))
-            uc.hook_add(UC_HOOK_MEM_WRITE, cb, begin=0x2009C000, end=0x2009CFFF)
+            # 全位CODE写迹，不安装会影响FIO执行的MEM_WRITE钩子，不mask P1.23。
+            import sys
+            sys.path.insert(0, str(ROOT / "test/support"))
+            from mmio_code_trace import StoreTrace
+            observer = StoreTrace(uc, ((0x2009C000, 0x2009C100),))
+            trace = observer.events
             run(uc, entry, max_insn=8_000_000)
             traces.append(trace)
             states.append(snapshot(uc))
-        assert _mask_fio1_p23(traces[0]) == _mask_fio1_p23(traces[1]), \
+        assert traces[0] == traces[1], \
             "%s GPIO trace mismatch: %d/%d" % (label, len(traces[0]), len(traces[1]))
         assert states[0] == states[1], "%s SRAM mismatch" % (label,)
         print("%s: PASS writes=%d" % (label, len(traces[0])))

@@ -1044,7 +1044,7 @@ void state_machine(int key)
                         disp_string(0x6b50, 2, 0, 0); disp_string(0x6b64, 3, 0, 0); break;
                 case 2: disp_string(0x6b78, 0, 0, 0); disp_string(0x6b8c, 1, 0, 0);
                         disp_string(0x6ba0, 2, 0, 0); disp_string(0x6bb4, 3, 0, 0); break;
-                default: disp_string(0x6bc8, 0, 0, 0); disp_string(0x6bdc, 1, 0, 0);
+                case 3: disp_string(0x6bc8, 0, 0, 0); disp_string(0x6bdc, 1, 0, 0);
                         disp_string(0x6bf0, 2, 0, 0); disp_string(0x6c04, 3, 0, 0); break;
             }
             *TIMEOUT3 = 0xfa; /* 尾部 ++ 成 0xfb 触发整页重绘 */

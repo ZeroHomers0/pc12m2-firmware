@@ -1,0 +1,148 @@
+diff --git a/AGENTS.md b/AGENTS.md
+index 4823894..86e3df8 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -1,5 +1,9 @@
+ # AGENTS.md — PC12M-2 十二相 SCR 控制板（LPC1765FBD100）
+ 
++- **2026-11-18 剩余软件复核清单已完成**：本批原候选双出口1980/1983；另1个完整帧契约下不可达出口、2个CRC数据误反汇编，均有证据分类，未解释候选0；原函数/向量102项、测试干预559处全部分类。修复基本参数异常项号标题上界和认证前8拍GPIO读副作用，永久放行与授权显示/背光保留。当前模块集合53/53通过（完整回归+末批增量去重），完整原BIN A/B、定制、真实旧构建反测与负向检出通过，两次构建一致。当前BIN 72048 B，SHA256 `6B9F08E1E0DF0824AD67A5BA040C0E6C262B339801CC46CDEB7EAAB1D7C5E903`，text 65176/data 6312/bss 2192；本批未烧写、未提交/推送。代码/模拟契约验收完成，不是任意RAM/全中断交错或真实硬件量化等价证明。报告 `docs/analysis/FINAL_SOFTWARE_REVIEW_2026-11-18.md`；证据 `evidence/reverse/reports/final_software_review_2026-11-18/`。下方旧批次的“未完成”保留为当时事实，当前以本条和最终manifest为准。
++
++- **2026-11-18 剩余分支第六批定向复核**：通信高地址/PID档位382例、双银行魔数/增益选择/同步重启96例、菜单字段14256例与超时2916例、校准/调节/故障显示/手动给定2962例通过。密码十副本首轮内层真实1000次，GPIO三种读回156组ISR与18例关断叶函数一致；五类注入均检出并恢复。累计双出口1522→1822，新增关闭300，剩余161（单出口144、未命中17），不是等价率或bug数。回归46/46、完整原BIN A/B通过；未发现新业务差异，业务源码/BIN未变。报告docs/analysis/BRANCH_GAP_AUDIT_2026-11-18.md，证据evidence/reverse/reports/branch_gap_audit_2026-11-18/。本批未烧写/实机/提交/推送；其余分支、逐条干预及完整外设/中断契约仍未全部关闭。
++
+ - **2026-11-18 状态机/故障复位第五批**：新增108条连续启停链（28728拍）、72例故障复位/禁用（启用者两段3000轮及6000份AA/55喂狗后确切自跳）、64组运行统计/落盘、320组缺相恢复及1248拍模式切换；受控SET/CLR/W1C/NVIC模型下52组真实ISR调度通过。修复公共运行器临时钩子泄漏，旧运行器及缺失喂狗写序注入均被检出。回归40/40、完整原BIN A/B、菜单/背光专项通过；未发现新业务差异，业务源码/BIN未变。报告docs/analysis/STATE_LIFECYCLE_AUDIT_2026-11-18.md，证据evidence/reverse/reports/state_lifecycle_audit_2026-11-18/。全程序分支、逐条干预契约、FIOCLR读行为及更广中断交错仍保留，S0–S7未整体关闭；未烧写/实机。
+ 
+ > 本文件是 AI 接手 PC12M-2 项目的唯一权威上下文。文档导航见 `DOCUMENTATION_INDEX.md`。
+@@ -54,7 +58,7 @@ PC6M-10 六相项目已经完成全部实验并达到成熟状态，只作为只
+ 
+ - **2026-11-13 菜单与背光同步**（用户明确授权同时修改六相、十二相）：菜单改为αmin限制/αmax限制（min/max为下标）、主从移相、相位补偿；控制方式选项改为远程/本地/面板。字形集中在 `02_lcd_display.c`，α全高等比例，α+紧凑下标总宽仍32像素。仅背光无操作阈值改为10000拍（约20秒），其它菜单超时不变。
+ - 十二相地址由本仓原BIN核实；生成入口 `tools/generation/generate_string_pool_12.py` 的 `MENU_TEXT_OVERRIDES`，兼容六相语义字符串头文件及缺省stub文件；产品型号保持PC12M-2。旧型号/误称仅清理活动文本，原BIN和evidence原始证据保留。
+-- 当前构建：`text 65168 / data 6312 / bss 2192`，`firmware.bin` 72040 B，SHA-256 `0832CC36133114D16BE760A66E8E52438BAAA7262090CE8C9DF823C7CE37018B`（2026-11-17 软件复核修正main的EINT初始化顺序后）；本次尚未烧写/实机确认。当前回归36/36、原BIN A/B、菜单和背光专项证据见 `evidence/reverse/reports/software_revalidation_2026-11-17/`；模块数以同批最终报告为准。历史状态机14688例记录见下方对应日期条目。新增专项入口 `verify_menu_text_12.py`、`verify_backlight_timeout_12.py`，位于 `tools/verification/`。本次显示和背光为用户授权定制偏离。
++- 当前构建：`text 65176 / data 6312 / bss 2192`，`firmware.bin` 72048 B，SHA-256 `6B9F08E1E0DF0824AD67A5BA040C0E6C262B339801CC46CDEB7EAAB1D7C5E903`（2026-11-18最终软件复核修复后，未烧写）。当前模块集合53/53通过，完整原BIN A/B、菜单/背光专项与证据见本文件顶部最终复核条目；历史构建与旧批结论保留。
+ 
+ - **2026-11-14 菜单标题调整**：在 `firmware-menu-display-2026-11-13` 分支将相位补偿改为同步校准，集中字库新增同/步字形。菜单与背光专项、十二相原BIN完整A/B验证全部通过（`evidence/reverse/reports/menu_sync_calibration_ab_2026-11-14.log`）；本次未烧写。
+ 
+@@ -150,3 +154,5 @@ python tools/verification/verify_firmware_equivalence_12.py
+ - **2026-11-17 输出/保护复核第三批**：新增输出级边界11494例（5378例实际进入PID）、284条每条5帧的连续故障封锁/输入恢复/再启动拒绝链。原输出级150个条件分支累计双出口67→150，全部实际命中。未发现新业务差异，业务源码与固件哈希不变；当前回归31/31，完整原BIN A/B证据见 `evidence/reverse/reports/output_protection_audit_2026-11-17/`。报告 `docs/analysis/OUTPUT_PROTECTION_AUDIT_2026-11-17.md` 明确150/150不代表全程序/全参数等价，状态机、通信和外设模型缺口继续保留；未烧写/实机。
+ 
+ - **2026-11-17 菜单/通信复核第四批**：本仓未修改业务源码，固件SHA保持0832CC36…37018B。最终菜单矩阵14688/14688、通信边界5002/5002、非零工作槽与跨帧回放60例、逐键密码流程28例、通信复位2例、回归36/36及完整原BIN A/B通过。同批六相通信共享工作槽偏离只在六相修复；十二相完整SRAM已相同，不照搬修改。短帧残留功能码实测CRC读255字节后正常错误应答，否定65535字节越界推测。报告 `docs/analysis/MENU_MODBUS_AUDIT_2026-11-17.md`，证据 `evidence/reverse/reports/menu_modbus_audit_2026-11-17/`。未烧写/实机；状态机启停、故障清除/恢复全路径及外设/NVIC模型仍待复核。
++
++- **2026-11-18 数字格式化直接复核**：两仓各900例原BIN/ELF字符调用契约通过；本仓候选双出口1844/1983，剩余139（单出口126、未命中13）。未修改业务源码、未烧写；不代表全程序等价。见 `docs/analysis/NUMERIC_LEAF_AUDIT_2026-11-18.md`。
+diff --git a/DOCUMENTATION_INDEX.md b/DOCUMENTATION_INDEX.md
+index 072781a..3dc0c70 100644
+--- a/DOCUMENTATION_INDEX.md
++++ b/DOCUMENTATION_INDEX.md
+@@ -1,8 +1,12 @@
+ # PC12M-2 文档索引
+ 
++> **2026-11-18 最终软件复核清单已完成**：[最终报告与范围声明](docs/analysis/FINAL_SOFTWARE_REVIEW_2026-11-18.md)。未解释候选/未分类函数/未分类干预均0；当前模块集合53/53、完整原BIN A/B及授权定制通过。修复异常项号标题上界和认证GPIO读取副作用；本批新镜像未烧写、未提交/推送。原候选仍如实保留1项受控帧不可达出口与2项CRC误反汇编；不是全状态数学等价或实机证明。下方各批“未完成”均为当时记录。
++
++> **2026-11-18 剩余分支第六批**：[通信/银行/PID档位、菜单边界与GPIO读写定向复核](docs/analysis/BRANCH_GAP_AUDIT_2026-11-18.md)。新增关闭300个双出口缺口，剩余161个候选；回归46/46与完整原BIN A/B通过，业务源码/BIN未变，本批未烧写，全方案仍有未关闭项。
++
+ > **2026-11-18 状态机/故障复位第五批**：[连续启停、复位喂狗与受控外设模型](docs/analysis/STATE_LIFECYCLE_AUDIT_2026-11-18.md)。108链28728拍、72例故障复位/禁用、运行统计/同步恢复与52组ISR调度；回归40/40、完整原BIN A/B及定制专项通过，业务源码/BIN未变，未烧写；全方案仍有未关闭项。
+ 
+-> 更新日期：2026-11-16。优先级：`AGENTS.md` → 本文 → `docs/project/PROJECT_STATUS.md`。
++> 更新日期：2026-11-18。优先级：`AGENTS.md` → 本文 → `docs/project/PROJECT_STATUS.md`。
+ >
+ > **2026-09-02 结论**：P5/113 覆盖/认证放行/产品信息定制/X-O 字形修复全部完成，自编译固件已
+ > 烧写入板并经用户**直接实机测试通过**。**W8 分级实测流程未按计划执行、已废弃**——用户未按
+@@ -87,3 +91,5 @@
+ > **2026-11-17 输出/保护第三批**：[150个输出级条件分支双出口及连续故障封锁](docs/analysis/OUTPUT_PROTECTION_AUDIT_2026-11-17.md)。边界11494例、故障链284条、回归31/31；未发现新业务差异，固件未变，其他软件缺口继续保留；未烧写/实机。
+ 
+ > **2026-11-17 菜单/通信第四批**：[最终执行矩阵与剩余缺口](docs/analysis/MENU_MODBUS_AUDIT_2026-11-17.md)。菜单14688例、通信5002例、回归36/36及完整原BIN A/B通过；未改业务源码，固件未变，未烧写/实机。
++
++- [数字格式化直接执行复核](docs/analysis/NUMERIC_LEAF_AUDIT_2026-11-18.md)：900例字符调用契约与增量分支证据。
+diff --git a/firmware/src/07_state_machine.c b/firmware/src/07_state_machine.c
+index 1d51c19..7a3af88 100644
+--- a/firmware/src/07_state_machine.c
++++ b/firmware/src/07_state_machine.c
+@@ -1044,7 +1044,7 @@ void state_machine(int key)
+                         disp_string(0x6b50, 2, 0, 0); disp_string(0x6b64, 3, 0, 0); break;
+                 case 2: disp_string(0x6b78, 0, 0, 0); disp_string(0x6b8c, 1, 0, 0);
+                         disp_string(0x6ba0, 2, 0, 0); disp_string(0x6bb4, 3, 0, 0); break;
+-                default: disp_string(0x6bc8, 0, 0, 0); disp_string(0x6bdc, 1, 0, 0);
++                case 3: disp_string(0x6bc8, 0, 0, 0); disp_string(0x6bdc, 1, 0, 0);
+                         disp_string(0x6bf0, 2, 0, 0); disp_string(0x6c04, 3, 0, 0); break;
+             }
+             *TIMEOUT3 = 0xfa; /* 尾部 ++ 成 0xfb 触发整页重绘 */
+diff --git a/firmware/src/11_auth.c b/firmware/src/11_auth.c
+index ecb8c78..b15bfdd 100644
+--- a/firmware/src/11_auth.c
++++ b/firmware/src/11_auth.c
+@@ -103,6 +103,8 @@ uint auth_challenge(void)
+     *(volatile uint *)(DAT_00010a74 + 0x5c) = *(volatile uint *)(DAT_00010a74 + 0x5c) | 8;  /* FIO2CLR P2.3=时钟拉低 */
+     for (delay_cnt = 0; delay_cnt < 1000; delay_cnt++) {             /* 时钟低延时 */
+     }
++    /* 原BIN 0x109C2..0x109CE：前8拍保留PIN读取，位值不参与最终16位应答。 */
++    if (bit_idx < 8) { (void)*(volatile uint *)(DAT_00010a74 + 0x54); }
+     if ((7 < bit_idx) && (response_bits = response_bits * 2, (*(volatile uint *)(DAT_00010a74 + 0x54) & 4) != 0)) {
+       response_bits = response_bits + 1;                                                  /* bit8 起读 FIO2PIN P2.2 */
+     }
+diff --git a/tools/audit/test_intervention_inventory.py b/tools/audit/test_intervention_inventory.py
+index 9959390..d7eca46 100644
+--- a/tools/audit/test_intervention_inventory.py
++++ b/tools/audit/test_intervention_inventory.py
+@@ -21,6 +21,8 @@ for directory in ('test','tools/verification','tools/audit'):
+                     reg=ast.unparse(node.args[0])
+                     if 'REG_PC' in reg:kind='PC_OVERRIDE'
+                     elif 'REG_R0' in reg:kind='RETURN_OR_INPUT_R0'
++                    else:kind='REGISTER_WRITE_OTHER_OR_DYNAMIC'
++                elif method=='mem_write':kind='MEMORY_WRITE_SEED_MODEL_OR_INJECTION'
+             elif isinstance(node,ast.FunctionDef) and ('mask' in node.name or 'skip' in node.name):kind='MASK_OR_SKIP_HELPER'
+             if kind:
+                 rows.append({'id':f'I{len(rows)+1:04d}','source':str(p.relative_to(ROOT)).replace('\\','/'),'line':node.lineno,'mechanism':kind,
+diff --git a/tools/verification/verify_firmware_equivalence_12.py b/tools/verification/verify_firmware_equivalence_12.py
+index c26fce5..58086da 100644
+--- a/tools/verification/verify_firmware_equivalence_12.py
++++ b/tools/verification/verify_firmware_equivalence_12.py
+@@ -683,7 +683,7 @@ def _mask_fio1_p23(trace):
+ 
+ 
+ def verify_display_full_exec():
+-    """真实执行 disp_*（strpool_map + 字符渲染），比对 GPIO 写迹 + SRAM。"""
++    """真实执行disp_*；全位CODE GPIO写迹与SRAM严格比较，不使用历史位掩码。"""
+     for menu, menu2, menu3, t3 in ((0x63, 5, 1, 0xfa), (0x63, 0xa, 1, 0x1f4),
+                                    (0x04, 0, 1, 0x1f4), (0x04, 5, 1, 0xfa)):
+         traces, states = [], []
+@@ -706,14 +706,17 @@ def verify_display_full_exec():
+             uc.mem_write(0x10001724, bytes((menu, menu2, menu3)))
+             uc.mem_write(0x10001758, struct.pack("<I", t3))
+             _seed_display_items(uc)
+-            trace = []
+-            cb = lambda machine, access, address, size, value, user, t=trace: t.append((address, size, value))
+-            uc.hook_add(UC_HOOK_MEM_WRITE, cb, begin=0x2009C000, end=0x2009CFFF)
++            # 全位CODE写迹，不安装会影响FIO执行的MEM_WRITE钩子，不mask P1.23。
++            import sys
++            sys.path.insert(0, str(ROOT / "test/support"))
++            from mmio_code_trace import StoreTrace
++            observer = StoreTrace(uc, ((0x2009C000, 0x2009C100),))
++            trace = observer.events
+             run(uc, entry, max_insn=4_000_000)
+             traces.append(trace)
+             states.append(snapshot(uc))
+         label = (hex(menu), menu2, menu3, hex(t3))
+-        assert _mask_fio1_p23(traces[0]) == _mask_fio1_p23(traces[1]), \
++        assert traces[0] == traces[1], \
+             "disp full-exec GPIO mismatch %r: %d vs %d" % (label, len(traces[0]), len(traces[1]))
+         assert states[0] == states[1], "disp full-exec SRAM mismatch %r" % (label,)
+     print("DISPLAY_FULL_EXEC: PASS cases=4")
+@@ -859,13 +862,16 @@ def verify_misc():
+         traces, states = [], []
+         for is_new, entry in ((False, PAIRS[name][0]), (True, SYMS[name])):
+             uc = machine(is_new)
+-            trace = []
+-            cb = lambda machine, access, address, size, value, user, t=trace: t.append((address, size, value))
+-            uc.hook_add(UC_HOOK_MEM_WRITE, cb, begin=0x2009C000, end=0x2009CFFF)
++            # 全位CODE写迹，不安装会影响FIO执行的MEM_WRITE钩子，不mask P1.23。
++            import sys
++            sys.path.insert(0, str(ROOT / "test/support"))
++            from mmio_code_trace import StoreTrace
++            observer = StoreTrace(uc, ((0x2009C000, 0x2009C100),))
++            trace = observer.events
+             run(uc, entry, max_insn=8_000_000)
+             traces.append(trace)
+             states.append(snapshot(uc))
+-        assert _mask_fio1_p23(traces[0]) == _mask_fio1_p23(traces[1]), \
++        assert traces[0] == traces[1], \
+             "%s GPIO trace mismatch: %d/%d" % (label, len(traces[0]), len(traces[1]))
+         assert states[0] == states[1], "%s SRAM mismatch" % (label,)
+         print("%s: PASS writes=%d" % (label, len(traces[0])))

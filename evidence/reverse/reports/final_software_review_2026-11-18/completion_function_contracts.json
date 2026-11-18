@@ -1,0 +1,735 @@
+{
+  "project": "PC12M-2",
+  "source_list": "tools\\_ghidra_proj\\_pc12m2_functions.txt",
+  "counts": {
+    "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT": 10,
+    "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT": 83,
+    "ORIGINAL_BX_LR_OPTIMIZED_AWAY": 1,
+    "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT": 8
+  },
+  "unclassified": 0,
+  "entries": [
+    {
+      "original_entry": "0xcc",
+      "original_bytes": 192,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x180",
+      "original_bytes": 4,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x184",
+      "original_bytes": 4,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x188",
+      "original_bytes": 26,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x19a",
+      "original_bytes": 22,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x1c4",
+      "original_bytes": 10,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x200",
+      "original_bytes": 56,
+      "name": "wdt_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x4f8"
+    },
+    {
+      "original_entry": "0x238",
+      "original_bytes": 12,
+      "name": "wd_feed",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x52c"
+    },
+    {
+      "original_entry": "0x248",
+      "original_bytes": 82,
+      "name": "timer0_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x53a"
+    },
+    {
+      "original_entry": "0x2ee",
+      "original_bytes": 14,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x440",
+      "original_bytes": 262,
+      "name": "SystemInit",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x5c4"
+    },
+    {
+      "original_entry": "0x598",
+      "original_bytes": 50,
+      "name": "long_delay",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x6d4"
+    },
+    {
+      "original_entry": "0x5ca",
+      "original_bytes": 2,
+      "name": "startup_idle_hook",
+      "status": "ORIGINAL_BX_LR_OPTIMIZED_AWAY",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x5cc",
+      "original_bytes": 308,
+      "name": "main",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x710"
+    },
+    {
+      "original_entry": "0x758",
+      "original_bytes": 14,
+      "name": "Delay",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x704"
+    },
+    {
+      "original_entry": "0x766",
+      "original_bytes": 32,
+      "name": "lcd_ctrl_line",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x858"
+    },
+    {
+      "original_entry": "0x786",
+      "original_bytes": 286,
+      "name": "lcd_data_byte",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x878"
+    },
+    {
+      "original_entry": "0x8a4",
+      "original_bytes": 86,
+      "name": "disp_data",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x934"
+    },
+    {
+      "original_entry": "0x8fa",
+      "original_bytes": 72,
+      "name": "disp_cmd",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x988"
+    },
+    {
+      "original_entry": "0x942",
+      "original_bytes": 158,
+      "name": "disp_clear",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x9d4"
+    },
+    {
+      "original_entry": "0x9e0",
+      "original_bytes": 276,
+      "name": "gpio1_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa5c"
+    },
+    {
+      "original_entry": "0xaf4",
+      "original_bytes": 236,
+      "name": "disp_render_char8",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xb50"
+    },
+    {
+      "original_entry": "0xbea",
+      "original_bytes": 258,
+      "name": "disp_render_char16",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc74"
+    },
+    {
+      "original_entry": "0xcec",
+      "original_bytes": 88,
+      "name": "disp_string",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xd84"
+    },
+    {
+      "original_entry": "0xd44",
+      "original_bytes": 164,
+      "name": "disp_digit",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xe56"
+    },
+    {
+      "original_entry": "0xdf2",
+      "original_bytes": 142,
+      "name": "disp_number3",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xeae"
+    },
+    {
+      "original_entry": "0xe80",
+      "original_bytes": 188,
+      "name": "disp_uint4",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xf28"
+    },
+    {
+      "original_entry": "0xf3c",
+      "original_bytes": 244,
+      "name": "disp_uint5",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xfda"
+    },
+    {
+      "original_entry": "0x1042",
+      "original_bytes": 298,
+      "name": "disp_number",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x10c8"
+    },
+    {
+      "original_entry": "0x116c",
+      "original_bytes": 244,
+      "name": "disp_signed_angle",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x11ec"
+    },
+    {
+      "original_entry": "0x1260",
+      "original_bytes": 312,
+      "name": "disp_offset",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1278"
+    },
+    {
+      "original_entry": "0x1398",
+      "original_bytes": 84,
+      "name": "disp_uint2",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x133c"
+    },
+    {
+      "original_entry": "0x13ec",
+      "original_bytes": 182,
+      "name": "disp_fixed_1dec",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x137c"
+    },
+    {
+      "original_entry": "0x14a6",
+      "original_bytes": 128,
+      "name": "disp_decimal1",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x141e"
+    },
+    {
+      "original_entry": "0x1528",
+      "original_bytes": 134,
+      "name": "gpio_inputs_dir_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x16e8"
+    },
+    {
+      "original_entry": "0x15ae",
+      "original_bytes": 952,
+      "name": "input_scan_state",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x175c"
+    },
+    {
+      "original_entry": "0x1976",
+      "original_bytes": 242,
+      "name": "scan_run_stop",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1a30"
+    },
+    {
+      "original_entry": "0x1a68",
+      "original_bytes": 46,
+      "name": "debounce_p09",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1b20"
+    },
+    {
+      "original_entry": "0x1a96",
+      "original_bytes": 88,
+      "name": "debounce_p116",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1b54"
+    },
+    {
+      "original_entry": "0x1aee",
+      "original_bytes": 88,
+      "name": "debounce_p117",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1bb4"
+    },
+    {
+      "original_entry": "0x1b46",
+      "original_bytes": 88,
+      "name": "debounce_p06",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1c14"
+    },
+    {
+      "original_entry": "0x1b9e",
+      "original_bytes": 28,
+      "name": "chk_p02_p03",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1c74"
+    },
+    {
+      "original_entry": "0x1bf0",
+      "original_bytes": 44,
+      "name": "i2c_gpio_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1c90"
+    },
+    {
+      "original_entry": "0x1c1c",
+      "original_bytes": 22,
+      "name": "i2c_delay_short",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1cbc"
+    },
+    {
+      "original_entry": "0x1c32",
+      "original_bytes": 44,
+      "name": "i2c_delay",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1cd0"
+    },
+    {
+      "original_entry": "0x1c5e",
+      "original_bytes": 80,
+      "name": "i2c_start",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1cfc"
+    },
+    {
+      "original_entry": "0x1cae",
+      "original_bytes": 62,
+      "name": "i2c_stop",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1d48"
+    },
+    {
+      "original_entry": "0x1cec",
+      "original_bytes": 190,
+      "name": "i2c_write_byte",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1d88"
+    },
+    {
+      "original_entry": "0x1daa",
+      "original_bytes": 142,
+      "name": "i2c_read_byte",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1e24"
+    },
+    {
+      "original_entry": "0x1e38",
+      "original_bytes": 52,
+      "name": "i2c_write_reg",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1ea0"
+    },
+    {
+      "original_entry": "0x1e6c",
+      "original_bytes": 64,
+      "name": "i2c_read_reg",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1ee4"
+    },
+    {
+      "original_entry": "0x1eb4",
+      "original_bytes": 124,
+      "name": "adc_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1f30"
+    },
+    {
+      "original_entry": "0x1f30",
+      "original_bytes": 24,
+      "name": "adc0_start",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1fb8"
+    },
+    {
+      "original_entry": "0x1f56",
+      "original_bytes": 22,
+      "name": "adc0_wait_done",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1fd4"
+    },
+    {
+      "original_entry": "0x1f6c",
+      "original_bytes": 1344,
+      "name": "adc0_scan_channels",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1fec"
+    },
+    {
+      "original_entry": "0x258c",
+      "original_bytes": 3306,
+      "name": "load_config",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x2614"
+    },
+    {
+      "original_entry": "0x3534",
+      "original_bytes": 2446,
+      "name": "param_sync_live_to_eeprom",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x3760"
+    },
+    {
+      "original_entry": "0x40b0",
+      "original_bytes": 260,
+      "name": "disp_splash_screen",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x1486"
+    },
+    {
+      "original_entry": "0x41b4",
+      "original_bytes": 56,
+      "name": "disp_screen_static",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x15dc"
+    },
+    {
+      "original_entry": "0x41ec",
+      "original_bytes": 206,
+      "name": "disp_screen_calib",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x161e"
+    },
+    {
+      "original_entry": "0x4464",
+      "original_bytes": 21844,
+      "name": "state_machine",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x450c"
+    },
+    {
+      "original_entry": "0xa856",
+      "original_bytes": 196,
+      "name": "freq_adjust_sync",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x418"
+    },
+    {
+      "original_entry": "0xa994",
+      "original_bytes": 488,
+      "name": "uart3_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x979c"
+    },
+    {
+      "original_entry": "0xab7c",
+      "original_bytes": 50,
+      "name": "uart3_tx_byte",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x98c0"
+    },
+    {
+      "original_entry": "0xabc0",
+      "original_bytes": 128,
+      "name": "uart3_rx_timeout_monitor",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x990c"
+    },
+    {
+      "original_entry": "0xacd4",
+      "original_bytes": 48,
+      "name": "crc16",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x9a58"
+    },
+    {
+      "original_entry": "0xad04",
+      "original_bytes": 636,
+      "name": "modbus_read_reg",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x9a84"
+    },
+    {
+      "original_entry": "0xb050",
+      "original_bytes": 568,
+      "name": "modbus_write_multi",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x9d88"
+    },
+    {
+      "original_entry": "0xb3b2",
+      "original_bytes": 11468,
+      "name": "modbus_dispatch",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0x8c98"
+    },
+    {
+      "original_entry": "0xe308",
+      "original_bytes": 498,
+      "name": "pin_config",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa038"
+    },
+    {
+      "original_entry": "0xe4fa",
+      "original_bytes": 124,
+      "name": "gpio_outputs_set",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa1d8"
+    },
+    {
+      "original_entry": "0xe576",
+      "original_bytes": 34,
+      "name": "timer1_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa244"
+    },
+    {
+      "original_entry": "0xe598",
+      "original_bytes": 54,
+      "name": "timer2_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa268"
+    },
+    {
+      "original_entry": "0xe5ce",
+      "original_bytes": 92,
+      "name": "eint1_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa2a4"
+    },
+    {
+      "original_entry": "0xe62a",
+      "original_bytes": 62,
+      "name": "eint2_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa300"
+    },
+    {
+      "original_entry": "0xe668",
+      "original_bytes": 62,
+      "name": "eint3_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa344"
+    },
+    {
+      "original_entry": "0xe6a6",
+      "original_bytes": 32,
+      "name": "fio1_pin22_ctrl",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa388"
+    },
+    {
+      "original_entry": "0xe6c6",
+      "original_bytes": 32,
+      "name": "fio0_pin22_ctrl",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa3a0"
+    },
+    {
+      "original_entry": "0xe70c",
+      "original_bytes": 3590,
+      "name": "output_stage",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xa3b8"
+    },
+    {
+      "original_entry": "0xf70a",
+      "original_bytes": 62,
+      "name": "run_stop_preset",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xb654"
+    },
+    {
+      "original_entry": "0x107e0",
+      "original_bytes": 32,
+      "name": "out_relay_p021",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc4bc"
+    },
+    {
+      "original_entry": "0x10800",
+      "original_bytes": 32,
+      "name": "fio1_pin20_ctrl",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc4dc"
+    },
+    {
+      "original_entry": "0x10820",
+      "original_bytes": 32,
+      "name": "fio1_pin21_ctrl",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc4fc"
+    },
+    {
+      "original_entry": "0x10840",
+      "original_bytes": 32,
+      "name": "fio1_pin23_ctrl",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc51c"
+    },
+    {
+      "original_entry": "0x10860",
+      "original_bytes": 24,
+      "name": "nvic_enable_irq",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xcda8"
+    },
+    {
+      "original_entry": "0x10888",
+      "original_bytes": 74,
+      "name": "gpio2_init",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xcdbe"
+    },
+    {
+      "original_entry": "0x108d2",
+      "original_bytes": 10,
+      "name": "auth_set_timeout",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc53c"
+    },
+    {
+      "original_entry": "0x108dc",
+      "original_bytes": 348,
+      "name": "auth_challenge",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc54c"
+    },
+    {
+      "original_entry": "0x10a38",
+      "original_bytes": 58,
+      "name": "auth_verify_loop",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc6d4"
+    },
+    {
+      "original_entry": "0x10a9c",
+      "original_bytes": 1544,
+      "name": "closed_loop_integral",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xc720"
+    },
+    {
+      "original_entry": "0x110f6",
+      "original_bytes": 52,
+      "name": "closed_loop_wrapper",
+      "status": "SOURCE_SYMBOL_AND_EXECUTION_LAYER_CONTRACT",
+      "new_entry": "0xcd7c"
+    },
+    {
+      "original_entry": "0x11178",
+      "original_bytes": 74,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x111c4",
+      "original_bytes": 4,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x111cc",
+      "original_bytes": 8,
+      "name": "原IAR运行库/初始化/退出",
+      "status": "IAR_RUNTIME_REPLACED_BOOT_ABI_CONTRACT",
+      "new_entry": null
+    },
+    {
+      "original_entry": "0x1e4",
+      "original_bytes": null,
+      "name": "WDT_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0x4d8",
+      "IRQ": 0
+    },
+    {
+      "original_entry": "0x29a",
+      "original_bytes": null,
+      "name": "TIMER0_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0x57c",
+      "IRQ": 1
+    },
+    {
+      "original_entry": "0xfb0c",
+      "original_bytes": null,
+      "name": "TIMER1_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0xba70",
+      "IRQ": 2
+    },
+    {
+      "original_entry": "0xfae8",
+      "original_bytes": null,
+      "name": "TIMER2_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0xba40",
+      "IRQ": 3
+    },
+    {
+      "original_entry": "0xac78",
+      "original_bytes": null,
+      "name": "UART3_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0x99a0",
+      "IRQ": 8
+    },
+    {
+      "original_entry": "0xf748",
+      "original_bytes": null,
+      "name": "EINT1_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0xb6b4",
+      "IRQ": 19
+    },
+    {
+      "original_entry": "0xf76a",
+      "original_bytes": null,
+      "name": "EINT2_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0xb6e4",
+      "IRQ": 20
+    },
+    {
+      "original_entry": "0xf78c",
+      "original_bytes": null,
+      "name": "EINT3_IRQHandler",
+      "status": "VECTOR_ISR_EXECUTION_AND_FINITE_MODEL_CONTRACT",
+      "new_entry": "0xb714",
+      "IRQ": 21
+    }
+  ]
+}

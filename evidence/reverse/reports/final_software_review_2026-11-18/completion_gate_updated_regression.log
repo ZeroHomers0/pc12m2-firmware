@@ -1,0 +1,10 @@
+
+=== test_emulation_test_completion_leaf_contract ===
+COMPLETION_LEAF_CONTRACT 471 PASS
+[run_tests] test_emulation_test_completion_leaf_contract: OK
+
+=== test_emulation_test_main_modes_contract ===
+MAIN_MODES_CONTRACT PASS_EQ=8 PASS_CUSTOM=2 bounded_observation
+[run_tests] test_emulation_test_main_modes_contract: OK
+
+[run_tests] 模块通过 2/2

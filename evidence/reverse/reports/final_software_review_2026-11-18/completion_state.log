@@ -1,0 +1,2 @@
+COMPLETION_STATE_PROBE 3444 PASS
+BRANCH_GAP_BATCH {'candidate_branches': 1983, 'both': 1879, 'one': 96, 'unhit': 8} => {'candidate_branches': 1983, 'both': 1907, 'one': 68, 'unhit': 8} exit 0

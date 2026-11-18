@@ -1,0 +1,1950 @@
+
+Discarded input sections
+
+ .text          0x00000000        0x0 data_image.o
+ .data          0x00000000        0x0 data_image.o
+ .bss           0x00000000        0x0 data_image.o
+ .text          0x00000000        0x0 globals.o
+ .bss           0x00000000        0x0 globals.o
+ .text          0x00000000        0x0 startup.o
+ .data          0x00000000        0x0 startup.o
+ .bss           0x00000000        0x0 startup.o
+ .data          0x00000000        0x0 stub.o
+ .bss           0x00000000        0x0 stub.o
+ .data          0x00000000        0x0 src/01_startup.o
+ .bss           0x00000000        0x0 src/01_startup.o
+ .data          0x00000000        0x0 src/02_lcd_display.o
+ .bss           0x00000000        0x0 src/02_lcd_display.o
+ .data          0x00000000        0x0 src/03_input_debounce.o
+ .bss           0x00000000        0x0 src/03_input_debounce.o
+ .data          0x00000000        0x0 src/04_i2c.o
+ .bss           0x00000000        0x0 src/04_i2c.o
+ .data          0x00000000        0x0 src/05_adc.o
+ .bss           0x00000000        0x0 src/05_adc.o
+ .data          0x00000000        0x0 src/06_param_system.o
+ .bss           0x00000000        0x0 src/06_param_system.o
+ .data          0x00000000        0x0 src/07_state_machine.o
+ .bss           0x00000000        0x0 src/07_state_machine.o
+ .data          0x00000000        0x0 src/08_modbus_dispatch.o
+ .bss           0x00000000        0x0 src/08_modbus_dispatch.o
+ .data          0x00000000        0x0 src/08_uart3_modbus.o
+ .bss           0x00000000        0x0 src/08_uart3_modbus.o
+ .data          0x00000000        0x0 src/09_output_stage.o
+ .bss           0x00000000        0x0 src/09_output_stage.o
+ .data          0x00000000        0x0 src/10_relay_led.o
+ .bss           0x00000000        0x0 src/10_relay_led.o
+ .data          0x00000000        0x0 src/11_auth.o
+ .bss           0x00000000        0x0 src/11_auth.o
+ .data          0x00000000        0x0 src/12_closed_loop.o
+ .bss           0x00000000        0x0 src/12_closed_loop.o
+ .data          0x00000000        0x0 src/13_gpio_init.o
+ .bss           0x00000000        0x0 src/13_gpio_init.o
+ .text          0x00000000        0x0 src/crc16_table.o
+ .data          0x00000000        0x0 src/crc16_table.o
+ .bss           0x00000000        0x0 src/crc16_table.o
+ .data          0x00000000        0x0 src/strpool.o
+ .bss           0x00000000        0x0 src/strpool.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x00000000         0x00040000         xr
+SRAM0            0x10000000         0x00008000         xrw
+SRAM1            0x2007c000         0x00004000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD data_image.o
+LOAD globals.o
+LOAD startup.o
+LOAD stub.o
+LOAD src/01_startup.o
+LOAD src/02_lcd_display.o
+LOAD src/03_input_debounce.o
+LOAD src/04_i2c.o
+LOAD src/05_adc.o
+LOAD src/06_param_system.o
+LOAD src/07_state_machine.o
+LOAD src/08_modbus_dispatch.o
+LOAD src/08_uart3_modbus.o
+LOAD src/09_output_stage.o
+LOAD src/10_relay_led.o
+LOAD src/11_auth.o
+LOAD src/12_closed_loop.o
+LOAD src/13_gpio_init.o
+LOAD src/crc16_table.o
+LOAD src/strpool.o
+LOAD C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v7-m/nofp\libgcc.a
+                0x100029a0                        _estack = 0x100029a0
+                0xefffc2de                        _vector_checksum = (0x0 - (((((((_estack + Reset_Handler) + NMI_Handler) + HardFault_Handler) + MemManage_Handler) + BusFault_Handler) + UsageFault_Handler) + 0x6))
+
+.isr_vector     0x00000000       0xcc
+ *(.isr_vector)
+ .isr_vector    0x00000000       0xcc startup.o
+                0x000000cc                        . = ALIGN (0x4)
+
+.crp            0x000002fc        0x4
+ *(.crp)
+ .crp           0x000002fc        0x4 startup.o
+                0x000002fc                _crp_word
+
+.text           0x00000300     0xdcb0
+ *(.text*)
+ .text.Reset_Handler
+                0x00000300       0xc8 startup.o
+                0x00000300                Reset_Handler
+                0x00000348                NMI_Handler
+                0x0000034a                HardFault_Handler
+                0x0000034c                MemManage_Handler
+                0x0000034e                BusFault_Handler
+                0x00000350                UsageFault_Handler
+                0x00000352                SVC_Handler
+                0x00000354                DebugMon_Handler
+                0x00000356                PendSV_Handler
+                0x00000358                SysTick_Handler
+                0x0000035a                TIMER3_IRQHandler
+                0x0000035c                UART0_IRQHandler
+                0x0000035e                UART1_IRQHandler
+                0x00000360                UART2_IRQHandler
+                0x00000362                PWM1_IRQHandler
+                0x00000364                I2C0_IRQHandler
+                0x00000366                I2C1_IRQHandler
+                0x00000368                I2C2_IRQHandler
+                0x0000036a                SPI_IRQHandler
+                0x0000036c                SSP0_IRQHandler
+                0x0000036e                SSP1_IRQHandler
+                0x00000370                PLL0_IRQHandler
+                0x00000372                RTC_IRQHandler
+                0x00000374                EINT0_IRQHandler
+                0x00000376                ADC0_IRQHandler
+                0x00000378                BOD_IRQHandler
+                0x0000037a                ETHERNET_IRQHandler
+                0x0000037c                USB_IRQHandler
+                0x0000037e                CAN_IRQHandler
+                0x00000380                DMA_IRQHandler
+                0x00000382                I2S_IRQHandler
+                0x00000384                RIT_IRQHandler
+                0x00000386                MCPWM_IRQHandler
+                0x00000388                QEI_IRQHandler
+                0x0000038a                PLL1_IRQHandler
+                0x0000038c                USBActivity_IRQHandler
+                0x0000038e                CANActivity_IRQHandler
+ .text          0x000003c8      0x110 stub.o
+                0x000003c8                func_0x0000aed0
+                0x00000418                freq_adjust_sync
+ .text          0x000004d8      0x238 src/01_startup.o
+                0x000004d8                WDT_IRQHandler
+                0x000004f8                wdt_init
+                0x0000052c                wd_feed
+                0x0000053a                timer0_init
+                0x0000057c                TIMER0_IRQHandler
+                0x000005c4                SystemInit
+                0x000006d4                long_delay
+                0x00000702                stub_ret
+                0x00000704                Delay
+ .text.startup  0x00000710      0x148 src/01_startup.o
+                0x00000710                main
+ .text          0x00000858      0xe90 src/02_lcd_display.o
+                0x00000858                lcd_ctrl_line
+                0x00000878                lcd_data_byte
+                0x00000934                disp_data
+                0x00000988                disp_cmd
+                0x000009d4                disp_clear
+                0x00000a5c                gpio1_init
+                0x00000b50                disp_render_char8
+                0x00000c74                disp_render_char16
+                0x00000d84                disp_string
+                0x00000e56                disp_digit
+                0x00000eae                disp_number3
+                0x00000f28                disp_uint4
+                0x00000fda                disp_uint5
+                0x000010c8                disp_number
+                0x000011ec                disp_signed_angle
+                0x00001278                disp_offset
+                0x0000133c                disp_uint2
+                0x0000137c                disp_fixed_1dec
+                0x0000141e                disp_decimal1
+                0x00001486                disp_splash_screen
+                0x000015dc                disp_screen_static
+                0x0000161e                disp_screen_calib
+ .text          0x000016e8      0x5a8 src/03_input_debounce.o
+                0x000016e8                gpio_inputs_dir_init
+                0x0000175c                input_scan_state
+                0x00001a30                scan_run_stop
+                0x00001b20                debounce_p09
+                0x00001b54                debounce_p116
+                0x00001bb4                debounce_p117
+                0x00001c14                debounce_p06
+                0x00001c74                chk_p02_p03
+ .text          0x00001c90      0x2a0 src/04_i2c.o
+                0x00001c90                i2c_gpio_init
+                0x00001cbc                i2c_delay_short
+                0x00001cd0                i2c_delay
+                0x00001cfc                i2c_start
+                0x00001d48                i2c_stop
+                0x00001d88                i2c_write_byte
+                0x00001e24                i2c_read_byte
+                0x00001ea0                i2c_write_reg
+                0x00001ee4                i2c_read_reg
+ .text          0x00001f30      0x6e4 src/05_adc.o
+                0x00001f30                adc_init
+                0x00001fb8                adc0_start
+                0x00001fd4                adc0_wait_done
+                0x00001fec                adc0_scan_channels
+ .text          0x00002614     0x1b20 src/06_param_system.o
+                0x00002614                load_config
+                0x00003760                param_sync_live_to_eeprom
+ .text          0x00004134     0x4ae8 src/07_state_machine.o
+                0x0000450c                state_machine
+ .text          0x00008c1c      0xb80 src/08_modbus_dispatch.o
+                0x00008c98                modbus_dispatch
+ .text          0x0000979c      0x874 src/08_uart3_modbus.o
+                0x0000979c                uart3_init
+                0x000098c0                uart3_tx_byte
+                0x0000990c                uart3_rx_timeout_monitor
+                0x000099a0                UART3_IRQHandler
+                0x00009a58                crc16
+                0x00009a84                modbus_read_reg
+                0x00009d88                modbus_write_multi
+ .text          0x0000a010     0x24ac src/09_output_stage.o
+                0x0000a038                pin_config
+                0x0000a1d8                gpio_outputs_set
+                0x0000a244                timer1_init
+                0x0000a268                timer2_init
+                0x0000a2a4                eint1_init
+                0x0000a300                eint2_init
+                0x0000a344                eint3_init
+                0x0000a388                fio1_pin22_ctrl
+                0x0000a3a0                fio0_pin22_ctrl
+                0x0000a3b8                output_stage
+                0x0000b654                run_stop_preset
+                0x0000b6b4                EINT1_IRQHandler
+                0x0000b6e4                EINT2_IRQHandler
+                0x0000b714                EINT3_IRQHandler
+                0x0000ba40                TIMER2_IRQHandler
+                0x0000ba70                TIMER1_IRQHandler
+ .text          0x0000c4bc       0x80 src/10_relay_led.o
+                0x0000c4bc                out_relay_p021
+                0x0000c4dc                fio1_pin20_ctrl
+                0x0000c4fc                fio1_pin21_ctrl
+                0x0000c51c                fio1_pin23_ctrl
+ .text          0x0000c53c      0x1dc src/11_auth.o
+                0x0000c53c                auth_set_timeout
+                0x0000c54c                auth_challenge
+                0x0000c6cc                auth_verify_loop
+ .text          0x0000c718      0x688 src/12_closed_loop.o
+                0x0000c718                closed_loop_integral
+                0x0000cd74                closed_loop_wrapper
+ .text          0x0000cda0       0x58 src/13_gpio_init.o
+                0x0000cda0                nvic_enable_irq
+                0x0000cdb6                gpio2_init
+ .text          0x0000cdf8       0x58 src/strpool.o
+                0x0000cdf8                strpool_map
+ *(.rodata*)
+ .rodata        0x0000ce50      0x242 src/02_lcd_display.o
+ .rodata        0x0000d092      0x200 src/crc16_table.o
+                0x0000d092                crc16_lo_tbl
+                0x0000d192                crc16_hi_tbl
+ *fill*         0x0000d292        0x2 
+ .rodata        0x0000d294      0xd19 src/strpool.o
+ *(.glue_7)
+ .glue_7        0x0000dfad        0x0 linker stubs
+ *(.glue_7t)
+ .glue_7t       0x0000dfad        0x0 linker stubs
+                0x0000dfb0                        . = ALIGN (0x4)
+ *fill*         0x0000dfad        0x3 
+                0x0000dfb0                        _etext = .
+
+.vfp11_veneer   0x0000dfb0        0x0
+ .vfp11_veneer  0x0000dfb0        0x0 linker stubs
+
+.v4_bx          0x0000dfb0        0x0
+ .v4_bx         0x0000dfb0        0x0 linker stubs
+
+.iplt           0x0000dfb0        0x0
+ .iplt          0x0000dfb0        0x0 startup.o
+                0x10000000                        . = 0x10000000
+
+.fw_image       0x10000000     0x2110 load address 0x0000dfb0
+                0x10000000                        _ram_image_vma_start = .
+ *(.fw_image_data)
+ .fw_image_data
+                0x10000000     0x2110 data_image.o
+                0x10000000                _ram_image_start
+                0x10002110                _ram_image_end
+                0x10002110                        _ram_image_vma_end = .
+                0x0000dfb0                        _ram_image_lma_start = LOADADDR (.fw_image)
+
+.rel.dyn        0x10002110        0x0 load address 0x000100c0
+ .rel.iplt      0x10002110        0x0 startup.o
+                0x10002110                        . = (ORIGIN (SRAM0) + 0x2110)
+
+.fw_bss         0x10002110      0x890 load address 0x000100c0
+                0x10002110                        _ram_bss_start = ABSOLUTE (.)
+                0x00000890                        . = 0x890
+ *fill*         0x10002110      0x890 
+                0x100029a0                        _ram_bss_end = ABSOLUTE (.)
+
+.data           0x2007c000     0x18a8 load address 0x000100c0
+                0x2007c000                        _sdata = .
+ *(.data*)
+ .data          0x2007c000     0x18a8 globals.o
+                0x2007c000                counter2
+                0x2007c004                out_scale
+                0x2007c008                hold_count
+                0x2007c00c                debounce_count
+                0x2007c010                g_reg_cur_idx
+                0x2007c014                g_uart_tx_busy
+                0x2007c018                g_uart_rx_timeout
+                0x2007c01c                g_uart_global_tick
+                0x2007c020                g_uart_frame_sel
+                0x2007c024                g_pid_integral
+                0x2007c028                g_out_fine
+                0x2007c02c                g_mode_byte
+                0x2007c030                g_phase_cnt
+                0x2007c034                g_freq_hz
+                0x2007c038                g_comm_detect
+                0x2007c03c                g_cl_gain_small
+                0x2007c040                g_cl_gain_mid
+                0x2007c044                g_cl_gain_big
+                0x2007c048                g_cl_thresh_lo
+                0x2007c04c                g_cl_thresh_hi
+                0x2007c050                g_gain_b
+                0x2007c054                g_gain_a
+                0x2007c058                g_gain_sel
+                0x2007c05c                g_cfg_pid_sel
+                0x2007c060                g_cfg_word
+                0x2007c064                g_baud_idx
+                0x2007c068                g_uart_tx_buf
+                0x2007c06c                g_uart_tx_len
+                0x2007c070                g_uart_tx_flag
+                0x2007c074                g_uart_tx_state
+                0x2007c078                g_uart3
+                0x2007c07c                g_pinsel
+                0x2007c080                g_adc
+                0x2007c084                g_pconp
+                0x2007c088                DAT_00011400
+                0x2007c08c                DAT_000113fc
+                0x2007c090                DAT_000113f8
+                0x2007c094                DAT_000113f4
+                0x2007c098                DAT_000113f0
+                0x2007c09c                DAT_000113ec
+                0x2007c0a0                DAT_000113e8
+                0x2007c0a4                DAT_000113e4
+                0x2007c0a8                DAT_000113e0
+                0x2007c0ac                startup_word
+                0x2007c0b0                DAT_000113d8
+                0x2007c0b4                DAT_000111d8
+                0x2007c0b8                DAT_000111d4
+                0x2007c0bc                buf_data_2
+                0x2007c0c0                DAT_00011174
+                0x2007c0c4                DAT_00011170
+                0x2007c0c8                DAT_0001116c
+                0x2007c0cc                DAT_00011168
+                0x2007c0d0                DAT_00011164
+                0x2007c0d4                pid_compute
+                0x2007c0d8                DAT_0001115c
+                0x2007c0dc                DAT_00011158
+                0x2007c0e0                DAT_00011154
+                0x2007c0e4                DAT_00011150
+                0x2007c0e8                DAT_0001114c
+                0x2007c0ec                DAT_00011148
+                0x2007c0f0                DAT_00011144
+                0x2007c0f4                pid_const
+                0x2007c0f8                DAT_0001113c
+                0x2007c0fc                DAT_00011138
+                0x2007c100                DAT_00011134
+                0x2007c104                DAT_00011130
+                0x2007c108                DAT_0001112c
+                0x2007c10c                DAT_00010ee8
+                0x2007c110                DAT_00010ee4
+                0x2007c114                pid_divisor
+                0x2007c118                DAT_00010edc
+                0x2007c11c                DAT_00010ed8
+                0x2007c120                DAT_00010ed4
+                0x2007c124                DAT_00010ed0
+                0x2007c128                DAT_00010ecc
+                0x2007c12c                pid_gain_sel
+                0x2007c130                DAT_00010ec4
+                0x2007c134                DAT_00010ec0
+                0x2007c138                pid_err_abs
+                0x2007c13c                DAT_00010eb8
+                0x2007c140                pid_err_prev2
+                0x2007c144                DAT_00010eb0
+                0x2007c148                pid_actual
+                0x2007c14c                pid_target
+                0x2007c150                pid_ki
+                0x2007c154                pid_kd
+                0x2007c158                pid_kp
+                0x2007c15c                auth_retry
+                0x2007c160                DAT_00010a94
+                0x2007c164                DAT_00010a90
+                0x2007c168                DAT_00010a8c
+                0x2007c16c                DAT_00010a88
+                0x2007c170                DAT_00010a84
+                0x2007c174                DAT_00010a80
+                0x2007c178                DAT_00010a7c
+                0x2007c17c                DAT_00010a78
+                0x2007c180                DAT_00010a74
+                0x2007c184                DAT_00010884
+                0x2007c188                DAT_00010880
+                0x2007c18c                DAT_0001087c
+                0x2007c190                DAT_00010878
+                0x2007c194                DAT_0001057c
+                0x2007c198                DAT_00010578
+                0x2007c19c                DAT_00010574
+                0x2007c1a0                DAT_00010570
+                0x2007c1a4                DAT_00010170
+                0x2007c1a8                DAT_0001016c
+                0x2007c1ac                DAT_00010168
+                0x2007c1b0                DAT_00010164
+                0x2007c1b4                DAT_00010000
+                0x2007c1b8                DAT_0000fd7c
+                0x2007c1bc                DAT_0000fd78
+                0x2007c1c0                trig_dir
+                0x2007c1c4                DAT_0000fd70
+                0x2007c1c8                step_counter
+                0x2007c1cc                mode_byte
+                0x2007c1d0                DAT_0000fd54
+                0x2007c1d4                freq_hz
+                0x2007c1d8                DAT_0000f940
+                0x2007c1dc                DAT_0000f93c
+                0x2007c1e0                input_pending
+                0x2007c1e4                DAT_0000f934
+                0x2007c1e8                DAT_0000f930
+                0x2007c1ec                protocol_work_3
+                0x2007c1f0                DAT_0000f928
+                0x2007c1f4                DAT_0000f924
+                0x2007c1f8                DAT_0000f920
+                0x2007c1fc                DAT_0000f91c
+                0x2007c200                DAT_0000f918
+                0x2007c204                DAT_0000f914
+                0x2007c208                DAT_0000f910
+                0x2007c20c                DAT_0000f90c
+                0x2007c210                DAT_0000f908
+                0x2007c214                DAT_0000f904
+                0x2007c218                DAT_0000f900
+                0x2007c21c                DAT_0000f8fc
+                0x2007c220                DAT_0000f8f8
+                0x2007c224                DAT_0000f8f4
+                0x2007c228                DAT_0000f4f4
+                0x2007c22c                DAT_0000f4f0
+                0x2007c230                DAT_0000f4ec
+                0x2007c234                DAT_0000f4e8
+                0x2007c238                DAT_0000f4e4
+                0x2007c23c                DAT_0000f4e0
+                0x2007c240                DAT_0000f4dc
+                0x2007c244                mode2_target
+                0x2007c248                DAT_0000f4d4
+                0x2007c24c                DAT_0000f4d0
+                0x2007c250                DAT_0000f4cc
+                0x2007c254                DAT_0000f4c8
+                0x2007c258                DAT_0000f4c4
+                0x2007c25c                DAT_0000f4c0
+                0x2007c260                DAT_0000f4bc
+                0x2007c264                DAT_0000f4b8
+                0x2007c268                DAT_0000f4b4
+                0x2007c26c                DAT_0000f4b0
+                0x2007c270                DAT_0000f4ac
+                0x2007c274                DAT_0000f4a8
+                0x2007c278                DAT_0000f4a4
+                0x2007c27c                DAT_0000f4a0
+                0x2007c280                DAT_0000f49c
+                0x2007c284                DAT_0000f498
+                0x2007c288                DAT_0000f494
+                0x2007c28c                DAT_0000f490
+                0x2007c290                DAT_0000f48c
+                0x2007c294                DAT_0000f488
+                0x2007c298                DAT_0000f484
+                0x2007c29c                DAT_0000f480
+                0x2007c2a0                DAT_0000f47c
+                0x2007c2a4                DAT_0000f478
+                0x2007c2a8                DAT_0000f474
+                0x2007c2ac                DAT_0000f470
+                0x2007c2b0                DAT_0000f46c
+                0x2007c2b4                DAT_0000f468
+                0x2007c2b8                DAT_0000f068
+                0x2007c2bc                DAT_0000f064
+                0x2007c2c0                DAT_0000f060
+                0x2007c2c4                DAT_0000f05c
+                0x2007c2c8                DAT_0000f058
+                0x2007c2cc                DAT_0000f054
+                0x2007c2d0                DAT_0000f050
+                0x2007c2d4                DAT_0000f04c
+                0x2007c2d8                DAT_0000f048
+                0x2007c2dc                DAT_0000f044
+                0x2007c2e0                DAT_0000f040
+                0x2007c2e4                DAT_0000f03c
+                0x2007c2e8                DAT_0000f038
+                0x2007c2ec                DAT_0000f034
+                0x2007c2f0                DAT_0000f030
+                0x2007c2f4                DAT_0000f02c
+                0x2007c2f8                DAT_0000f028
+                0x2007c2fc                DAT_0000f024
+                0x2007c300                DAT_0000f020
+                0x2007c304                DAT_0000f01c
+                0x2007c308                DAT_0000f018
+                0x2007c30c                DAT_0000f014
+                0x2007c310                DAT_0000f010
+                0x2007c314                DAT_0000f00c
+                0x2007c318                DAT_0000f008
+                0x2007c31c                DAT_0000f004
+                0x2007c320                DAT_0000f000
+                0x2007c324                DAT_0000effc
+                0x2007c328                DAT_0000eff8
+                0x2007c32c                pid_feedback
+                0x2007c330                DAT_0000eff0
+                0x2007c334                DAT_0000efec
+                0x2007c338                DAT_0000efe8
+                0x2007c33c                DAT_0000efe4
+                0x2007c340                pid_state
+                0x2007c344                DAT_0000efdc
+                0x2007c348                DAT_0000efd8
+                0x2007c34c                DAT_0000efd4
+                0x2007c350                DAT_0000efd0
+                0x2007c354                DAT_0000efcc
+                0x2007c358                DAT_0000efc8
+                0x2007c35c                DAT_0000ebc4
+                0x2007c360                DAT_0000ebc0
+                0x2007c364                DAT_0000ebbc
+                0x2007c368                ramp_state
+                0x2007c36c                DAT_0000ebb4
+                0x2007c370                ramp_phase
+                0x2007c374                DAT_0000ebac
+                0x2007c378                DAT_0000eba8
+                0x2007c37c                DAT_0000eba4
+                0x2007c380                startup_timer
+                0x2007c384                startup_state
+                0x2007c388                pid_watchdog
+                0x2007c38c                pid_err_prev
+                0x2007c390                pid_err
+                0x2007c394                pid_integral
+                0x2007c398                DAT_0000eb88
+                0x2007c39c                DAT_0000eb84
+                0x2007c3a0                pid_active
+                0x2007c3a4                DAT_0000eb7c
+                0x2007c3a8                DAT_0000eb78
+                0x2007c3ac                alarm_timer
+                0x2007c3b0                DAT_0000eb70
+                0x2007c3b4                DAT_0000eb6c
+                0x2007c3b8                ov_count_3
+                0x2007c3bc                DAT_0000eb64
+                0x2007c3c0                DAT_0000eb60
+                0x2007c3c4                ov_count_2
+                0x2007c3c8                DAT_0000eb58
+                0x2007c3cc                DAT_0000eb54
+                0x2007c3d0                DAT_0000eb50
+                0x2007c3d4                ov_count_1
+                0x2007c3d8                DAT_0000eb48
+                0x2007c3dc                DAT_0000eb44
+                0x2007c3e0                DAT_0000eb40
+                0x2007c3e4                mode2_scale
+                0x2007c3e8                DAT_0000eb38
+                0x2007c3ec                DAT_0000eb34
+                0x2007c3f0                DAT_0000eb30
+                0x2007c3f4                DAT_0000eb2c
+                0x2007c3f8                DAT_0000eb28
+                0x2007c3fc                alarm_flag
+                0x2007c400                DAT_0000eb20
+                0x2007c404                softstop_angle
+                0x2007c408                DAT_0000eb18
+                0x2007c40c                softstart_angle
+                0x2007c410                DAT_0000eb10
+                0x2007c414                startup_count
+                0x2007c418                DAT_0000eb08
+                0x2007c41c                DAT_0000e708
+                0x2007c420                DAT_0000e704
+                0x2007c424                DAT_0000e700
+                0x2007c428                DAT_0000e6fc
+                0x2007c42c                DAT_0000e6f8
+                0x2007c430                DAT_0000e6f4
+                0x2007c434                DAT_0000e6f0
+                0x2007c438                DAT_0000e6ec
+                0x2007c43c                DAT_0000e6e8
+                0x2007c440                DAT_0000e304
+                0x2007c444                DAT_0000e300
+                0x2007c448                DAT_0000e2fc
+                0x2007c44c                DAT_0000e2f8
+                0x2007c450                DAT_0000e2f4
+                0x2007c454                DAT_0000e2f0
+                0x2007c458                DAT_0000e2ec
+                0x2007c45c                DAT_0000e2e8
+                0x2007c460                menu_param_3
+                0x2007c464                DAT_0000e2e0
+                0x2007c468                DAT_0000e2dc
+                0x2007c46c                DAT_0000e2d8
+                0x2007c470                DAT_0000e2d4
+                0x2007c474                DAT_0000e11c
+                0x2007c478                menu_index
+                0x2007c47c                menu_param_4
+                0x2007c480                frame_count
+                0x2007c484                DAT_0000e10c
+                0x2007c488                disp_param
+                0x2007c48c                DAT_0000e104
+                0x2007c490                DAT_0000e100
+                0x2007c494                DAT_0000e0fc
+                0x2007c498                DAT_0000e0f8
+                0x2007c49c                DAT_0000e0f4
+                0x2007c4a0                DAT_0000e0f0
+                0x2007c4a4                DAT_0000e0ec
+                0x2007c4a8                DAT_0000dce4
+                0x2007c4ac                DAT_0000dce0
+                0x2007c4b0                DAT_0000dcdc
+                0x2007c4b4                DAT_0000dcd8
+                0x2007c4b8                DAT_0000dcd4
+                0x2007c4bc                DAT_0000dcd0
+                0x2007c4c0                DAT_0000dccc
+                0x2007c4c4                DAT_0000dcc8
+                0x2007c4c8                DAT_0000dcc4
+                0x2007c4cc                DAT_0000dcc0
+                0x2007c4d0                DAT_0000d8c0
+                0x2007c4d4                DAT_0000d8bc
+                0x2007c4d8                DAT_0000d8b8
+                0x2007c4dc                DAT_0000d8b4
+                0x2007c4e0                DAT_0000d8b0
+                0x2007c4e4                DAT_0000d8ac
+                0x2007c4e8                DAT_0000d8a8
+                0x2007c4ec                DAT_0000d8a4
+                0x2007c4f0                DAT_0000d8a0
+                0x2007c4f4                DAT_0000d4b8
+                0x2007c4f8                DAT_0000d4b4
+                0x2007c4fc                DAT_0000d4b0
+                0x2007c500                DAT_0000d4ac
+                0x2007c504                DAT_0000d4a8
+                0x2007c508                DAT_0000d4a4
+                0x2007c50c                DAT_0000d4a0
+                0x2007c510                DAT_0000d49c
+                0x2007c514                DAT_0000d0a4
+                0x2007c518                DAT_0000d0a0
+                0x2007c51c                DAT_0000d09c
+                0x2007c520                DAT_0000d098
+                0x2007c524                DAT_0000d094
+                0x2007c528                DAT_0000d090
+                0x2007c52c                DAT_0000d08c
+                0x2007c530                DAT_0000d088
+                0x2007c534                DAT_0000d084
+                0x2007c538                DAT_0000d080
+                0x2007c53c                DAT_0000cc78
+                0x2007c540                DAT_0000cc74
+                0x2007c544                DAT_0000cc70
+                0x2007c548                DAT_0000cc6c
+                0x2007c54c                DAT_0000cc68
+                0x2007c550                DAT_0000cc64
+                0x2007c554                DAT_0000cc60
+                0x2007c558                DAT_0000cc5c
+                0x2007c55c                DAT_0000cc58
+                0x2007c560                DAT_0000cc54
+                0x2007c564                DAT_0000cc50
+                0x2007c568                DAT_0000cc4c
+                0x2007c56c                DAT_0000cc48
+                0x2007c570                DAT_0000cc44
+                0x2007c574                DAT_0000cc40
+                0x2007c578                DAT_0000cc3c
+                0x2007c57c                DAT_0000cc38
+                0x2007c580                DAT_0000cc34
+                0x2007c584                DAT_0000c830
+                0x2007c588                DAT_0000c82c
+                0x2007c58c                DAT_0000c828
+                0x2007c590                DAT_0000c824
+                0x2007c594                DAT_0000c820
+                0x2007c598                DAT_0000c81c
+                0x2007c59c                DAT_0000c818
+                0x2007c5a0                DAT_0000c814
+                0x2007c5a4                DAT_0000c810
+                0x2007c5a8                DAT_0000c80c
+                0x2007c5ac                DAT_0000c808
+                0x2007c5b0                DAT_0000c804
+                0x2007c5b4                DAT_0000c800
+                0x2007c5b8                DAT_0000c7fc
+                0x2007c5bc                DAT_0000c7f8
+                0x2007c5c0                DAT_0000c7f4
+                0x2007c5c4                DAT_0000c7f0
+                0x2007c5c8                DAT_0000c7ec
+                0x2007c5cc                DAT_0000c3f0
+                0x2007c5d0                DAT_0000c3ec
+                0x2007c5d4                DAT_0000c3e8
+                0x2007c5d8                DAT_0000c3e4
+                0x2007c5dc                DAT_0000c3e0
+                0x2007c5e0                DAT_0000c3dc
+                0x2007c5e4                DAT_0000c3d8
+                0x2007c5e8                DAT_0000c3d4
+                0x2007c5ec                DAT_0000c3d0
+                0x2007c5f0                DAT_0000c3cc
+                0x2007c5f4                DAT_0000bfc0
+                0x2007c5f8                DAT_0000bfbc
+                0x2007c5fc                DAT_0000bfb8
+                0x2007c600                DAT_0000bfb4
+                0x2007c604                DAT_0000bfb0
+                0x2007c608                DAT_0000bfac
+                0x2007c60c                DAT_0000bfa8
+                0x2007c610                DAT_0000bfa4
+                0x2007c614                DAT_0000bfa0
+                0x2007c618                DAT_0000bf9c
+                0x2007c61c                DAT_0000bb90
+                0x2007c620                DAT_0000bb8c
+                0x2007c624                DAT_0000bb88
+                0x2007c628                DAT_0000bb84
+                0x2007c62c                DAT_0000bb80
+                0x2007c630                DAT_0000bb7c
+                0x2007c634                DAT_0000bb78
+                0x2007c638                DAT_0000bb74
+                0x2007c63c                DAT_0000bb70
+                0x2007c640                DAT_0000b76c
+                0x2007c644                DAT_0000b768
+                0x2007c648                DAT_0000b764
+                0x2007c64c                protocol_work_1
+                0x2007c650                buf_data_1
+                0x2007c654                protocol_work_2
+                0x2007c658                comm_tx_len
+                0x2007c65c                DAT_0000b750
+                0x2007c660                DAT_0000b74c
+                0x2007c664                DAT_0000b748
+                0x2007c668                lookup_table
+                0x2007c66c                DAT_0000b740
+                0x2007c670                DAT_0000b73c
+                0x2007c674                DAT_0000b738
+                0x2007c678                DAT_0000b734
+                0x2007c67c                DAT_0000b730
+                0x2007c680                DAT_0000b72c
+                0x2007c684                DAT_0000b728
+                0x2007c688                DAT_0000b724
+                0x2007c68c                DAT_0000b720
+                0x2007c690                DAT_0000b71c
+                0x2007c694                DAT_0000b718
+                0x2007c698                DAT_0000b714
+                0x2007c69c                DAT_0000b710
+                0x2007c6a0                DAT_0000b70c
+                0x2007c6a4                DAT_0000b708
+                0x2007c6a8                DAT_0000b704
+                0x2007c6ac                DAT_0000b700
+                0x2007c6b0                DAT_0000b6fc
+                0x2007c6b4                DAT_0000b6f8
+                0x2007c6b8                DAT_0000b6f4
+                0x2007c6bc                DAT_0000b310
+                0x2007c6c0                DAT_0000b30c
+                0x2007c6c4                DAT_0000b308
+                0x2007c6c8                DAT_0000b304
+                0x2007c6cc                out_div
+                0x2007c6d0                DAT_0000b2fc
+                0x2007c6d4                DAT_0000b2f8
+                0x2007c6d8                DAT_0000b2f4
+                0x2007c6dc                DAT_0000b2f0
+                0x2007c6e0                DAT_0000b2ec
+                0x2007c6e4                DAT_0000b2e8
+                0x2007c6e8                DAT_0000b2e4
+                0x2007c6ec                DAT_0000b2e0
+                0x2007c6f0                DAT_0000b2dc
+                0x2007c6f4                DAT_0000b2d8
+                0x2007c6f8                DAT_0000b2d4
+                0x2007c6fc                DAT_0000b2d0
+                0x2007c700                DAT_0000b2cc
+                0x2007c704                DAT_0000b2c8
+                0x2007c708                DAT_0000b2c4
+                0x2007c70c                DAT_0000b2c0
+                0x2007c710                DAT_0000b2bc
+                0x2007c714                DAT_0000b2b8
+                0x2007c718                DAT_0000b2b4
+                0x2007c71c                DAT_0000b2b0
+                0x2007c720                DAT_0000b2ac
+                0x2007c724                DAT_0000b2a8
+                0x2007c728                DAT_0000b2a4
+                0x2007c72c                DAT_0000b2a0
+                0x2007c730                DAT_0000b29c
+                0x2007c734                DAT_0000b298
+                0x2007c738                DAT_0000b294
+                0x2007c73c                DAT_0000b290
+                0x2007c740                DAT_0000b28c
+                0x2007c744                DAT_0000b288
+                0x2007c748                DAT_0000b284
+                0x2007c74c                DAT_0000b280
+                0x2007c750                DAT_0000b27c
+                0x2007c754                DAT_0000b278
+                0x2007c758                DAT_0000b274
+                0x2007c75c                DAT_0000b270
+                0x2007c760                DAT_0000b26c
+                0x2007c764                DAT_0000b268
+                0x2007c768                DAT_0000b264
+                0x2007c76c                DAT_0000b260
+                0x2007c770                DAT_0000b25c
+                0x2007c774                DAT_0000b258
+                0x2007c778                DAT_0000b254
+                0x2007c77c                DAT_0000b250
+                0x2007c780                DAT_0000b24c
+                0x2007c784                DAT_0000b248
+                0x2007c788                DAT_0000b244
+                0x2007c78c                DAT_0000b240
+                0x2007c790                DAT_0000b23c
+                0x2007c794                DAT_0000b238
+                0x2007c798                DAT_0000b234
+                0x2007c79c                DAT_0000b230
+                0x2007c7a0                DAT_0000b22c
+                0x2007c7a4                DAT_0000b228
+                0x2007c7a8                DAT_0000ae00
+                0x2007c7ac                DAT_0000adfc
+                0x2007c7b0                DAT_0000adf8
+                0x2007c7b4                DAT_0000adf4
+                0x2007c7b8                DAT_0000adf0
+                0x2007c7bc                DAT_0000adec
+                0x2007c7c0                DAT_0000ade8
+                0x2007c7c4                DAT_0000ade4
+                0x2007c7c8                DAT_0000ade0
+                0x2007c7cc                DAT_0000addc
+                0x2007c7d0                DAT_0000add8
+                0x2007c7d4                disp_counter
+                0x2007c7d8                DAT_0000add0
+                0x2007c7dc                DAT_0000adcc
+                0x2007c7e0                comm_tx_count
+                0x2007c7e4                comm_scan_timer
+                0x2007c7e8                DAT_0000adb8
+                0x2007c7ec                comm_quiet_timer
+                0x2007c7f0                DAT_0000adb0
+                0x2007c7f4                comm_frame_buf
+                0x2007c7f8                comm_tx_data
+                0x2007c7fc                comm_tx_param
+                0x2007c800                comm_state
+                0x2007c804                DAT_0000ad9c
+                0x2007c808                DAT_0000ad98
+                0x2007c80c                DAT_0000ad94
+                0x2007c810                DAT_0000ad90
+                0x2007c814                DAT_0000ad8c
+                0x2007c818                DAT_0000ad88
+                0x2007c81c                DAT_0000ad84
+                0x2007c820                DAT_0000ad80
+                0x2007c824                DAT_0000ad7c
+                0x2007c828                DAT_0000a98c
+                0x2007c82c                DAT_0000a988
+                0x2007c830                DAT_0000a984
+                0x2007c834                DAT_0000a980
+                0x2007c838                DAT_0000a97c
+                0x2007c83c                DAT_0000a978
+                0x2007c840                DAT_0000a974
+                0x2007c844                DAT_0000a970
+                0x2007c848                DAT_0000a96c
+                0x2007c84c                DAT_0000a968
+                0x2007c850                DAT_0000a964
+                0x2007c854                DAT_0000a960
+                0x2007c858                DAT_0000a95c
+                0x2007c85c                DAT_0000a958
+                0x2007c860                DAT_0000a954
+                0x2007c864                DAT_0000a950
+                0x2007c868                DAT_0000a94c
+                0x2007c86c                DAT_0000a948
+                0x2007c870                DAT_0000a944
+                0x2007c874                DAT_0000a940
+                0x2007c878                DAT_0000a93c
+                0x2007c87c                DAT_0000a938
+                0x2007c880                DAT_0000a934
+                0x2007c884                DAT_0000a930
+                0x2007c888                DAT_0000a92c
+                0x2007c88c                DAT_0000a928
+                0x2007c890                DAT_0000a924
+                0x2007c894                DAT_0000a920
+                0x2007c898                DAT_0000a91c
+                0x2007c89c                DAT_0000a660
+                0x2007c8a0                DAT_0000a65c
+                0x2007c8a4                DAT_0000a658
+                0x2007c8a8                DAT_0000a654
+                0x2007c8ac                DAT_0000a650
+                0x2007c8b0                DAT_0000a64c
+                0x2007c8b4                DAT_0000a648
+                0x2007c8b8                DAT_0000a644
+                0x2007c8bc                DAT_0000a640
+                0x2007c8c0                DAT_0000a63c
+                0x2007c8c4                DAT_0000a638
+                0x2007c8c8                DAT_0000a634
+                0x2007c8cc                DAT_0000a630
+                0x2007c8d0                DAT_0000a62c
+                0x2007c8d4                DAT_0000a628
+                0x2007c8d8                DAT_0000a624
+                0x2007c8dc                DAT_0000a620
+                0x2007c8e0                DAT_0000a61c
+                0x2007c8e4                DAT_0000a618
+                0x2007c8e8                DAT_0000a614
+                0x2007c8ec                DAT_0000a610
+                0x2007c8f0                DAT_0000a60c
+                0x2007c8f4                DAT_0000a608
+                0x2007c8f8                DAT_0000a604
+                0x2007c8fc                DAT_0000a600
+                0x2007c900                DAT_0000a200
+                0x2007c904                DAT_0000a1fc
+                0x2007c908                DAT_0000a1f8
+                0x2007c90c                DAT_0000a1f4
+                0x2007c910                DAT_0000a1f0
+                0x2007c914                DAT_0000a1ec
+                0x2007c918                DAT_0000a1d8
+                0x2007c91c                DAT_0000a1c4
+                0x2007c920                DAT_0000a1b0
+                0x2007c924                DAT_0000a19c
+                0x2007c928                DAT_0000a188
+                0x2007c92c                DAT_0000a174
+                0x2007c930                DAT_0000a160
+                0x2007c934                DAT_0000a14c
+                0x2007c938                DAT_0000a138
+                0x2007c93c                DAT_0000a124
+                0x2007c940                DAT_0000a110
+                0x2007c944                DAT_0000a0fc
+                0x2007c948                DAT_0000a0e8
+                0x2007c94c                DAT_0000a0d4
+                0x2007c950                DAT_0000a0c0
+                0x2007c954                DAT_0000a0bc
+                0x2007c958                DAT_0000a0b0
+                0x2007c95c                DAT_0000a0ac
+                0x2007c960                DAT_0000a0a8
+                0x2007c964                DAT_0000a0a4
+                0x2007c968                DAT_0000a0a0
+                0x2007c96c                DAT_0000a09c
+                0x2007c970                DAT_0000a098
+                0x2007c974                DAT_0000a094
+                0x2007c978                DAT_0000a090
+                0x2007c97c                DAT_0000a080
+                0x2007c980                DAT_0000a070
+                0x2007c984                DAT_0000a06c
+                0x2007c988                DAT_0000a068
+                0x2007c98c                DAT_0000a064
+                0x2007c990                DAT_0000a060
+                0x2007c994                DAT_00009c60
+                0x2007c998                DAT_00009c5c
+                0x2007c99c                DAT_00009c58
+                0x2007c9a0                DAT_00009c54
+                0x2007c9a4                DAT_00009c50
+                0x2007c9a8                DAT_00009c4c
+                0x2007c9ac                DAT_00009c48
+                0x2007c9b0                DAT_00009c44
+                0x2007c9b4                DAT_00009c40
+                0x2007c9b8                DAT_00009c3c
+                0x2007c9bc                DAT_00009c38
+                0x2007c9c0                DAT_00009c34
+                0x2007c9c4                DAT_00009c30
+                0x2007c9c8                DAT_00009c2c
+                0x2007c9cc                DAT_00009c28
+                0x2007c9d0                DAT_00009c24
+                0x2007c9d4                DAT_00009820
+                0x2007c9d8                DAT_0000981c
+                0x2007c9dc                DAT_00009818
+                0x2007c9e0                DAT_00009814
+                0x2007c9e4                DAT_00009810
+                0x2007c9e8                DAT_0000980c
+                0x2007c9ec                DAT_00009808
+                0x2007c9f0                DAT_00009804
+                0x2007c9f4                DAT_00009800
+                0x2007c9f8                DAT_000097fc
+                0x2007c9fc                DAT_000097f8
+                0x2007ca00                DAT_000097f4
+                0x2007ca04                DAT_000097f0
+                0x2007ca08                DAT_000097ec
+                0x2007ca0c                DAT_000097e8
+                0x2007ca10                DAT_000097e4
+                0x2007ca14                DAT_000097e0
+                0x2007ca18                DAT_000097dc
+                0x2007ca1c                DAT_000097d8
+                0x2007ca20                DAT_000097d4
+                0x2007ca24                DAT_000097d0
+                0x2007ca28                DAT_000097cc
+                0x2007ca2c                DAT_000097c8
+                0x2007ca30                DAT_000093c4
+                0x2007ca34                DAT_000093c0
+                0x2007ca38                DAT_000093bc
+                0x2007ca3c                DAT_000093b8
+                0x2007ca40                DAT_000093b4
+                0x2007ca44                DAT_000093b0
+                0x2007ca48                DAT_000093ac
+                0x2007ca4c                DAT_00009398
+                0x2007ca50                DAT_00009384
+                0x2007ca54                DAT_00009370
+                0x2007ca58                DAT_0000935c
+                0x2007ca5c                DAT_00009348
+                0x2007ca60                DAT_00009344
+                0x2007ca64                DAT_00009340
+                0x2007ca68                DAT_0000933c
+                0x2007ca6c                DAT_00009338
+                0x2007ca70                DAT_00009334
+                0x2007ca74                DAT_00009330
+                0x2007ca78                DAT_0000932c
+                0x2007ca7c                DAT_00009328
+                0x2007ca80                DAT_00009324
+                0x2007ca84                DAT_00009320
+                0x2007ca88                DAT_0000931c
+                0x2007ca8c                DAT_00009318
+                0x2007ca90                DAT_00009314
+                0x2007ca94                DAT_00009310
+                0x2007ca98                DAT_0000930c
+                0x2007ca9c                DAT_00009308
+                0x2007caa0                DAT_00008efc
+                0x2007caa4                DAT_00008ef8
+                0x2007caa8                DAT_00008ef4
+                0x2007caac                DAT_00008ef0
+                0x2007cab0                DAT_00008ee0
+                0x2007cab4                DAT_00008edc
+                0x2007cab8                DAT_00008ed8
+                0x2007cabc                DAT_00008ed4
+                0x2007cac0                DAT_00008ed0
+                0x2007cac4                DAT_00008ecc
+                0x2007cac8                DAT_00008ec8
+                0x2007cacc                DAT_00008eb8
+                0x2007cad0                DAT_00008ea8
+                0x2007cad4                DAT_00008ea4
+                0x2007cad8                DAT_00008ea0
+                0x2007cadc                DAT_00008a98
+                0x2007cae0                DAT_00008a94
+                0x2007cae4                DAT_00008a90
+                0x2007cae8                DAT_00008a8c
+                0x2007caec                DAT_00008a88
+                0x2007caf0                menu_param_10
+                0x2007caf4                DAT_00008a80
+                0x2007caf8                DAT_00008a7c
+                0x2007cafc                DAT_00008a74
+                0x2007cb00                DAT_00008a70
+                0x2007cb04                DAT_00008a6c
+                0x2007cb08                DAT_00008a64
+                0x2007cb0c                DAT_00008a60
+                0x2007cb10                DAT_00008a5c
+                0x2007cb14                DAT_00008a58
+                0x2007cb18                DAT_00008a54
+                0x2007cb1c                DAT_00008a50
+                0x2007cb20                DAT_00008a4c
+                0x2007cb24                DAT_00008a48
+                0x2007cb28                DAT_00008a44
+                0x2007cb2c                DAT_00008a40
+                0x2007cb30                DAT_00008664
+                0x2007cb34                DAT_00008660
+                0x2007cb38                DAT_0000865c
+                0x2007cb3c                DAT_00008658
+                0x2007cb40                DAT_00008654
+                0x2007cb44                DAT_00008650
+                0x2007cb48                DAT_0000864c
+                0x2007cb4c                DAT_00008648
+                0x2007cb50                DAT_00008644
+                0x2007cb54                DAT_00008640
+                0x2007cb58                DAT_0000863c
+                0x2007cb5c                DAT_00008638
+                0x2007cb60                DAT_00008634
+                0x2007cb64                DAT_00008630
+                0x2007cb68                DAT_0000862c
+                0x2007cb6c                DAT_00008628
+                0x2007cb70                DAT_00008624
+                0x2007cb74                DAT_00008620
+                0x2007cb78                DAT_00008214
+                0x2007cb7c                DAT_00008210
+                0x2007cb80                DAT_0000820c
+                0x2007cb84                DAT_00008208
+                0x2007cb88                DAT_00008204
+                0x2007cb8c                DAT_00008200
+                0x2007cb90                DAT_000081fc
+                0x2007cb94                DAT_000081f8
+                0x2007cb98                DAT_000081f4
+                0x2007cb9c                DAT_000081f0
+                0x2007cba0                DAT_000081ec
+                0x2007cba4                DAT_000081e8
+                0x2007cba8                DAT_000081e4
+                0x2007cbac                DAT_000081e0
+                0x2007cbb0                DAT_000081dc
+                0x2007cbb4                DAT_00007ddc
+                0x2007cbb8                DAT_00007dd8
+                0x2007cbbc                DAT_00007dd4
+                0x2007cbc0                DAT_00007dd0
+                0x2007cbc4                DAT_00007dcc
+                0x2007cbc8                DAT_00007dc8
+                0x2007cbcc                DAT_00007dc4
+                0x2007cbd0                DAT_00007dc0
+                0x2007cbd4                DAT_00007dbc
+                0x2007cbd8                DAT_00007db8
+                0x2007cbdc                DAT_00007db4
+                0x2007cbe0                DAT_00007db0
+                0x2007cbe4                DAT_00007dac
+                0x2007cbe8                DAT_00007da8
+                0x2007cbec                DAT_00007d94
+                0x2007cbf0                DAT_00007d8c
+                0x2007cbf4                DAT_00007d80
+                0x2007cbf8                DAT_00007d6c
+                0x2007cbfc                DAT_00007d58
+                0x2007cc00                DAT_00007d44
+                0x2007cc04                DAT_00007d30
+                0x2007cc08                DAT_00007d2c
+                0x2007cc0c                DAT_00007d28
+                0x2007cc10                DAT_00007d24
+                0x2007cc14                DAT_00007d20
+                0x2007cc18                DAT_00007d1c
+                0x2007cc1c                DAT_00007d18
+                0x2007cc20                DAT_00007d14
+                0x2007cc24                DAT_00007d10
+                0x2007cc28                DAT_00007d0c
+                0x2007cc2c                DAT_00007d08
+                0x2007cc30                DAT_00007904
+                0x2007cc34                DAT_00007900
+                0x2007cc38                DAT_000078fc
+                0x2007cc3c                DAT_000078f8
+                0x2007cc40                DAT_000078f4
+                0x2007cc44                DAT_000078f0
+                0x2007cc48                DAT_000078ec
+                0x2007cc4c                DAT_000078e8
+                0x2007cc50                DAT_000078e4
+                0x2007cc54                DAT_000078e0
+                0x2007cc58                DAT_000078dc
+                0x2007cc5c                DAT_000078d8
+                0x2007cc60                DAT_000078d0
+                0x2007cc64                DAT_000078c8
+                0x2007cc68                DAT_000078c4
+                0x2007cc6c                DAT_000078bc
+                0x2007cc70                DAT_000078b4
+                0x2007cc74                DAT_000078ac
+                0x2007cc78                DAT_000078a8
+                0x2007cc7c                DAT_000078a4
+                0x2007cc80                DAT_000078a0
+                0x2007cc84                DAT_0000789c
+                0x2007cc88                DAT_0000749c
+                0x2007cc8c                DAT_00007498
+                0x2007cc90                DAT_00007494
+                0x2007cc94                DAT_00007490
+                0x2007cc98                DAT_0000748c
+                0x2007cc9c                DAT_00007488
+                0x2007cca0                DAT_00007484
+                0x2007cca4                DAT_00007480
+                0x2007cca8                DAT_0000747c
+                0x2007ccac                DAT_00007478
+                0x2007ccb0                DAT_00007474
+                0x2007ccb4                DAT_00007470
+                0x2007ccb8                DAT_0000746c
+                0x2007ccbc                DAT_00007468
+                0x2007ccc0                DAT_00007464
+                0x2007ccc4                DAT_00007064
+                0x2007ccc8                DAT_00007060
+                0x2007cccc                DAT_0000705c
+                0x2007ccd0                DAT_00007058
+                0x2007ccd4                DAT_00007054
+                0x2007ccd8                DAT_00007050
+                0x2007ccdc                DAT_0000704c
+                0x2007cce0                DAT_00007048
+                0x2007cce4                DAT_00007044
+                0x2007cce8                DAT_00007040
+                0x2007ccec                DAT_0000703c
+                0x2007ccf0                DAT_00007038
+                0x2007ccf4                DAT_00007034
+                0x2007ccf8                DAT_00007030
+                0x2007ccfc                DAT_0000702c
+                0x2007cd00                DAT_00007028
+                0x2007cd04                DAT_00007024
+                0x2007cd08                DAT_00007020
+                0x2007cd0c                DAT_00006c18
+                0x2007cd10                DAT_00006c04
+                0x2007cd14                DAT_00006bf0
+                0x2007cd18                DAT_00006bdc
+                0x2007cd1c                DAT_00006bc8
+                0x2007cd20                DAT_00006bb4
+                0x2007cd24                DAT_00006bac
+                0x2007cd28                DAT_00006ba0
+                0x2007cd2c                DAT_00006b8c
+                0x2007cd30                DAT_00006b78
+                0x2007cd34                DAT_00006b64
+                0x2007cd38                DAT_00006b50
+                0x2007cd3c                DAT_00006b3c
+                0x2007cd40                DAT_00006b28
+                0x2007cd44                DAT_00006b24
+                0x2007cd48                DAT_00006b20
+                0x2007cd4c                DAT_00006b1c
+                0x2007cd50                DAT_00006b18
+                0x2007cd54                DAT_00006b0c
+                0x2007cd58                DAT_00006af8
+                0x2007cd5c                DAT_00006ae8
+                0x2007cd60                DAT_00006ad8
+                0x2007cd64                DAT_00006acc
+                0x2007cd68                DAT_00006ac8
+                0x2007cd6c                DAT_00006ac4
+                0x2007cd70                DAT_00006ac0
+                0x2007cd74                DAT_00006abc
+                0x2007cd78                DAT_00006ab8
+                0x2007cd7c                DAT_00006ab4
+                0x2007cd80                DAT_00006aa4
+                0x2007cd84                DAT_00006aa0
+                0x2007cd88                DAT_00006a98
+                0x2007cd8c                DAT_00006a8c
+                0x2007cd90                DAT_00006a80
+                0x2007cd94                DAT_00006a7c
+                0x2007cd98                DAT_00006a78
+                0x2007cd9c                DAT_00006a74
+                0x2007cda0                DAT_00006a70
+                0x2007cda4                DAT_00006a6c
+                0x2007cda8                DAT_00006664
+                0x2007cdac                DAT_00006660
+                0x2007cdb0                DAT_0000665c
+                0x2007cdb4                DAT_00006654
+                0x2007cdb8                DAT_00006650
+                0x2007cdbc                DAT_00006648
+                0x2007cdc0                DAT_00006644
+                0x2007cdc4                DAT_00006640
+                0x2007cdc8                DAT_00006638
+                0x2007cdcc                DAT_00006634
+                0x2007cdd0                DAT_00006620
+                0x2007cdd4                DAT_0000660c
+                0x2007cdd8                DAT_000065f8
+                0x2007cddc                DAT_000065e4
+                0x2007cde0                DAT_000065e0
+                0x2007cde4                DAT_000065dc
+                0x2007cde8                DAT_000065d4
+                0x2007cdec                DAT_000065d0
+                0x2007cdf0                DAT_000065c8
+                0x2007cdf4                DAT_000065c0
+                0x2007cdf8                DAT_000065b8
+                0x2007cdfc                DAT_000065b4
+                0x2007ce00                DAT_000065b0
+                0x2007ce04                comm_baud_table
+                0x2007ce08                DAT_000065a8
+                0x2007ce0c                DAT_00006594
+                0x2007ce10                DAT_00006580
+                0x2007ce14                DAT_0000656c
+                0x2007ce18                DAT_00006558
+                0x2007ce1c                DAT_00006554
+                0x2007ce20                DAT_00006550
+                0x2007ce24                DAT_0000654c
+                0x2007ce28                DAT_00006548
+                0x2007ce2c                DAT_00006534
+                0x2007ce30                DAT_00006520
+                0x2007ce34                DAT_0000650c
+                0x2007ce38                DAT_000064f8
+                0x2007ce3c                DAT_000064f4
+                0x2007ce40                DAT_000064f0
+                0x2007ce44                DAT_000064ec
+                0x2007ce48                DAT_000064e8
+                0x2007ce4c                DAT_000064e0
+                0x2007ce50                DAT_000064d8
+                0x2007ce54                DAT_000064d0
+                0x2007ce58                DAT_000064cc
+                0x2007ce5c                DAT_000064b8
+                0x2007ce60                DAT_000064a4
+                0x2007ce64                DAT_00006490
+                0x2007ce68                DAT_0000647c
+                0x2007ce6c                DAT_00006478
+                0x2007ce70                DAT_00006474
+                0x2007ce74                DAT_00006470
+                0x2007ce78                DAT_0000646c
+                0x2007ce7c                DAT_0000604c
+                0x2007ce80                DAT_00006038
+                0x2007ce84                DAT_00006024
+                0x2007ce88                DAT_00006010
+                0x2007ce8c                DAT_00005ffc
+                0x2007ce90                DAT_00005fe8
+                0x2007ce94                DAT_00005fd4
+                0x2007ce98                DAT_00005fc0
+                0x2007ce9c                DAT_00005fac
+                0x2007cea0                DAT_00005fa8
+                0x2007cea4                DAT_00005fa4
+                0x2007cea8                DAT_00005fa0
+                0x2007ceac                DAT_00005f98
+                0x2007ceb0                DAT_00005f94
+                0x2007ceb4                DAT_00005f90
+                0x2007ceb8                DAT_00005f8c
+                0x2007cebc                DAT_00005f84
+                0x2007cec0                DAT_00005f7c
+                0x2007cec4                DAT_00005f78
+                0x2007cec8                DAT_00005f70
+                0x2007cecc                DAT_00005f68
+                0x2007ced0                DAT_00005f64
+                0x2007ced4                DAT_00005f5c
+                0x2007ced8                DAT_00005f54
+                0x2007cedc                DAT_00005f50
+                0x2007cee0                DAT_00005f48
+                0x2007cee4                DAT_00005f44
+                0x2007cee8                DAT_00005f40
+                0x2007ceec                DAT_00005b3c
+                0x2007cef0                DAT_00005b34
+                0x2007cef4                DAT_00005b2c
+                0x2007cef8                DAT_00005b28
+                0x2007cefc                DAT_00005b24
+                0x2007cf00                DAT_00005b20
+                0x2007cf04                DAT_00005b1c
+                0x2007cf08                DAT_00005b18
+                0x2007cf0c                DAT_00005b14
+                0x2007cf10                DAT_00005b10
+                0x2007cf14                DAT_00005b0c
+                0x2007cf18                DAT_00005b08
+                0x2007cf1c                DAT_00005b04
+                0x2007cf20                DAT_00005b00
+                0x2007cf24                DAT_00005afc
+                0x2007cf28                DAT_00005af8
+                0x2007cf2c                DAT_00005af4
+                0x2007cf30                DAT_000056ec
+                0x2007cf34                DAT_000056d8
+                0x2007cf38                DAT_000056c4
+                0x2007cf3c                DAT_000056b0
+                0x2007cf40                DAT_0000569c
+                0x2007cf44                DAT_00005688
+                0x2007cf48                DAT_00005674
+                0x2007cf4c                DAT_0000566c
+                0x2007cf50                DAT_00005660
+                0x2007cf54                DAT_0000564c
+                0x2007cf58                DAT_00005648
+                0x2007cf5c                DAT_00005644
+                0x2007cf60                DAT_00005640
+                0x2007cf64                DAT_0000563c
+                0x2007cf68                menu_param_11
+                0x2007cf6c                DAT_00005634
+                0x2007cf70                DAT_00005630
+                0x2007cf74                DAT_0000562c
+                0x2007cf78                DAT_00005628
+                0x2007cf7c                DAT_00005624
+                0x2007cf80                DAT_00005620
+                0x2007cf84                DAT_0000561c
+                0x2007cf88                DAT_0000521c
+                0x2007cf8c                DAT_00005210
+                0x2007cf90                menu_param_9
+                0x2007cf94                menu_param_12
+                0x2007cf98                DAT_00005204
+                0x2007cf9c                DAT_00005200
+                0x2007cfa0                menu_param_8
+                0x2007cfa4                DAT_000051f8
+                0x2007cfa8                DAT_000051f4
+                0x2007cfac                pid_target_set
+                0x2007cfb0                DAT_000051ec
+                0x2007cfb4                disp_calc
+                0x2007cfb8                DAT_000051e4
+                0x2007cfbc                DAT_000051e0
+                0x2007cfc0                DAT_000051dc
+                0x2007cfc4                DAT_000051d8
+                0x2007cfc8                DAT_000051d4
+                0x2007cfcc                DAT_000051d0
+                0x2007cfd0                DAT_000051cc
+                0x2007cfd4                DAT_000051c8
+                0x2007cfd8                DAT_000051c4
+                0x2007cfdc                DAT_000051c0
+                0x2007cfe0                DAT_000051bc
+                0x2007cfe4                DAT_000051b8
+                0x2007cfe8                DAT_000051b4
+                0x2007cfec                menu_flag_4
+                0x2007cff0                DAT_000051ac
+                0x2007cff4                DAT_000051a8
+                0x2007cff8                DAT_000051a4
+                0x2007cffc                stop_req
+                0x2007d000                DAT_0000519c
+                0x2007d004                DAT_00005198
+                0x2007d008                menu_flag_5
+                0x2007d00c                DAT_00005190
+                0x2007d010                DAT_0000518c
+                0x2007d014                menu_param_7
+                0x2007d018                DAT_00004d7c
+                0x2007d01c                DAT_00004d78
+                0x2007d020                DAT_00004d74
+                0x2007d024                DAT_00004d6c
+                0x2007d028                DAT_00004d68
+                0x2007d02c                DAT_00004d64
+                0x2007d030                DAT_00004d60
+                0x2007d034                menu_opt
+                0x2007d038                menu_param_6
+                0x2007d03c                DAT_00004d54
+                0x2007d040                menu_param_5
+                0x2007d044                DAT_00004d4c
+                0x2007d048                DAT_00004d48
+                0x2007d04c                DAT_00004d44
+                0x2007d050                DAT_00004d40
+                0x2007d054                DAT_00004d3c
+                0x2007d058                DAT_00004d38
+                0x2007d05c                menu_tick
+                0x2007d060                DAT_00004d20
+                0x2007d064                DAT_00004d0c
+                0x2007d068                DAT_00004d04
+                0x2007d06c                DAT_00004cf4
+                0x2007d070                DAT_00004cf0
+                0x2007d074                DAT_00004cec
+                0x2007d078                DAT_00004ce8
+                0x2007d07c                DAT_00004ce4
+                0x2007d080                DAT_00004ce0
+                0x2007d084                DAT_00004cdc
+                0x2007d088                DAT_00004cc8
+                0x2007d08c                DAT_00004cb4
+                0x2007d090                DAT_00004ca0
+                0x2007d094                menu_param_1
+                0x2007d098                DAT_00004c98
+                0x2007d09c                DAT_00004c94
+                0x2007d0a0                DAT_00004c90
+                0x2007d0a4                DAT_00004c8c
+                0x2007d0a8                DAT_00004c88
+                0x2007d0ac                DAT_00004c84
+                0x2007d0b0                DAT_00004c80
+                0x2007d0b4                DAT_00004c7c
+                0x2007d0b8                DAT_0000487c
+                0x2007d0bc                eint3_flag
+                0x2007d0c0                DAT_00004874
+                0x2007d0c4                eint2_flag
+                0x2007d0c8                DAT_0000486c
+                0x2007d0cc                DAT_00004868
+                0x2007d0d0                eint1_flag
+                0x2007d0d4                DAT_00004860
+                0x2007d0d8                menu_flag_3
+                0x2007d0dc                DAT_00004858
+                0x2007d0e0                DAT_00004854
+                0x2007d0e4                menu_param_13
+                0x2007d0e8                input_locked
+                0x2007d0ec                trigger_angle
+                0x2007d0f0                trigger_accum
+                0x2007d0f4                trigger_step
+                0x2007d0f8                out_setpoint
+                0x2007d0fc                DAT_00004838
+                0x2007d100                menu_flag_1
+                0x2007d104                menu_flag_2
+                0x2007d108                menu_state2
+                0x2007d10c                DAT_00004828
+                0x2007d110                DAT_00004824
+                0x2007d114                DAT_00004820
+                0x2007d118                DAT_0000481c
+                0x2007d11c                DAT_00004818
+                0x2007d120                DAT_00004814
+                0x2007d124                DAT_00004810
+                0x2007d128                DAT_0000480c
+                0x2007d12c                menu_val
+                0x2007d130                DAT_00004804
+                0x2007d134                DAT_00004800
+                0x2007d138                DAT_000047fc
+                0x2007d13c                DAT_000047f8
+                0x2007d140                DAT_000043fc
+                0x2007d144                DAT_000043e8
+                0x2007d148                DAT_000043d4
+                0x2007d14c                DAT_000043c0
+                0x2007d150                DAT_000043ac
+                0x2007d154                DAT_0000439c
+                0x2007d158                DAT_0000438c
+                0x2007d15c                DAT_0000437c
+                0x2007d160                DAT_0000436c
+                0x2007d164                DAT_00004364
+                0x2007d168                DAT_0000435c
+                0x2007d16c                DAT_00004354
+                0x2007d170                DAT_00004350
+                0x2007d174                DAT_00004348
+                0x2007d178                DAT_00004340
+                0x2007d17c                DAT_0000433c
+                0x2007d180                DAT_00004334
+                0x2007d184                out_param
+                0x2007d188                DAT_0000432c
+                0x2007d18c                DAT_00004328
+                0x2007d190                DAT_00004324
+                0x2007d194                DAT_00004320
+                0x2007d198                menu_param_2
+                0x2007d19c                DAT_00004318
+                0x2007d1a0                DAT_00004304
+                0x2007d1a4                DAT_000042f0
+                0x2007d1a8                DAT_000042dc
+                0x2007d1ac                DAT_000042c8
+                0x2007d1b0                DAT_000042c4
+                0x2007d1b4                DAT_000042c0
+                0x2007d1b8                DAT_000042bc
+                0x2007d1bc                DAT_000042b8
+                0x2007d1c0                DAT_000042b4
+                0x2007d1c4                DAT_000042b0
+                0x2007d1c8                DAT_000042ac
+                0x2007d1cc                DAT_000042a8
+                0x2007d1d0                DAT_000042a4
+                0x2007d1d4                DAT_000042a0
+                0x2007d1d8                DAT_0000429c
+                0x2007d1dc                DAT_00004298
+                0x2007d1e0                DAT_00004294
+                0x2007d1e4                DAT_00004290
+                0x2007d1e8                DAT_0000428c
+                0x2007d1ec                DAT_00004288
+                0x2007d1f0                DAT_00004284
+                0x2007d1f4                DAT_00004280
+                0x2007d1f8                DAT_0000427c
+                0x2007d1fc                DAT_00004278
+                0x2007d200                DAT_00004274
+                0x2007d204                DAT_00004270
+                0x2007d208                DAT_0000426c
+                0x2007d20c                DAT_00004268
+                0x2007d210                DAT_00004264
+                0x2007d214                DAT_00004260
+                0x2007d218                DAT_0000425c
+                0x2007d21c                DAT_00004258
+                0x2007d220                DAT_00003e54
+                0x2007d224                DAT_00003e50
+                0x2007d228                DAT_00003e4c
+                0x2007d22c                DAT_00003e48
+                0x2007d230                DAT_00003e44
+                0x2007d234                cl_thresh_lo
+                0x2007d238                DAT_00003e3c
+                0x2007d23c                DAT_00003e38
+                0x2007d240                DAT_00003e34
+                0x2007d244                DAT_00003e30
+                0x2007d248                DAT_00003e2c
+                0x2007d24c                DAT_00003e28
+                0x2007d250                DAT_00003e24
+                0x2007d254                DAT_00003e20
+                0x2007d258                DAT_00003e1c
+                0x2007d25c                DAT_00003e18
+                0x2007d260                DAT_00003e14
+                0x2007d264                DAT_00003e10
+                0x2007d268                DAT_00003e0c
+                0x2007d26c                DAT_00003e08
+                0x2007d270                DAT_00003e04
+                0x2007d274                DAT_00003e00
+                0x2007d278                DAT_00003dfc
+                0x2007d27c                DAT_00003df8
+                0x2007d280                DAT_00003df4
+                0x2007d284                DAT_00003df0
+                0x2007d288                DAT_00003dec
+                0x2007d28c                DAT_00003de8
+                0x2007d290                DAT_00003de4
+                0x2007d294                DAT_00003de0
+                0x2007d298                DAT_00003ddc
+                0x2007d29c                DAT_00003dd8
+                0x2007d2a0                DAT_00003dd4
+                0x2007d2a4                DAT_00003dd0
+                0x2007d2a8                DAT_00003dcc
+                0x2007d2ac                DAT_00003dc8
+                0x2007d2b0                DAT_00003dc4
+                0x2007d2b4                DAT_00003dc0
+                0x2007d2b8                DAT_00003dbc
+                0x2007d2bc                DAT_00003db8
+                0x2007d2c0                DAT_00003db4
+                0x2007d2c4                DAT_00003db0
+                0x2007d2c8                DAT_00003dac
+                0x2007d2cc                DAT_00003da8
+                0x2007d2d0                DAT_00003da4
+                0x2007d2d4                DAT_00003da0
+                0x2007d2d8                DAT_00003d9c
+                0x2007d2dc                DAT_00003d98
+                0x2007d2e0                DAT_00003d94
+                0x2007d2e4                DAT_00003d90
+                0x2007d2e8                DAT_00003990
+                0x2007d2ec                DAT_0000398c
+                0x2007d2f0                DAT_00003988
+                0x2007d2f4                DAT_00003984
+                0x2007d2f8                DAT_00003980
+                0x2007d2fc                DAT_0000397c
+                0x2007d300                DAT_00003978
+                0x2007d304                DAT_00003974
+                0x2007d308                DAT_00003970
+                0x2007d30c                DAT_0000396c
+                0x2007d310                DAT_00003968
+                0x2007d314                DAT_00003964
+                0x2007d318                DAT_00003960
+                0x2007d31c                DAT_0000395c
+                0x2007d320                DAT_00003958
+                0x2007d324                DAT_00003954
+                0x2007d328                DAT_00003950
+                0x2007d32c                DAT_0000394c
+                0x2007d330                DAT_00003948
+                0x2007d334                DAT_00003944
+                0x2007d338                DAT_00003940
+                0x2007d33c                DAT_0000393c
+                0x2007d340                DAT_00003938
+                0x2007d344                DAT_00003934
+                0x2007d348                DAT_00003930
+                0x2007d34c                DAT_0000392c
+                0x2007d350                DAT_00003928
+                0x2007d354                DAT_00003924
+                0x2007d358                DAT_00003920
+                0x2007d35c                DAT_0000391c
+                0x2007d360                DAT_00003918
+                0x2007d364                DAT_00003914
+                0x2007d368                DAT_00003910
+                0x2007d36c                DAT_0000390c
+                0x2007d370                DAT_00003908
+                0x2007d374                DAT_00003904
+                0x2007d378                DAT_00003900
+                0x2007d37c                DAT_000038fc
+                0x2007d380                DAT_000038f8
+                0x2007d384                DAT_000038f4
+                0x2007d388                DAT_000038f0
+                0x2007d38c                DAT_000038ec
+                0x2007d390                DAT_000038e8
+                0x2007d394                DAT_000038e4
+                0x2007d398                DAT_000038e0
+                0x2007d39c                DAT_000038dc
+                0x2007d3a0                pid_ki2
+                0x2007d3a4                DAT_000038d4
+                0x2007d3a8                pid_kp2
+                0x2007d3ac                DAT_000038cc
+                0x2007d3b0                DAT_000038c8
+                0x2007d3b4                DAT_000038c4
+                0x2007d3b8                DAT_000038c0
+                0x2007d3bc                DAT_000038bc
+                0x2007d3c0                DAT_000038b8
+                0x2007d3c4                DAT_000038b4
+                0x2007d3c8                DAT_000038b0
+                0x2007d3cc                comm_rx_flag
+                0x2007d3d0                DAT_000038a8
+                0x2007d3d4                comm_div_sel
+                0x2007d3d8                DAT_000038a0
+                0x2007d3dc                comm_baud_idx
+                0x2007d3e0                DAT_00003898
+                0x2007d3e4                menu_state
+                0x2007d3e8                DAT_00003890
+                0x2007d3ec                cl_gain_small
+                0x2007d3f0                DAT_00003888
+                0x2007d3f4                cl_gain_mid
+                0x2007d3f8                DAT_00003880
+                0x2007d3fc                cl_gain_big
+                0x2007d400                DAT_00003878
+                0x2007d404                cl_thresh_hi
+                0x2007d408                DAT_00003870
+                0x2007d40c                DAT_00003470
+                0x2007d410                DAT_0000346c
+                0x2007d414                DAT_00003468
+                0x2007d418                DAT_00003464
+                0x2007d41c                DAT_00003460
+                0x2007d420                DAT_0000345c
+                0x2007d424                DAT_00003458
+                0x2007d428                DAT_00003454
+                0x2007d42c                DAT_00003450
+                0x2007d430                DAT_0000344c
+                0x2007d434                comm_param_3
+                0x2007d438                DAT_00003444
+                0x2007d43c                comm_param_2
+                0x2007d440                DAT_0000343c
+                0x2007d444                comm_param_1
+                0x2007d448                DAT_00003434
+                0x2007d44c                DAT_00003430
+                0x2007d450                DAT_0000342c
+                0x2007d454                eeprom_param_13
+                0x2007d458                DAT_00003424
+                0x2007d45c                eeprom_param_12
+                0x2007d460                DAT_0000341c
+                0x2007d464                DAT_00003418
+                0x2007d468                DAT_00003414
+                0x2007d46c                DAT_00003410
+                0x2007d470                DAT_0000340c
+                0x2007d474                DAT_00003408
+                0x2007d478                DAT_00003404
+                0x2007d47c                DAT_00003400
+                0x2007d480                DAT_000033fc
+                0x2007d484                DAT_000033f8
+                0x2007d488                DAT_000033f4
+                0x2007d48c                DAT_000033f0
+                0x2007d490                DAT_000033ec
+                0x2007d494                DAT_000033e8
+                0x2007d498                DAT_000033e4
+                0x2007d49c                DAT_000033e0
+                0x2007d4a0                DAT_000033dc
+                0x2007d4a4                ulim_angle
+                0x2007d4a8                out_fine
+                0x2007d4ac                DAT_000033d0
+                0x2007d4b0                DAT_000033cc
+                0x2007d4b4                DAT_000033c8
+                0x2007d4b8                DAT_000033c4
+                0x2007d4bc                DAT_000033c0
+                0x2007d4c0                DAT_000033bc
+                0x2007d4c4                eeprom_param_3
+                0x2007d4c8                eeprom_param_4
+                0x2007d4cc                DAT_000033b0
+                0x2007d4d0                eeprom_param_2
+                0x2007d4d4                DAT_000033a8
+                0x2007d4d8                DAT_000033a4
+                0x2007d4dc                trig_phase
+                0x2007d4e0                DAT_0000339c
+                0x2007d4e4                DAT_00003398
+                0x2007d4e8                DAT_00003394
+                0x2007d4ec                DAT_00003390
+                0x2007d4f0                DAT_0000338c
+                0x2007d4f4                DAT_00003388
+                0x2007d4f8                DAT_00003384
+                0x2007d4fc                DAT_00003380
+                0x2007d500                DAT_0000337c
+                0x2007d504                DAT_00003378
+                0x2007d508                DAT_00003374
+                0x2007d50c                llim_angle
+                0x2007d510                DAT_0000336c
+                0x2007d514                stop_div
+                0x2007d518                DAT_00003364
+                0x2007d51c                DAT_00003360
+                0x2007d520                DAT_0000335c
+                0x2007d524                startup_div
+                0x2007d528                DAT_00003354
+                0x2007d52c                gain_c
+                0x2007d530                DAT_0000334c
+                0x2007d534                DAT_00003348
+                0x2007d538                DAT_00003344
+                0x2007d53c                DAT_00003340
+                0x2007d540                DAT_0000333c
+                0x2007d544                DAT_00003338
+                0x2007d548                DAT_00003334
+                0x2007d54c                DAT_00003330
+                0x2007d550                DAT_0000332c
+                0x2007d554                DAT_00003328
+                0x2007d558                out_freq_adj_shadow
+                0x2007d55c                DAT_00003320
+                0x2007d560                DAT_0000331c
+                0x2007d564                eeprom_param_10
+                0x2007d568                DAT_00003314
+                0x2007d56c                eeprom_param_9
+                0x2007d570                eeprom_param_8
+                0x2007d574                eeprom_param_7
+                0x2007d578                DAT_00002f04
+                0x2007d57c                DAT_00002f00
+                0x2007d580                DAT_00002efc
+                0x2007d584                DAT_00002ef8
+                0x2007d588                DAT_00002ef4
+                0x2007d58c                DAT_00002ef0
+                0x2007d590                DAT_00002eec
+                0x2007d594                DAT_00002ee8
+                0x2007d598                DAT_00002ee4
+                0x2007d59c                DAT_00002ee0
+                0x2007d5a0                DAT_00002edc
+                0x2007d5a4                DAT_00002ed8
+                0x2007d5a8                DAT_00002ed4
+                0x2007d5ac                DAT_00002ed0
+                0x2007d5b0                DAT_00002ecc
+                0x2007d5b4                DAT_00002ec8
+                0x2007d5b8                DAT_00002ec4
+                0x2007d5bc                DAT_00002ec0
+                0x2007d5c0                DAT_00002ebc
+                0x2007d5c4                DAT_00002eb8
+                0x2007d5c8                DAT_00002eb4
+                0x2007d5cc                DAT_00002eb0
+                0x2007d5d0                DAT_00002eac
+                0x2007d5d4                DAT_00002ea8
+                0x2007d5d8                DAT_00002ea4
+                0x2007d5dc                DAT_00002ea0
+                0x2007d5e0                DAT_00002e9c
+                0x2007d5e4                DAT_00002e98
+                0x2007d5e8                DAT_00002e94
+                0x2007d5ec                DAT_00002e90
+                0x2007d5f0                DAT_00002e8c
+                0x2007d5f4                DAT_00002e88
+                0x2007d5f8                DAT_00002e84
+                0x2007d5fc                DAT_00002e80
+                0x2007d600                DAT_00002e7c
+                0x2007d604                DAT_00002e78
+                0x2007d608                DAT_00002e74
+                0x2007d60c                DAT_00002e70
+                0x2007d610                DAT_00002e6c
+                0x2007d614                DAT_00002e68
+                0x2007d618                DAT_00002a68
+                0x2007d61c                DAT_00002a64
+                0x2007d620                DAT_00002a60
+                0x2007d624                DAT_00002a5c
+                0x2007d628                DAT_00002a58
+                0x2007d62c                DAT_00002a54
+                0x2007d630                DAT_00002a50
+                0x2007d634                DAT_00002a4c
+                0x2007d638                DAT_00002a48
+                0x2007d63c                DAT_00002a44
+                0x2007d640                DAT_00002a40
+                0x2007d644                DAT_00002a3c
+                0x2007d648                DAT_00002a38
+                0x2007d64c                DAT_00002a34
+                0x2007d650                DAT_00002a30
+                0x2007d654                DAT_00002a2c
+                0x2007d658                DAT_00002a28
+                0x2007d65c                DAT_00002a24
+                0x2007d660                DAT_00002a20
+                0x2007d664                DAT_00002a1c
+                0x2007d668                eeprom_param_15
+                0x2007d66c                eeprom_param_14
+                0x2007d670                DAT_00002a10
+                0x2007d674                DAT_00002a0c
+                0x2007d678                DAT_00002a08
+                0x2007d67c                DAT_00002a04
+                0x2007d680                DAT_00002a00
+                0x2007d684                DAT_000029fc
+                0x2007d688                DAT_000029f8
+                0x2007d68c                DAT_000029f4
+                0x2007d690                DAT_000029f0
+                0x2007d694                eeprom_param_11
+                0x2007d698                eeprom_param_6
+                0x2007d69c                DAT_000029e4
+                0x2007d6a0                DAT_000029e0
+                0x2007d6a4                DAT_000029dc
+                0x2007d6a8                DAT_000029d8
+                0x2007d6ac                DAT_000029d4
+                0x2007d6b0                eeprom_param_5
+                0x2007d6b4                DAT_000029cc
+                0x2007d6b8                DAT_000029c8
+                0x2007d6bc                DAT_000029c4
+                0x2007d6c0                DAT_000029c0
+                0x2007d6c4                DAT_000029bc
+                0x2007d6c8                adc_conv_fb
+                0x2007d6cc                adc_conv_ch5
+                0x2007d6d0                DAT_00002580
+                0x2007d6d4                DAT_0000257c
+                0x2007d6d8                adc_ch5_buf
+                0x2007d6dc                DAT_00002574
+                0x2007d6e0                adc_avg_idx_4
+                0x2007d6e4                DAT_0000256c
+                0x2007d6e8                adc_conv_aux1
+                0x2007d6ec                adc_conv_ch4
+                0x2007d6f0                DAT_00002560
+                0x2007d6f4                DAT_0000255c
+                0x2007d6f8                adc_ch4_buf
+                0x2007d6fc                DAT_00002554
+                0x2007d700                adc_avg_idx_3
+                0x2007d704                DAT_0000254c
+                0x2007d708                gain_a
+                0x2007d70c                adc_conv_aux2
+                0x2007d710                gain_b
+                0x2007d714                gain_sel
+                0x2007d718                DAT_00002538
+                0x2007d71c                DAT_00002534
+                0x2007d720                DAT_00002530
+                0x2007d724                eeprom_adc_cfg
+                0x2007d728                adc_conv_ch3
+                0x2007d72c                adc_ch3_buf
+                0x2007d730                adc_avg_idx_5
+                0x2007d734                DAT_0000231c
+                0x2007d738                DAT_00002318
+                0x2007d73c                adc_conv_ch2
+                0x2007d740                adc_ch2_buf
+                0x2007d744                adc_avg_idx_2
+                0x2007d748                DAT_00002308
+                0x2007d74c                DAT_00002304
+                0x2007d750                adc_ch1_buf
+                0x2007d754                adc_avg_idx_1
+                0x2007d758                cfg_word
+                0x2007d75c                DAT_000022f4
+                0x2007d760                DAT_000022f0
+                0x2007d764                gain_coef
+                0x2007d768                adc_avg_work
+                0x2007d76c                adc_ch0_buf
+                0x2007d770                adc_avg_idx_0
+                0x2007d774                adc_ch5_raw
+                0x2007d778                adc_ch4_raw
+                0x2007d77c                adc_ch3_raw
+                0x2007d780                adc_ch2_raw
+                0x2007d784                adc_ch1_raw
+                0x2007d788                adc_ch0_raw
+                0x2007d78c                adc_scan_idx
+                0x2007d790                DAT_000022c0
+                0x2007d794                DAT_000022bc
+                0x2007d798                DAT_000022b8
+                0x2007d79c                DAT_000022b4
+                0x2007d7a0                DAT_000022b0
+                0x2007d7a4                DAT_00002114
+                0x2007d7a8                DAT_00002110
+                0x2007d7ac                DAT_00001eb0
+                0x2007d7b0                DAT_00001eac
+                0x2007d7b4                DAT_00001bec
+                0x2007d7b8                DAT_00001be8
+                0x2007d7bc                DAT_00001be4
+                0x2007d7c0                DAT_00001be0
+                0x2007d7c4                DAT_00001bdc
+                0x2007d7c8                DAT_00001bd8
+                0x2007d7cc                DAT_00001bd4
+                0x2007d7d0                DAT_00001bd0
+                0x2007d7d4                DAT_00001bcc
+                0x2007d7d8                DAT_00001bc8
+                0x2007d7dc                eeprom_param_1
+                0x2007d7e0                DAT_00001bc0
+                0x2007d7e4                DAT_00001bbc
+                0x2007d7e8                DAT_00001930
+                0x2007d7ec                DAT_0000192c
+                0x2007d7f0                DAT_00001928
+                0x2007d7f4                DAT_00001924
+                0x2007d7f8                DAT_0000144c
+                0x2007d7fc                DAT_00000f7c
+                0x2007d800                DAT_00000f78
+                0x2007d804                DAT_00000f74
+                0x2007d808                DAT_00000f70
+                0x2007d80c                DAT_00000b68
+                0x2007d810                DAT_00000b64
+                0x2007d814                DAT_00000754
+                0x2007d818                DAT_00000750
+                0x2007d81c                DAT_00000740
+                0x2007d820                out_freq_adj
+                0x2007d824                DAT_00000734
+                0x2007d828                DAT_00000728
+                0x2007d82c                DAT_0000071c
+                0x2007d830                DAT_00000710
+                0x2007d834                DAT_00000704
+                0x2007d838                auth_pass_flag
+                0x2007d83c                DAT_00000594
+                0x2007d840                DAT_00000590
+                0x2007d844                DAT_0000058c
+                0x2007d848                DAT_00000588
+                0x2007d84c                DAT_00000584
+                0x2007d850                DAT_00000580
+                0x2007d854                DAT_0000057c
+                0x2007d858                DAT_00000578
+                0x2007d85c                DAT_00000574
+                0x2007d860                DAT_00000570
+                0x2007d864                DAT_0000056c
+                0x2007d868                DAT_00000568
+                0x2007d86c                DAT_00000564
+                0x2007d870                DAT_00000558
+                0x2007d874                DAT_00000554
+                0x2007d878                DAT_00000548
+                0x2007d87c                tick_countdown
+                0x2007d880                phase_cnt
+                0x2007d884                tick_ready
+                0x2007d888                DAT_000002d8
+                0x2007d88c                DAT_000002d4
+                0x2007d890                DAT_00000244
+                0x2007d894                DAT_000001e0
+                0x2007d898                buf_data_4
+                0x2007d89c                buf_data_3
+                0x2007d8a0                DAT_000001d4
+                0x2007d8a4                DAT_000001d0
+ *(.data.*)
+                0x2007d8a8                        . = ALIGN (0x4)
+                0x2007d8a8                        _edata = .
+                0x000100c0                        _sidata = LOADADDR (.data)
+
+.igot.plt       0x2007d8a8        0x0 load address 0x00011968
+ .igot.plt      0x2007d8a8        0x0 startup.o
+
+.bss            0x2007d8a8        0x0 load address 0x00011968
+                0x2007d8a8                        _sbss = .
+ *(.bss*)
+ *(COMMON)
+                0x2007d8a8                        . = ALIGN (0x4)
+                0x2007d8a8                        _ebss = .
+OUTPUT(firmware.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x1b data_image.o
+ .ARM.attributes
+                0x0000001b       0x2d globals.o
+ .ARM.attributes
+                0x00000048       0x21 startup.o
+ .ARM.attributes
+                0x00000069       0x2d stub.o
+ .ARM.attributes
+                0x00000096       0x2d src/01_startup.o
+ .ARM.attributes
+                0x000000c3       0x2d src/02_lcd_display.o
+ .ARM.attributes
+                0x000000f0       0x2d src/03_input_debounce.o
+ .ARM.attributes
+                0x0000011d       0x2d src/04_i2c.o
+ .ARM.attributes
+                0x0000014a       0x2d src/05_adc.o
+ .ARM.attributes
+                0x00000177       0x2d src/06_param_system.o
+ .ARM.attributes
+                0x000001a4       0x2d src/07_state_machine.o
+ .ARM.attributes
+                0x000001d1       0x2d src/08_modbus_dispatch.o
+ .ARM.attributes
+                0x000001fe       0x2d src/08_uart3_modbus.o
+ .ARM.attributes
+                0x0000022b       0x2d src/09_output_stage.o
+ .ARM.attributes
+                0x00000258       0x2d src/10_relay_led.o
+ .ARM.attributes
+                0x00000285       0x2d src/11_auth.o
+ .ARM.attributes
+                0x000002b2       0x2d src/12_closed_loop.o
+ .ARM.attributes
+                0x000002df       0x2d src/13_gpio_init.o
+ .ARM.attributes
+                0x0000030c       0x2d src/crc16_table.o
+ .ARM.attributes
+                0x00000339       0x2d src/strpool.o
+
+.comment        0x00000000       0x45
+ .comment       0x00000000       0x45 globals.o
+                                 0x46 (size before relaxing)
+ .comment       0x00000045       0x46 stub.o
+ .comment       0x00000045       0x46 src/01_startup.o
+ .comment       0x00000045       0x46 src/02_lcd_display.o
+ .comment       0x00000045       0x46 src/03_input_debounce.o
+ .comment       0x00000045       0x46 src/04_i2c.o
+ .comment       0x00000045       0x46 src/05_adc.o
+ .comment       0x00000045       0x46 src/06_param_system.o
+ .comment       0x00000045       0x46 src/07_state_machine.o
+ .comment       0x00000045       0x46 src/08_modbus_dispatch.o
+ .comment       0x00000045       0x46 src/08_uart3_modbus.o
+ .comment       0x00000045       0x46 src/09_output_stage.o
+ .comment       0x00000045       0x46 src/10_relay_led.o
+ .comment       0x00000045       0x46 src/11_auth.o
+ .comment       0x00000045       0x46 src/12_closed_loop.o
+ .comment       0x00000045       0x46 src/13_gpio_init.o
+ .comment       0x00000045       0x46 src/crc16_table.o
+ .comment       0x00000045       0x46 src/strpool.o

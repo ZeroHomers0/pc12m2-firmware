@@ -1,0 +1,8 @@
+{
+  "07_state_machine.c": "021857abd02b256b3105ff8554d972de092824e6228e87ab3cd11c6c103bc220",
+  "completion_state_closed.log": "e1513fed93bf74f53bd77331d419b29adf8345adcc22041f9b790e4454480ca1",
+  "completion_state_closed_inventory.json": "d191272d71ccc78a8a93d7818801103d928b741ac0010602eb46741420d205ab",
+  "firmware.bin": "0832cc36133114d16be760a66e8e52438baaa7262090ce8c9df823c7ce37018b",
+  "firmware.elf": "50c17ce4d92b874b2477c4535fe3acc7d308f5dc8602fcb42b472facb9c1ecae",
+  "firmware.map": "f302be5d0f29e2e12267b2c8371825440f15d0f8049b5e16666128dbe55465f7"
+}

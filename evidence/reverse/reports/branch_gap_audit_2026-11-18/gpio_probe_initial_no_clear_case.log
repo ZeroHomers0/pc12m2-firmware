@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_gpio_readback_probe_contract.py", line 60, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_gpio_readback_probe_contract.py", line 54, in main
+    a=observe(False,order,masked,readback);b=observe(True,order,masked,readback)
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_gpio_readback_probe_contract.py", line 47, in observe
+    assert any((a-0x2009c000)%32==28 for a,n,v in traces[0]),'û��ʵ�ʶ�ȡFIOCLR��̽�����'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: û��ʵ�ʶ�ȡFIOCLR��̽�����

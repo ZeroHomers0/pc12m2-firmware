@@ -103,6 +103,8 @@ uint auth_challenge(void)
     *(volatile uint *)(DAT_00010a74 + 0x5c) = *(volatile uint *)(DAT_00010a74 + 0x5c) | 8;  /* FIO2CLR P2.3=时钟拉低 */
     for (delay_cnt = 0; delay_cnt < 1000; delay_cnt++) {             /* 时钟低延时 */
     }
+    /* 原BIN 0x109C2..0x109CE：前8拍保留PIN读取，位值不参与最终16位应答。 */
+    if (bit_idx < 8) { (void)*(volatile uint *)(DAT_00010a74 + 0x54); }
     if ((7 < bit_idx) && (response_bits = response_bits * 2, (*(volatile uint *)(DAT_00010a74 + 0x54) & 4) != 0)) {
       response_bits = response_bits + 1;                                                  /* bit8 起读 FIO2PIN P2.2 */
     }

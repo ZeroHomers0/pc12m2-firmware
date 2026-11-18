@@ -1,0 +1,17 @@
+COMPLETION_STATE_PROBE 4608 PASS
+CALIBRATION_STATE_GAP_PROBE actual_AB_cases=2962 calibration+tuning+fault_display+manual_main+frequency_sync PASS
+BRANCH_GAP_BATCH {'candidate_branches': 1983, 'both': 1718, 'one': 175, 'unhit': 90} => {'candidate_branches': 1983, 'both': 1927, 'one': 43, 'unhit': 13} exit 1
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 53, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 39, in main
+    assert importlib.import_module(name).main()==0,name
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\menu_complete_matrix.py", line 41, in main
+    screens=tuple(int(x,0) for x in sys.argv[1:]) or SCREENS
+            ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\menu_complete_matrix.py", line 41, in <genexpr>
+    screens=tuple(int(x,0) for x in sys.argv[1:]) or SCREENS
+                  ~~~^^^^^
+ValueError: invalid literal for int() with base 0: '--baseline'

@@ -1,0 +1,17 @@
+BRANCH_GAP_BATCH {'candidate_branches': 1983, 'both': 1916, 'one': 61, 'unhit': 6} => {'candidate_branches': 1983, 'both': 1923, 'one': 54, 'unhit': 6} exit 1
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 53, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 39, in main
+    assert importlib.import_module(name).main()==0,name
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\completion_state_probe.py", line 34, in main
+    for key in (0,1,2,3,4,0x16):run(screen,item,key,view,())
+                                ~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\completion_state_probe.py", line 21, in run
+    compare(label,M.observe(False,screen,item,key,view,refresh),M.observe(True,screen,item,key,view,refresh));count+=1
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_menu_parameter_gap_contract.py", line 29, in compare
+    raise AssertionError((label,diffs,'different_parts',[i for i,(x,y) in enumerate(zip(a,b)) if x!=y]))
+AssertionError: ((3, 17, 2, 0, (), 500), [], 'different_parts', [1])

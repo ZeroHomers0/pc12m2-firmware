@@ -1,0 +1,86 @@
+{
+  "project": "PC12M-2",
+  "status": "PASS",
+  "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903",
+  "gates": [
+    {
+      "name": "build_repeat",
+      "command": [
+        "D:\\software\\Git\\bin\\bash.exe",
+        "firmware/build.sh"
+      ],
+      "exit_code": 0,
+      "log": "tmp\\completion_gate_build_repeat.log",
+      "log_sha256": "485cf0beb0f3720595f6cfd97e8a36fe2ea49345ccc0f6af11eabba3e494a839",
+      "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903"
+    },
+    {
+      "name": "menu_custom",
+      "command": [
+        "D:\\software\\Python\\Python313\\python.exe",
+        "tools/verification/verify_menu_text_12.py"
+      ],
+      "exit_code": 0,
+      "log": "tmp\\completion_gate_menu_custom.log",
+      "log_sha256": "7e6b59a8aca8aec51a4e29008e8912accf4245721c99c212279c2a22d533b905",
+      "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903"
+    },
+    {
+      "name": "backlight_custom",
+      "command": [
+        "D:\\software\\Python\\Python313\\python.exe",
+        "tools/verification/verify_backlight_timeout_12.py"
+      ],
+      "exit_code": 0,
+      "log": "tmp\\completion_gate_backlight_custom.log",
+      "log_sha256": "79aae37692e3e54ac300cd6b5f4d51ac82780b6137d8b730fdcf42ff9f1bf33b",
+      "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903"
+    },
+    {
+      "name": "startup_adaptation",
+      "command": [
+        "D:\\software\\Python\\Python313\\python.exe",
+        "tools/verification/verify_startup_adaptation_contract.py"
+      ],
+      "exit_code": 0,
+      "log": "tmp\\completion_gate_startup_adaptation.log",
+      "log_sha256": "e41b93b82655ca41551141fc527d15aa40838bbebbb19f432ae7e10fae481149",
+      "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903"
+    },
+    {
+      "name": "bounds_auth_before_fix",
+      "command": [
+        "D:\\software\\Python\\Python313\\python.exe",
+        "tools/audit/completion_bounds_negative.py"
+      ],
+      "exit_code": 0,
+      "log": "tmp\\completion_gate_bounds_auth_before_fix.log",
+      "log_sha256": "a35b570dcac61aa78dcbfe190bafd1ce2eeead2099a35cf816be8491b4931016",
+      "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903"
+    },
+    {
+      "name": "five_negative_controls",
+      "command": [
+        "D:\\software\\Python\\Python313\\python.exe",
+        "tools/audit/branch_gap_negative_controls.py"
+      ],
+      "exit_code": 0,
+      "log": "tmp\\completion_gate_five_negative_controls.log",
+      "log_sha256": "034f7ad6749d37ed020ea92cdaac578882e252d0f10a43f07f2e4908a050191c",
+      "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903"
+    },
+    {
+      "name": "updated_regression",
+      "command": [
+        "D:\\software\\Python\\Python313\\python.exe",
+        "test/run_tests.py",
+        "test_main_modes_contract",
+        "test_completion_leaf_contract"
+      ],
+      "exit_code": 0,
+      "log": "tmp\\completion_gate_updated_regression.log",
+      "log_sha256": "57b43d76660584af9b95f008f91e094980adef6435d3f890f422bb3267ad0c8c",
+      "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903"
+    }
+  ]
+}

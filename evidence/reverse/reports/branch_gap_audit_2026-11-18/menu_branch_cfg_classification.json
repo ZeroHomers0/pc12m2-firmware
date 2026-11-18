@@ -1,0 +1,2383 @@
+{
+  "project": "PC12M-2",
+  "summary": {
+    "BOTH_EXECUTED": 1822,
+    "RESOLVED_CFG_MISSING_OUTCOME": 159,
+    "UNRESOLVED_CFG_MISSING_OUTCOME": 2
+  },
+  "pending": [
+    {
+      "address": "0x12a",
+      "function_file": "000000cc_FUN_000000cc.txt",
+      "instruction": "0000012a  beq  0x00000158",
+      "target": 344,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 2484,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": [
+        "0x112d8:invalid-decode",
+        "0x11272:missing-evidence"
+      ]
+    },
+    {
+      "address": "0x2b8",
+      "function_file": "0000029a_FUN_0000029a.txt",
+      "instruction": "000002b8  ble  0x000002be",
+      "target": 702,
+      "outcomes": {
+        "taken": 213,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4be",
+      "function_file": "00000440_FUN_00000440.txt",
+      "instruction": "000004be  beq  0x000004b6",
+      "target": 1206,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 18,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x520",
+      "function_file": "00000440_FUN_00000440.txt",
+      "instruction": "00000520  beq  0x00000518",
+      "target": 1304,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 17,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x626",
+      "function_file": "000005cc_FUN_000005cc.txt",
+      "instruction": "00000626  cbz  r0, 0x0000064c",
+      "target": 1612,
+      "outcomes": {
+        "taken": 2,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x652",
+      "function_file": "000005cc_FUN_000005cc.txt",
+      "instruction": "00000652  ble  0x000006c0",
+      "target": 1728,
+      "outcomes": {
+        "taken": 2,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x69e",
+      "function_file": "000005cc_FUN_000005cc.txt",
+      "instruction": "0000069e  bne  0x000006be",
+      "target": 1726,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x6c8",
+      "function_file": "000005cc_FUN_000005cc.txt",
+      "instruction": "000006c8  bne  0x000006fe",
+      "target": 1790,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 264,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x768",
+      "function_file": "00000766_FUN_00000766.txt",
+      "instruction": "00000768  ble  0x00000778",
+      "target": 1912,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 31896,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xce4",
+      "function_file": "00000bea_FUN_00000bea.txt",
+      "instruction": "00000ce4  blt  0x00000c14",
+      "target": 3092,
+      "outcomes": {
+        "taken": 59514,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xd50",
+      "function_file": "00000d44_FUN_00000d44.txt",
+      "instruction": "00000d50  bcs  0x00000dec",
+      "target": 3564,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 824,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xe0e",
+      "function_file": "00000df2_FUN_00000df2.txt",
+      "instruction": "00000e0e  ble  0x00000e1e",
+      "target": 3614,
+      "outcomes": {
+        "taken": 32,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xf5e",
+      "function_file": "00000f3c_FUN_00000f3c.txt",
+      "instruction": "00000f5e  bls  0x00000f80",
+      "target": 3968,
+      "outcomes": {
+        "taken": 14,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xfa2",
+      "function_file": "00000f3c_FUN_00000f3c.txt",
+      "instruction": "00000fa2  bcc  0x00000fb4",
+      "target": 4020,
+      "outcomes": {
+        "taken": 14,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xfd4",
+      "function_file": "00000f3c_FUN_00000f3c.txt",
+      "instruction": "00000fd4  bls  0x00000fe6",
+      "target": 4070,
+      "outcomes": {
+        "taken": 14,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1006",
+      "function_file": "00000f3c_FUN_00000f3c.txt",
+      "instruction": "00001006  bls  0x00001018",
+      "target": 4120,
+      "outcomes": {
+        "taken": 14,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1062",
+      "function_file": "00001042_FUN_00001042.txt",
+      "instruction": "00001062  bls  0x00001072",
+      "target": 4210,
+      "outcomes": {
+        "taken": 12,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x10cc",
+      "function_file": "00001042_FUN_00001042.txt",
+      "instruction": "000010cc  bcc  0x000010de",
+      "target": 4318,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 12,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x10fe",
+      "function_file": "00001042_FUN_00001042.txt",
+      "instruction": "000010fe  bls  0x00001110",
+      "target": 4368,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 12,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1130",
+      "function_file": "00001042_FUN_00001042.txt",
+      "instruction": "00001130  bls  0x00001142",
+      "target": 4418,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 12,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x117e",
+      "function_file": "0000116c_FUN_0000116c.txt",
+      "instruction": "0000117e  blt  0x000011f8",
+      "target": 4600,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 36,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1188",
+      "function_file": "0000116c_FUN_0000116c.txt",
+      "instruction": "00001188  ble  0x00001198",
+      "target": 4504,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 36,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x11ba",
+      "function_file": "0000116c_FUN_0000116c.txt",
+      "instruction": "000011ba  ble  0x000011cc",
+      "target": 4556,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 36,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1220",
+      "function_file": "0000116c_FUN_0000116c.txt",
+      "instruction": "00001220  ble  0x00001232",
+      "target": 4658,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x127a",
+      "function_file": "00001260_FUN_00001260.txt",
+      "instruction": "0000127a  cbz  r4, 0x0000128a",
+      "target": 4746,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 2,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x12a2",
+      "function_file": "00001260_FUN_00001260.txt",
+      "instruction": "000012a2  bls  0x000012b4",
+      "target": 4788,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 2,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x12d4",
+      "function_file": "00001260_FUN_00001260.txt",
+      "instruction": "000012d4  bls  0x000012e6",
+      "target": 4838,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 2,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x135c",
+      "function_file": "00001260_FUN_00001260.txt",
+      "instruction": "0000135c  bls  0x0000136e",
+      "target": 4974,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x13b4",
+      "function_file": "00001398_FUN_00001398.txt",
+      "instruction": "000013b4  bls  0x000013c4",
+      "target": 5060,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 2,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x140c",
+      "function_file": "000013ec_FUN_000013ec.txt",
+      "instruction": "0000140c  bcc  0x0000141c",
+      "target": 5148,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x143a",
+      "function_file": "000013ec_FUN_000013ec.txt",
+      "instruction": "0000143a  bls  0x00001450",
+      "target": 5200,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x14c2",
+      "function_file": "000014a6_FUN_000014a6.txt",
+      "instruction": "000014c2  bls  0x000014d2",
+      "target": 5330,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x17a8",
+      "function_file": "000015ae_FUN_000015ae.txt",
+      "instruction": "000017a8  bne  0x000017b0",
+      "target": 6064,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 1,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1810",
+      "function_file": "000015ae_FUN_000015ae.txt",
+      "instruction": "00001810  ble  0x00001816",
+      "target": 6166,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x18f0",
+      "function_file": "000015ae_FUN_000015ae.txt",
+      "instruction": "000018f0  ble  0x000018f6",
+      "target": 6390,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1960",
+      "function_file": "000015ae_FUN_000015ae.txt",
+      "instruction": "00001960  ble  0x00001966",
+      "target": 6502,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1ba6",
+      "function_file": "00001b9e_FUN_00001b9e.txt",
+      "instruction": "00001ba6  bne  0x00001bb6",
+      "target": 7094,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 3,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1c4e",
+      "function_file": "00001c32_FUN_00001c32.txt",
+      "instruction": "00001c4e  bcc  0x00001c40",
+      "target": 7232,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x1c5a",
+      "function_file": "00001c32_FUN_00001c32.txt",
+      "instruction": "00001c5a  bcc  0x00001c3a",
+      "target": 7226,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x22a2",
+      "function_file": "00001f6c_FUN_00001f6c.txt",
+      "instruction": "000022a2  cbnz  r0, 0x000022ac",
+      "target": 8876,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 126,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x2334",
+      "function_file": "00001f6c_FUN_00001f6c.txt",
+      "instruction": "00002334  bls  0x0000233c",
+      "target": 9020,
+      "outcomes": {
+        "taken": 126,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x2350",
+      "function_file": "00001f6c_FUN_00001f6c.txt",
+      "instruction": "00002350  bne  0x000023a8",
+      "target": 9128,
+      "outcomes": {
+        "taken": 126,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x2358",
+      "function_file": "00001f6c_FUN_00001f6c.txt",
+      "instruction": "00002358  bcs  0x00002360",
+      "target": 9056,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x2366",
+      "function_file": "00001f6c_FUN_00001f6c.txt",
+      "instruction": "00002366  bcc  0x00002396",
+      "target": 9110,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x2380",
+      "function_file": "00001f6c_FUN_00001f6c.txt",
+      "instruction": "00002380  bls  0x00002388",
+      "target": 9096,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x238e",
+      "function_file": "00001f6c_FUN_00001f6c.txt",
+      "instruction": "0000238e  bcs  0x00002396",
+      "target": 9110,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4112",
+      "function_file": "000040b0_FUN_000040b0.txt",
+      "instruction": "00004112  bne  0x00004122",
+      "target": 16674,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4142",
+      "function_file": "000040b0_FUN_000040b0.txt",
+      "instruction": "00004142  cbz  r0, 0x00004152",
+      "target": 16722,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4156",
+      "function_file": "000040b0_FUN_000040b0.txt",
+      "instruction": "00004156  cbnz  r0, 0x00004164",
+      "target": 16740,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x416a",
+      "function_file": "000040b0_FUN_000040b0.txt",
+      "instruction": "0000416a  bne  0x00004178",
+      "target": 16760,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x417c",
+      "function_file": "000040b0_FUN_000040b0.txt",
+      "instruction": "0000417c  cbnz  r0, 0x0000418a",
+      "target": 16778,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4190",
+      "function_file": "000040b0_FUN_000040b0.txt",
+      "instruction": "00004190  bne  0x0000419e",
+      "target": 16798,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x41a4",
+      "function_file": "000040b0_FUN_000040b0.txt",
+      "instruction": "000041a4  bne  0x000041b2",
+      "target": 16818,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4222",
+      "function_file": "000041ec_FUN_000041ec.txt",
+      "instruction": "00004222  cbnz  r0, 0x00004234",
+      "target": 16948,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 2,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4248",
+      "function_file": "000041ec_FUN_000041ec.txt",
+      "instruction": "00004248  bne  0x00004254",
+      "target": 16980,
+      "outcomes": {
+        "taken": 2,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x441c",
+      "function_file": "000041ec_FUN_000041ec.txt",
+      "instruction": "0000441c  bne  0x0000442e",
+      "target": 17454,
+      "outcomes": {
+        "taken": 2,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4442",
+      "function_file": "000041ec_FUN_000041ec.txt",
+      "instruction": "00004442  bne  0x00004454",
+      "target": 17492,
+      "outcomes": {
+        "taken": 2,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x448a",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000448a  bls  0x00004496",
+      "target": 17558,
+      "outcomes": {
+        "taken": 42928,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4500",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004500  beq  0x00004522",
+      "target": 17698,
+      "outcomes": {
+        "taken": 208,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x46ee",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000046ee  bcc  0x00004700",
+      "target": 18176,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 48,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4714",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004714  bne  0x00004722",
+      "target": 18210,
+      "outcomes": {
+        "taken": 41269,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x49d8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000049d8  cbz  r0, 0x000049fa",
+      "target": 18938,
+      "outcomes": {
+        "taken": 123,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4a16",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004a16  cbnz  r0, 0x00004a26",
+      "target": 18982,
+      "outcomes": {
+        "taken": 181,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4a2c",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004a2c  bne  0x00004a3c",
+      "target": 19004,
+      "outcomes": {
+        "taken": 181,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4a42",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004a42  bne  0x00004a52",
+      "target": 19026,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 181,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4a72",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004a72  cbz  r0, 0x00004a8a",
+      "target": 19082,
+      "outcomes": {
+        "taken": 181,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4a8e",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004a8e  cbnz  r0, 0x00004aac",
+      "target": 19116,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 181,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4a96",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004a96  beq  0x00004aac",
+      "target": 19116,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 181,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4ab8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004ab8  beq  0x00004ad8",
+      "target": 19160,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 46,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4ae6",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004ae6  beq  0x00004b08",
+      "target": 19208,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 45,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4b1a",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004b1a  beq  0x00004b3c",
+      "target": 19260,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 45,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4b9c",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004b9c  bcc  0x00004b8a",
+      "target": 19338,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 54000,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4bea",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004bea  bcc  0x00004bd8",
+      "target": 19416,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 54000,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4c56",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004c56  beq  0x00004c78",
+      "target": 19576,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 18,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4d9e",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004d9e  beq  0x00004da6",
+      "target": 19878,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 852,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4dac",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004dac  bne  0x00004db4",
+      "target": 19892,
+      "outcomes": {
+        "taken": 852,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4e52",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004e52  beq  0x00004e7a",
+      "target": 20090,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4f80",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004f80  bne  0x00004fc2",
+      "target": 20418,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 217,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4fee",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004fee  bne  0x0000501a",
+      "target": 20506,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 6,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x4ff4",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00004ff4  cbz  r0, 0x0000501a",
+      "target": 20506,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 6,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x502c",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000502c  cbnz  r0, 0x00005044",
+      "target": 20548,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 938,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x504a",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000504a  bne  0x00005062",
+      "target": 20578,
+      "outcomes": {
+        "taken": 938,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x52f6",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000052f6  bcc  0x00005326",
+      "target": 21286,
+      "outcomes": {
+        "taken": 122,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x5316",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00005316  cbnz  r0, 0x00005326",
+      "target": 21286,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x543e",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000543e  bcc  0x0000546e",
+      "target": 21614,
+      "outcomes": {
+        "taken": 122,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x545e",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000545e  cbnz  r0, 0x0000546e",
+      "target": 21614,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x6174",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00006174  cbnz  r0, 0x0000618e",
+      "target": 24974,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x6194",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00006194  bne  0x000061ae",
+      "target": 25006,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x61b8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000061b8  bne  0x000061d2",
+      "target": 25042,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x62f2",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000062f2  cbnz  r0, 0x00006300",
+      "target": 25344,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x6306",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00006306  bne  0x00006314",
+      "target": 25364,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x631a",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000631a  bne  0x00006328",
+      "target": 25384,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x632c",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000632c  cbnz  r0, 0x0000633c",
+      "target": 25404,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x6342",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00006342  bne  0x00006350",
+      "target": 25424,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x63c8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000063c8  bne  0x000063f2",
+      "target": 25586,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x63f8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000063f8  bne  0x00006422",
+      "target": 25634,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x6428",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00006428  bne  0x00006452",
+      "target": 25682,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x6458",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00006458  bne  0x0000646a",
+      "target": 25706,
+      "outcomes": {
+        "taken": 4,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x69f0",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000069f0  bge  0x00006a22",
+      "target": 27170,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 268,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9052",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009052  bge  0x00009084",
+      "target": 36996,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 56,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9406",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009406  bne  0x00009416",
+      "target": 37910,
+      "outcomes": {
+        "taken": 532,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9430",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009430  bne  0x00009440",
+      "target": 37952,
+      "outcomes": {
+        "taken": 532,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9464",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009464  bne  0x00009474",
+      "target": 38004,
+      "outcomes": {
+        "taken": 226,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9490",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009490  bne  0x000094a0",
+      "target": 38048,
+      "outcomes": {
+        "taken": 226,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x951e",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000951e  bne  0x0000952e",
+      "target": 38190,
+      "outcomes": {
+        "taken": 222,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x954a",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000954a  bne  0x0000955a",
+      "target": 38234,
+      "outcomes": {
+        "taken": 222,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9882",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009882  cbz  r0, 0x0000989a",
+      "target": 39066,
+      "outcomes": {
+        "taken": 1122,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x98a6",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000098a6  beq  0x000098bc",
+      "target": 39100,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 1050,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x98ca",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "000098ca  beq  0x000098e0",
+      "target": 39136,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 72,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9bbc",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009bbc  cbz  r0, 0x00009bcc",
+      "target": 39884,
+      "outcomes": {
+        "taken": 1090,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9bd8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009bd8  beq  0x00009bee",
+      "target": 39918,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 1034,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9bfc",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009bfc  beq  0x00009c12",
+      "target": 39954,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 56,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9f8c",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009f8c  bcc  0x00009fa2",
+      "target": 40866,
+      "outcomes": {
+        "taken": 69,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x9fcc",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "00009fcc  cbnz  r0, 0x0000a00c",
+      "target": 40972,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 68,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa052",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a052  cbz  r0, 0x0000a05a",
+      "target": 41050,
+      "outcomes": {
+        "taken": 181,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa21a",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a21a  cbnz  r0, 0x0000a238",
+      "target": 41528,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 181,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa222",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a222  beq  0x0000a238",
+      "target": 41528,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 181,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa244",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a244  beq  0x0000a264",
+      "target": 41572,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 46,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa272",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a272  beq  0x0000a294",
+      "target": 41620,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 45,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa2a2",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a2a2  beq  0x0000a2c4",
+      "target": 41668,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 45,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa2d8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a2d8  bne  0x0000a394",
+      "target": 41876,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 36,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa324",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a324  bcc  0x0000a312",
+      "target": 41746,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 54000,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa374",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a374  bcc  0x0000a362",
+      "target": 41826,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 54000,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa3e0",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a3e0  beq  0x0000a408",
+      "target": 41992,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 18,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa416",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a416  beq  0x0000a41e",
+      "target": 42014,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 859,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa424",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a424  bne  0x0000a42c",
+      "target": 42028,
+      "outcomes": {
+        "taken": 859,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa4ca",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a4ca  beq  0x0000a4f2",
+      "target": 42226,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 4,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa5f8",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a5f8  bne  0x0000a6a2",
+      "target": 42658,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 217,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa6ce",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a6ce  bne  0x0000a6fa",
+      "target": 42746,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 6,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa6d4",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a6d4  cbz  r0, 0x0000a6fa",
+      "target": 42746,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 6,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa70c",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a70c  cbnz  r0, 0x0000a724",
+      "target": 42788,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 738,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa72a",
+      "function_file": "00004464_FUN_00004464.txt",
+      "instruction": "0000a72a  bne  0x0000a742",
+      "target": 42818,
+      "outcomes": {
+        "taken": 738,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa9d4",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000a9d4  cbnz  r1, 0x0000a9dc",
+      "target": 43484,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 3,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa9e2",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000a9e2  bne  0x0000a9ea",
+      "target": 43498,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa9f0",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000a9f0  bne  0x0000a9f8",
+      "target": 43512,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xa9fe",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000a9fe  bne  0x0000aa06",
+      "target": 43526,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xaa0c",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000aa0c  bcs  0x0000aa2e",
+      "target": 43566,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 3,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xaa34",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000aa34  bne  0x0000aa56",
+      "target": 43606,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xaa5c",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000aa5c  bne  0x0000aa80",
+      "target": 43648,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xaa86",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000aa86  bne  0x0000aaa8",
+      "target": 43688,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xaaae",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000aaae  bne  0x0000aad0",
+      "target": 43728,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xaad6",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000aad6  bne  0x0000aaf8",
+      "target": 43768,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xab18",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000ab18  cbnz  r1, 0x0000ab20",
+      "target": 43808,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 3,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xab26",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000ab26  bne  0x0000ab2e",
+      "target": 43822,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xab34",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000ab34  bne  0x0000ab3c",
+      "target": 43836,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xab42",
+      "function_file": "0000a994_FUN_0000a994.txt",
+      "instruction": "0000ab42  bne  0x0000ab48",
+      "target": 43848,
+      "outcomes": {
+        "taken": 3,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xabc8",
+      "function_file": "0000abc0_FUN_0000abc0.txt",
+      "instruction": "0000abc8  ble  0x0000abf2",
+      "target": 44018,
+      "outcomes": {
+        "taken": 328,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xabde",
+      "function_file": "0000abc0_FUN_0000abc0.txt",
+      "instruction": "0000abde  bls  0x0000abf2",
+      "target": 44018,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xac04",
+      "function_file": "0000abc0_FUN_0000abc0.txt",
+      "instruction": "0000ac04  bls  0x0000ac0e",
+      "target": 44046,
+      "outcomes": {
+        "taken": 328,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xad18",
+      "function_file": "0000ad04_FUN_0000ad04.txt",
+      "instruction": "0000ad18  bne  0x0000ad2a",
+      "target": 44330,
+      "outcomes": {
+        "taken": 322,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xad30",
+      "function_file": "0000ad04_FUN_0000ad04.txt",
+      "instruction": "0000ad30  bne  0x0000ad42",
+      "target": 44354,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 322,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xad48",
+      "function_file": "0000ad04_FUN_0000ad04.txt",
+      "instruction": "0000ad48  bne  0x0000ad5a",
+      "target": 44378,
+      "outcomes": {
+        "taken": 322,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xad60",
+      "function_file": "0000ad04_FUN_0000ad04.txt",
+      "instruction": "0000ad60  bne  0x0000ad72",
+      "target": 44402,
+      "outcomes": {
+        "taken": 322,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xe0d0",
+      "function_file": "0000b3b2_FUN_0000b3b2.txt",
+      "instruction": "0000e0d0  bne  0x0000e1cc",
+      "target": 57804,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 446,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0xf97a",
+      "function_file": "0000f78c_FUN_0000f78c.txt",
+      "instruction": "0000f97a  bne  0x0000fa68",
+      "target": 64104,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 1630,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x109ca",
+      "function_file": "000108dc_FUN_000108dc.txt",
+      "instruction": "000109ca  beq  0x000109e0",
+      "target": 68064,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 56,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x109dc",
+      "function_file": "000108dc_FUN_000108dc.txt",
+      "instruction": "000109dc  beq  0x000109e0",
+      "target": 68064,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 112,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x10a18",
+      "function_file": "000108dc_FUN_000108dc.txt",
+      "instruction": "00010a18  bne  0x00010a20",
+      "target": 68128,
+      "outcomes": {
+        "taken": 7,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x10a1e",
+      "function_file": "000108dc_FUN_000108dc.txt",
+      "instruction": "00010a1e  beq  0x00010a2c",
+      "target": 68140,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "RESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": []
+    },
+    {
+      "address": "0x112fa",
+      "function_file": "000000cc_FUN_000000cc.txt",
+      "instruction": "000112fa  bls  0x00011330",
+      "target": 70448,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "UNRESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": [
+        "0x112d8:invalid-decode",
+        "0x11272:missing-evidence"
+      ]
+    },
+    {
+      "address": "0x112fc",
+      "function_file": "000000cc_FUN_000000cc.txt",
+      "instruction": "000112fc  blt  0x00011336",
+      "target": 70454,
+      "outcomes": {
+        "taken": 0,
+        "fallthrough": 0,
+        "other": 0
+      },
+      "status": "UNRESOLVED_CFG_MISSING_OUTCOME",
+      "cfg_unresolved": [
+        "0x112d8:invalid-decode",
+        "0x11272:missing-evidence"
+      ]
+    }
+  ],
+  "cfg_functions": {
+    "000000cc_FUN_000000cc.txt": {
+      "instructions": 51,
+      "unresolved": [
+        "0x112d8:invalid-decode",
+        "0x11272:missing-evidence"
+      ]
+    },
+    "0000029a_FUN_0000029a.txt": {
+      "instructions": 27,
+      "unresolved": []
+    },
+    "00000440_FUN_00000440.txt": {
+      "instructions": 102,
+      "unresolved": []
+    },
+    "00000598_FUN_00000598.txt": {
+      "instructions": 23,
+      "unresolved": []
+    },
+    "000005cc_FUN_000005cc.txt": {
+      "instructions": 109,
+      "unresolved": []
+    },
+    "00000758_FUN_00000758.txt": {
+      "instructions": 7,
+      "unresolved": []
+    },
+    "00000766_FUN_00000766.txt": {
+      "instructions": 14,
+      "unresolved": []
+    },
+    "00000786_FUN_00000786.txt": {
+      "instructions": 119,
+      "unresolved": []
+    },
+    "000008a4_FUN_000008a4.txt": {
+      "instructions": 33,
+      "unresolved": []
+    },
+    "00000942_FUN_00000942.txt": {
+      "instructions": 67,
+      "unresolved": []
+    },
+    "00000af4_FUN_00000af4.txt": {
+      "instructions": 94,
+      "unresolved": []
+    },
+    "00000bea_FUN_00000bea.txt": {
+      "instructions": 102,
+      "unresolved": []
+    },
+    "00000cec_FUN_00000cec.txt": {
+      "instructions": 39,
+      "unresolved": []
+    },
+    "00000d44_FUN_00000d44.txt": {
+      "instructions": 71,
+      "unresolved": []
+    },
+    "00000df2_FUN_00000df2.txt": {
+      "instructions": 54,
+      "unresolved": []
+    },
+    "00000e80_FUN_00000e80.txt": {
+      "instructions": 72,
+      "unresolved": []
+    },
+    "00000f3c_FUN_00000f3c.txt": {
+      "instructions": 93,
+      "unresolved": []
+    },
+    "00001042_FUN_00001042.txt": {
+      "instructions": 115,
+      "unresolved": []
+    },
+    "0000116c_FUN_0000116c.txt": {
+      "instructions": 94,
+      "unresolved": []
+    },
+    "00001260_FUN_00001260.txt": {
+      "instructions": 123,
+      "unresolved": []
+    },
+    "00001398_FUN_00001398.txt": {
+      "instructions": 32,
+      "unresolved": []
+    },
+    "000013ec_FUN_000013ec.txt": {
+      "instructions": 69,
+      "unresolved": []
+    },
+    "000014a6_FUN_000014a6.txt": {
+      "instructions": 49,
+      "unresolved": []
+    },
+    "000015ae_FUN_000015ae.txt": {
+      "instructions": 404,
+      "unresolved": []
+    },
+    "00001976_FUN_00001976.txt": {
+      "instructions": 115,
+      "unresolved": []
+    },
+    "00001a68_FUN_00001a68.txt": {
+      "instructions": 22,
+      "unresolved": []
+    },
+    "00001a96_FUN_00001a96.txt": {
+      "instructions": 42,
+      "unresolved": []
+    },
+    "00001aee_FUN_00001aee.txt": {
+      "instructions": 42,
+      "unresolved": []
+    },
+    "00001b46_FUN_00001b46.txt": {
+      "instructions": 42,
+      "unresolved": []
+    },
+    "00001b9e_FUN_00001b9e.txt": {
+      "instructions": 12,
+      "unresolved": []
+    },
+    "00001c1c_FUN_00001c1c.txt": {
+      "instructions": 11,
+      "unresolved": []
+    },
+    "00001c32_FUN_00001c32.txt": {
+      "instructions": 21,
+      "unresolved": []
+    },
+    "00001cec_FUN_00001cec.txt": {
+      "instructions": 77,
+      "unresolved": []
+    },
+    "00001daa_FUN_00001daa.txt": {
+      "instructions": 56,
+      "unresolved": []
+    },
+    "00001f56_FUN_00001f56.txt": {
+      "instructions": 9,
+      "unresolved": []
+    },
+    "00001f6c_FUN_00001f6c.txt": {
+      "instructions": 602,
+      "unresolved": []
+    },
+    "0000258c_FUN_0000258c.txt": {
+      "instructions": 1290,
+      "unresolved": []
+    },
+    "00003534_FUN_00003534.txt": {
+      "instructions": 1052,
+      "unresolved": []
+    },
+    "000040b0_FUN_000040b0.txt": {
+      "instructions": 115,
+      "unresolved": []
+    },
+    "000041ec_FUN_000041ec.txt": {
+      "instructions": 91,
+      "unresolved": []
+    },
+    "00004464_FUN_00004464.txt": {
+      "instructions": 9996,
+      "unresolved": []
+    },
+    "0000a856_FUN_0000a856.txt": {
+      "instructions": 88,
+      "unresolved": []
+    },
+    "0000a994_FUN_0000a994.txt": {
+      "instructions": 199,
+      "unresolved": []
+    },
+    "0000ab7c_FUN_0000ab7c.txt": {
+      "instructions": 23,
+      "unresolved": []
+    },
+    "0000abc0_FUN_0000abc0.txt": {
+      "instructions": 59,
+      "unresolved": []
+    },
+    "0000ac78_FUN_0000ac78.txt": {
+      "instructions": 42,
+      "unresolved": []
+    },
+    "0000acd4_FUN_0000acd4.txt": {
+      "instructions": 19,
+      "unresolved": []
+    },
+    "0000ad04_FUN_0000ad04.txt": {
+      "instructions": 316,
+      "unresolved": []
+    },
+    "0000b050_FUN_0000b050.txt": {
+      "instructions": 282,
+      "unresolved": []
+    },
+    "0000b3b2_FUN_0000b3b2.txt": {
+      "instructions": 5155,
+      "unresolved": []
+    },
+    "0000e6a6_FUN_0000e6a6.txt": {
+      "instructions": 14,
+      "unresolved": []
+    },
+    "0000e6c6_FUN_0000e6c6.txt": {
+      "instructions": 14,
+      "unresolved": []
+    },
+    "0000e70c_FUN_0000e70c.txt": {
+      "instructions": 1673,
+      "unresolved": []
+    },
+    "0000f70a_FUN_0000f70a.txt": {
+      "instructions": 28,
+      "unresolved": []
+    },
+    "0000f748_FUN_0000f748.txt": {
+      "instructions": 15,
+      "unresolved": []
+    },
+    "0000f76a_FUN_0000f76a.txt": {
+      "instructions": 15,
+      "unresolved": []
+    },
+    "0000f78c_FUN_0000f78c.txt": {
+      "instructions": 337,
+      "unresolved": []
+    },
+    "0000fb0c_FUN_0000fb0c.txt": {
+      "instructions": 1301,
+      "unresolved": [
+        "0x10000:missing-evidence"
+      ]
+    },
+    "000107e0_FUN_000107e0.txt": {
+      "instructions": 14,
+      "unresolved": []
+    },
+    "00010800_FUN_00010800.txt": {
+      "instructions": 14,
+      "unresolved": []
+    },
+    "00010820_FUN_00010820.txt": {
+      "instructions": 14,
+      "unresolved": []
+    },
+    "00010840_FUN_00010840.txt": {
+      "instructions": 14,
+      "unresolved": []
+    },
+    "000108dc_FUN_000108dc.txt": {
+      "instructions": 127,
+      "unresolved": []
+    },
+    "00010a38_FUN_00010a38.txt": {
+      "instructions": 27,
+      "unresolved": []
+    },
+    "00010a9c_FUN_00010a9c.txt": {
+      "instructions": 698,
+      "unresolved": []
+    },
+    "000110f6_FUN_000110f6.txt": {
+      "instructions": 25,
+      "unresolved": []
+    }
+  }
+}

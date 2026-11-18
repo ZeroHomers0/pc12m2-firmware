@@ -1,0 +1,49 @@
+{
+  "status": "DETECTED",
+  "before_sha256": "0832cc36133114d16be760a66e8e52438baaa7262090ce8c9df823c7ce37018b",
+  "input": [
+    3,
+    17,
+    2,
+    0,
+    250
+  ],
+  "old_display": [],
+  "before_fix_display": [
+    [
+      "disp_string",
+      27592,
+      0,
+      0,
+      0
+    ],
+    [
+      "disp_string",
+      27612,
+      1,
+      0,
+      0
+    ],
+    [
+      "disp_string",
+      27632,
+      2,
+      0,
+      0
+    ],
+    [
+      "disp_string",
+      27652,
+      3,
+      0,
+      0
+    ]
+  ],
+  "normal_return_both": true,
+  "SRAM_equal": true,
+  "auth_before_read_counts": [
+    24,
+    16
+  ],
+  "restored_current_pass": true
+}

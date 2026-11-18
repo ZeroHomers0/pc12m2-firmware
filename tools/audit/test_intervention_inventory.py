@@ -21,6 +21,8 @@ for directory in ('test','tools/verification','tools/audit'):
                     reg=ast.unparse(node.args[0])
                     if 'REG_PC' in reg:kind='PC_OVERRIDE'
                     elif 'REG_R0' in reg:kind='RETURN_OR_INPUT_R0'
+                    else:kind='REGISTER_WRITE_OTHER_OR_DYNAMIC'
+                elif method=='mem_write':kind='MEMORY_WRITE_SEED_MODEL_OR_INJECTION'
             elif isinstance(node,ast.FunctionDef) and ('mask' in node.name or 'skip' in node.name):kind='MASK_OR_SKIP_HELPER'
             if kind:
                 rows.append({'id':f'I{len(rows)+1:04d}','source':str(p.relative_to(ROOT)).replace('\\','/'),'line':node.lineno,'mechanism':kind,

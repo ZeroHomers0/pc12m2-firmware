@@ -1,0 +1,15 @@
+BRANCH_GAP_BATCH {'candidate_branches': 1983, 'both': 1907, 'one': 68, 'unhit': 8} => {'candidate_branches': 1983, 'both': 1907, 'one': 68, 'unhit': 8} exit 1
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 53, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\audit\run_branch_gap_batch.py", line 39, in main
+    assert importlib.import_module(name).main()==0,name
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_completion_leaf_contract.py", line 38, in main
+    assert execute(False,'lcd_ctrl_line',(val,))==execute(True,'lcd_ctrl_line',(val,));count+=1
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\code\LPC1765FBD100\PC12M-2\test\emulation\test_completion_leaf_contract.py", line 29, in execute
+    u.reg_write(UC_ARM_REG_LR,0x3ff01);V.run(u,lookup[name],max_insn=2000000)
+                                               ~~~~~~^^^^^^
+KeyError: 'lcd_ctrl_line'
