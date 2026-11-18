@@ -1,0 +1,7 @@
+SOFTWARE_GATE regression PASS {'original_BIN': 57532, 'current_BIN': 57508, 'current_ELF_sections': 0}
+SOFTWARE_GATE original_AB PASS {'original_BIN': 1946, 'current_BIN': 1949, 'current_ELF_sections': 0}
+SOFTWARE_GATE menu_custom PASS {'original_BIN': 32, 'current_BIN': 48, 'current_ELF_sections': 0}
+SOFTWARE_GATE backlight_custom PASS {'original_BIN': 14, 'current_BIN': 14, 'current_ELF_sections': 0}
+SOFTWARE_GATE startup_adaptation PASS {'original_BIN': 2, 'current_BIN': 1, 'current_ELF_sections': 0}
+SOFTWARE_GATE negative_controls PASS {'original_BIN': 7, 'current_BIN': 13, 'current_ELF_sections': 0}
+SOFTWARE_GATE extended_sequences PASS {'original_BIN': 24, 'current_BIN': 24, 'current_ELF_sections': 0}

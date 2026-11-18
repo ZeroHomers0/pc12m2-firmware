@@ -1,80 +1,75 @@
-name: Build firmware
+name: Build and verify firmware
 
 on:
-  # 手动触发
   workflow_dispatch:
-  # push 到 main 自动触发
   push:
-    branches: [main]
-  # 任意 PR 自动触发（可在仓库 Settings → Actions 里关掉）
+    branches: [main, firmware-menu-display-2026-11-13]
   pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # 发布固件到 GitHub Release 需要写权限
     permissions:
-      contents: write
+      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # 安装 Arm GNU Toolchain（arm-none-eabi-gcc）14.2 版本，
-      # 与 firmware/build.sh 约定的“14.2 rel1”一致。
+      - uses: actions/checkout@v4
       - name: Install Arm GNU Toolchain
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         with:
           release: '14.2.Rel1'
-
-      # 测试依赖（Unicorn 执行级测试需要）
       - name: Install Python deps
-        run: pip install unicorn "capstone>=5,<6"
-
-      # 构建固件：产物 firmware.elf / firmware.hex / firmware.bin / firmware.map
-      # 必须先构建——Unicorn 测试加载 firmware.elf、verify 模块 import 时读 firmware.bin。
+        run: pip install unicorn==2.1.4 capstone==5.0.7 PyYAML==6.0.3
       - name: Build
         run: bash firmware/build.sh
-
-      # 静态 + Unicorn 执行级测试（AGENTS.md：修改源码后必须以原始 BIN 做 A/B 验证）
-      - name: Run tests
-        run: python test/run_tests.py
-
-      # 归档构建产物（Actions 页面可直接下载）
+      - name: Run attested software gates
+        run: python tools/verification/run_software_gates.py --extended
+      - name: Compute firmware SHA-256
+        run: sha256sum firmware/firmware.bin | awk '{print $1}' > firmware/firmware.bin.sha256
+      - name: Package flash tool zip
+        run: python tools/flash/package_flash_tool.py --name flash-tool-pc12m2
       - name: Upload firmware artifacts
         uses: actions/upload-artifact@v4
         with:
           name: firmware-pc12m2
           path: |
             firmware/firmware.bin
+            firmware/firmware.bin.sha256
             firmware/firmware.hex
             firmware/firmware.elf
             firmware/firmware.map
+            release/flash-tool-pc12m2.zip
+          if-no-files-found: error
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: software-evidence-pc12m2
+          path: tmp/software_gates/
           if-no-files-found: error
 
-      # 生成固件哈希（供本地 release 目录中的固件校验）
-      - name: Compute firmware SHA-256
-        run: sha256sum firmware/firmware.bin | awk '{print $1}' > firmware/firmware.bin.sha256
-
-      # 打包独立烧写工具 zip（最新固件 + 烧写脚本 + 免安装 J-Link），解压即用
-      - name: Package flash tool zip
-        run: python tools/flash/package_flash_tool.py --name flash-tool-pc12m2
-
-      # 发布到 GitHub Release（滚动 latest tag）——仅 push 到 main 时，PR 不发布。
-      # 其他电脑将固件放到当前目录 release/ 后，可用打包工具离线烧写。
+  # 只有本仓main推送且所有门禁成功才保留原有滚动发布功能。
+  publish:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'ZeroHomers0/pc12m2-firmware'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: firmware-pc12m2
+          path: .
       - name: Publish firmware to Release
-        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -e
           TAG="latest"
-          # 删除旧的 latest release（若存在）后重建，保证指向最新构建
-          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release delete "$TAG" --yes --cleanup-tag --repo "$GITHUB_REPOSITORY" 2>/dev/null || true
           gh release create "$TAG" \
             firmware/firmware.bin firmware/firmware.bin.sha256 \
             release/flash-tool-pc12m2.zip \
-            --repo "$GITHUB_REPOSITORY" \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --title "Latest firmware build" \
-            --notes "自动构建固件 PC12M-2。SHA-256: $(cat firmware/firmware.bin.sha256)。含独立烧写工具包 flash-tool-pc12m2.zip（解压即用，免编译环境）。" \
+            --notes "自动构建 PC12M-2，完整软件门禁通过。SHA-256: $(cat firmware/firmware.bin.sha256)" \
             --latest
-          echo "已发布 Release: $GITHUB_REPOSITORY/releases/tag/$TAG"

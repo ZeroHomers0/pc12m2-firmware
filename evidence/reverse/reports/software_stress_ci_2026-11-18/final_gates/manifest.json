@@ -1,0 +1,142 @@
+{
+  "project": "PC12M-2",
+  "status": "PASS",
+  "python": "3.13.1",
+  "unicorn": "2.1.4",
+  "capstone": "5.0.7",
+  "images": {
+    "firmware/firmware.bin": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903",
+    "firmware/firmware.elf": "a2cd02ef14de3aed754806c1707911b265a3e475dc310862eac18606f6d3f97d",
+    "firmware/firmware.map": "b292a573957e5adcad3e2b62cc2e25f432a29be6bba253d36acaf2a26f4c630d",
+    "pc12m2_orig.bin": "2bc608683992ad6db2d3cb75129bf57ea37d6d681d7c2c0a132e064ebd271bd1"
+  },
+  "firmware_inputs": {
+    "firmware/build.sh": "437f79b154fde6f55864e2919aeb15c9399777475fcd08b19c0d70f0043d0d5f",
+    "firmware/data_image.s": "281a8fdbeb31cba613293d0a5f59d63a7dca34f8d6a20177288442f3f6aae441",
+    "firmware/firmware.bin": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903",
+    "firmware/globals.c": "fd531156c8bcee6fa500f260fb2e4063990382bf7e6cb16dd6bd7d6213eb3c27",
+    "firmware/lpc1765.ld": "ce42735736243a92958925edc2d3e33705a35e577a167156f8bd9602515c16eb",
+    "firmware/startup.s": "124b5317b81224f40ff7346f6ec75263d886ee8d6262e1a3183610e82337fc7b",
+    "firmware/stub.c": "294222a81db88695023217f6521aee22213c4929b91cdf54f2bba2add3da92af",
+    "firmware/assets/ram_data_image.bin": "aacc156f933c03b0a2a14ca1da5fd50ba547c1643f147fd0c3ca7e0f8ef92035",
+    "firmware/inc/consts.h": "a2d990b9d564516c6c0d714e1d4e945badfcd146106286ea73a6e5f7cce926b5",
+    "firmware/inc/globals.h": "17c390014b9aa94ff2bc6ff2855587f6f291aff2d27c33fc9d1744d7fd29b714",
+    "firmware/inc/input_events.h": "d16f58047206db1762e05566ac1dadb1ba62b2dc32f7c36c729a640650ea0f58",
+    "firmware/inc/reg.h": "72e24bd9bf63fccef745ec5692b4bf62576468e575c507ea71e139fdf4281152",
+    "firmware/inc/types.h": "eda223aa9467197dd975e0f09d95d2ed1052258aa77b981a61264689cb70f38b",
+    "firmware/src/01_startup.c": "31919fa3d1dd71d4bfd7a4c83d3c04be8da6c9b0783e278bfb641f0cfd112024",
+    "firmware/src/02_lcd_display.c": "6d14995395118a31cf282edebfe176d8080a3b2b0670f3f9771f8859bd109817",
+    "firmware/src/03_input_debounce.c": "eed66780ff4cd63299d30f0f820ca21b71cedb0872438f0690099954f4cc4203",
+    "firmware/src/04_i2c.c": "5cce8c80e8dfca88f1298e76eb590ec7b6b17e775337c8c53aeece09c1e13fe0",
+    "firmware/src/05_adc.c": "bd06bd9ecc98113c831f9706cebf2206a618d28c2a3391e9a33564aeecf052ec",
+    "firmware/src/06_param_system.c": "240c300f4bfdaecd7d7cb7fd939878dd9bc69ab9c2d056044e52f8b281cc37da",
+    "firmware/src/07_state_machine.c": "695e65768e87be1c3619fc20f16eea3fa15af3fc4f1ab96857501a79d243f901",
+    "firmware/src/08_modbus_dispatch.c": "913e88d2ebd50c16cdbc7ba2660921b0c22d88d9fdf2041a68870adfa2030684",
+    "firmware/src/08_uart3_modbus.c": "722f7087181bd9a0c42de3d8a93f0c8781dc58b65a74d7e1a3c2d5b1dd4e61e0",
+    "firmware/src/09_output_stage.c": "c7f4420e85b6d127e7b172792326bceff422a6ce6d1ca4511727d1f738ded2a5",
+    "firmware/src/10_relay_led.c": "ad2d2f2bf8658b7cac93ba34a9917f35d1540338a387656b3995e02850787fb5",
+    "firmware/src/11_auth.c": "9e625a45d68cc0e40cbc781c778485d3dc56950f6698cb005d37ec98897335f5",
+    "firmware/src/12_closed_loop.c": "31f0927319ad243e20a2e04ccf64489099afcb419c7e2e516a3b44518dd1ac08",
+    "firmware/src/13_gpio_init.c": "9ccdfea645e6786b2e05aa4ee005eb340105f245bb1117a3578a0120c05c8580",
+    "firmware/src/crc16_table.c": "aeab3037db2d8cfc9f3cc137a3910fbef89ef018ba7581d54846384bf55d8aea",
+    "firmware/src/strpool.c": "b8689dbdebe2164304d1e723babe7d1f4b3a5e50496c2ff799b1b900cdfe8159"
+  },
+  "steps": [
+    {
+      "name": "regression",
+      "entry": "test/run_tests.py",
+      "args": [],
+      "exit_code": 0,
+      "seconds": 587.469,
+      "log_sha256": "6a78cf5bf85e59db5c84415c07a4eef4e7f5c30640b7d60741062b1da88b3113",
+      "loads": {
+        "original_BIN": 57532,
+        "current_BIN": 57508,
+        "current_ELF_sections": 0
+      }
+    },
+    {
+      "name": "original_AB",
+      "entry": "tools/verification/verify_firmware_equivalence_12.py",
+      "args": [],
+      "exit_code": 0,
+      "seconds": 21.556,
+      "log_sha256": "29b3d046e91ee7fb387b898fc0db54fb7960844ec9fd8e1dca2a347d0a28543c",
+      "loads": {
+        "original_BIN": 1946,
+        "current_BIN": 1949,
+        "current_ELF_sections": 0
+      }
+    },
+    {
+      "name": "menu_custom",
+      "entry": "tools/verification/verify_menu_text_12.py",
+      "args": [],
+      "exit_code": 0,
+      "seconds": 0.611,
+      "log_sha256": "0bad00474e5c1fffec711f81331371373fac350331c7fbf932b6a1402a3600df",
+      "loads": {
+        "original_BIN": 32,
+        "current_BIN": 48,
+        "current_ELF_sections": 0
+      }
+    },
+    {
+      "name": "backlight_custom",
+      "entry": "tools/verification/verify_backlight_timeout_12.py",
+      "args": [],
+      "exit_code": 0,
+      "seconds": 0.226,
+      "log_sha256": "3280a7681bfc239c67f48609e612206cfadffb32fbfe83d3e154afd8f8010395",
+      "loads": {
+        "original_BIN": 14,
+        "current_BIN": 14,
+        "current_ELF_sections": 0
+      }
+    },
+    {
+      "name": "startup_adaptation",
+      "entry": "tools/verification/verify_startup_adaptation_contract.py",
+      "args": [],
+      "exit_code": 0,
+      "seconds": 0.149,
+      "log_sha256": "813fa4aa8db89e56571f7b3222c74c57bd304e467fbf26ec2d6acc297cc34121",
+      "loads": {
+        "original_BIN": 2,
+        "current_BIN": 1,
+        "current_ELF_sections": 0
+      }
+    },
+    {
+      "name": "negative_controls",
+      "entry": "tools/audit/branch_gap_negative_controls.py",
+      "args": [],
+      "exit_code": 0,
+      "seconds": 0.591,
+      "log_sha256": "d3537eacfdbf2afe93cfe4af54c28aea9273cc66c59cf6e384c88be7f17ed6a4",
+      "loads": {
+        "original_BIN": 7,
+        "current_BIN": 13,
+        "current_ELF_sections": 0
+      }
+    },
+    {
+      "name": "extended_sequences",
+      "entry": "test/emulation/test_cross_module_event_sequences.py",
+      "args": [
+        "--audit"
+      ],
+      "exit_code": 0,
+      "seconds": 99.007,
+      "log_sha256": "ae81dab94f073111206d9a7ad446c42960b6d7c87daa1ae24a6188d07ec0e617",
+      "loads": {
+        "original_BIN": 24,
+        "current_BIN": 24,
+        "current_ELF_sections": 0
+      }
+    }
+  ],
+  "extended": true,
+  "hardware_actions": false,
+  "publishes_release": false
+}

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\verification\run_software_gates.py", line 65, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "D:\code\LPC1765FBD100\PC12M-2\tools\verification\run_software_gates.py", line 53, in main
+    assert loaded['firmware_sha256']==baseline['firmware/firmware.bin']
+                                      ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'firmware/firmware.bin'

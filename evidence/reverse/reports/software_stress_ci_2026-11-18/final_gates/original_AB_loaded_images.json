@@ -1,0 +1,13 @@
+{
+  "entry": "tools/verification/verify_firmware_equivalence_12.py",
+  "args": [],
+  "exit_code": 0,
+  "loads": {
+    "original_BIN": 1946,
+    "current_BIN": 1949,
+    "current_ELF_sections": 0
+  },
+  "original_sha256": "2bc608683992ad6db2d3cb75129bf57ea37d6d681d7c2c0a132e064ebd271bd1",
+  "firmware_sha256": "6b9f08e1e0df0824ad67a5ba040c0e6c262b339801cc46cdeb7eaab1d7c5e903",
+  "ELF_sections_only_note": "旧ELF加载器只验其实际装载节，不把Flash填充区未装载伪装为整BIN装载。"
+}

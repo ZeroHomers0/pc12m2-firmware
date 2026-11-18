@@ -1,0 +1,8 @@
+CROSS_MODULE_SEQUENCE {'seed': 1765, 'channel': 0, 'events': 1830, 'ticks': 1706, 'PID_calls': 131, 'limit_entries': 2, 'limit_exits': 1, 'fault_ticks': 20, 'reboots': 2, 'ADC_conversions': 20472} PASS
+CROSS_MODULE_SEQUENCE {'seed': 1765, 'channel': 1, 'events': 1830, 'ticks': 1706, 'PID_calls': 131, 'limit_entries': 2, 'limit_exits': 1, 'fault_ticks': 20, 'reboots': 2, 'ADC_conversions': 20472} PASS
+CROSS_MODULE_SEQUENCE {'seed': 20261118, 'channel': 0, 'events': 1830, 'ticks': 1677, 'PID_calls': 122, 'limit_entries': 2, 'limit_exits': 1, 'fault_ticks': 20, 'reboots': 2, 'ADC_conversions': 20124} PASS
+CROSS_MODULE_SEQUENCE {'seed': 20261118, 'channel': 1, 'events': 1830, 'ticks': 1677, 'PID_calls': 122, 'limit_entries': 2, 'limit_exits': 1, 'fault_ticks': 20, 'reboots': 2, 'ADC_conversions': 20124} PASS
+CROSS_MODULE_SEQUENCE {'seed': 5904128, 'channel': 0, 'events': 1830, 'ticks': 1683, 'PID_calls': 129, 'limit_entries': 2, 'limit_exits': 1, 'fault_ticks': 20, 'reboots': 2, 'ADC_conversions': 20196} PASS
+CROSS_MODULE_SEQUENCE {'seed': 5904128, 'channel': 1, 'events': 1830, 'ticks': 1683, 'PID_calls': 129, 'limit_entries': 2, 'limit_exits': 1, 'fault_ticks': 20, 'reboots': 2, 'ADC_conversions': 20196} PASS
+CROSS_MODULE_EVENT_SEQUENCES PASS negative_output_noop_detected reduced_events=1
+LOADED_IMAGE_ATTESTATION {'original_BIN': 24, 'current_BIN': 24, 'current_ELF_sections': 0} exit 0

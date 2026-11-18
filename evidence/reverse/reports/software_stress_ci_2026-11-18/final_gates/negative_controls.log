@@ -1,0 +1,2 @@
+BRANCH_GAP_NEGATIVE_CONTROLS actual_semantic_failures_detected=5 restored_baselines PASS
+LOADED_IMAGE_ATTESTATION {'original_BIN': 7, 'current_BIN': 13, 'current_ELF_sections': 0} exit 0
